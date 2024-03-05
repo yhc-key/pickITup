@@ -13,3 +13,21 @@ spring:
       cluster-nodes: localhost:9200
   main:
     allow-bean-definition-overriding: true
+
+
+#  #mysql 설정
+#  datasource:
+#    master:
+#      hikari:
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbc-url: jdbc:mysql://localhost:3307/pickitup
+#        read-only: false
+#        username: root
+#        password: 1234
+#    slave:
+#      hikari:
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbc-url: jdbc:mysql://localhost:3308/pickitup
+#        read-only: true
+#        username: root
+#        password: 1234
