@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface RecruitingDocumentRepository extends ElasticsearchRepository<RecruitingDocument, Long>, CrudRepository<RecruitingDocument, Long> {
     List<RecruitingDocument> findAll();
+    List<RecruitingDocument> findByQualificationRequirementsContaining(String keyword);
 }

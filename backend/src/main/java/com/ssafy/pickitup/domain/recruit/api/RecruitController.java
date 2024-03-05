@@ -4,6 +4,7 @@ import com.ssafy.pickitup.domain.recruit.dao.RecruitingDocumentRepository;
 import com.ssafy.pickitup.domain.recruit.domain.RecruitingDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +22,10 @@ public class RecruitController {
         List<RecruitingDocument> allDocuments = recruitingDocumentRepository.findAll();
 
         return allDocuments;
+    }
+
+    @GetMapping("/searchByKeyword/{keyword}")
+    public List<RecruitingDocument> searchByKeyword(@PathVariable String keyword) {
+        return recruitingDocumentRepository.findByQualificationRequirementsContaining(keyword);
     }
 }
