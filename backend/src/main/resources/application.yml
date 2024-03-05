@@ -1,0 +1,15 @@
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          elasticsearch:
+            client:
+              WIRE: TRACE
+spring:
+  data:
+    elasticsearch:
+      cluster-nodes: localhost:9200
+  main:
+    allow-bean-definition-overriding: true
