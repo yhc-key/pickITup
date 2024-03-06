@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserQueryJpaRepository extends JpaRepository<User, Integer> {
 
-    User findById(int id);
+  User findById(int id);
 }

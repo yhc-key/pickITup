@@ -1,11 +1,13 @@
 package com.ssafy.pickitup.domain.recruit.domain;
 
-import lombok.*;
+import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.List;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,17 +16,18 @@ import java.util.Set;
 @Builder
 @Document(collection = "recruit")
 public class RecruitingDocumentMongo {
-    @Id
-    private Integer id;
 
-    private String source;
-    private String title;
-    private String company;
-    private String url;
-    private String thumbnailUrl;
-    private Set<String> qualificationRequirements;
-    private Set<String> preferredRequirements;
-    private String dueDate;
-    private String career;
-    private String collectTime;
+  @Id
+  private Integer id;
+
+  private String source;
+  private String title;
+  private String company;
+  private String url;
+  private String thumbnailUrl;
+  private Set<String> qualificationRequirements;
+  private Set<String> preferredRequirements;
+  private String dueDate;
+  private String career;
+  private String collectTime;
 }

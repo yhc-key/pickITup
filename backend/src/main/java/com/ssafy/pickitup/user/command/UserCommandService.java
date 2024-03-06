@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserCommandService {
 
-    private final UserCommandJpaRepository userCommandJpaRepository;
+  private final UserCommandJpaRepository userCommandJpaRepository;
 
-    public void signup(UserSignupDto userSignupDto) {
-        User user = User.builder()
-                .name(userSignupDto.getName())
-                .build();
-        userCommandJpaRepository.save(user);
-    }
+  public void signup(UserSignupDto userSignupDto) {
+    User user = User.builder()
+        .name(userSignupDto.getName())
+        .build();
+    userCommandJpaRepository.save(user);
+  }
 
 }

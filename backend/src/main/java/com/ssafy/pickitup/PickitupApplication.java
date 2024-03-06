@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PickitupApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PickitupApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(PickitupApplication.class, args);
+  }
 
 }
