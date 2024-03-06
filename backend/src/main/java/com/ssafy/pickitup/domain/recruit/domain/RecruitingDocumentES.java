@@ -7,13 +7,16 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 
+import java.util.HashSet;
+
+
 @Document(indexName = "searchrecruit")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecruitingDocument {
+public class RecruitingDocumentES {
     @Id
-    private String id;
+    private Integer id;
 
     private String source;
     private String title;
@@ -30,4 +33,19 @@ public class RecruitingDocument {
     private String career;
     @Field(name = "collect_time")
     private String collectTime;
+
+    public RecruitingDocumentMongo toMongo(){
+        return RecruitingDocumentMongo.builder()
+                .id(this.id)
+                .source(this.source)
+                .company(this.company)
+                .url(this.url)
+                .thumbnailUrl(this.thumbnailUrl)
+                .qualificationRequirements(new HashSet<>())
+                .preferredRequirements(new HashSet<>())
+                .dueDate(this.dueDate)
+                .career(this.career)
+                .collectTime(this.collectTime)
+                .build();
+    }
 }
