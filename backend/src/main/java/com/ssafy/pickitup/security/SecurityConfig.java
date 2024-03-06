@@ -21,67 +21,67 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //@RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final JwtTokenProvider jwtTokenProvider;
-  private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-  private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-  @Autowired
-  public SecurityConfig(JwtTokenProvider jwtTokenProvider,
-      JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-      JwtAccessDeniedHandler jwtAccessDeniedHandler) {
-    this.jwtTokenProvider = jwtTokenProvider;
-    this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-    this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-  }
+    @Autowired
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider,
+        JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+        JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+    }
 
-  private static final String[] swaggerURL = {
-      "/api/**", "/graphiql", "/graphql",
-      "/swagger-ui/**", "/api-docs", "/swagger-ui.html",
-      "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html"
-  };
+    private static final String[] swaggerURL = {
+        "/api/**", "/graphiql", "/graphql",
+        "/swagger-ui/**", "/api-docs", "/swagger-ui.html",
+        "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html"
+    };
 
-  @Bean
-  public WebSecurityCustomizer webSecurityCustomizer() {
-    return web -> web.ignoring()
-        .requestMatchers("/**") // '인증','인가' 서비스 적용x
-        .requestMatchers(swaggerURL)
-        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // 정적 리소스들
-  }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+            .requestMatchers("/**") // '인증','인가' 서비스 적용x
+            .requestMatchers(swaggerURL)
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // 정적 리소스들
+    }
 
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-    // 기본 세팅
-    http
-        .csrf(AbstractHttpConfigurer::disable);
+        // 기본 세팅
+        http
+            .csrf(AbstractHttpConfigurer::disable);
 
-    // JWT 토큰 인증 설정
-    http
-        .formLogin(AbstractHttpConfigurer::disable)
-        .httpBasic(AbstractHttpConfigurer::disable)
-        .sessionManagement(sessionManagement ->
-            sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-            UsernamePasswordAuthenticationFilter.class)
-        .exceptionHandling(exception -> exception
-            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            .accessDeniedHandler(jwtAccessDeniedHandler));
+        // JWT 토큰 인증 설정
+        http
+            .formLogin(AbstractHttpConfigurer::disable)
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .sessionManagement(sessionManagement ->
+                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling(exception -> exception
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler));
 
-    // URL별 권한 설정
-    http
-        .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/error")
-            .permitAll() // '인증' 무시
-            .requestMatchers("/**").permitAll()
-            .requestMatchers(swaggerURL).permitAll()
-            .requestMatchers("/**").hasRole("ADMIN")
-            .anyRequest().authenticated());
+        // URL별 권한 설정
+        http
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/error")
+                .permitAll() // '인증' 무시
+                .requestMatchers("/**").permitAll()
+                .requestMatchers(swaggerURL).permitAll()
+                .requestMatchers("/**").hasRole("ADMIN")
+                .anyRequest().authenticated());
 
-    return http.build();
-  }
+        return http.build();
+    }
 
-  @Bean
-  public BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

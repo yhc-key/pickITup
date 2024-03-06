@@ -1,9 +1,9 @@
 package com.ssafy.pickitup.domain.recruit.service;
 
-import com.ssafy.pickitup.domain.recruit.dao.RecruitingESRepository;
-import com.ssafy.pickitup.domain.recruit.dao.RecruitingMongoRepository;
-import com.ssafy.pickitup.domain.recruit.domain.RecruitingDocumentES;
-import com.ssafy.pickitup.domain.recruit.domain.RecruitingDocumentMongo;
+import com.ssafy.pickitup.domain.recruit.command.RecruitingCommandMongoRepository;
+import com.ssafy.pickitup.domain.recruit.entity.RecruitingDocumentElasticsearch;
+import com.ssafy.pickitup.domain.recruit.entity.RecruitingDocumentMongo;
+import com.ssafy.pickitup.domain.recruit.query.RecruitingCommandElasticsearchRepository;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,69 +19,72 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RecruitingServiceImpl implements RecruitingService {
 
-  private final RecruitingESRepository recruitingESRepository;
-  private final RecruitingMongoRepository recruitingMongoRepository;
+    private final RecruitingCommandElasticsearchRepository recruitingCommandElasticsearchRepository;
+    private final RecruitingCommandMongoRepository recruitingCommandMongoRepository;
 
-  @Override
-  public void readKeywords() {
-    try {
-      ClassPathResource resource = new ClassPathResource("keywords.txt");
-      BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+    @Override
+    public void readKeywords() {
+        try {
+            ClassPathResource resource = new ClassPathResource("keywords.txt");
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(resource.getInputStream()));
 
-      // 파일에서 한 줄씩 읽어서 처리
-      String line;
-      while ((line = reader.readLine()) != null) {
-        searchByKeyword(line);
-      }
-      // 리소스 해제
-      reader.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  @Override
-  public List<RecruitingDocumentMongo> searchByKeyword(String keyword) {
-    List<RecruitingDocumentES> qualificationList = recruitingESRepository.findByQualificationRequirementsContaining(
-        keyword);
-    List<RecruitingDocumentES> preferredList = recruitingESRepository.findByPreferredRequirementsContaining(
-        keyword);
-
-    for (RecruitingDocumentES es : qualificationList) {
-      addQualification(es, keyword);
-    }
-    for (RecruitingDocumentES es : preferredList) {
-      addPreferred(es, keyword);
+            // 파일에서 한 줄씩 읽어서 처리
+            String line;
+            while ((line = reader.readLine()) != null) {
+                searchByKeyword(line);
+            }
+            // 리소스 해제
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    return null;
-  }
+    @Override
+    public List<RecruitingDocumentMongo> searchByKeyword(String keyword) {
+        List<RecruitingDocumentElasticsearch> qualificationList = recruitingCommandElasticsearchRepository.findByQualificationRequirementsContaining(
+            keyword);
+        List<RecruitingDocumentElasticsearch> preferredList = recruitingCommandElasticsearchRepository.findByPreferredRequirementsContaining(
+            keyword);
 
-  @Override
-  public RecruitingDocumentMongo addQualification(RecruitingDocumentES recruitingDocumentES,
-      String keyword) {
-    RecruitingDocumentMongo mongo = recruitingMongoRepository
-        .findById(recruitingDocumentES.getId())
-        .orElseGet(recruitingDocumentES::toMongo);
-    Set<String> set = mongo.getQualificationRequirements();
+        for (RecruitingDocumentElasticsearch es : qualificationList) {
+            addQualification(es, keyword);
+        }
+        for (RecruitingDocumentElasticsearch es : preferredList) {
+            addPreferred(es, keyword);
+        }
 
-    set.add(keyword);
-    mongo.setQualificationRequirements(set);
+        return null;
+    }
 
-    return recruitingMongoRepository.save(mongo);
-  }
+    @Override
+    public RecruitingDocumentMongo addQualification(
+        RecruitingDocumentElasticsearch recruitingDocumentElasticsearch,
+        String keyword) {
+        RecruitingDocumentMongo mongo = recruitingCommandMongoRepository
+            .findById(recruitingDocumentElasticsearch.getId())
+            .orElseGet(recruitingDocumentElasticsearch::toMongo);
+        Set<String> set = mongo.getQualificationRequirements();
 
-  @Override
-  public RecruitingDocumentMongo addPreferred(RecruitingDocumentES recruitingDocumentES,
-      String keyword) {
-    RecruitingDocumentMongo mongo = recruitingMongoRepository
-        .findById(recruitingDocumentES.getId())
-        .orElseGet(recruitingDocumentES::toMongo);
-    Set<String> set = mongo.getPreferredRequirements();
+        set.add(keyword);
+        mongo.setQualificationRequirements(set);
 
-    set.add(keyword);
-    mongo.setPreferredRequirements(set);
+        return recruitingCommandMongoRepository.save(mongo);
+    }
 
-    return recruitingMongoRepository.save(mongo);
-  }
+    @Override
+    public RecruitingDocumentMongo addPreferred(
+        RecruitingDocumentElasticsearch recruitingDocumentElasticsearch,
+        String keyword) {
+        RecruitingDocumentMongo mongo = recruitingCommandMongoRepository
+            .findById(recruitingDocumentElasticsearch.getId())
+            .orElseGet(recruitingDocumentElasticsearch::toMongo);
+        Set<String> set = mongo.getPreferredRequirements();
+
+        set.add(keyword);
+        mongo.setPreferredRequirements(set);
+
+        return recruitingCommandMongoRepository.save(mongo);
+    }
 }

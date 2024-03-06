@@ -1,9 +1,9 @@
-package com.ssafy.pickitup.user.query;
+package com.ssafy.pickitup.domain.user.query;
 
-import com.ssafy.pickitup.user.entity.User;
+import com.ssafy.pickitup.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserQueryJpaRepository extends JpaRepository<User, Integer> {
 
-  User findById(int id);
+    User findById(int id);
 }
