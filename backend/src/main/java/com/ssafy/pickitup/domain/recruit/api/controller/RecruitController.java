@@ -2,12 +2,11 @@ package com.ssafy.pickitup.domain.recruit.api.controller;
 
 import com.ssafy.pickitup.domain.recruit.entity.RecruitingDocumentElasticsearch;
 import com.ssafy.pickitup.domain.recruit.query.RecruitingCommandElasticsearchRepository;
-import com.ssafy.pickitup.domain.recruit.service.RecruitingService;
+import com.ssafy.pickitup.domain.recruit.query.RecruitingQueryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +17,7 @@ public class RecruitController {
 
     @Autowired
     private RecruitingCommandElasticsearchRepository recruitingCommandElasticsearchRepository;
-    private final RecruitingService recruitingService;
+    private final RecruitingQueryService recruitingQueryService;
 
     @GetMapping("/allDocuments")
     public List<RecruitingDocumentElasticsearch> getAllDocuments() {
@@ -36,6 +35,6 @@ public class RecruitController {
 
     @GetMapping("/read")
     public void read() {
-        recruitingService.readKeywords();
+        recruitingQueryService.readKeywords();
     }
 }
