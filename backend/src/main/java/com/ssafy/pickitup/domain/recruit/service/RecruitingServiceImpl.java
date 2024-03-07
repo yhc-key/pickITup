@@ -47,7 +47,6 @@ public class RecruitingServiceImpl implements RecruitingService {
             keyword);
         List<RecruitingDocumentElasticsearch> preferredList = recruitingCommandElasticsearchRepository.findByPreferredRequirementsContaining(
             keyword);
-
         for (RecruitingDocumentElasticsearch es : qualificationList) {
             addQualification(es, keyword);
         }

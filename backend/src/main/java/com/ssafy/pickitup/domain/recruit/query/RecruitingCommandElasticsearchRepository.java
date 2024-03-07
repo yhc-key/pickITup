@@ -12,9 +12,9 @@ public interface RecruitingCommandElasticsearchRepository extends
 
     List<RecruitingDocumentElasticsearch> findAll();
 
-    @Query("{\"bool\": {\"must\": [{\"match\": {\"qualification_requirements\": \"?0\"}}]}}")
+    @Query("{\"bool\": {\"must\": [{\"match_phrase\": {\"qualification_requirements\": \"?0\"}}]}}")
     List<RecruitingDocumentElasticsearch> findByQualificationRequirementsContaining(String keyword);
 
-    @Query("{\"bool\": {\"must\": [{\"match\": {\"preferred_requirements\": \"?0\"}}]}}")
+    @Query("{\"bool\": {\"must\": [{\"match_phrase\": {\"preferred_requirements\": \"?0\"}}]}}")
     List<RecruitingDocumentElasticsearch> findByPreferredRequirementsContaining(String keyword);
 }
