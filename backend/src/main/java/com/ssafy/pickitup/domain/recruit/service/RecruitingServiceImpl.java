@@ -3,6 +3,7 @@ package com.ssafy.pickitup.domain.recruit.service;
 import com.ssafy.pickitup.domain.recruit.command.RecruitingCommandMongoRepository;
 import com.ssafy.pickitup.domain.recruit.entity.RecruitingDocumentElasticsearch;
 import com.ssafy.pickitup.domain.recruit.entity.RecruitingDocumentMongo;
+import com.ssafy.pickitup.domain.recruit.exception.InvalidFieldTypeException;
 import com.ssafy.pickitup.domain.recruit.query.RecruitingCommandElasticsearchRepository;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +13,9 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -43,47 +47,40 @@ public class RecruitingServiceImpl implements RecruitingService {
 
     @Override
     public List<RecruitingDocumentMongo> searchByKeyword(String keyword) {
-        List<RecruitingDocumentElasticsearch> qualificationList = recruitingCommandElasticsearchRepository.findByQualificationRequirementsContaining(
-            keyword);
-        List<RecruitingDocumentElasticsearch> preferredList = recruitingCommandElasticsearchRepository.findByPreferredRequirementsContaining(
-            keyword);
+        Pageable pageable = PageRequest.of(0, 2000);  // 페이지네이션 없이 모든 데이터를 가져오도록 설정
+
+        Page<RecruitingDocumentElasticsearch> qualificationResult = recruitingCommandElasticsearchRepository.findByQualificationRequirementsContaining(
+            keyword, pageable);
+        List<RecruitingDocumentElasticsearch> qualificationList = qualificationResult.getContent();
+
+        Page<RecruitingDocumentElasticsearch> preferredResult = recruitingCommandElasticsearchRepository.findByPreferredRequirementsContaining(
+            keyword, pageable);
+        List<RecruitingDocumentElasticsearch> preferredList = preferredResult.getContent();
+
         for (RecruitingDocumentElasticsearch es : qualificationList) {
-            addQualification(es, keyword);
+            addKeyword(es, keyword, "qualificationRequirements");
         }
         for (RecruitingDocumentElasticsearch es : preferredList) {
-            addPreferred(es, keyword);
+            addKeyword(es, keyword, "preferredRequirements");
         }
 
         return null;
     }
 
-    @Override
-    public RecruitingDocumentMongo addQualification(
+    private RecruitingDocumentMongo addKeyword(
         RecruitingDocumentElasticsearch recruitingDocumentElasticsearch,
-        String keyword) {
+        String keyword, String field) {
         RecruitingDocumentMongo mongo = recruitingCommandMongoRepository
             .findById(recruitingDocumentElasticsearch.getId())
             .orElseGet(recruitingDocumentElasticsearch::toMongo);
-        Set<String> set = mongo.getQualificationRequirements();
+        Set<String> set;
+        switch (field) {
+            case "qualificationRequirements" -> set = mongo.getQualificationRequirements();
+            case "preferredRequirements" -> set = mongo.getPreferredRequirements();
+            default -> throw new InvalidFieldTypeException();
+        }
 
         set.add(keyword);
-        mongo.setQualificationRequirements(set);
-
-        return recruitingCommandMongoRepository.save(mongo);
-    }
-
-    @Override
-    public RecruitingDocumentMongo addPreferred(
-        RecruitingDocumentElasticsearch recruitingDocumentElasticsearch,
-        String keyword) {
-        RecruitingDocumentMongo mongo = recruitingCommandMongoRepository
-            .findById(recruitingDocumentElasticsearch.getId())
-            .orElseGet(recruitingDocumentElasticsearch::toMongo);
-        Set<String> set = mongo.getPreferredRequirements();
-
-        set.add(keyword);
-        mongo.setPreferredRequirements(set);
-
         return recruitingCommandMongoRepository.save(mongo);
     }
 }

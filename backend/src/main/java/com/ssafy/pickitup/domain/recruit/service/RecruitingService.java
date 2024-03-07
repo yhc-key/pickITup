@@ -9,11 +9,4 @@ public interface RecruitingService {
     void readKeywords();
 
     List<RecruitingDocumentMongo> searchByKeyword(String keyword);
-
-    RecruitingDocumentMongo addQualification(
-        RecruitingDocumentElasticsearch recruitingDocumentElasticsearch,
-        String keyword);
-
-    RecruitingDocumentMongo addPreferred(
-        RecruitingDocumentElasticsearch recruitingDocumentElasticsearch, String keyword);
 }

@@ -28,11 +28,11 @@ public class RecruitController {
         return allDocuments;
     }
 
-    @GetMapping("/searchByKeyword/{keyword}")
-    public List<RecruitingDocumentElasticsearch> searchByKeyword(@PathVariable String keyword) {
-        return recruitingCommandElasticsearchRepository.findByQualificationRequirementsContaining(
-            keyword);
-    }
+//    @GetMapping("/searchByKeyword/{keyword}")
+//    public List<RecruitingDocumentElasticsearch> searchByKeyword(@PathVariable String keyword) {
+//        return recruitingCommandElasticsearchRepository.findByQualificationRequirementsContaining(
+//            keyword);
+//    }
 
     @GetMapping("/read")
     public void read() {

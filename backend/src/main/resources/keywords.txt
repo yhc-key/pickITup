@@ -29,6 +29,7 @@ AWS SQS
 Azure DevOps
 Babel
 BackboneJS
+Backend
 Bazel
 Bitbucket
 Bitrise
@@ -38,6 +39,7 @@ CassandraDB
 Celery
 Central Dogma
 Ceph
+CI/CD
 Circle CI
 Clean-Architecture
 Clickhouse
@@ -73,6 +75,7 @@ Emotion
 Envoy
 Enzyme
 ES6
+Espresso
 ETC
 ExoPlayer
 ExpressJS
@@ -81,11 +84,13 @@ FastAPI
 Fastify
 Fastlane
 Fiber
+Figma
 Flask
 Flink
 Flow
 Fluentd
 Flutter
+Frontend
 Gatsby
 Gin
 Git
@@ -153,6 +158,7 @@ Kubernetes
 Kudu
 Laravel
 Linkerd
+Linux
 Liquibase
 Locust
 Looker
@@ -165,7 +171,9 @@ Meteor
 Microsoft-Teams
 MLflow
 MLOps
+Mobile
 MobX
+Mobaxterm
 Mocha
 Mockito
 Monday
@@ -198,11 +206,13 @@ Phoenix
 PHP
 Playwright
 PostgreSQL
+Postman
 Presto
 Prometheus
 Puppeteer
 Python
 Pytorch
+QA
 R
 RabbitMQ
 Rancher
@@ -233,6 +243,7 @@ Saltstack
 Sanic
 SASS
 Scala
+SDLC/STLC
 Selenium
 SEO
 Sinon
@@ -266,9 +277,11 @@ Tuist
 TypeORM
 Typescript
 Unity
+Unix
 Vault
 VueJS
 Vuex
+Web
 WebPack
 WebRTC
 Xcode
