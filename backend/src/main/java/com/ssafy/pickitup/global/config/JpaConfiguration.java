@@ -27,27 +27,6 @@ public class JpaConfiguration {
         LocalContainerEntityManagerFactoryBean entityManagerFactory
             = new LocalContainerEntityManagerFactoryBean();
 
-        // DataSource를 주입받은 dataSource로 설정한다.
-        entityManagerFactory.setDataSource(dataSource);
-        // JPA 엔티티 클래스가 포함된 패키지를 설정한다.
-        entityManagerFactory.setPackagesToScan("com.ssafy.pickitup");
-        // JPA 벤더 어뎁터를 설정한다.
-        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter(entityManagerFactory));
-        // 영속성 유닛의 이름을 entityManager로 설정한다.
-        entityManagerFactory.setPersistenceUnitName("entityManager");
-
-        return entityManagerFactory;
-
-    }
-
-    private JpaVendorAdapter jpaVendorAdapter(LocalContainerEntityManagerFactoryBean entityManagerFactory) {
-        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
-        // DDL 생성 기능을 비활성화
-        hibernateJpaVendorAdapter.setGenerateDdl(true);
-        // SQL 쿼리를 로깅하지 않도록 설정
-        hibernateJpaVendorAdapter.setShowSql(true);
-        // SQL 방언을 MySQL 5 Inno DB 방언으로 설정
-        hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");
         // Hibernate 추가 설정
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
@@ -56,6 +35,28 @@ public class JpaConfiguration {
         properties.setProperty("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
         entityManagerFactory.setJpaProperties(properties);
 
+        // DataSource를 주입받은 dataSource로 설정한다.
+        entityManagerFactory.setDataSource(dataSource);
+        // JPA 엔티티 클래스가 포함된 패키지를 설정한다.
+        entityManagerFactory.setPackagesToScan("com.ssafy.pickitup");
+        // JPA 벤더 어뎁터를 설정한다.
+        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter());
+        // 영속성 유닛의 이름을 entityManager로 설정한다.
+        entityManagerFactory.setPersistenceUnitName("entityManager");
+
+        return entityManagerFactory;
+
+    }
+
+    private JpaVendorAdapter jpaVendorAdapter() {
+
+        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+        // DDL 생성 기능을 활성화
+        hibernateJpaVendorAdapter.setGenerateDdl(true);
+        // SQL 쿼리를 로깅하지 않도록 설정
+        hibernateJpaVendorAdapter.setShowSql(true);
+        // SQL 방언을 MySQL 5 Inno DB 방언으로 설정
+        hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");
         return hibernateJpaVendorAdapter;
     }
 

@@ -1,4 +1,4 @@
-package com.ssafy.pickitup.domain.user.api.controller;
+package com.ssafy.pickitup.domain.user.api;
 
 import com.ssafy.pickitup.domain.user.exception.ErrorMessageDto;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
