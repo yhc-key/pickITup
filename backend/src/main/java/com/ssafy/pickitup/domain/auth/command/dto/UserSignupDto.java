@@ -1,4 +1,4 @@
-package com.ssafy.pickitup.domain.user.command.dto;
+package com.ssafy.pickitup.domain.auth.command.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserSignupDto {
 
-    private String name;
+    private String username;
 }
