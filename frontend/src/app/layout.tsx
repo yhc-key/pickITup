@@ -1,21 +1,35 @@
+"use client"
 import type { Metadata } from "next";
+import { usePathname } from "next/navigation"
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
+interface LinkType {
+  name: string;
+  href: string;
+}
 
-export const metadata: Metadata = {
-  title: "pick IT up",
-  description: "pick your IT information and recruit",
-};
+const inter = Inter({ subsets: ["latin"] });
+const navLinks: LinkType[] = [
+  { name: "채용공고", href: "/recruit",},
+  { name: "기술블로그", href: "/techBlog" },
+  { name: "미니 게임", href: "/game" },
+  { name: "면접 대비", href: "/interview" },
+];
+
+// export const metadata: Metadata = {
+//   title: "pick IT up",
+//   description: "pick your IT information and recruit",
+// };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
   return (
     <html lang="kr">
       <body className={inter.className}>
@@ -25,15 +39,21 @@ export default function RootLayout({
               <Image src="/pickITup.svg" alt="logo" width="200" height="1" />
             </Link>
           </div>
-          <div className="">
-            <Link href="/recruit" className="mr-4 text-blue-500">채용공고</Link>
-            <Link href="/techBlog" className="mr-4 text-blue-500">기술 블로그</Link>
-            <Link href="/game" className="mr-4 text-blue-500">미니 게임</Link>
-            <Link href="/interview" className="mr-4 text-blue-500">면접 대비</Link>
+          <div className="flex text-center justify-center">
+            {navLinks.map((link: LinkType) => {
+              const isActive = pathname.startsWith(link.href);
+              return (
+                <Link
+                  href={link.href}
+                  key={link.name}
+                  className={isActive ? "font-bold mr-4" :  "text-blue-500 mr-4"}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
           </div>
-          <div>
-            로그인 | 회원가입
-          </div>
+          <div>로그인 | 회원가입</div>
         </header>
         <main>{children}</main>
         <footer className="flex justify-between">
