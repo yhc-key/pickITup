@@ -35,12 +35,12 @@ export default function RootLayout({
             로그인 | 회원가입
           </div>
         </header>
-        <main>{children}</main>
-        <footer className=" flex justify-between">
-          <div>Copyright © 2024. SSAFY 특화 A_406 F5 세희고침</div>
-          <div>서비스 이용약관</div>
-          <div>개인 정보 처리방침</div>
-          <div>Gitlab</div>
+        <main >{children}</main>
+        <footer className="flex justify-evenly bg-gray-400 text-white h-16">
+          <div className="py-4">Copyright © 2024. SSAFY 특화 A_406 F5 세희고침</div>
+          <div className="py-4">서비스 이용약관</div>
+          <div className="py-4">개인 정보 처리방침</div>
+          <div className="py-4">Gitlab</div>
         </footer>
       </body>
     </html>
