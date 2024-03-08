@@ -17,9 +17,7 @@ public class UserQueryService {
         if (user == null) {
             throw new UserNotFoundException("해당 유저를 찾을 수 없습니다");
         }
-        //Slave DB에 CUD 작업을 하면 에러 발생
-//        User newUser = User.builder().name("에러유저").build();
-//        userQueryJpaRepository.save(newUser);
+
         return UserResponseDto.toDto(user);
     }
 }

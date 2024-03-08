@@ -49,11 +49,6 @@ public class DataSourceConfig {
             Map.entry("slave", slaveDataSource)
         );
 
-//        Map<Object, Object> datasourceMap = ImmutableMap.<Object, Object>builder()
-//                .put("master", masterDataSource)
-//                .put("slave", slaveDataSource)
-//                .build();
-
         // RoutingDataSource의 대상 데이터 소스를 위에서 생성한 맵으로 지정한다.
         routingDataSource.setTargetDataSources(datasourceMap);
 

@@ -1,9 +1,13 @@
 package com.ssafy.pickitup.global.config;
 
+import jakarta.persistence.EntityManagerFactory;
+import java.util.Properties;
 import javax.sql.DataSource;
+import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -28,7 +32,7 @@ public class JpaConfiguration {
         // JPA 엔티티 클래스가 포함된 패키지를 설정한다.
         entityManagerFactory.setPackagesToScan("com.ssafy.pickitup");
         // JPA 벤더 어뎁터를 설정한다.
-        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter());
+        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter(entityManagerFactory));
         // 영속성 유닛의 이름을 entityManager로 설정한다.
         entityManagerFactory.setPersistenceUnitName("entityManager");
 
@@ -36,14 +40,22 @@ public class JpaConfiguration {
 
     }
 
-    private JpaVendorAdapter jpaVendorAdapter() {
+    private JpaVendorAdapter jpaVendorAdapter(LocalContainerEntityManagerFactoryBean entityManagerFactory) {
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
         // DDL 생성 기능을 비활성화
-        hibernateJpaVendorAdapter.setGenerateDdl(false);
+        hibernateJpaVendorAdapter.setGenerateDdl(true);
         // SQL 쿼리를 로깅하지 않도록 설정
-        hibernateJpaVendorAdapter.setShowSql(false);
+        hibernateJpaVendorAdapter.setShowSql(true);
         // SQL 방언을 MySQL 5 Inno DB 방언으로 설정
         hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");
+        // Hibernate 추가 설정
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        // Spring Boot가 제공하는 기본 물리적 네이밍 전략 설정
+        properties.setProperty("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
+        entityManagerFactory.setJpaProperties(properties);
+
         return hibernateJpaVendorAdapter;
     }
 
