@@ -36,7 +36,7 @@ export default function RootLayout({
           </div>
         </header>
         <main>{children}</main>
-        <footer className=" flex justify-between">
+        <footer className="flex justify-between">
           <div>Copyright © 2024. SSAFY 특화 A_406 F5 세희고침</div>
           <div>서비스 이용약관</div>
           <div>개인 정보 처리방침</div>
