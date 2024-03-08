@@ -1,20 +1,39 @@
 package com.ssafy.pickitup.domain.selfdocument.entity;
 
+import com.ssafy.pickitup.domain.selfdocument.command.dto.MainQuestionCommandResponseDto;
+import com.ssafy.pickitup.domain.selfdocument.query.dto.MainQuestionQueryResponseDto;
+import com.ssafy.pickitup.domain.user.entity.User;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
 @Entity
 @Getter
 @Builder
-public class MainQuestion {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class MainQuestion extends BaseEntity {
 
     private String title;
+
+    @OneToMany
+    private List<SubQuestion> subQuestions;
+
+    @ManyToOne
+    private User user;
+
+    public MainQuestionQueryResponseDto toMainQuestionQueryResponse() {
+        return MainQuestionQueryResponseDto.builder()
+            .id(this.getId())
+            .title(this.title)
+            .build();
+    }
+
+    public MainQuestionCommandResponseDto toMainQuestionCommandResponse() {
+        return MainQuestionCommandResponseDto.builder()
+            .id(this.getId())
+            .title(this.title)
+            .build();
+    }
 }
