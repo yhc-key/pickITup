@@ -4,6 +4,7 @@ Alamofire
 Android
 Angular
 Ansible
+Apache
 Apollo
 Appium
 ArangoDB
@@ -201,6 +202,7 @@ OpenEBS
 OpenGL
 OracleDB
 Packer
+Pandas
 Perl
 Phoenix
 PHP
