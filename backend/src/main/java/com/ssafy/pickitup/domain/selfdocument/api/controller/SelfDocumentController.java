@@ -35,7 +35,6 @@ public class SelfDocumentController {
         UserResponseDto userResponseDto = userQueryService.getUserById(userId);
         User user = User.builder()
             .id(userResponseDto.getId())
-            .name(userResponseDto.getName())
             .build();
         return ResponseEntity.ok(
             mainQuestionCommandService.registerMain(dto, user));
