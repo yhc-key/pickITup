@@ -56,7 +56,7 @@ export default function RootLayout({
           <div>로그인 | 회원가입</div>
         </header>
         <main>{children}</main>
-        <footer className="flex justify-between">
+        <footer className="bg-gray-400 text-white flex justify-evenly h-16">
           <div>Copyright © 2024. SSAFY 특화 A_406 F5 세희고침</div>
           <div>서비스 이용약관</div>
           <div>개인 정보 처리방침</div>
