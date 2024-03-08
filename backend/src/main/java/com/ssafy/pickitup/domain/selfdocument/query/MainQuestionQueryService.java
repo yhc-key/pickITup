@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface MainQuestionQueryService {
 
-    public List<MainQuestionQueryResponseDto> searchMainQuestions(Integer userId);
+    List<MainQuestionQueryResponseDto> searchMainQuestions(Integer userId);
 }

@@ -6,6 +6,11 @@ import com.ssafy.pickitup.domain.user.entity.User;
 
 public interface MainQuestionCommandService {
 
-    public MainQuestionCommandResponseDto registerMain(MainQuestionCommandRequestDto dto,
+    MainQuestionCommandResponseDto registerMainQuestion(MainQuestionCommandRequestDto dto,
         User user);
+
+    boolean deleteMainQuestion(Integer mainId);
+
+    MainQuestionCommandResponseDto updateMainQuestion(Integer id,
+        MainQuestionCommandRequestDto dto);
 }

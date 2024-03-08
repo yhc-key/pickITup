@@ -9,9 +9,11 @@ import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @Builder
 public class MainQuestion extends BaseEntity {
 
