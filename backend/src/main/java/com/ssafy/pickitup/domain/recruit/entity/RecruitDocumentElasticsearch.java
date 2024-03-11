@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecruitingDocumentElasticsearch {
+public class RecruitDocumentElasticsearch {
 
     @Id
     private Integer id;
@@ -34,8 +34,8 @@ public class RecruitingDocumentElasticsearch {
     @Field(name = "collect_time")
     private String collectTime;
 
-    public RecruitingDocumentMongo toMongo() {
-        return RecruitingDocumentMongo.builder()
+    public RecruitDocumentMongo toMongo() {
+        return RecruitDocumentMongo.builder()
             .id(this.id)
             .source(this.source)
             .company(this.company)

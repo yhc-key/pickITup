@@ -1,12 +1,13 @@
 package com.ssafy.pickitup.domain.recruit.api.controller;
 
-import com.ssafy.pickitup.domain.recruit.entity.RecruitingDocumentElasticsearch;
-import com.ssafy.pickitup.domain.recruit.query.RecruitingCommandElasticsearchRepository;
-import com.ssafy.pickitup.domain.recruit.query.RecruitingQueryService;
-import java.util.List;
+import com.ssafy.pickitup.domain.recruit.command.RecruitCommandElasticsearchRepository;
+import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
+import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,26 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RecruitController {
 
+    private final RecruitQueryService recruitQueryService;
     @Autowired
-    private RecruitingCommandElasticsearchRepository recruitingCommandElasticsearchRepository;
-    private final RecruitingQueryService recruitingQueryService;
+    private RecruitCommandElasticsearchRepository recruitCommandElasticsearchRepository;
 
-    @GetMapping("/allDocuments")
-    public List<RecruitingDocumentElasticsearch> getAllDocuments() {
-        // 모든 문서를 검색
-        List<RecruitingDocumentElasticsearch> allDocuments = recruitingCommandElasticsearchRepository.findAll();
+    @GetMapping("/{pageNo}")
+    public Page<RecruitQueryResponseDto> getAllDocuments(@PathVariable Integer pageNo) {
 
-        return allDocuments;
+        return recruitQueryService.searchAll(pageNo);
     }
-
-//    @GetMapping("/searchByKeyword/{keyword}")
-//    public List<RecruitingDocumentElasticsearch> searchByKeyword(@PathVariable String keyword) {
-//        return recruitingCommandElasticsearchRepository.findByQualificationRequirementsContaining(
-//            keyword);
-//    }
 
     @GetMapping("/read")
     public void read() {
-        recruitingQueryService.readKeywords();
+        recruitQueryService.readKeywords();
     }
 }

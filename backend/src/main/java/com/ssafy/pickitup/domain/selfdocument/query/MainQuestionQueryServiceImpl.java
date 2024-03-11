@@ -3,8 +3,8 @@ package com.ssafy.pickitup.domain.selfdocument.query;
 import com.ssafy.pickitup.domain.selfdocument.entity.MainQuestion;
 import com.ssafy.pickitup.domain.selfdocument.exception.MainQuestionNotFoundException;
 import com.ssafy.pickitup.domain.selfdocument.query.dto.MainQuestionQueryResponseDto;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +16,10 @@ public class MainQuestionQueryServiceImpl implements MainQuestionQueryService {
 
     @Override
     public List<MainQuestionQueryResponseDto> searchMainQuestions(Integer userId) {
-        List<MainQuestionQueryResponseDto> responseDtoList = new ArrayList<>();
-        List<MainQuestion> mainQuestions = mainRepository.findByUserId(userId);
-        for (MainQuestion mainQuestion : mainQuestions) {
-            MainQuestionQueryResponseDto responseDto = mainQuestion.toQueryResponse();
-            responseDtoList.add(responseDto);
-        }
-        return responseDtoList;
+        return mainRepository.findByUserId(userId)
+            .stream()
+            .map(MainQuestion::toQueryResponse)
+            .collect(Collectors.toList());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ssafy.pickitup.domain.recruit.entity;
 
+import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Builder
 @Document(collection = "recruit")
-public class RecruitingDocumentMongo {
+public class RecruitDocumentMongo {
 
     @Id
     private Integer id;
@@ -30,4 +31,19 @@ public class RecruitingDocumentMongo {
     private String dueDate;
     private String career;
     private String collectTime;
+
+    public RecruitQueryResponseDto toQueryResponse() {
+        return RecruitQueryResponseDto.builder()
+            .id(this.id)
+            .source(this.source)
+            .title(this.title)
+            .company(this.company)
+            .url(this.url)
+            .thumbnailUrl(this.thumbnailUrl)
+            .qualificationRequirements(this.qualificationRequirements)
+            .preferredRequirements(this.preferredRequirements)
+            .dueDate(this.dueDate)
+            .career(this.career)
+            .build();
+    }
 }

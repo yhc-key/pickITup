@@ -1,6 +1,5 @@
 package com.ssafy.pickitup.global.config;
 
-import com.ssafy.pickitup.domain.recruit.query.RecruitingCommandElasticsearchRepository;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
@@ -9,8 +8,7 @@ import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfig
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackageClasses = {
-    RecruitingCommandElasticsearchRepository.class})
+@EnableElasticsearchRepositories(basePackages = "com.ssafy.pickitup.domain.recruit")
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
 
     @Override
