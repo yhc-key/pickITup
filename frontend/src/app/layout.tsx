@@ -31,7 +31,7 @@ export default function RootLayout({
         <header className="flex justify-between">
           <div>
             <Link href="/">
-              <Image src="/pickITup.svg" alt="logo" width="200" height="1" />
+              <Image src="/pickITup.svg" alt="logo"/>
             </Link>
           </div>
           <Header />
