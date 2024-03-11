@@ -1,8 +1,12 @@
 package com.ssafy.pickitup.domain.user.api;
 
+import static com.ssafy.pickitup.domain.auth.api.ApiUtils.error;
+
+import com.ssafy.pickitup.domain.auth.api.ApiUtils;
 import com.ssafy.pickitup.domain.user.exception.ErrorMessageDto;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import java.sql.SQLException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -12,11 +16,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class UserExceptionController {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorMessageDto> handleUserNotFoundException(
-        UserNotFoundException exception) {
-        ErrorMessageDto errorMessageDto = new ErrorMessageDto(exception.getMessage());
-        return new ResponseEntity<>(errorMessageDto, HttpStatus.NOT_FOUND);
+    private ResponseEntity<ApiUtils.ApiResult<?>> newResponse(Throwable throwable, HttpStatus status) {
+        return newResponse(throwable.getMessage(), status);
+    }
+
+    private ResponseEntity<ApiUtils.ApiResult<?>> newResponse(String message, HttpStatus status) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        return new ResponseEntity<>(error(message, status), headers, status);
+    }
+
+    @ExceptionHandler({
+        UserNotFoundException.class
+    })
+    public ResponseEntity<?> handleUserNotFoundException(Exception exception) {
+        return newResponse(exception, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

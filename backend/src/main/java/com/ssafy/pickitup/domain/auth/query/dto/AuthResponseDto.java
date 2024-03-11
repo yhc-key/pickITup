@@ -9,11 +9,13 @@ import lombok.Data;
 public class AuthResponseDto {
 
     private int id;
+    private String username;
     private String name;
 
     public static AuthResponseDto toDto(Auth auth) {
         return new AuthResponseDto(
             auth.getId(),
+            auth.getUsername(),
             auth.getName()
         );
     }

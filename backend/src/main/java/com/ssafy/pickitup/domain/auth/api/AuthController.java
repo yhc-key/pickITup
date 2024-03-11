@@ -1,9 +1,15 @@
 package com.ssafy.pickitup.domain.auth.api;
 
+import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
+
+import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.auth.command.AuthCommandService;
+import com.ssafy.pickitup.domain.auth.command.dto.LoginRequestDto;
 import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
+import com.ssafy.pickitup.domain.auth.query.dto.AuthResponseDto;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
+import com.ssafy.pickitup.security.JwtTokenDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +40,14 @@ public class AuthController {
         UserResponseDto userResponseDto = userCommandService.create(userSignupDto);
 
         return new AuthApiResponse<>(userResponseDto);
+    }
+
+    @Operation(summary = "자체 로그인 API")
+    @PostMapping("/login")
+    public ApiResult<AuthResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+        log.debug("login request = {}", loginRequestDto.getUsername());
+        AuthResponseDto authResponseDto = authCommandService.login(loginRequestDto);
+        return success(authResponseDto);
     }
 
 
