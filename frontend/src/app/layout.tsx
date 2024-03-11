@@ -1,19 +1,15 @@
-"use client"
+"use client";
 import type { Metadata } from "next";
-import { usePathname } from "next/navigation"
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Image from "next/image";
-import Link from "next/link";
 import Header from "../../components/header";
-
 
 const inter = Inter({ subsets: ["latin"] });
 
 const signLinks = [
-  { name: "로그인", href: "/login"},
-  { name: "회원가입", href: "/signUp"}
-]
+  { name: "로그인", href: "/login" },
+  { name: "회원가입", href: "/signUp" },
+];
 
 // export const metadata: Metadata = {
 //   title: "pick IT up",
@@ -28,15 +24,8 @@ export default function RootLayout({
   return (
     <html lang="kr">
       <body className={inter.className}>
-        <header className="flex justify-between">
-          <div>
-            <Link href="/">
-              <Image src="/pickITup.webp" alt="logo" width="150" height="0" priority={true} className="w-auto h-auto"/>
-            </Link>
-          </div>
-          <Header />
-          <div>로그인 | 회원가입</div>
-        </header>
+        <Header />
+
         <main>{children}</main>
         <footer className="bg-gray-400 text-white flex justify-evenly h-16">
           <div>Copyright © 2024. SSAFY 특화 A_406 F5 세희고침</div>

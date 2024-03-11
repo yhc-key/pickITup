@@ -1,7 +1,9 @@
-'use client';
+"use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Fragment } from "react";
 
 interface LinkType {
   name: string;
@@ -17,22 +19,41 @@ const navLinks: LinkType[] = [
 
 export default function Header() {
   const pathname = usePathname();
-  const isActive = (path :string) => path === pathname;
+  const isActive = (path: string) => path === pathname;
 
   return (
-    <div className="flex text-center justify-center">
-      {navLinks.map((link: LinkType) => {
-
-        return (
-          <Link
-            href={link.href}
-            key={link.name}
-            className={isActive(link.href) ? "font-bold mr-4" : "text-blue-500 mr-4"}
-          >
-            {link.name}
-          </Link>
-        );
-      })}
-    </div>
+    <header className="flex justify-between">
+      <div>
+        <Link href="/">
+          <Image
+            src="/pickITup.webp"
+            alt="logo"
+            width="150"
+            height="0"
+            priority={true}
+            className="w-auto h-auto ml-4"
+          />
+        </Link>
+      </div>
+      <div className="flex">
+        {navLinks.map((link: LinkType) => {
+          return (
+            <div key={link.name} className="m-auto">
+              <Link
+                href={link.href}
+                className={
+                  !isActive(link.href)
+                    ? "text-f5black-400 mr-4"
+                    : "text-f5green-400 font-bold mr-4"
+                }
+              >
+                {link.name}
+              </Link>
+            </div>
+          );
+        })}
+      </div>
+      <div className="mr-10 my-auto">로그인 | 회원가입</div>
+    </header>
   );
 }
