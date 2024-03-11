@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
+import { IoLogoGitlab } from "react-icons/io5";
 
 interface LinkType {
   name: string;
@@ -32,7 +33,7 @@ export default function RootLayout({
   const pathname = usePathname();
   return (
     <html lang="kr">
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
         <header className="flex justify-between">
           <div>
             <Link href="/">
@@ -55,12 +56,15 @@ export default function RootLayout({
           </div>
           <div>로그인 | 회원가입</div>
         </header>
-        <main>{children}</main>
-        <footer className="bg-gray-400 text-white flex justify-evenly h-16">
+        <main className="flex-grow">{children}</main>
+        <footer className="mt-auto flex justify-evenly items-center bg-gray-400 text-white text-xs h-16">
+          <div className="w-1/12"></div>
           <div>Copyright © 2024. SSAFY 특화 A_406 F5 세희고침</div>
+          <div className="w-3/12"></div>
           <div>서비스 이용약관</div>
           <div>개인 정보 처리방침</div>
-          <div>Gitlab</div>
+          <div><IoLogoGitlab className="inline-block"/> Gitlab</div>
+          <div className="w-1/12"></div>
         </footer>
       </body>
     </html>
