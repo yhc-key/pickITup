@@ -5,19 +5,15 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
+import Header from "../../components/header";
 
-interface LinkType {
-  name: string;
-  href: string;
-}
 
 const inter = Inter({ subsets: ["latin"] });
-const navLinks: LinkType[] = [
-  { name: "채용공고", href: "/recruit",},
-  { name: "기술블로그", href: "/techBlog" },
-  { name: "미니 게임", href: "/game" },
-  { name: "면접 대비", href: "/interview" },
-];
+
+const signLinks = [
+  { name: "로그인", href: "/login"},
+  { name: "회원가입", href: "/signUp"}
+]
 
 // export const metadata: Metadata = {
 //   title: "pick IT up",
@@ -29,7 +25,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
   return (
     <html lang="kr">
       <body className={inter.className}>
@@ -39,20 +34,7 @@ export default function RootLayout({
               <Image src="/pickITup.svg" alt="logo" width="200" height="1" />
             </Link>
           </div>
-          <div className="flex text-center justify-center">
-            {navLinks.map((link: LinkType) => {
-              const isActive = pathname.startsWith(link.href);
-              return (
-                <Link
-                  href={link.href}
-                  key={link.name}
-                  className={isActive ? "font-bold mr-4" :  "text-blue-500 mr-4"}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </div>
+          <Header />
           <div>로그인 | 회원가입</div>
         </header>
         <main>{children}</main>
