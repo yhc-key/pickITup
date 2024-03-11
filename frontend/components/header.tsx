@@ -41,11 +41,11 @@ export default function Header() {
             <div key={link.name} className="m-auto">
               <Link
                 href={link.href}
-                className={
+                className={`mr-4 hover:text-f5green-300 ${
                   !isActive(link.href)
-                    ? "text-f5black-400 mr-4"
-                    : "text-f5green-400 font-bold mr-4"
-                }
+                    ? "text-f5black-400"
+                    : "text-f5green-400 font-bold"
+                }`}
               >
                 {link.name}
               </Link>
@@ -53,7 +53,16 @@ export default function Header() {
           );
         })}
       </div>
-      <div className="mr-10 my-auto">로그인 | 회원가입</div>
+      <div className="mr-10 my-auto bg-f5gray-300 p-3 rounded-2xl">
+        {" "}
+        <Link href="/login" className="mr-2 text-f5black-400 hover:text-f5green-300">
+          로그인
+        </Link>{" "}
+        |{" "}
+        <Link href="/login" className="ml-2 text-f5black-400f hover:text-f5green-300">
+          회원가입
+        </Link>
+      </div>
     </header>
   );
 }
