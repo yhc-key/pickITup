@@ -25,14 +25,14 @@ public class MainQuestion extends BaseEntity {
     @ManyToOne
     private User user;
 
-    public MainQuestionQueryResponseDto toMainQuestionQueryResponse() {
+    public MainQuestionQueryResponseDto toQueryResponse() {
         return MainQuestionQueryResponseDto.builder()
             .id(this.getId())
             .title(this.title)
             .build();
     }
 
-    public MainQuestionCommandResponseDto toMainQuestionCommandResponse() {
+    public MainQuestionCommandResponseDto toCommandResponse() {
         return MainQuestionCommandResponseDto.builder()
             .id(this.getId())
             .title(this.title)

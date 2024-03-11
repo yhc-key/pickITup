@@ -1,5 +1,7 @@
 package com.ssafy.pickitup.domain.selfdocument.entity;
 
+import com.ssafy.pickitup.domain.selfdocument.command.dto.SubQuestionCommandResponseDto;
+import com.ssafy.pickitup.domain.selfdocument.query.dto.SubQuestionQueryResponseDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
@@ -18,4 +20,22 @@ public class SubQuestion extends BaseEntity {
 
     @ManyToOne
     private MainQuestion mainQuestion;
+
+    public SubQuestionQueryResponseDto toQueryResponse() {
+        return SubQuestionQueryResponseDto.builder()
+            .id(this.getId())
+            .title(this.title)
+            .content(this.content)
+            .company(this.company)
+            .build();
+    }
+
+    public SubQuestionCommandResponseDto toCommandResponse() {
+        return SubQuestionCommandResponseDto.builder()
+            .id(this.getId())
+            .title(this.title)
+            .content(this.content)
+            .company(this.company)
+            .build();
+    }
 }

@@ -6,6 +6,8 @@ import com.ssafy.pickitup.domain.selfdocument.entity.MainQuestion;
 import com.ssafy.pickitup.domain.selfdocument.exception.MainQuestionNotFoundException;
 import com.ssafy.pickitup.domain.selfdocument.query.MainQuestionQueryJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
+import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
+import com.ssafy.pickitup.domain.user.query.UserQueryJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,24 +15,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class MainQuestionCommandServiceImpl implements MainQuestionCommandService {
 
-    MainQuestionCommandJpaRepository mainQuestionCommandJpaRepository;
-    MainQuestionQueryJpaRepository mainQuestionQueryJpaRepository;
+    private final MainQuestionCommandJpaRepository mainCommandRepository;
+    private final MainQuestionQueryJpaRepository mainQueryRepository;
+    private final UserQueryJpaRepository userQueryRepository;
 
     @Override
     public MainQuestionCommandResponseDto registerMainQuestion(MainQuestionCommandRequestDto dto,
-        User user) {
+        Integer userId) {
+        User user = userQueryRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다"));
         MainQuestion mainQuestion = dto.toEntity(user);
-
-        return mainQuestionCommandJpaRepository.save(mainQuestion).toMainQuestionCommandResponse();
+        return mainCommandRepository.save(mainQuestion).toCommandResponse();
     }
 
     @Override
     public boolean deleteMainQuestion(Integer mainId) {
         try {
-            MainQuestion mainQuestion = mainQuestionQueryJpaRepository.findById(mainId)
+            MainQuestion mainQuestion = mainQueryRepository.findById(mainId)
                 .orElseThrow(MainQuestionNotFoundException::new);
 
-            mainQuestionCommandJpaRepository.delete(mainQuestion);
+            mainCommandRepository.delete(mainQuestion);
             return true;
         } catch (Exception e) {
             return false;
@@ -38,12 +42,11 @@ public class MainQuestionCommandServiceImpl implements MainQuestionCommandServic
     }
 
     @Override
-    public MainQuestionCommandResponseDto updateMainQuestion(Integer id,
+    public MainQuestionCommandResponseDto modifyMainQuestion(Integer id,
         MainQuestionCommandRequestDto dto) {
-        MainQuestion mainQuestion = mainQuestionQueryJpaRepository.findById(id)
+        MainQuestion mainQuestion = mainQueryRepository.findById(id)
             .orElseThrow(MainQuestionNotFoundException::new);
         mainQuestion.setTitle(dto.getTitle());
-        return mainQuestionCommandJpaRepository.save(mainQuestion)
-            .toMainQuestionCommandResponse();
+        return mainCommandRepository.save(mainQuestion).toCommandResponse();
     }
 }
