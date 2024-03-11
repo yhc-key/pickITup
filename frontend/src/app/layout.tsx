@@ -23,9 +23,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kr">
-        <Header />
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        
+        <Header />
         <main className="flex-grow">{children}</main>
         <footer className="mt-auto flex justify-evenly items-center bg-gray-400 text-white text-xs h-16">
           <div className="w-1/12"></div>
