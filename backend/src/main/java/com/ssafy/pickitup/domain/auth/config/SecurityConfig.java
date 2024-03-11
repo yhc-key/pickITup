@@ -1,6 +1,11 @@
-package com.ssafy.pickitup.security;
+package com.ssafy.pickitup.domain.auth.config;
 
 
+import com.ssafy.pickitup.security.JwtAccessDeniedHandler;
+import com.ssafy.pickitup.security.JwtAuthenticationEntryPoint;
+import com.ssafy.pickitup.security.JwtAuthenticationFilter;
+import com.ssafy.pickitup.security.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -18,21 +23,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity  // @Secure, @PreAuthorize, @PostAuthorize 사용가능
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-    @Autowired
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider,
-        JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-        JwtAccessDeniedHandler jwtAccessDeniedHandler) {
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-    }
 
     private static final String[] swaggerURL = {
         "/api/**", "/graphiql", "/graphql",

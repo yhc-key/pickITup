@@ -24,19 +24,19 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
         jdbc-url: jdbc:mysql://localhost:3307/pickitup?characterEncoding=UTF-8&serverTimezone=UTC
         read-only: false
-        username: ${MYSQL_MASTER_USERNAME}
-        password: ${MYSQL_MASTER_PASSWORD}
+        username: develover
+        password: ideveloveyou?
     slave:
       hikari:
         driver-class-name: com.mysql.cj.jdbc.Driver
         jdbc-url: jdbc:mysql://localhost:3308/pickitup?characterEncoding=UTF-8&serverTimezone=UTC
         read-only: true
-        username: ${MYSQL_SLAVE_USERNAME}
-        password: ${MYSQL_SLAVE_PASSWORD}
+        username: develover
+        password: ideveloveyou?
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+#      ddl-auto: create-drop
       properties:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true

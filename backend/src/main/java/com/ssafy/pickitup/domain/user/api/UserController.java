@@ -1,4 +1,4 @@
-package com.ssafy.pickitup.domain.user.api.controller;
+package com.ssafy.pickitup.domain.user.api;
 
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
 import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;

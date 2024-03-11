@@ -9,13 +9,15 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserResponseDto {
 
-    private int id;
-    private String name;
+    private Integer id;
+    private String nickname;
+    private String email;
 
     public static UserResponseDto toDto(User user) {
         return new UserResponseDto(
             user.getId(),
-            user.getNickname()
+            user.getNickname(),
+            user.getEmail()
         );
     }
 

@@ -1,18 +1,19 @@
 package com.ssafy.pickitup.domain.auth.command.dto;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
-public class UserSignupDto {
+@Builder
+@Data
+public class LoginRequestDto {
 
     private String username;
     private String password;
-    private String name;
-    private String nickname;
-    private String email;
 }
+
