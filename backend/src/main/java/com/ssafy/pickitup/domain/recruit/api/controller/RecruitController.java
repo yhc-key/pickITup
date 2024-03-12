@@ -2,12 +2,15 @@ package com.ssafy.pickitup.domain.recruit.api.controller;
 
 import com.ssafy.pickitup.domain.recruit.command.RecruitCommandElasticsearchRepository;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
+import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryRequestDto;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +27,11 @@ public class RecruitController {
     public Page<RecruitQueryResponseDto> getAllDocuments(@PathVariable Integer pageNo) {
 
         return recruitQueryService.searchAll(pageNo);
+    }
+
+    @PostMapping("/search")
+    public Page<RecruitQueryResponseDto> getDocuments(@RequestBody RecruitQueryRequestDto dto) {
+        return recruitQueryService.search(dto);
     }
 
     @GetMapping("/read")

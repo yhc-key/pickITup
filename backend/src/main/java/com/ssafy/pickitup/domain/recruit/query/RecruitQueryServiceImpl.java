@@ -4,6 +4,7 @@ import com.ssafy.pickitup.domain.recruit.command.RecruitCommandService;
 import com.ssafy.pickitup.domain.recruit.entity.RecruitDocumentElasticsearch;
 import com.ssafy.pickitup.domain.recruit.entity.RecruitDocumentMongo;
 import com.ssafy.pickitup.domain.recruit.exception.InvalidFieldTypeException;
+import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryRequestDto;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -38,6 +39,22 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         Page<RecruitDocumentMongo> recruitDocumentMongoPages = recruitQueryMongoRepository.findAll(
             pageable);
         return recruitDocumentMongoPages.map(RecruitDocumentMongo::toQueryResponse);
+    }
+
+    @Override
+    public Page<RecruitQueryResponseDto> search(RecruitQueryRequestDto dto) {
+        final int pageSize = 6;
+        Pageable pageable = PageRequest.of(
+            dto.getPageNo(), pageSize
+        );
+        StringBuilder sb = new StringBuilder();
+        for (String str : dto.getKeywords()) {
+            sb.append(str).append(" ");
+        }
+        return recruitQueryElasticsearchRepository.searchWithFilter(dto.getQuery(), sb.toString(),
+                pageable)
+            .map(RecruitDocumentElasticsearch::toMongo)
+            .map(RecruitDocumentMongo::toQueryResponse);
     }
 
     @Override
