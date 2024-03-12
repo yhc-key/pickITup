@@ -1,6 +1,9 @@
 package com.ssafy.pickitup.domain.auth.entity;
 
+import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
+import com.ssafy.pickitup.domain.user.entity.BaseTimeEntity;
 import com.ssafy.pickitup.domain.user.entity.User;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,18 +21,20 @@ import lombok.ToString;
 @Entity
 @Getter
 @Builder
-@ToString(of = {"id"})
+@ToString(of = {"id", "username", "password", "refreshToken"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Auth {
+public class Auth extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true)
     private String username;
     private String password;
     private String name;
+    private String email;
     private String provider;
     private String providerId;
 
@@ -37,7 +42,23 @@ public class Auth {
     @Builder.Default
     private Role role = Role.USER;
 
+    private String refreshToken;
+
     @OneToOne(mappedBy = "auth")
     private User user;
+
+    public static Auth toDto(AuthDto authDto) {
+        return Auth.builder()
+            .id(authDto.getId())
+            .username(authDto.getUsername())
+            .password(authDto.getPassword())
+            .name(authDto.getName())
+            .role(authDto.getRole())
+            .email(authDto.getEmail())
+            .provider(authDto.getProvider())
+            .providerId(authDto.getProviderId())
+            .refreshToken(authDto.getRefreshToken())
+            .build();
+    }
 
 }

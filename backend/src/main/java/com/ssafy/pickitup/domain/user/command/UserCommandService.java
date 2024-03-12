@@ -7,7 +7,7 @@ import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -16,10 +16,12 @@ public class UserCommandService {
 
     private final UserCommandJpaRepository userCommandJpaRepository;
 
-    public UserResponseDto create(UserSignupDto userSignupDto) {
+    @Transactional
+    public UserResponseDto create(Auth auth, UserSignupDto userSignupDto) {
         User user = User.builder()
                 .nickname(userSignupDto.getNickname())
                 .email(userSignupDto.getEmail())
+                .auth(auth)
                 .build();
         userCommandJpaRepository.save(user);
         return UserResponseDto.toDto(user);

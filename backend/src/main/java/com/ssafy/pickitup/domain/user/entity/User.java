@@ -56,7 +56,7 @@ public class User extends BaseTimeEntity {
     private Integer exp = 0;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "auth_id")
+    @JoinColumn(name = "auth_id",  referencedColumnName = "id")
     private Auth auth;
 
 }
