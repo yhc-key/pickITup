@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 
+
 const dummyMyData: string[][] = [
   ["내가 찜한 채용공고", "3 개", "/Images/starOutline.png"],
   ["마감 임박 채용공고", "1 개", "/Images/history.png"],
   ["문제 풀이 수", "64 개", "/Images/iconLibraryBooks.png"],
   ["내 뱃지", "3 개", "/Images/iconShield.png"],
 ];
+
 
 export default function RootLayout({
   children,
