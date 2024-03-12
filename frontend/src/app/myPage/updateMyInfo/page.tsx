@@ -57,14 +57,15 @@ export default function MyPage() {
       <div className="flex flex-wrap mt-4 font-bold">추가될 기술 스택 :</div>
       <div className="flex flex-wrap gap-4 mt-3">
         {techTypes.map((techType: string, index: number) => {
-          return <button type="button" onClick={(): void => setNowType(techType)}className="border border-f5gray-300 rounded-3xl p-2 hover:bg-f5green-200" key={index}>
+          const isActive:boolean = nowType == techType
+          return <button type="button" onClick={(): void => setNowType(techType)} className={`border border-f5gray-300 rounded-3xl p-2 hover:bg-f5green-200` ${isActive} } key={index}>
             {techType}
           </button>
         })}
       </div>
       <div className="flex flex-wrap gap-4 mt-3 max-w-[600px]">
         {techs?.map((tech: string, index: number) => {
-
+....asdf
          return <button key={index}>
             <Image src={`/Images/techLogoEx/${tech}.png`}
               alt={tech}
