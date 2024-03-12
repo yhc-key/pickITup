@@ -1,59 +1,30 @@
 import Image from 'next/image'
+import Link from 'next/link'
 export default function Login(){
     return (
-        <div className="grid place-items-center w-full h-[600px]">
-            <div className="absolute top-[20%]">pick IT up 로그인</div>
-            <div className="absolute top-[25%] w-[40vw] h-[35vh] rounded-[10px] border border-[#d9d9d9]">
-            <form className="space-y-6" action="#" method="POST">
-            <div>
-              <label htmlFor="email" className="text-sm text-black">
-                아이디
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="block w-[28vw] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
+      <div className="flex flex-col justify-center items-center w-full h-[70vh]">
+
+        <div className="flex items-center justify-center h-[10vh] text-3xl font-bold">pick IT up 로그인</div>
+        <div className="h-[30vh] w-[36vw] h-[34vh] rounded-[10px] border border-[#d9d9d9]">
+          
+          <form action="#" method="POST">
+            <div className='flex w-full h-[6vh] justify-center items-center mt-14'>
+              <label htmlFor="id" className="text-sm text-black text-lg font-bold w-[10vh]">아이디</label>
+              <input placeholder="아이디를 입력하세요" className="w-[16vw] ml-6 rounded-md bg-[#f5f5f5] border border-[#d9d9d9]"/>
             </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                  비밀번호
-                </label>
-                <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                    비밀번호를 잊으셨나요?
-                  </a>
-                </div>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="w-[28vw] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
+            <div className='flex w-full h-[6vh] justify-center items-center'>
+              <label htmlFor="password" className='w-[10vh] text-lg font-bold'>비밀번호</label>
+              <input placeholder="비밀번호를 입력하세요" type="password" className="w-[16vw] ml-6 rounded-md bg-[#f5f5f5] border border-[#d9d9d9]"/>
             </div>
 
-            <div>
-              <button
-                type="submit"
-                className="flex w-[28vw] justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign in
-              </button>
+            <div className="flex w-full h-[14vh] justify-center items-center">
+              <button type="submit" className="w-[18vw] h-[5vh] rounded-md bg-[#00ce7c] text-white text-lg font-bold">로그인</button>
             </div>
           </form>
-            </div>
+
         </div>
+        <div className="flex items-center justify-center h-[8vh] text-lg whitespace-pre">아직 계정이 없으신가요?  <Link href="/membership" className="text-lg font-bold">회원가입 하러가기</Link></div>
+      </div>
     )
 }
