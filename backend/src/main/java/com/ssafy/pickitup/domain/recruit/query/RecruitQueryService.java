@@ -11,4 +11,6 @@ public interface RecruitQueryService {
     Page<RecruitQueryResponseDto> search(RecruitQueryRequestDto dto);
 
     void readKeywords();
+
+    void test();
 }
