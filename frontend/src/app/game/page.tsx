@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { IoHelpCircleSharp } from "react-icons/io5";
 
-import Tooltip from "../../../components/Tooptip";
+import Tooltip from "../../../components/tooptip";
 
 export default function GamePage() {
   const gameInfo: string =
@@ -11,19 +11,19 @@ export default function GamePage() {
 
   return (
     <div>
-      <div className="flex flex-wrap justify-center mx-auto mt-10 mb-14">
+      <div className="flex flex-wrap justify-center mx-auto mt-4 mb-8">
         <Image
           src="/images/gameMachine.png"
           alt="gameMachine"
-          width={180}
-          height={180}
+          width={150}
+          height={150}
           priority={true}
         />
         <div className="flex flex-col justify-evenly">
-          <div className="flex items-center justify-around font-semibold text-5xl tracking-widest">
-            <div className="text-f5black-400 m-2">PICK</div>
-            <div className="text-f5green-300 m-2">IT</div>
-            <div className="text-f5black-400 m-2">GAME</div>
+          <div className="flex justify-around font-semibold text-5xl tracking-wider">
+            <div className="text-f5black-400 mr-2 my-2">PICK</div>
+            <div className="text-f5green-300 mx-1 my-2">IT</div>
+            <div className="text-f5black-400 ml-2 my-2">GAME</div>
           </div>
           <div className="flex items-center justify-center">
             <div className="font-medium text-f5black-400">
@@ -38,9 +38,9 @@ export default function GamePage() {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap justify-evenly mx-20">
+      <div className="flex flex-wrap justify-evenly mx-20 mb-10">
         <div>
-          <div className="flex justify-center font-semibold text-3xl tracking-widest mb-10">
+          <div className="flex justify-center font-semibold text-3xl tracking-widest my-5">
             <div className="text-f5green-300 mr-3">SPEED</div>
             <div className="text-f5black-400">QUIZ</div>
           </div>
@@ -48,15 +48,15 @@ export default function GamePage() {
             <Image
               src="/images/speedQuiz.png"
               alt="speedQuiz"
-              width={500}
-              height={350}
+              width={400}
+              height={280}
               priority={true}
               className="transition-all ease-in-out hover:-translate-y-1 hover:scale-105 duration-500"
             />
           </Link>
         </div>
         <div>
-          <div className="flex justify-center font-semibold text-3xl tracking-widest mb-10">
+          <div className="flex justify-center font-semibold text-3xl tracking-widest my-5">
             <div className="text-f5green-300 mr-3">OX</div>
             <div className="text-f5black-400">QUIZ</div>
           </div>
@@ -64,8 +64,8 @@ export default function GamePage() {
             <Image
               src="/images/OXQuiz.png"
               alt="OXQuiz"
-              width={500}
-              height={350}
+              width={400}
+              height={280}
               priority={true}
               className="transition-all ease-in-out hover:-translate-y-1 hover:scale-105  duration-500"
             />
