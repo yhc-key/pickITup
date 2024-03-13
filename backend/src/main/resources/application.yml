@@ -13,6 +13,9 @@ spring:
       cluster-nodes: localhost:9200
     mongodb:
       uri: mongodb://localhost:27017/mydb
+    redis:
+      host: localhost
+      port: 6379
   main:
     allow-bean-definition-overriding: true
 
@@ -42,3 +45,12 @@ spring:
         format_sql: true
 #        physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     database-platform: mysql
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+    disable-swagger-default-url: true
+  api-docs:
+    path: /api-docs
+

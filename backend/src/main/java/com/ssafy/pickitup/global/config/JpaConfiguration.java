@@ -1,6 +1,7 @@
 package com.ssafy.pickitup.global.config;
 
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.transaction.Transactional;
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
@@ -30,7 +31,7 @@ public class JpaConfiguration {
         // Hibernate 추가 설정
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         // Spring Boot가 제공하는 기본 물리적 네이밍 전략 설정
         properties.setProperty("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
         entityManagerFactory.setJpaProperties(properties);

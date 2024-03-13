@@ -5,6 +5,8 @@ import static com.ssafy.pickitup.domain.auth.api.ApiUtils.error;
 import com.ssafy.pickitup.domain.auth.api.ApiUtils;
 import com.ssafy.pickitup.domain.user.exception.ErrorMessageDto;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
+import com.ssafy.pickitup.security.exception.AuthNotFoundException;
+import com.ssafy.pickitup.security.exception.PasswordException;
 import java.sql.SQLException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,13 @@ public class UserExceptionController {
     })
     public ResponseEntity<?> handleUserNotFoundException(Exception exception) {
         return newResponse(exception, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler({
+        AuthNotFoundException.class,
+        PasswordException.class
+    })
+    public ResponseEntity<?> handleAuthException(Exception exception) {
+        return newResponse(exception, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
