@@ -1,6 +1,7 @@
 package com.ssafy.pickitup.domain.auth.command;
 
 import com.ssafy.pickitup.domain.auth.command.dto.LoginRequestDto;
+import com.ssafy.pickitup.domain.auth.command.dto.LogoutDto;
 import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.entity.Role;
@@ -58,7 +59,7 @@ public class AuthCommandService {
 
 //        AuthDto authDto = authCommandJpaRepository.findAuthByUsername(loginRequestDto.getUsername());
         Auth auth = authCommandJpaRepository.findAuthByUsername(loginRequestDto.getUsername());
-        AuthDto authDto = AuthDto.toDto(auth);
+        AuthDto authDto = AuthDto.getAuth(auth);
         if(auth == null){
             throw new AuthNotFoundException("존재하지 않는 아이디입니다.");
         }
@@ -101,19 +102,21 @@ public class AuthCommandService {
         return tokenSet;
     }
 
-    public void logout(String accessToken) {
+    public LogoutDto logout(String accessToken) {
         String token = jwtTokenProvider.resolveToken(accessToken);
         log.debug("token = {}", token);
         int userId = Integer.parseInt(jwtTokenProvider.extractUserId(accessToken));
         log.debug("principal = {}", userId);
         redisService.saveJwtBlackList(accessToken);
         redisService.deleteRefreshToken(userId);
-        AuthDto authDto = authCommandJpaRepository.findAuthById(userId);
+        Auth auth = authCommandJpaRepository.findAuthById(userId);
 //        AuthDto authDto = AuthDto.getAuth(auth);
-        authDto.setRefreshToken(null);
-        Auth auth = Auth.toDto(authDto);
+//        authDto.setRefreshToken(null);
+        auth.deleteRefreshToken();
+//        Auth auth = Auth.toDto(authDto);
         authCommandJpaRepository.save(auth);
 //        authCommandJpaRepository.save(Auth.getAuth(authDto));
+        return new LogoutDto(auth.getUsername());
     }
 
 }

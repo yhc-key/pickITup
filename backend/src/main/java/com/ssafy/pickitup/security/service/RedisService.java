@@ -31,7 +31,7 @@ public class RedisService {
                 TimeUnit.MINUTES);
     }
 
-    public String getRefreshToken(String userId) {
+    public String getRefreshToken(Integer userId) {
         return refreshTokenRedisTemplate.opsForValue().get(RT_PREFIX + userId + SUFFIX);
     }
 
@@ -45,7 +45,7 @@ public class RedisService {
                 TimeUnit.MINUTES);
     }
 
-    public boolean hasRefreshToken(String userId){
+    public boolean hasRefreshToken(Integer userId){
         return Boolean.TRUE.equals(refreshTokenRedisTemplate.hasKey(RT_PREFIX + userId + SUFFIX));
     }
 

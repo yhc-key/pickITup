@@ -102,6 +102,7 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(String accessToken) {
+        System.out.println("accessToken = " + accessToken);
         if (accessToken != null && accessToken.startsWith(JwtProperties.TOKEN_PREFIX)) {
             return accessToken.substring(7);
         }

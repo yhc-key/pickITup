@@ -61,4 +61,8 @@ public class Auth extends BaseTimeEntity {
             .build();
     }
 
+    public void deleteRefreshToken(){
+        this.refreshToken = null;
+    }
+
 }

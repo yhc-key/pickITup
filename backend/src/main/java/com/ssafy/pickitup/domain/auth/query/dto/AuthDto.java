@@ -6,7 +6,6 @@ import com.ssafy.pickitup.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +28,7 @@ public class AuthDto {
     private String refreshToken;
     private User user;
 
-    public static AuthDto toDto(Auth auth) {
+    public static AuthDto getAuth(Auth auth) {
         return AuthDto.builder()
             .id(auth.getId())
             .username(auth.getUsername())
