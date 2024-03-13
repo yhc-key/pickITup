@@ -1,6 +1,7 @@
 package com.ssafy.pickitup.domain.recruit.entity;
 
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
+import java.time.LocalDate;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,9 +29,9 @@ public class RecruitDocumentMongo {
     private String thumbnailUrl;
     private Set<String> qualificationRequirements;
     private Set<String> preferredRequirements;
-    private String dueDate;
-    private String career;
-    private String collectTime;
+    private LocalDate dueDate;
+    private int[] career;
+    private LocalDate collectTime;
 
     public RecruitQueryResponseDto toQueryResponse() {
         return RecruitQueryResponseDto.builder()

@@ -1,5 +1,6 @@
 package com.ssafy.pickitup.domain.recruit.query.dto;
 
+import java.time.LocalDate;
 import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,6 @@ public class RecruitQueryResponseDto {
     private String thumbnailUrl;
     private Set<String> qualificationRequirements;
     private Set<String> preferredRequirements;
-    private String dueDate;
-    private String career;
+    private LocalDate dueDate;
+    private int[] career;
 }

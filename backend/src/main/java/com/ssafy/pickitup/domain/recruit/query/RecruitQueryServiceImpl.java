@@ -98,4 +98,28 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
             recruitCommandService.addKeyword(es, keyword, field);
         }
     }
+
+    @Override
+    public void test() {
+//        String careerText1 = "신입";
+//        String careerText2 = "2~7년 경력";
+//        String careerText3 = "10년 이상 경력";
+//        String careerText4 = "경력무관";
+//        String careerText5 = "2023년 졸업예정";
+//        String careerText6 = "15-20";
+//
+//        int[] result1 = parseYearsOfExperienceRange(careerText1);
+//        int[] result2 = parseYearsOfExperienceRange(careerText2);
+//        int[] result3 = parseYearsOfExperienceRange(careerText3);
+//        int[] result4 = parseYearsOfExperienceRange(careerText4);
+//        int[] result5 = parseYearsOfExperienceRange(careerText5);
+//        int[] result6 = parseYearsOfExperienceRange(careerText6);
+//
+//        System.out.println("Result 1: " + result1[0] + " ~ " + result1[1]);
+//        System.out.println("Result 2: " + result2[0] + " ~ " + result2[1]);
+//        System.out.println("Result 3: " + result3[0] + " ~ " + result3[1]);
+//        System.out.println("Result 4: " + result4[0] + " ~ " + result4[1]);
+//        System.out.println("Result 5: " + result5[0] + " ~ " + result5[1]);
+//        System.out.println("Result 6: " + result6[0] + " ~ " + result6[1]);
+    }
 }
