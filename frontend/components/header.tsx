@@ -22,7 +22,7 @@ export default function Header() {
   const isActive = (path: string) => path === pathname;
 
   return (
-    <header className="flex justify-between">
+    <header className="flex justify-between border-b border-[#d9d9d9]">
       <div>
         <Link href="/">
           <Image
@@ -54,7 +54,7 @@ export default function Header() {
         })}
       </div>
       <div className="mr-10 my-auto bg-f5gray-300 p-3 rounded-2xl">
-        <Link href="/social" className="text-f5black-400 hover:text-f5green-300">로그인 / 회원가입</Link>
+        <Link href="/social" className="text-f5black-400 hover:text-f5green-300">로그인 & 회원가입</Link>
       </div>
     </header>
   );
