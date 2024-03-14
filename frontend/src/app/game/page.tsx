@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { IoHelpCircleSharp } from "react-icons/io5";
 
-import Tooltip from "../../../components/tooptip";
+import Tooltip from "../../../components/tooltip";
 import TechSelectSpeed from "../../../components/game/techSelectSpeed";
 import TechSelectOX from "../../../components/game/techSelectOX";
 
