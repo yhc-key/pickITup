@@ -20,7 +20,6 @@ public class UserCommandService {
     public UserResponseDto create(Auth auth, UserSignupDto userSignupDto) {
         User user = User.builder()
                 .nickname(userSignupDto.getNickname())
-                .email(userSignupDto.getEmail())
                 .auth(auth)
                 .build();
         userCommandJpaRepository.save(user);
