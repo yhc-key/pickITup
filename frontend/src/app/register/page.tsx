@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-export default function Login(){
+export default function Register(){
     return (
       <div className="flex flex-col justify-center items-center w-full h-[70vh]">
 
@@ -24,7 +24,7 @@ export default function Login(){
           </form>
 
         </div>
-        <div className="flex items-center justify-center h-[8vh] whitespace-pre">아직 계정이 없으신가요? <Link href="/register" className="text-lg font-bold">회원가입 하러가기</Link></div>
+        <div className="flex items-center justify-center h-[8vh] whitespace-pre">아직 계정이 없으신가요?  <Link href="/register" className="text-lg font-bold">회원가입 하러가기</Link></div>
       </div>
     )
 }
