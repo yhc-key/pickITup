@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  play-app:
+    image: sbtscala/scala-sbt:openjdk-8u342_1.7.2_2.12.16
+    container_name: play-app
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/app
+    networks:
+      - play-mongo-network
+    command: ["sbt", "run"]
+    working_dir: /app
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+    environment:
+      - MONGO_HOSTNAME={MONGO_HOSTNAME}
+      - MONGO_PORT={MONGO_PORT}
+      - MONGO_DATABASE={MONGO_DATABASE}
+      - MONGO_USERNAME={MONGO_USERNAME}
+      - MONGO_PASSWORD={MONGO_PASSWORD}
+networks:
+    play-mongo-network:
+        external: true

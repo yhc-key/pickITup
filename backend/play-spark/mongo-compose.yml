@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  mongodb:
+    image: "mongo"
+    container_name: "mongo"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    ports:
+      - "27017:27017"
+    volumes:
+      - "data:/data/db"
+    networks:
+      - play-mongo-network
+    restart: on-failure
+volumes:
+  data:
+    driver: local
+networks:
+  play-mongo-network:
+    external: true
