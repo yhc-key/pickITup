@@ -15,7 +15,7 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedOrigins(
-            Arrays.asList("https://pickitup.online","http://localhost:3000", "http://pickitup.online"));
+            Arrays.asList("https://pickitup.online","http://localhost:3000"));
         corsConfiguration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Authorization-refresh", "Cache-Control", "Content-Type","refresh-token"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
