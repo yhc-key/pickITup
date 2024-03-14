@@ -1,44 +1,23 @@
 "use client";
-import React, { useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
+import React, { ReactNode } from "react";
+import ReactDOM from "react-dom";
 
-export interface ModalProps {
-  children: React.ReactNode;
+interface ModalProps {
+  open: boolean;
+  onClose: () => void;
+  children: ReactNode;
 }
 
-const Modal = ({ children }: ModalProps) => {
-  const router = useRouter();
-  const clickedRef = useRef<EventTarget>();
+export default function Modal({ open, onClose, children }: ModalProps) {
+  if (!open) return null;
 
-  // 닫기 기능
-  const onClose = useCallback(() => {
-    router.back(); // 라우터 뒤로가기 기능을 이용
-  }, [router]);
-
-  function handleClickClose(e: React.MouseEvent<HTMLElement>) {
-    if (clickedRef.current) {
-      clickedRef.current = undefined;
-      return;
-    }
-
-    e.stopPropagation();
-    onClose();
-  }
-
-  return (
-    // 모달 외부
-    <div className={`modal_outer`} onMouseUp={handleClickClose}>
-      {/* 모달 내부 */}
-      <div
-        className={`modal_inner`}
-        onMouseDown={(e) => (clickedRef.current = e.target)}
-        onMouseUp={(e) => (clickedRef.current = e.target)}
-      >
+  return ReactDOM.createPortal(
+    <>
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-40 z-50" />
+      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-16a bg-white z-50 rounded-xl">
         {children}
-        <button onClick={handleClickClose}> 닫기 </button>
       </div>
-    </div>
+    </>,
+    document.getElementById("globalModal") as HTMLElement
   );
-};
-
-export default Modal;
+}

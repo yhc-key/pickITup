@@ -1,10 +1,11 @@
 "use client";
+import React, { ReactNode } from "react";
 import { useState } from "react";
 
 
 interface hoverProps {
   content: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function Tooltip({ content, children }: hoverProps) {
