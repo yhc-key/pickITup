@@ -1,4 +1,4 @@
-name := """third-play-scala"""
+name := """play-spark"""
 organization := "com.ssafy"
 
 version := "1.0-SNAPSHOT"
