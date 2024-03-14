@@ -4,6 +4,8 @@ import Link from "next/link";
 import { IoHelpCircleSharp } from "react-icons/io5";
 
 import Tooltip from "../../../components/tooptip";
+import TechSelectSpeed from "../../../components/game/techSelectSpeed";
+import TechSelectOX from "../../../components/game/techSelectOX";
 
 export default function GamePage() {
   const gameInfo: string =
@@ -44,32 +46,14 @@ export default function GamePage() {
             <div className="text-f5green-300 mr-3">SPEED</div>
             <div className="text-f5black-400">QUIZ</div>
           </div>
-          <Link href="/game/speedQuiz">
-            <Image
-              src="/images/speedQuiz.png"
-              alt="speedQuiz"
-              width={400}
-              height={280}
-              priority={true}
-              className="transition-all ease-in-out hover:-translate-y-1 hover:scale-105 duration-500"
-            />
-          </Link>
+          <TechSelectSpeed />
         </div>
         <div>
           <div className="flex justify-center font-semibold text-3xl tracking-widest my-5">
             <div className="text-f5green-300 mr-3">OX</div>
             <div className="text-f5black-400">QUIZ</div>
           </div>
-          <Link href="/game/speedQuiz">
-            <Image
-              src="/images/OXQuiz.png"
-              alt="OXQuiz"
-              width={400}
-              height={280}
-              priority={true}
-              className="transition-all ease-in-out hover:-translate-y-1 hover:scale-105  duration-500"
-            />
-          </Link>
+          <TechSelectOX />
         </div>
       </div>
     </div>

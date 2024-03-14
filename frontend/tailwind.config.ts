@@ -28,6 +28,9 @@ const config: Config = {
           600: "#005d38",
           700: "#00482b",
         },
+        f5yellowgreen: {
+          300: "#c1ff72"
+        },
         f5red : {
           100: "#ffecec",
           150: "#ffe3e3",
