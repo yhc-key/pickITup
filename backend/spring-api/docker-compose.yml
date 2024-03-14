@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  spring-app:
+    container_name: spring-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+     - 8080:8080
+    networks:
+      - my-network
+
+
+networks:
+  my-network:
+    external: true
