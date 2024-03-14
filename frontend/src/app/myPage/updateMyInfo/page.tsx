@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { FaCheck } from "react-icons/fa6";
 import { techDataMap } from "@/../data/techData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const techTypes: string[] = [
   "언어",
@@ -21,25 +21,43 @@ const techTypes: string[] = [
 export default function MyPage() {
   const [nowType, setNowType] = useState("언어");
   const [pickTechList, setPickTechList] = useState<string[]>([]);
+  const [techs, setTechs] = useState<string[]>(techDataMap.get("언어") ?? []);
   const submitHandler = () => {};
+
+  const changeTechTypeHandler = (techType : string) => {
+    setNowType(techType);
+    let techsTmp : string[] = [...(techDataMap.get(techType) || [] )];
+    pickTechList.forEach(s  => {
+      const index : number = techsTmp?.indexOf(s) ?? -1;
+      if (index !== -1) {
+        techsTmp?.splice(index, 1);
+      }
+    })
+    setTechs(techsTmp);
+  }
   const techClickHandler = (tech:string) => {
-    console.log(tech);
     setPickTechList([...pickTechList, tech])
+    const index : number = techs?.indexOf(tech) ?? -1;
+    if (index !== -1) {
+      techs?.splice(index,1);
+    }
   }
   const techDeleteHandler = (tech: string) => {
-    const index : number = pickTechList?.indexOf(tech) ?? -1;
     setPickTechList(prevTechList => prevTechList.filter(item => item !== tech));
   }
+
   const duplClickHandler = () => {};
 
-  const techs = techDataMap.get(nowType);
-  
-  pickTechList.forEach(s  => {
-    const index : number = techs?.indexOf(s) ?? -1;
-    if (index !== -1) {
-      techs?.splice(index, 1);
-    }
-  })
+  useEffect(() => {
+    let techsTmp : string[] = [...(techDataMap.get(nowType) || [] )] ?? [];
+    pickTechList.forEach(s  => {
+      const index : number = techsTmp?.indexOf(s) ?? -1;
+      if (index !== -1) {
+        techsTmp?.splice(index, 1);
+      }
+    })
+    setTechs(techsTmp)
+  }, [pickTechList])
 
   return ( 
     <form
@@ -55,7 +73,7 @@ export default function MyPage() {
       />
       <div className="flex flex-row items-center relative">
         <div className="absolute">
-          닉네임 :{" "}
+          닉네임 :
         </div>
         <input placeholder="조싸피" className="flex items-center p-2 border rounded-lg bg-f5gray-400 ml-20 w-1/3 min-w-80 h-8" />
         <button
@@ -70,22 +88,22 @@ export default function MyPage() {
       <p className="text-f5green-400 text-sm ml-20 mt-1">
         사용 가능한 닉네임입니다.
       </p>
-      <div className="flex flex-wrap mt-4 items-center min-h-10 gap-2 max-w-[1000px]">
+      <div className="flex flex-wrap mt-4 items-center min-h-12 gap-2 max-w-[1000px]">
       <span className="font-bold">
       추가될 기술 스택 :
       </span>       
         {pickTechList.map((pickTech: string, index : number )=> {
-        return <button type="button" onClick={() => techDeleteHandler(pickTech)} key={index} className="flex flex-row border-f5gray-300 border p-1 pr-2 rounded-2xl text-sm items-center hover:bg-f5green-200">
+        return <button type="button" onClick={() => techDeleteHandler(pickTech)} key={index} className="flex flex-row border-f5gray-300 border p-1 pr-2 rounded-2xl text-sm items-center hover:bg-f5red-200">
         <Image src={`/Images/techLogo/${pickTech}.png`}
           alt={pickTech} width="28" height="28" className="mr-1 w-auto"/>
           {pickTech}
-          </button>
-      }) }
+        </button>
+      })}
       </div>
       <div className="flex flex-wrap gap-4 mt-3">
         {techTypes.map((techType: string, index: number) => {
           const isActive:boolean = nowType == techType
-          return <button type="button" onClick={(): void => setNowType(techType)} className={`border border-f5gray-300 rounded-3xl p-2 hover:bg-f5green-200 ${isActive ? "border-f5green-400" : ""}`} key={index}>
+          return <button type="button" onClick={(): void => changeTechTypeHandler(techType)} className={`border border-f5gray-300 rounded-3xl p-2 hover:bg-f5green-200 ${isActive ? "border-f5green-400" : ""}`} key={index}>
             {techType}
           </button>
         })}

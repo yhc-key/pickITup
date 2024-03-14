@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 
 const dummyMyData: string[][] = [
@@ -11,14 +12,14 @@ const dummyMyData: string[][] = [
 ];
 
 
-export default function RootLayout({
+export default function myPageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <div className="flex mx-10 my-5">
-      <div className="w-[300px]">
+      <div className="min-w-[330px] max-w-[330px]">
         <div className="flex flex-row justify-between">
           <Image
             src="/Images/pickITup.svg"
@@ -29,7 +30,7 @@ export default function RootLayout({
           />
           <div className="flex flex-col items-center gap-4">
             <p>조싸피</p>
-            <span className="flex flex-row">
+            <Link href="/myPage/updateMyInfo" className="flex flex-row">
               <Image
                 src="/Images/personEdit.png"
                 alt="profileUpdate"
@@ -38,7 +39,7 @@ export default function RootLayout({
                 className="w-auto mr-1"
               />
               내 정보 수정
-            </span>
+            </Link>
           </div>
         </div>
         <div className="flex flex-row gap-4 my-4">
