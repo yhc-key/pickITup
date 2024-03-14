@@ -65,7 +65,6 @@ export default function MyPage() {
       </div>
       <div className="flex flex-wrap gap-4 mt-3 max-w-[600px]">
         {techs?.map((tech: string, index: number) => {
-....asdf
          return <button key={index}>
             <Image src={`/Images/techLogoEx/${tech}.png`}
               alt={tech}
