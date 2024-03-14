@@ -153,7 +153,7 @@ export default function RootLayout({
           </div>
           <div className="mt-4 flex flex-row gap-3 items-center"><Image src="/Images/Github.png" alt="velog" width="30" height="30"/> <a href="https://github.com/yhc-key">https://github.com/yhc-key</a></div>
           <div className="mt-2 flex flex-row gap-3 items-center"><Image src="/Images/velog.png" alt="velog" width="30" height="30"/> <a href="http://velog.io/@yhc-key">https://velog.io/@yhc-key</a></div>
-          <div className="mt-2 flex flex-row gap-3 items-center"><Image src="/Images/email.png" alt="velog" width="30" height="30"/> yhckey0712@gmail.com</div>
+          <div className="mt-2 flex flex-row gap-3 items-center"><Image src="/Images/email.png" alt="velog" width="30" height="30"/> yhcho0712@gmail.com</div>
         </div>
       </div>
       <div className="flex-grow ml-5">{children}</div>
