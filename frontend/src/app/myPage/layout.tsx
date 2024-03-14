@@ -19,7 +19,7 @@ export default function myPageLayout({
 }>) {
   return (
     <div className="flex mx-10 my-5">
-      <div className="w-[300px]">
+      <div className="min-w-[330px] max-w-[330px]">
         <div className="flex flex-row justify-between">
           <Image
             src="/Images/pickITup.svg"

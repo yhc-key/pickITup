@@ -1,4 +1,4 @@
 
 export default function MyBadge() {
-  return 
+  return <div> 나의 뱃지</div>
 }
