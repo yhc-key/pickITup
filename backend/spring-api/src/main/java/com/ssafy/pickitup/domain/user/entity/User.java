@@ -32,8 +32,7 @@ public class User extends BaseTimeEntity {
 
     private String nickname;
     private String profile;
-    private String email;
-    private String github;
+    private String github;  
     private String techBlog;
 
     @Builder.Default
