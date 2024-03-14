@@ -8,13 +8,16 @@ logging:
             client:
               WIRE: TRACE
 spring:
+  config:
+    import:
+      - optional:env.yml
   data:
     elasticsearch:
-      cluster-nodes: localhost:9200
+      cluster-nodes: ${elasticsearch.host}:${elasticsearch.port}
     mongodb:
-      uri: mongodb://localhost:27017/mydb
+      uri: mongodb://${mongodb.host}:${mongodb.port}/mydb
     redis:
-      host: localhost
+      host: redis
       port: 6379
   main:
     allow-bean-definition-overriding: true
@@ -25,17 +28,17 @@ spring:
     master:
       hikari:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3307/pickitup?characterEncoding=UTF-8&serverTimezone=UTC
+        jdbc-url: jdbc:mysql://${mysql.master.host}:${mysql.master.port}/${mysql.master.database}?useSSL=false&serverTimezone=UTC
         read-only: false
-        username: develover
-        password: ideveloveyou?
+        username: ${mysql.master.username}
+        password: ${mysql.master.password}
     slave:
       hikari:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3308/pickitup?characterEncoding=UTF-8&serverTimezone=UTC
+        jdbc-url: jdbc:mysql://${mysql.slave.host}:${mysql.slave.port}/${mysql.slave.database}?useSSL=false&serverTimezone=UTC
         read-only: true
-        username: develover
-        password: ideveloveyou?
+        username: ${mysql.slave.username}
+        password: ${mysql.slave.password}
   jpa:
     show-sql: true
     hibernate:
@@ -43,7 +46,6 @@ spring:
       properties:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
-#        physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     database-platform: mysql
 
 
