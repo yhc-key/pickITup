@@ -13,7 +13,7 @@
 
 ### 6. 서비스 아키텍처
 
-<img src="./서비스 아키텍처.png" width=500px>
+<img src="./서비스 아키텍처.PNG" width=500px>
 
 ### 7. ERD
 
