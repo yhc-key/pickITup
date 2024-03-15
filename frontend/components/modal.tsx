@@ -4,11 +4,10 @@ import ReactDOM from "react-dom";
 
 interface ModalProps {
   open: boolean;
-  onClose: () => void;
   children: ReactNode;
 }
 
-export default function Modal({ open, onClose, children }: ModalProps) {
+export default function Modal({ open, children }: ModalProps) {
   const [prevScrollY, setPrevScrollY] = useState<number | undefined>(undefined);
 
   // 스크롤을 방지하고 현재 위치를 반환
