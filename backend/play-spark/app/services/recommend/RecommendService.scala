@@ -1,31 +1,32 @@
 package services.recommend
 
-import org.apache.log4j.{Level, Logger}
+import com.typesafe.config.ConfigFactory
 import org.apache.spark.ml.feature.CountVectorizer
 import org.apache.spark.ml.linalg.SparseVector
+import org.apache.spark.ml.recommendation.ALS
+import org.apache.spark.sql.functions.lit
 import org.apache.spark.sql.{DataFrame, SparkSession}
-import play.api.Configuration
 
-import javax.inject.{Inject, Singleton}
+object RecommendService {
 
-@Singleton
-class ContentBasedFilteringServiceClass @Inject()(config: Configuration) {
+  private val config = ConfigFactory.load()
+  private val mongoConfig = config.getConfig("mongo")
 
-//  private val mongoHostname: String = config.get[String]("mongo.hostname")
-  private val mongoHostname: String = "localhost"
-  private val mongoPort: String = config.get[String]("mongo.port")
-  private val mongoDatabase: String = config.get[String]("mongo.database")
-  private val mongoUsername: String = config.get[String]("mongo.username")
-  private val mongoPassword: String = config.get[String]("mongo.password")
+//  private val mongoHostname: String = "localhost"
+  private val mongoHostname: String = mongoConfig.getString("hostname")
+  private val mongoPort: String = mongoConfig.getString("port")
+  private val mongoDatabase: String = mongoConfig.getString("database")
+  private val mongoUsername: String = mongoConfig.getString("username")
+  private val mongoPassword: String = mongoConfig.getString("password")
 
   def recommend(): String = {
 
-//    Logger.getLogger("org").setLevel(Level.ERROR)
+    //    Logger.getLogger("org").setLevel(Level.ERROR)
 
     val mongoUri: String = s"mongodb://${mongoUsername}:${mongoPassword}@${mongoHostname}:${mongoPort}/"
 
     // Spark 세션 초기화
-    @transient lazy val spark = SparkSession.builder
+    val spark = SparkSession.builder
       .appName("TechStackSimilarity")
       .master("local[*]")
       .config("spark.mongodb.input.uri", mongoUri)
@@ -52,13 +53,13 @@ class ContentBasedFilteringServiceClass @Inject()(config: Configuration) {
       .load()
       .select("_id", "company", "qualificationRequirements", "preferredRequirements")
 
-//    val str = measureExecutionTime(calculateSimilarity(spark, userProfiles, jobPostingsDF))
-val jobPostings = jobPostingsDF.map(
-  row => (
-    row.getInt(0),
-    row.getString(1),
-    row.getSeq[String](2) ++ row.getSeq[String](2) ++ row.getSeq[String](3))
-).toDF("jobId", "company", "techStack")
+    //    val str = measureExecutionTime(calculateSimilarity(spark, userProfiles, jobPostingsDF))
+    val jobPostings = jobPostingsDF.map(
+      row => (
+        row.getInt(0),
+        row.getString(1),
+        row.getSeq[String](2) ++ row.getSeq[String](2) ++ row.getSeq[String](3))
+    ).toDF("jobId", "company", "techStack")
 
     // CountVectorizer를 사용하여 기술 스택 벡터화
     val cvModel = new CountVectorizer()
@@ -92,7 +93,56 @@ val jobPostings = jobPostingsDF.map(
       .show()
 
     spark.stop()
-    similarityScores.collect().mkString
+//    similarityScores.collect().mkString
+    "test"
+  }
+
+  private def contentBasedFiltering(): Unit = {
+
+    val spark = SparkSession.builder
+      .appName("TechStackSimilarity")
+      .master("local[*]")
+      .config("spark.mongodb.input.uri", "mongodb://localhost:27017/")
+      .config("spark.mongodb.output.uri", "mongodb://localhost:27017/")
+      .getOrCreate()
+
+    import spark.implicits._
+
+    val clicksDF: DataFrame = spark.read
+      .format("mongo")
+      .option("database", "recommend")
+      .option("collection", "clicks")
+      .load()
+      .select("userId", "jobId", "clickCount")
+
+    val scrapDF: DataFrame = spark.read
+      .format("mongo")
+      .option("database", "recommend")
+      .option("collection", "scrap")
+      .load()
+      .select("userId", "jobId")
+      .withColumn("scrap", lit(1))
+
+    val ratingDF = clicksDF.join(scrapDF, Seq("userId", "jobId"), "outer")
+      .na.fill(0)
+      .withColumn("rating", ($"clickCount" + $"scrap" * 10).cast("double"))
+
+    ratingDF.show()
+
+    val als = new ALS()
+      .setRank(10)
+      .setMaxIter(10)
+      .setRegParam(0.01)
+      .setUserCol("userId")
+      .setItemCol("jobId")
+      .setRatingCol("rating")
+      .setColdStartStrategy("drop")
+
+    val model = als.fit(ratingDF)
+
+    val prediction: DataFrame = model.recommendForAllUsers(10)
+
+    prediction.show()
   }
 
   // 코사인 유사도 계산을 위한 사용자 정의 함수
@@ -186,4 +236,5 @@ val jobPostings = jobPostingsDF.map(
     println(s"Execution time: ${duration / 1e6} ms")
     result // 코드 블록의 실행 결과를 반환
   }
+
 }

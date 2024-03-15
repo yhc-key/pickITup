@@ -3,7 +3,7 @@ package controllers
 import com.typesafe.config.ConfigFactory
 import play.api.Configuration
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import services.recommend.{ContentBasedFilteringService, ContentBasedFilteringServiceClass}
+import services.recommend.RecommendService
 
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class RecommendController @Inject()(cc: ControllerComponents, config: Configurat
 
   def recommend(): Action[AnyContent] = Action { implicit request =>
 //    val str = cbfService.recommend()
-    val str = ContentBasedFilteringService.recommend()
+    val str = RecommendService.recommend()
     Ok("Recommendation API is working! " + str)
   }
 
