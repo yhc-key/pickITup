@@ -43,7 +43,7 @@ export default function Modal({ open, children }: ModalProps) {
 
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-40 z-50" />
+      <div className="fixed top-0 bottom-0 left-0 right-0 z-50 bg-black bg-opacity-40" />
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-20 py-12 min-h-[570px] bg-white z-50 rounded-xl">
         {children}
       </div>

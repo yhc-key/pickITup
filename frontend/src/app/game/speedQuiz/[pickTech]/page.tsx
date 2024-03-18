@@ -1,15 +1,18 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 
 import { speedQuizDataMap } from "@/../data/speedQuizData";
 import BackBtn from "../../../../../components/game/backBtn";
-import Question from "../../../../../components/game/question";
+import Question from "../../../../../components/SpeedQuiz/question";
+import TimeBar from "../../../../../components/SpeedQuiz/timebar";
+import NextBtn from "../../../../../components/SpeedQuiz/nextBtn";
 
 interface Quiz {
   question: string;
   answer: string;
 }
+
 
 export default function SpeedQuiz(props: any) {
   const [index, setIndex] = useState(0);
@@ -36,11 +39,15 @@ export default function SpeedQuiz(props: any) {
     }
   }, []);
 
+
   // 다음문제로 넘어가기
   const onNextClick = useCallback(() => {
     addValueToAnswer();
+    // 문제번호 1 증가
     setIndex((prev) => prev + 1);
+    // 제한시간 10초로 갱신
   }, [addValueToAnswer]);
+
 
   return (
     <div className="flex flex-col">
@@ -50,10 +57,10 @@ export default function SpeedQuiz(props: any) {
       {/* <div>{props.params.pickTech}</div> */}
       {questionList[index] ? (
         <div>
-          <div className="flex flex-wrap justify-center items-center">
+          <div className="flex flex-wrap items-center justify-center">
             <div className="flex flex-col mx-1">
-              <div className="flex flex-wrap justify-center font-semibold text-4xl tracking-widest my-3">
-                <div className="text-f5green-300 mr-3">스피드</div>
+              <div className="flex flex-wrap justify-center my-3 text-4xl font-semibold tracking-widest">
+                <div className="mr-3 text-f5green-300">스피드</div>
                 <div className="text-f5black-400">퀴즈</div>
               </div>
               <div className="text-xs text-f5black-400">
@@ -73,6 +80,11 @@ export default function SpeedQuiz(props: any) {
             index={index + 1}
             onNextClick={onNextClick}
           />
+          <TimeBar
+            onNextClick={onNextClick}
+            index={index}
+          />
+          <NextBtn onNextClick={onNextClick}/>
         </div>
       ) : (
         <div>결과화면</div>
