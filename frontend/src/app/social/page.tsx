@@ -28,7 +28,7 @@ export default function Social(){
                     <div className="w-[2.5vw]"></div>구글 계정으로 로그인</div>
                 <Link href="/login" className="w-[25vw] h-[5vh] py-5 my-4 flex items-center justify-start rounded-[10px] border border-[#d9d9d9] whitespace-pre font-bold">
                     <div className="w-[8.8vh]"></div>
-                    <Image src="/images/pickItupLogo.png" width={24} height={21.84} alt="pickITupLogo"/>
+                    <Image src="/images/pickITupLogo.png" width={24} height={21.84} alt="pickITupLogo"/>
                     <div className="w-[2.5vw]"></div>pick IT up 로그인</Link>
             </div>
         </div>
