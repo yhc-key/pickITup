@@ -11,6 +11,7 @@ spring:
   config:
     import:
       - optional:env.yml
+      - optional:application-oauth.yml
   data:
     elasticsearch:
       cluster-nodes: ${elasticsearch.host}:${elasticsearch.port}
