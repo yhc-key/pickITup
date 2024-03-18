@@ -9,17 +9,17 @@ export default function Login(){
           
           <form action="#" method="POST">
             <div className='flex w-full h-[6vh] justify-center items-center mt-14'>
-              <label htmlFor="id" className="w-[6vw] text-sm font-black">아이디</label>
+              <label htmlFor="id" className="w-[6vw] font-black">아이디</label>
               <input placeholder="아이디를 입력하세요" className="w-[20vw] ml-6 rounded-md bg-[#f5f5f5] border border-[#d9d9d9]"/>
             </div>
 
             <div className='flex w-full h-[6vh] justify-center items-center'>
-              <label htmlFor="password" className='w-[6vw] text-sm font-black'>비밀번호</label>
+              <label htmlFor="password" className='w-[6vw] font-black'>비밀번호</label>
               <input placeholder="비밀번호를 입력하세요" type="password" className="w-[20vw] ml-6 rounded-md bg-[#f5f5f5] border border-[#d9d9d9]"/>
             </div>
 
             <div className="flex w-full h-[14vh] justify-center items-center">
-              <button type="submit" className="w-[18vw] h-[5vh] rounded-md bg-[#00ce7c] text-white font-bold">로그인</button>
+              <button type="submit" className="w-[18vw] h-[5vh] rounded-md bg-[#00ce7c] text-white text-lg font-bold">로그인</button>
             </div>
           </form>
 
