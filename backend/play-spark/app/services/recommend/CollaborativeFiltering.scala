@@ -1,5 +1,6 @@
 package services.recommend
 
+import org.apache.spark.ml.stat.Correlation
 import org.apache.spark.mllib.recommendation.ALS
 import org.apache.spark.sql.SparkSession
 
@@ -24,6 +25,8 @@ object CollaborativeFiltering {
       .select("userId", "jobId", "count")
 
     spark.stop()
+
+    Correlation.corr(clicks, "count", "pearson").show()
 
     "Collaborative Filtering"
   }

@@ -2,7 +2,7 @@ package services.recommend
 
 import com.typesafe.config.ConfigFactory
 import org.apache.spark.ml.feature.CountVectorizer
-import org.apache.spark.ml.linalg.SparseVector
+import org.apache.spark.ml.linalg.{SparseVector, Vectors}
 import org.apache.spark.ml.recommendation.ALS
 import org.apache.spark.sql.functions.lit
 import org.apache.spark.sql.{DataFrame, SparkSession}
@@ -237,4 +237,14 @@ object RecommendService {
     result // 코드 블록의 실행 결과를 반환
   }
 
+  def userBasedCollaborativeFiltering(): Unit = {
+    val spark = SparkSession.builder.appName("MemoryBasedCF").getOrCreate()
+
+    import spark.implicits._
+    val data = Seq(
+      Seq(Vectors.dense(Array(4.0, 5.0, 0.0, 5.0, 1.0))),
+      Seq(Vectors.dense(Array(0.0, 3.0, 4.0, 3.0, 1.0))),
+      Seq(Vectors.dense(Array(2.0, 0.0, 1.0, 3.0, 0.0))),
+    ).toDF("features")
+  }
 }
