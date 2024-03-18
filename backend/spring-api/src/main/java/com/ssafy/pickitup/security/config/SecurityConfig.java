@@ -5,8 +5,10 @@ import com.ssafy.pickitup.security.filter.JwtAuthenticationFilter;
 import com.ssafy.pickitup.security.handler.JwtAccessDeniedHandler;
 import com.ssafy.pickitup.security.handler.OAuth2LoginFailureHandler;
 //import com.ssafy.pickitup.security.handler.OAuth2LoginSuccessHandler;
+import com.ssafy.pickitup.security.handler.OAuth2LoginSuccessHandler;
 import com.ssafy.pickitup.security.jwt.JwtAuthenticationEntryPoint;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
+import com.ssafy.pickitup.security.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -28,8 +30,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final CorsConfig corsConfig;
-//    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -44,7 +47,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-            .requestMatchers("/**", "/auth/**") // '인증','인가' 서비스 적용x
+            .requestMatchers("/auth/**") // '인증','인가' 서비스 적용x
             .requestMatchers(swaggerURL)
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // 정적 리소스들
     }
@@ -78,7 +81,13 @@ public class SecurityConfig {
                 .requestMatchers(swaggerURL).permitAll()
                 .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated());
-
+        // Oauth 로그인 설정
+        http
+            .oauth2Login(oauth2Login -> oauth2Login
+                .successHandler(oAuth2LoginSuccessHandler)
+                .failureHandler(oAuth2LoginFailureHandler)
+                .userInfoEndpoint(userInfoEndpoint ->
+                    userInfoEndpoint.userService(customOAuth2UserService)));
         return http.build();
     }
 }

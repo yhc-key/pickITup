@@ -18,6 +18,7 @@ public class SwaggerConfig {
             .description("pick IT up dev.");
         Server server=new Server();
         server.setUrl("https://pickitup.online");
+//        server.setUrl("http://localhost:8080");
         return new OpenAPI()
             .info(info)
             .addServersItem(server);

@@ -25,6 +25,15 @@ public class UserCommandService {
         userCommandJpaRepository.save(user);
         return UserResponseDto.toDto(user);
     }
+    @Transactional
+    public UserResponseDto create(Auth auth) {
+        User user = User.builder()
+                .nickname("소셜 로그인")
+                .auth(auth)
+                .build();
+        userCommandJpaRepository.save(user);
+        return UserResponseDto.toDto(user);
+    }
 
 
 }

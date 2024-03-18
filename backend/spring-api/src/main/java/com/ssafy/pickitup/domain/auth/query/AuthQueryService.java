@@ -10,6 +10,7 @@ import com.ssafy.pickitup.security.service.RedisService;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -27,6 +28,13 @@ public class AuthQueryService {
         if (auth == null) {
             throw new UserNotFoundException("해당 유저를 찾을 수 없습니다");
         }
+        return AuthDto.getAuth(auth);
+    }
+
+    public AuthDto getUserByUsername(String username) {
+        Auth auth = authQueryJpaRepository.findAuthByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException(
+                "Can't find user with this username. -> " + username));
         return AuthDto.getAuth(auth);
     }
 

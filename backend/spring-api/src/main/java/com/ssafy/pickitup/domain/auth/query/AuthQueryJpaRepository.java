@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AuthQueryJpaRepository extends JpaRepository<Auth, Integer> {
 
     Auth findAuthById(int id);
-
     Optional<Auth> findAuthByUsername(String username);
 }
