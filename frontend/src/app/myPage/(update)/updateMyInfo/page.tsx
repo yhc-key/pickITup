@@ -62,32 +62,32 @@ export default function MyPage() {
   return (
     <form
       onSubmit={submitHandler}
-      className="border border-f5gray-500 rounded-2xl h-full py-6 pl-20 flex flex-col relative"
+      className="relative flex flex-col h-full py-6 pl-20 border border-f5gray-500 rounded-2xl"
     >
-      <h2 className="font-bold text-2xl">정보 수정하기</h2>
+      <h2 className="text-2xl font-bold">정보 수정하기</h2>
       <Image
         src="/Images/pickItup.svg"
         alt="프로필사진"
         width="100"
         height="100"
-        className="rounded-full my-5 h-auto"
+        className="h-auto my-5 rounded-full"
       />
-      <div className="flex flex-row items-center relative">
+      <div className="relative flex flex-row items-center">
         <div className="absolute">닉네임 :</div>
         <input
           placeholder="조싸피"
-          className="flex items-center p-2 border rounded-lg bg-f5gray-400 ml-20 w-1/3 min-w-80 h-8"
+          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
         />
         <button
           type="button"
           onClick={duplClickHandler}
-          className="ml-4 h-8 text-f5black-400 border rounded-lg bg-f5gray-400 hover:bg-f5gray-500 font-bold px-2 flex flex-row items-center gap-2"
+          className="flex flex-row items-center h-8 gap-2 px-2 ml-4 font-bold border rounded-lg text-f5black-400 bg-f5gray-400 hover:bg-f5gray-500"
         >
           <FaCheck />
           중복 체크
         </button>
       </div>
-      <p className="text-f5green-400 text-sm ml-20 mt-1">
+      <p className="mt-1 ml-20 text-sm text-f5green-400">
         사용 가능한 닉네임입니다.
       </p>
       <div className="flex flex-wrap mt-4 items-center min-h-12 gap-2 max-w-[1000px]">
@@ -98,14 +98,14 @@ export default function MyPage() {
               type="button"
               onClick={() => techDeleteHandler(pickTech)}
               key={index}
-              className="flex flex-row border-f5gray-300 border p-1 pr-2 rounded-2xl text-sm items-center hover:bg-f5red-200"
+              className="flex flex-row items-center p-1 pr-2 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5red-200"
             >
               <Image
                 src={`/Images/techLogo/${pickTech}.png`}
                 alt={pickTech}
                 width="28"
                 height="28"
-                className="mr-1 w-auto"
+                className="w-auto mr-1"
               />
               {pickTech}
             </button>
@@ -134,64 +134,64 @@ export default function MyPage() {
               type="button"
               key={index}
               onClick={() => techClickHandler(tech)}
-              className="flex flex-row border-f5gray-300 border p-1 pr-2 rounded-2xl text-sm items-center hover:bg-f5green-200"
+              className="flex flex-row items-center p-1 pr-2 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5green-200"
             >
               <Image
                 src={`/Images/techLogo/${tech}.png`}
                 alt={tech}
                 width="28"
                 height="28"
-                className="mr-1 w-auto"
+                className="w-auto mr-1"
               />
               {tech}
             </button>
           );
         })}
       </div>
-      <div className="flex flex-row items-center relative mt-3">
+      <div className="relative flex flex-row items-center mt-3">
         <div className="absolute">Github :</div>
         <input
           placeholder="https://github.com/yhc-key"
-          className="flex items-center p-2 border rounded-lg bg-f5gray-400 ml-20 w-1/3 min-w-80 h-8"
+          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
         />
       </div>
-      <div className="flex flex-row items-center relative mt-3">
+      <div className="relative flex flex-row items-center mt-3">
         <div className="absolute">Velog :</div>
         <input
           placeholder="https://velog.io/@yhc-key"
-          className="flex items-center p-2 border rounded-lg bg-f5gray-400 ml-20 w-1/3 min-w-80 h-8"
+          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
         />
       </div>
-      <div className="flex items-center justify-center p-2 rounded-l ml-20 w-1/3 min-w-80 h-8">
+      <div className="flex items-center justify-center w-1/3 h-8 p-2 ml-20 rounded-l min-w-80">
         {" "}
         or{" "}
       </div>
-      <div className="flex flex-row items-center relative ">
+      <div className="relative flex flex-row items-center ">
         <div className="absolute">Tistory :</div>
         <input
           placeholder=""
           disabled
-          className="flex items-center p-2 border rounded-lg bg-f5gray-400 ml-20 w-1/3 min-w-80 h-8"
+          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
         />
       </div>
-      <div className="flex flex-row items-center relative mt-3">
+      <div className="relative flex flex-row items-center mt-3">
         <div className="absolute">Email :</div>
         <input
           placeholder="yhcho0712@gmail.com"
-          className="flex items-center p-2 border rounded-lg bg-f5gray-400 ml-20 w-1/3 min-w-80 h-8"
+          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
         />
       </div>
 
-      <div className="absolute bottom-0 right-0 mr-6 mb-6">
+      <div className="absolute bottom-0 right-0 mb-6 mr-6">
         <button
           type="submit"
-          className="bg-f5red-300 rounded-lg text-white mx-4 py-2 px-6"
+          className="px-6 py-2 mx-4 text-white rounded-lg bg-f5red-300"
         >
           취소하기
         </button>
         <button
           type="reset"
-          className="bg-f5green-300 rounded-lg text-white mx-4 py-2 px-6"
+          className="px-6 py-2 mx-4 text-white rounded-lg bg-f5green-300"
         >
           등록하기
         </button>
