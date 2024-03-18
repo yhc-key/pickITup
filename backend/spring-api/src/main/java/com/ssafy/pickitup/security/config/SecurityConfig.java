@@ -47,7 +47,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-            .requestMatchers("/auth/**") // '인증','인가' 서비스 적용x
+            .requestMatchers("/auth/**", "/recruit/**") // '인증','인가' 서비스 적용x
             .requestMatchers(swaggerURL)
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // 정적 리소스들
     }
