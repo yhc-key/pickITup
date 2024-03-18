@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-
 interface LinkType {
   name: string;
   href: string;
@@ -24,15 +23,20 @@ export default function Header() {
   return (
     <header className="flex justify-between border-b border-[#d9d9d9]">
       <div>
-        <Link href="/">
+        <Link href="/" className="flex items-center">
           <Image
-            src="/pickITup.webp"
+            src="/Images/ITUlogo.png"
             alt="logo"
-            width="150"
-            height="0"
+            width={36}
+            height={36}
             priority={true}
-            className="w-auto h-auto ml-4"
+            className="m-3"
           />
+          <div className="mx-1 text-f5black-400 text-lg font-semibold">
+            pick
+          </div>
+          <div className="mx-1 text-f5green-300 text-lg font-semibold">IT</div>
+          <div className="mx-1 text-f5black-400 text-lg font-semibold">up</div>
         </Link>
       </div>
       <div className="flex">
@@ -54,7 +58,12 @@ export default function Header() {
         })}
       </div>
       <div className="mr-10 my-auto bg-f5gray-300 p-3 rounded-2xl">
-        <Link href="/social" className="text-f5black-400 hover:text-f5green-300">로그인 & 회원가입</Link>
+        <Link
+          href="/social"
+          className="text-f5black-400 hover:text-f5green-300"
+        >
+          로그인 & 회원가입
+        </Link>
       </div>
     </header>
   );

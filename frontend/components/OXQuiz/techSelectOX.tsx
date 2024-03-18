@@ -34,7 +34,7 @@ export default function TechSelectOX() {
     setIsModalOpen(false);
   };
 
-  const techs = techDataMap.get(pickType);
+  const techs: string[] | undefined = techDataMap.get(pickType);
 
   return (
     <div>
