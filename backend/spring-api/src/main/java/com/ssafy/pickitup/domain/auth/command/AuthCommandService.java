@@ -7,6 +7,7 @@ import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.entity.Role;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
+import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.entity.RefreshToken;
 import com.ssafy.pickitup.security.exception.AuthNotFoundException;
@@ -52,7 +53,7 @@ public class AuthCommandService {
 
 
     @Transactional
-    public JwtTokenDto login(LoginRequestDto loginRequestDto){
+    public JwtTokenDto login(LoginRequestDto loginRequestDto) {
 
         log.info("login request username= {}", loginRequestDto.getUsername());
         log.info("login request password= {}", loginRequestDto.getPassword());
@@ -60,21 +61,22 @@ public class AuthCommandService {
 //        AuthDto authDto = authCommandJpaRepository.findAuthByUsername(loginRequestDto.getUsername());
         Auth auth = authCommandJpaRepository.findAuthByUsername(loginRequestDto.getUsername());
         AuthDto authDto = AuthDto.getAuth(auth);
-        if(auth == null){
+        if (auth == null) {
             throw new AuthNotFoundException("존재하지 않는 아이디입니다.");
         }
 
         log.info("auth= {}", authDto.toString());
-        if(!passwordEncoder.matches(loginRequestDto.getPassword(), authDto.getPassword())){
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), authDto.getPassword())) {
             throw new PasswordException("비밀번호가 일치하지 않습니다.");
         }
 
-
         // Login ID/PW를 기반으로 Authentication Token 생성
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
-            = new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(), loginRequestDto.getPassword());
+            = new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(),
+            loginRequestDto.getPassword());
         System.out.println(
-            "usernamePasswordAuthenticationToken.toString() = " + usernamePasswordAuthenticationToken.toString());
+            "usernamePasswordAuthenticationToken.toString() = "
+                + usernamePasswordAuthenticationToken.toString());
         // 실제로 검증이 이루어지는 부분
         Authentication authentication =
             authenticationManagerBuilder.getObject()
@@ -105,11 +107,11 @@ public class AuthCommandService {
     public LogoutDto logout(String accessToken) {
         String token = jwtTokenProvider.resolveToken(accessToken);
         log.debug("token = {}", token);
-        int userId = Integer.parseInt(jwtTokenProvider.extractUserId(accessToken));
-        log.debug("principal = {}", userId);
+        int authId = Integer.parseInt(jwtTokenProvider.extractAuthId(accessToken));
+        log.debug("principal = {}", authId);
         redisService.saveJwtBlackList(accessToken);
-        redisService.deleteRefreshToken(userId);
-        Auth auth = authCommandJpaRepository.findAuthById(userId);
+        redisService.deleteRefreshToken(authId);
+        Auth auth = authCommandJpaRepository.findAuthById(authId);
 //        AuthDto authDto = AuthDto.getAuth(auth);
 //        authDto.setRefreshToken(null);
         auth.deleteRefreshToken();
@@ -119,4 +121,22 @@ public class AuthCommandService {
         return new LogoutDto(auth.getUsername());
     }
 
+    @Transactional
+    public void deleteAuth(int authId, String password) {
+        if (validatePassword(authId, password)) {
+            log.info("삭제");
+            System.out.println("authCommandJpaRepository.findAuthById(authId) = "
+                + authCommandJpaRepository.findAuthById(authId));
+            authCommandJpaRepository.deleteById(authId);
+        }
+    }
+
+    public boolean validatePassword(int authId, String password) {
+        Auth auth = authCommandJpaRepository.findById(authId).orElseThrow(
+            () -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
+        if (passwordEncoder.matches(password, auth.getPassword())) {
+            return true;
+        }
+        throw new PasswordException("비밀번호가 일치하지 않습니다.");
+    }
 }

@@ -1,6 +1,5 @@
 package com.ssafy.pickitup.security.jwt;
 
-import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -60,6 +59,33 @@ public class JwtTokenProvider {
         return new JwtTokenDto(accessToken, refreshToken);
     }
 
+    public JwtTokenDto generateToken(Authentication authentication) {
+        String authorities = authentication.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.joining(","));
+        long now = (new Date()).getTime();
+        Date accessTokenExpirationTime = new Date(now + JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME);
+        String accessToken = Jwts.builder()
+            .setSubject(authentication.getName()) // 사용자 userId
+            .claim(AUTHORITIES_KEY, authorities)
+            .setExpiration(accessTokenExpirationTime)
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
+
+        String refreshToken = Jwts.builder()
+            .setExpiration(new Date(now + JwtProperties.REFRESH_TOKEN_EXPIRATION_TIME))
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
+
+        log.debug("Access Token = {}", accessToken);
+        log.debug("Refresh Token = {}", refreshToken);
+
+        return JwtTokenDto.builder()
+            .accessToken(accessToken)
+            .refreshToken(refreshToken)
+            .build();
+    }
+
     // 토큰으로부터 정보 추출
     public Claims parseClaims(String token) {
         try {
@@ -109,7 +135,7 @@ public class JwtTokenProvider {
         throw new UnsupportedJwtException("지원하지 않는 토큰 형식입니다.");
     }
 
-    public String extractUserId(String accessToken) {
+    public String extractAuthId(String accessToken) {
         return parseClaims(resolveToken(accessToken)).getSubject();
     }
 

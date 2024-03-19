@@ -31,7 +31,7 @@ public class JpaConfiguration {
         // Hibernate 추가 설정
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create");
         // Spring Boot가 제공하는 기본 물리적 네이밍 전략 설정
         properties.setProperty("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
         entityManagerFactory.setJpaProperties(properties);
