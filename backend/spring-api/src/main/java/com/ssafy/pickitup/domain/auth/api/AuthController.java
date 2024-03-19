@@ -8,10 +8,14 @@ import com.ssafy.pickitup.domain.auth.command.dto.LoginRequestDto;
 import com.ssafy.pickitup.domain.auth.command.dto.LogoutDto;
 import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.query.AuthQueryService;
+import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
+import com.ssafy.pickitup.domain.auth.query.dto.AuthProfileDto;
+import com.ssafy.pickitup.domain.auth.query.dto.PasswordDto;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.jwt.JwtProperties;
 import com.ssafy.pickitup.security.jwt.JwtTokenDto;
+import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +45,7 @@ public class AuthController {
     private final AuthCommandService authCommandService;
     private final AuthQueryService authQueryService;
     private final UserCommandService userCommandService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "회원 가입 API")
     @PostMapping("/signup")
@@ -75,6 +81,27 @@ public class AuthController {
         log.debug("refresh token = {}", refreshToken);
         authQueryService.detectConcurrentUser(accessToken, refreshToken);
         log.info("Auth is unique.");
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "회원 프로필 조회 API")
+    @GetMapping("/profile")
+    public ApiResult<AuthProfileDto> profileUser(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.debug("authId = {}", authId);
+        AuthDto authDto = authQueryService.getUserById(authId);
+        AuthProfileDto authProfileDto = AuthProfileDto.authInfoFromAuthDto(authDto);
+        return success(authProfileDto);
+    }
+
+    @Operation(summary = "회원 삭제 API")
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(HttpServletRequest request,
+        @RequestBody PasswordDto password) {
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        authCommandService.deleteAuth(authId, password.getPassword());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

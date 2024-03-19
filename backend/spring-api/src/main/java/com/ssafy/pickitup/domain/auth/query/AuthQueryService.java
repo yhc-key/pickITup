@@ -52,18 +52,20 @@ public class AuthQueryService {
         }
         log.debug("case2 : access token in not in blacklist");
 
-        Integer userId = Integer.valueOf(jwtTokenProvider.extractUserId(requestAccessToken));
-        log.debug("user id = {}", userId);
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(requestAccessToken));
+        log.debug("user id = {}", authId);
 
-        if (redisService.hasRefreshToken(userId)) {
-            if (!requestRefreshToken.equals(redisService.getRefreshToken(userId))) {
+        if (redisService.hasRefreshToken(authId)) {
+            if (!requestRefreshToken.equals(redisService.getRefreshToken(authId))) {
                 log.error("refresh token does not match in Redis.");
                 redisService.saveJwtBlackList(requestAccessToken);
                 throw new RefreshTokenException("Refresh Token 값이 일치하지 않습니다.");
             }
         } else {
-            Auth auth = authQueryJpaRepository.findAuthById(userId);
-            if(auth == null) throw new UserNotFoundException("해당 유저를 찾을 수 없습니다.");
+            Auth auth = authQueryJpaRepository.findAuthById(authId);
+            if (auth == null) {
+                throw new UserNotFoundException("해당 유저를 찾을 수 없습니다.");
+            }
             String refreshToken = auth.getRefreshToken();
             log.debug("detectConcurrentUser.requestRefreshToken = {}", requestRefreshToken);
             log.debug("detectConcurrentUser.refreshToken = {}", refreshToken);

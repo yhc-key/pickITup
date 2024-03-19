@@ -29,12 +29,14 @@ public class UserController {
     private final UserQueryService userQueryService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Operation(summary = "회원 정보 조회")
+    @Operation(summary = "회원 정보 조회 API")
     @GetMapping("/me")
     public ApiResult<UserResponseDto> getUser(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        int userId = Integer.valueOf(jwtTokenProvider.extractUserId(accessToken));
-        log.info("userId = {}", userId);
-        return success(userQueryService.getUserById(userId));
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.info("authId = {}", authId);
+        return success(userQueryService.getUserById(authId));
     }
+
+
 }

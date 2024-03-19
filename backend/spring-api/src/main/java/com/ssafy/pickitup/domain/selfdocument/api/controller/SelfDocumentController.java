@@ -41,8 +41,8 @@ public class SelfDocumentController {
     @GetMapping("/main")
     public ResponseEntity<?> searchMain(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        int userId = Integer.parseInt(jwtTokenProvider.extractUserId(accessToken));
-        return ResponseEntity.ok(mainQueryService.searchMainQuestions(userId));
+        int authId = Integer.parseInt(jwtTokenProvider.extractAuthId(accessToken));
+        return ResponseEntity.ok(mainQueryService.searchMainQuestions(authId));
     }
 
     @Operation(summary = "메인 질문 등록")
@@ -50,9 +50,9 @@ public class SelfDocumentController {
     public ResponseEntity<?> registerMain(
         @RequestBody MainQuestionCommandRequestDto dto,
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        int userId = Integer.parseInt(jwtTokenProvider.extractUserId(accessToken));
+        int authId = Integer.parseInt(jwtTokenProvider.extractAuthId(accessToken));
         return ResponseEntity.ok(
-            mainCommandService.registerMainQuestion(userId, dto));
+            mainCommandService.registerMainQuestion(authId, dto));
     }
 
 

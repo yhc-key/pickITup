@@ -22,6 +22,7 @@ public class UserCommandService {
             .nickname(userSignupDto.getNickname())
             .auth(auth)
             .build();
+        System.out.println("user.toString() = " + user.toString());
         userCommandJpaRepository.save(user);
         return UserResponseDto.toDto(user);
     }

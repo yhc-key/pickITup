@@ -1,6 +1,5 @@
 package com.ssafy.pickitup.security.jwt;
 
-import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -136,7 +135,7 @@ public class JwtTokenProvider {
         throw new UnsupportedJwtException("지원하지 않는 토큰 형식입니다.");
     }
 
-    public String extractUserId(String accessToken) {
+    public String extractAuthId(String accessToken) {
         return parseClaims(resolveToken(accessToken)).getSubject();
     }
 
