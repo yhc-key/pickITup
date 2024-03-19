@@ -34,20 +34,20 @@ function MyBadge() {
   const [acq,setAcq] = useState<ReactElement[]>([]); //react 문 보낼것
   const [unacq,setUnacq] = useState<ReactElement[]>([]); //react 문 보낼것
 
-  useEffect(() => {
-    const newElements:ReactElement[] = [];
-    for (let i = 0; i < acquired.length; i++) {
-      newElements.push(
-        <div key={i} className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
-          <div className="flex items-center justify-center">
-            <Image src={`/Images/badge/${acquired[i]}.png`} width={100} height={100} alt={`${acquired[i]}`}/>
-          </div>
-          <div className="flex items-center justify-center text-sm font-bold">{map.get(acquired[i])}</div>
-        </div>
-      );
-    }
-    setAcq(newElements);
-  }, [acquired,map]);
+  // useEffect(() => {
+  //   const newElements:ReactElement[] = [];
+  //   for (let i = 0; i < acquired.length; i++) {
+  //     newElements.push(
+  //       <div key={i} className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
+  //         <div className="flex items-center justify-center">
+  //           <Image src={`/Images/badge/${acquired[i]}.png`} width={100} height={100} alt={`${acquired[i]}`}/>
+  //         </div>
+  //         <div className="flex items-center justify-center text-sm font-bold">{map.get(acquired[i])}</div>
+  //       </div>
+  //     );
+  //   }
+  //   setAcq(newElements);
+  // }, [acquired,map]);
 
   useEffect(() => {
     const newElements:ReactElement[] = [];
@@ -71,7 +71,31 @@ function MyBadge() {
         <div className="h-[5vh] w-[15vw] bg-[#CBFFC2] flex items-center justify-center rounded-lg font-bold">내가 획득한 뱃지</div>
       </div>
       <div className="flex items-center justify-start flex-wrap w-full">
-        {acq}
+        {/* {acq} */}
+        <div className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
+           <div className="flex items-center justify-center">
+             <Image src={`/Images/badge/attend1.png`} width={100} height={100} alt="attend1"/>
+           </div>
+           <div className="flex items-center justify-center text-sm font-bold"></div>
+         </div>
+         <div className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
+           <div className="flex items-center justify-center">
+             <Image src={`/Images/badge/jobRead1.png`} width={100} height={100} alt="jobRead1"/>
+           </div>
+           <div className="flex items-center justify-center text-sm font-bold"></div>
+         </div>
+         <div className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
+           <div className="flex items-center justify-center">
+             <Image src={`/Images/badge/jobRead50.png`} width={100} height={100} alt="jobRead50"/>
+           </div>
+           <div className="flex items-center justify-center text-sm font-bold"></div>
+         </div>
+         <div className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
+           <div className="flex items-center justify-center">
+             <Image src={`/Images/badge/jobScrap1.png`} width={100} height={100} alt="jobScrap1"/>
+           </div>
+           <div className="flex items-center justify-center text-sm font-bold"></div>
+         </div>
       </div>
       <div className="flex items-center justify-start mt-6">
         <div className="h-[5vh] w-[15vw] bg-[#CBFFC2] flex items-center justify-center rounded-lg font-bold">획득 가능한 뱃지</div>
