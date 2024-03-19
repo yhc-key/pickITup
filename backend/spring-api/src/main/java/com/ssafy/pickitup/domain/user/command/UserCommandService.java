@@ -19,18 +19,19 @@ public class UserCommandService {
     @Transactional
     public UserResponseDto create(Auth auth, UserSignupDto userSignupDto) {
         User user = User.builder()
-                .nickname(userSignupDto.getNickname())
-                .auth(auth)
-                .build();
+            .nickname(userSignupDto.getNickname())
+            .auth(auth)
+            .build();
         userCommandJpaRepository.save(user);
         return UserResponseDto.toDto(user);
     }
+
     @Transactional
     public UserResponseDto create(Auth auth) {
         User user = User.builder()
-                .nickname("소셜 로그인")
-                .auth(auth)
-                .build();
+            .nickname(auth.getName())
+            .auth(auth)
+            .build();
         userCommandJpaRepository.save(user);
         return UserResponseDto.toDto(user);
     }

@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000", "http://localhost:8080", "https://spring.pickitup.online"}, exposedHeaders = "*")
+@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000", "http://localhost:8080",
+    "https://spring.pickitup.online"}, exposedHeaders = "*")
 @RequestMapping("/auth")
 @Tag(name = "AuthController", description = "회원 인증 정보 관련 API")
 public class AuthController {
@@ -59,7 +59,8 @@ public class AuthController {
 
     @Operation(summary = "로그아웃 API")
     @PostMapping("/logout")
-    public ApiResult<LogoutDto> logout(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+    public ApiResult<LogoutDto> logout(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         LogoutDto logout = authCommandService.logout(accessToken);
         return success(logout);
     }
@@ -69,9 +70,9 @@ public class AuthController {
     public ResponseEntity<?> detectConcurrentLogin(HttpServletRequest request) {
         log.debug("now running detect concurrent login function.");
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.debug("access token = {}",accessToken);
+        log.debug("access token = {}", accessToken);
         String refreshToken = request.getHeader(JwtProperties.REFRESH_TOKEN);
-        log.debug("refresh token = {}",refreshToken);
+        log.debug("refresh token = {}", refreshToken);
         authQueryService.detectConcurrentUser(accessToken, refreshToken);
         log.info("Auth is unique.");
         return ResponseEntity.status(HttpStatus.OK).build();
