@@ -40,14 +40,14 @@ function MyBadge() {
       newElements.push(
         <div key={i} className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
           <div className="flex items-center justify-center">
-            <Image src={`/Images/badge/${acquired[i]}.png`} width={100} height={100} alt="badge"/>
+            <Image src={`/Images/badge/${acquired[i]}.png`} width={100} height={100} alt={`${acquired[i]}`}/>
           </div>
           <div className="flex items-center justify-center text-sm font-bold">{map.get(acquired[i])}</div>
         </div>
       );
     }
     setAcq(newElements);
-  }, []);
+  }, [acquired,map]);
 
   useEffect(() => {
     const newElements:ReactElement[] = [];
@@ -63,7 +63,7 @@ function MyBadge() {
       );
     }
     setUnacq(newElements);
-  }, []);
+  }, [unacquired,map]);
 
   return (
     <div>
