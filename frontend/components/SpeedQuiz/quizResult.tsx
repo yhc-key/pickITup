@@ -5,8 +5,8 @@ import RightBox from "./rigthBox";
 
 interface Answer {
   question: string;
-  answer: boolean;
-  user: boolean;
+  answer: string;
+  user: string;
   correct: boolean;
   index: number;
 }
