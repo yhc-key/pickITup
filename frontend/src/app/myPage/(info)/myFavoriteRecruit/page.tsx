@@ -1,6 +1,5 @@
 "use client";
 import { Fragment, useState } from "react";
-import { cloneDeep } from "lodash";
 import { FaBookmark } from "react-icons/fa";
 
 export default function MyFavoriteRecruit() {
