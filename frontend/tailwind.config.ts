@@ -29,6 +29,7 @@ const config: Config = {
           700: "#00482b",
         },
         f5yellowgreen: {
+          200: "#d7ffa4",
           300: "#c1ff72"
         },
         f5red : {
@@ -49,15 +50,32 @@ const config: Config = {
           600 : "#171717"
         }, 
         f5gray : {
+          200 : "#F4F4F4",
           300 : "#E8E8E8",
           400 : "#D9D9D9",
           500 : "#848484",
+        },
+        f5blue : {
+          100 : "#F6FAFF",
         }
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
+      keyframes: {
+        startGauge: {
+          '0%': {
+            width: '0%',
+          },
+          '100%': {
+            width: '100%',
+          },
+        },
+      },
+      animation: {
+        'startGauge': 'startGauge 10s forwards linear',
       },
     },
   },

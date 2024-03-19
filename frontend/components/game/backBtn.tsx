@@ -5,7 +5,7 @@ import { IoChevronBackSharp } from "react-icons/io5";
 export default function BackBtn() {
   const router = useRouter();
 
-  const goBackHandler = () => {
+  const goBackHandler = (): void => {
     router.back();
   };
   return (
