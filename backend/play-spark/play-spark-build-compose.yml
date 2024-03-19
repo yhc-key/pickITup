@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  play-app-build:
+    image: sbtscala/scala-sbt:openjdk-8u342_1.7.2_2.12.16
+    container_name: play-app-build
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: >
+      /bin/bash -c "
+      sbt compile &&
+      sbt test &&
+      sbt dist &&
+      cd /app/target/universal/ &&
+      unzip -o play-spark-1.0-SNAPSHOT.zip
+      "
