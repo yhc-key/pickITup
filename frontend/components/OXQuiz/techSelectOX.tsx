@@ -23,12 +23,12 @@ export default function TechSelectOX() {
   const [pickTech, setPickTech] = useState("");
 
   // 기술스택 선택 함수
-  const techClickHandler = (tech: string) => {
+  const techClickHandler = (tech: string): void => {
     setPickTech(tech);
   };
 
   // 모달 닫는 함수
-  const modalCloseHandler = () => {
+  const modalCloseHandler = (): void => {
     setPickType("언어");
     setPickTech("");
     setIsModalOpen(false);
@@ -38,7 +38,7 @@ export default function TechSelectOX() {
 
   return (
     <div>
-      <button onClick={() => setIsModalOpen(true)}>
+      <button onClick={(): void => setIsModalOpen(true)}>
         <Image
           src="/images/OXQuiz.png"
           alt="OXQuiz"

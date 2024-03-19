@@ -55,32 +55,37 @@ export default function TimeBar({ onNextClick, index }: TimeBarProps) {
     }
   }, 1000);
 
-  useEffect(() => {
-    // 이전에 설정된 타이머가 있다면 제거
-    if (timer) clearTimeout(timer);
+  // useEffect(() => {
+  //   // 이전에 설정된 타이머가 있다면 제거
+  //   if (timer) clearTimeout(timer);
 
-    // index값이 10 이상인 경우에는 타이머 설정 끝
-    if (index >= 10) return;
+  //   // index값이 10 이상인 경우에는 타이머 설정 끝
+  //   if (index >= 10) return;
 
-    setTimer(
-      // 10초 후에 onNextClick 함수를 호출
-      setTimeout(() => {
-        if (index >= 10) return;
-        onNextClick();
-      }, 10000)
-    );
+  //   setTimer(
+  //     // 10초 후에 onNextClick 함수를 호출
+  //     setTimeout(() => {
+  //       if (index >= 10) return;
+  //       onNextClick();
+  //     }, 10000)
+  //   );
 
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [index, remainingTime, onNextClick, timer]);
+  //   return () => {
+  //     if (timer) clearTimeout(timer);
+  //   };
+  // }, [index, remainingTime, onNextClick, timer]);
 
   return (
     <div className="flex items-center justify-center">
       <div className="w-[65%] bg-f5gray-300 rounded-lg h-4">
-        <div key={animationKey} className="h-4 rounded-lg animate-startGauge bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300 "></div>
+        <div
+          key={animationKey}
+          className="h-4 rounded-lg animate-startGauge bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300 "
+        ></div>
       </div>
-      <div className="ml-5 text-lg font-semibold align-middle text-f5black-400">{remainingTime} 초</div>
+      <div className="ml-5 text-lg font-semibold align-middle text-f5black-400">
+        {remainingTime} 초
+      </div>
     </div>
   );
 }

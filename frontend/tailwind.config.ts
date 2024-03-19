@@ -50,9 +50,13 @@ const config: Config = {
           600 : "#171717"
         }, 
         f5gray : {
+          200 : "#F4F4F4",
           300 : "#E8E8E8",
           400 : "#D9D9D9",
           500 : "#848484",
+        },
+        f5blue : {
+          100 : "#F6FAFF",
         }
       },
       backgroundImage: {
