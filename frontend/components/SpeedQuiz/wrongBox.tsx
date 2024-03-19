@@ -21,6 +21,7 @@ export default function WrongBox({ user, answer }: wrongBoxProps) {
   const handleMouseLeave = (): void => {
     setHovered(false);
   };
+  
   return (
     <div
       className={`relative p-5 text-center align-bottom cursor-pointer drop-shadow-md w-52 h-28 rounded-3xl bg-f5red-100 ${hovered ? "bg-f5gray-400 bg-opacity-50 transition-all ease-in-out" : ""}`}

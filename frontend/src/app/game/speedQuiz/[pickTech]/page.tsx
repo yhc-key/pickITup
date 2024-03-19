@@ -78,7 +78,7 @@ export default function SpeedQuiz(props: any) {
 
   return (
     <div className="flex flex-col">
-      <div className="mx-10 mt-2">
+      <div className="mx-10 mt-4">
         <BackBtn />
       </div>
       {/* <div>{props.params.pickTech}</div> */}

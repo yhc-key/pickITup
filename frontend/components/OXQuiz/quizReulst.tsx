@@ -5,8 +5,8 @@ import RightBox from "./rigthBox";
 
 interface Answer {
   question: string;
-  answer: boolean;
-  user: boolean;
+  answer: string;
+  user: string;
   correct: boolean;
   index: number;
 }
@@ -19,7 +19,7 @@ export default function QuizResult({ answer }: quizResultProps) {
   return (
     <div>
       <div className="flex flex-wrap items-center justify-center">
-        <div className="flex flex-col mx-1 ml-10">
+        <div className="flex flex-col mx-1 ml-20">
           <div className="flex flex-wrap justify-center my-3 text-4xl font-semibold tracking-widest">
             <div className="mr-3 text-f5green-300">게임</div>
             <div className="text-f5black-400">결과</div>
@@ -27,10 +27,10 @@ export default function QuizResult({ answer }: quizResultProps) {
           <div className="text-xs text-f5black-400"></div>
         </div>
         <Image
-          src="/images/hourglass2.png"
-          alt="gameMachine"
-          width={110}
-          height={110}
+          src="/images/oxIntro.png"
+          alt="oxQuizIntro"
+          width={190}
+          height={130}
           priority={true}
           className="animate-bounce"
         />
