@@ -77,7 +77,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/error")
                 .permitAll() // '인증' 무시
-                .requestMatchers("/**", "/auth/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
                 .requestMatchers(swaggerURL).permitAll()
                 .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated());
