@@ -49,7 +49,7 @@ public class SelfDocumentController {
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         int userId = Integer.parseInt(jwtTokenProvider.extractUserId(accessToken));
         return ResponseEntity.ok(
-            mainCommandService.registerMainQuestion(dto, userId));
+            mainCommandService.registerMainQuestion(userId, dto));
     }
 
 

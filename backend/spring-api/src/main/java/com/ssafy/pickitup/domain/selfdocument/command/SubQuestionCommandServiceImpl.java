@@ -26,9 +26,11 @@ public class SubQuestionCommandServiceImpl implements SubQuestionCommandService 
         SubQuestionCommandRequestDto dto) {
         MainQuestion mainQuestion = mainQueryService.searchById(mainId);
         SubQuestion subQuestion = dto.toEntity(mainQuestion);
+        SubQuestionCommandResponseDto responseDto = subCommandRepository.save(subQuestion)
+            .toCommandResponse();
         mainQuestion.getSubQuestions().add(subQuestion);
         mainCommandRepository.save(mainQuestion);
-        return subCommandRepository.save(subQuestion).toCommandResponse();
+        return responseDto;
     }
 
     @Override

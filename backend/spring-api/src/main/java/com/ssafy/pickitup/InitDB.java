@@ -3,7 +3,9 @@ package com.ssafy.pickitup;
 import com.ssafy.pickitup.domain.auth.command.AuthCommandService;
 import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.selfdocument.command.MainQuestionCommandService;
+import com.ssafy.pickitup.domain.selfdocument.command.SubQuestionCommandService;
 import com.ssafy.pickitup.domain.selfdocument.command.dto.MainQuestionCommandRequestDto;
+import com.ssafy.pickitup.domain.selfdocument.command.dto.SubQuestionCommandRequestDto;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class InitDB {
     private final AuthCommandService authCommandService;
     private final UserCommandService userCommandService;
     private final MainQuestionCommandService mainQuestionCommandService;
+    private final SubQuestionCommandService subQuestionCommandService;
 
     @PostConstruct
     @Transactional
@@ -30,13 +33,28 @@ public class InitDB {
             "younghwan@naver.com");
         //auth 정보 저장
 
-        MainQuestionCommandRequestDto mainQuestionCommandRequestDto = new MainQuestionCommandRequestDto(
-            "메인 질문 기본값");
+        MainQuestionCommandRequestDto mainQuestionCommandRequestDto1 = new MainQuestionCommandRequestDto(
+            "메인 질문 기본값1");
+        MainQuestionCommandRequestDto mainQuestionCommandRequestDto2 = new MainQuestionCommandRequestDto(
+            "메인 질문 기본값2");
+        SubQuestionCommandRequestDto subQuestionCommandRequestDto1 = new SubQuestionCommandRequestDto(
+            "서브1", "내용1", "삼성");
+        SubQuestionCommandRequestDto subQuestionCommandRequestDto2 = new SubQuestionCommandRequestDto(
+            "서브2", "내용2", "SK");
+        SubQuestionCommandRequestDto subQuestionCommandRequestDto3 = new SubQuestionCommandRequestDto(
+            "서브3", "내용3", "네이버");
+        SubQuestionCommandRequestDto subQuestionCommandRequestDto4 = new SubQuestionCommandRequestDto(
+            "서브4", "내용4", "카카오");
 
         authCommandService.signup(userSignupDto1);
         authCommandService.signup(userSignupDto2);
         authCommandService.signup(userSignupDto3);
-        
-        mainQuestionCommandService.registerMainQuestion(mainQuestionCommandRequestDto, 1);
+
+        mainQuestionCommandService.registerMainQuestion(1, mainQuestionCommandRequestDto1);
+        mainQuestionCommandService.registerMainQuestion(1, mainQuestionCommandRequestDto2);
+        subQuestionCommandService.registerSubQuestion(1, subQuestionCommandRequestDto1);
+        subQuestionCommandService.registerSubQuestion(1, subQuestionCommandRequestDto2);
+        subQuestionCommandService.registerSubQuestion(1, subQuestionCommandRequestDto3);
+        subQuestionCommandService.registerSubQuestion(2, subQuestionCommandRequestDto4);
     }
 }
