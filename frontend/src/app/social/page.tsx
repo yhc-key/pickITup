@@ -4,6 +4,9 @@ import Link from "next/link";
 function Social(){
     const requsetKakaoLogin = () => {
         window.location.href = 'https://spring.pickitup.online/oauth2/authorization/kakao';
+        // const code = new URL(window.location.href).searchParams.get('code')
+        // console.log(code);
+        
     }
     const requsetNaverLogin = () => {
         window.location.href = '#';//url 집어넣기
