@@ -48,9 +48,9 @@ export default function QuizResult({ answer }: quizResultProps) {
           {answer.slice(0, 5).map((e: Answer, idx: number) => (
             <div key={idx}>
               {e.correct ? (
-                <RightBox answer={e.answer} />
+                <RightBox />
               ) : (
-                <WrongBox user={e.user} answer={e.answer} />
+                <WrongBox />
               )}
             </div>
           ))}
@@ -59,9 +59,9 @@ export default function QuizResult({ answer }: quizResultProps) {
           {answer.slice(5, 10).map((e: Answer, idx: number) => (
             <div key={idx}>
               {e.correct ? (
-                <RightBox answer={e.answer} />
+                <RightBox />
               ) : (
-                <WrongBox user={e.user} answer={e.answer} />
+                <WrongBox />
               )}
             </div>
           ))}
