@@ -1,4 +1,3 @@
-
 logging:
   level:
     org:
@@ -16,7 +15,12 @@ spring:
     elasticsearch:
       cluster-nodes: ${elasticsearch.host}:${elasticsearch.port}
     mongodb:
-      uri: mongodb://${mongodb.host}:${mongodb.port}/mydb
+      host: ${mongodb.host}
+      port: ${mongodb.port}
+      username: ${mongodb.username}
+      password: ${mongodb.password}
+      authentication-database: admin
+      database: mydb
     redis:
       host: ${redis.host}
       port: ${redis.port}
@@ -43,7 +47,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-#      ddl-auto: create-drop
+      #      ddl-auto: create-drop
       properties:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
