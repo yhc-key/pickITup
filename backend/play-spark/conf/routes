@@ -6,6 +6,8 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index()
 GET     /api/recommend              controllers.RecommendController.recommend()
+GET     /api/similarity/user        controllers.RecommendController.userSimilarity()
+GET     /api/similarity/recruit     controllers.RecommendController.recruitSimilarity()
 GET     /api/test                   controllers.RecommendController.test()
 
 # Map static resources from the /public folder to the /assets URL path

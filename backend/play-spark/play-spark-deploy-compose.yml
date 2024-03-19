@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  play-app-deploy:
+    image: sbtscala/scala-sbt:openjdk-8u342_1.7.2_2.12.16
+    container_name: play-app-deploy
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/app
+    networks:
+      - play-mongo-network
+    working_dir: /app/target/universal/play-spark-1.0-SNAPSHOT/bin
+    command: >
+      /bin/bash -c "
+      ./play-spark -Dplay.http.secret.key=${PLAY_HTTP_SECRET_KEY}"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+    environment:
+      - MONGO_HOSTNAME=${MONGO_HOSTNAME}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DATABASE=${MONGO_DATABASE}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - PLAY_HTTP_SECRET_KEY=${PLAY_HTTP_SECRET_KEY}
+networks:
+  play-mongo-network:
+    external: true
