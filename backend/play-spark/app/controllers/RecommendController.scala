@@ -3,7 +3,7 @@ package controllers
 import com.typesafe.config.ConfigFactory
 import play.api.Configuration
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import services.recommend.RecommendService
+import services.recommend.{RecommendService, SimilarityService}
 
 import javax.inject.Inject
 
@@ -20,4 +20,13 @@ class RecommendController @Inject()(cc: ControllerComponents, config: Configurat
     Ok("Recommendation API is working! " + str)
   }
 
+  def userSimilarity(): Action[AnyContent] = Action { implicit request =>
+    val str = SimilarityService.calculateUserSimilarity()
+    Ok("Similarity API is working! " + str)
+  }
+
+  def recruitSimilarity(): Action[AnyContent] = Action { implicit request =>
+    val str = SimilarityService.calculateRecruitSimilarity()
+    Ok("Recruit Similarity API is working! " + str)
+  }
 }
