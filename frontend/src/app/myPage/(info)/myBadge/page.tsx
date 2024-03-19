@@ -38,9 +38,9 @@ function MyBadge() {
     const newElements:ReactElement[] = [];
     for (let i = 0; i < acquired.length; i++) {
       newElements.push(
-        <div key={i} className="flex flex-col items-center justify-center h-[16vh] w-[16vh]">
+        <div key={i} className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
           <div className="flex items-center justify-center">
-            <Image src={`/images/badge/${acquired[i]}.png`} width={100} height={100} alt="badge"/>
+            <Image src={`/Images/badge/${acquired[i]}.png`} width={100} height={100} alt="badge"/>
           </div>
           <div className="flex items-center justify-center text-sm font-bold">{map.get(acquired[i])}</div>
         </div>
@@ -53,10 +53,10 @@ function MyBadge() {
     const newElements:ReactElement[] = [];
     for (let i = 0; i < unacquired.length; i++) {
       newElements.push(
-        <div key={i} className="flex flex-col items-center justify-center h-[16vh] w-[16vh]">
+        <div key={i} className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
           <div className="h-[100px] w-[100px] flex items-center justify-center">
             {/* <Image src={`/images/badge/${unacquired[i]}.png`} width={100} height={100} alt="badge"/> */}
-            <Image src={`/images/badge/locked.png`} width={50} height={50} alt="badge"/>
+            <Image src={`/Images/badge/locked.png`} width={50} height={50} alt="badge"/>
           </div>
           <div className="flex items-center justify-center text-sm font-bold">{map.get(unacquired[i])}</div>
         </div>
