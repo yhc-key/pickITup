@@ -10,7 +10,7 @@ export default function Practice() {
           {
             headers: {
               Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTcxMDgzODI0Mn0.hIHFh_B-VnyIw3nlRAgENNx8igdbI-TGNyNpP8SuFUc",
+                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTcxMDkwNTM0Nn0.A-pDxNwD38jJhVGMt-NCbk1ykeZ79DrT57rq946pDE8",
             },
           }
         );
@@ -18,7 +18,7 @@ export default function Practice() {
           throw new Error("Failed to fetch data");
         }
         const jsonData = await res.json();
-        console.log(jsonData);
+        console.log(jsonData.response);
       } catch (error) {
         console.log(error);
       }
