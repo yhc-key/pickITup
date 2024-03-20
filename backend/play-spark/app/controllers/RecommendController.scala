@@ -1,7 +1,9 @@
 package controllers
 
-import com.typesafe.config.ConfigFactory
+import models.Recommendation
+import serializers.RecommendationSerializer._
 import play.api.Configuration
+import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import services.recommend.{RecommendService, SimilarityService}
 
@@ -15,9 +17,8 @@ class RecommendController @Inject()(cc: ControllerComponents, config: Configurat
   }
 
   def recommend(): Action[AnyContent] = Action { implicit request =>
-//    val str = cbfService.recommend()
-    val str = RecommendService.recommend()
-    Ok("Recommendation API is working! " + str)
+    val list: List[Recommendation] = RecommendService.recommend()
+    Ok(Json.toJson(list))
   }
 
   def userSimilarity(): Action[AnyContent] = Action { implicit request =>

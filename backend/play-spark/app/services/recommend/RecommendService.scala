@@ -1,6 +1,7 @@
 package services.recommend
 
 import com.typesafe.config.ConfigFactory
+import models.Recommendation
 import org.apache.spark.ml.feature.CountVectorizer
 import org.apache.spark.ml.linalg.{SparseVector, Vectors}
 import org.apache.spark.ml.recommendation.ALS
@@ -22,7 +23,7 @@ object RecommendService {
 
   case class JobPosting(jobId: Int, company: String, qualificationRequirements: Seq[String], preferredRequirements: Seq[String])
 
-  def recommend(): String = {
+  def recommend(): List[Recommendation] = {
 
     //    Logger.getLogger("org").setLevel(Level.ERROR)
 
@@ -96,9 +97,16 @@ object RecommendService {
       .limit(10)
       .show()
 
+    val recommendationList : List[Recommendation] = similarityScores
+      .filter($"userId" === 1)
+      .limit(10)
+      .as[Recommendation]
+      .collect()
+      .toList
+
     spark.stop()
 
-    "test"
+    recommendationList
   }
 
   private def contentBasedFiltering(): Unit = {
