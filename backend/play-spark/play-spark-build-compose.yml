@@ -4,7 +4,7 @@ services:
     image: sbtscala/scala-sbt:openjdk-8u342_1.7.2_2.12.16
     container_name: play-app-build
     volumes:
-      - .:/app
+      - ${SBT_PROJECT_HOST_PATH}:/app
     working_dir: /app
     command: >
       /bin/bash -c "

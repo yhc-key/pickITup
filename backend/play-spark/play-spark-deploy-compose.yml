@@ -6,7 +6,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - .:/app
+      - ${SBT_PROJECT_HOST_PATH}:/app
     networks:
       - play-mongo-network
     working_dir: /app/target/universal/play-spark-1.0-SNAPSHOT/bin
