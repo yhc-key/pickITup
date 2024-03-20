@@ -1,9 +1,7 @@
 package com.ssafy.pickitup.domain.user.entity;
 
-import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +30,7 @@ public class User extends BaseTimeEntity {
 
     private String nickname;
     private String profile;
-    private String github;  
+    private String github;
     private String techBlog;
 
     @Builder.Default
@@ -55,7 +53,11 @@ public class User extends BaseTimeEntity {
     private Integer exp = 0;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "auth_id",  referencedColumnName = "id")
+    @JoinColumn(name = "auth_id", referencedColumnName = "id")
     private Auth auth;
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
 }

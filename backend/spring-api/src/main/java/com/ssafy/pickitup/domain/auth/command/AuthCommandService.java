@@ -12,9 +12,11 @@ import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.entity.RefreshToken;
 import com.ssafy.pickitup.security.exception.AuthNotFoundException;
 import com.ssafy.pickitup.security.exception.PasswordException;
+import com.ssafy.pickitup.security.exception.RefreshTokenException;
 import com.ssafy.pickitup.security.jwt.JwtTokenDto;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import com.ssafy.pickitup.security.service.RedisService;
+import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -94,11 +96,11 @@ public class AuthCommandService {
 
         // RefreshToken Redis에 저장
         RefreshToken refreshToken = RefreshToken.builder()
-            .userId(authentication.getName())
+            .authId(authentication.getName())
             .refreshToken(tokenSet.getRefreshToken())
             .build();
 
-        redisService.saveRefreshToken(refreshToken.getUserId(), refreshToken.getRefreshToken());
+        redisService.saveRefreshToken(refreshToken.getAuthId(), refreshToken.getRefreshToken());
 
         log.debug("RefreshToken in Redis = {}", refreshToken.getRefreshToken());
         return tokenSet;
@@ -122,21 +124,99 @@ public class AuthCommandService {
     }
 
     @Transactional
-    public void deleteAuth(int authId, String password) {
-        if (validatePassword(authId, password)) {
-            log.info("삭제");
-            System.out.println("authCommandJpaRepository.findAuthById(authId) = "
-                + authCommandJpaRepository.findAuthById(authId));
-            authCommandJpaRepository.deleteById(authId);
+    public void deactivateAuth(int authId, String password) {
+        if (validatePassword(authId, password, true)) {
+            log.info("비활성화");
+            Auth auth = authCommandJpaRepository.findAuthById(authId);
+            //유저 비활성화
+            auth.deactivate();
         }
     }
 
-    public boolean validatePassword(int authId, String password) {
-        Auth auth = authCommandJpaRepository.findById(authId).orElseThrow(
-            () -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
+    @Transactional
+    public void activateAuth(int authId, String password) {
+        if (validatePassword(authId, password, false)) {
+            log.info("활성화");
+            Auth auth = authCommandJpaRepository.findDeletedAuthById(authId).orElseThrow(
+                () -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
+            //유저 비활성화
+            auth.activate();
+        }
+    }
+
+    public boolean validatePassword(int authId, String password, boolean flag) {
+        Auth auth;
+        if (flag) {
+            //활성화 유저
+            auth = authCommandJpaRepository.findById(authId).orElseThrow(
+                () -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
+        } else {
+            //비활성화 유저
+            auth = authCommandJpaRepository.findDeletedAuthById(authId).orElseThrow(
+                () -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
+        }
+
         if (passwordEncoder.matches(password, auth.getPassword())) {
             return true;
         }
         throw new PasswordException("비밀번호가 일치하지 않습니다.");
     }
+
+
+    public JwtTokenDto reissueToken(String accessToken, String refreshToken) {
+        Authentication authentication = jwtTokenProvider.getAuthentication(
+            jwtTokenProvider.resolveToken(accessToken));
+
+        Integer principal = Integer.valueOf(authentication.getName());
+        String refreshTokenInDB = redisService.getRefreshToken(principal);
+
+        log.debug("Auth Id = {}", principal);
+        Auth auth = authCommandJpaRepository.findAuthById(principal);
+
+//        UserDto user = userService.findUserById(principal);
+        if (refreshTokenInDB == null) { // Redis에 RT 없을 경우
+            log.debug("Refresh Token is not in Redis.");
+            refreshTokenInDB = auth.getRefreshToken();
+            if (refreshTokenInDB == null) { // MySQL에 RT 없을 경우
+                log.debug("Refresh Token is not in MySQL.");
+                throw new RefreshTokenException("refresh token 값이 존재하지 않습니다.");
+            }
+        }
+        log.debug("Refresh Token in DB = {}", refreshTokenInDB);
+
+        if (!refreshTokenInDB.equals(refreshToken)) {
+            redisService.deleteRefreshToken(principal);
+            auth.deleteRefreshToken();
+            log.info("Refresh Token is not identical.");
+            throw new RefreshTokenException("Refresh Token 값이 일치하지 않습니다.");
+        }
+
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
+            redisService.deleteRefreshToken(principal);
+            auth.deleteRefreshToken();
+            log.info("Refresh Token is invalidate.");
+            throw new MalformedJwtException("유효하지 않은 토큰입니다.");
+        }
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (redisService.getRefreshToken(principal) != null) {
+            // Redis에 저장되어 있는 RT 삭제
+            redisService.deleteRefreshToken(principal);
+        }
+        // 토큰 재발급
+        JwtTokenDto reissueTokenDto = jwtTokenProvider.generateToken(authentication);
+
+        String reissueRefreshToken = reissueTokenDto.getRefreshToken();
+        // Redis, DB 에 새로 발급 받은 RT 저장
+        redisService.saveRefreshToken(String.valueOf(principal), reissueRefreshToken);
+
+        log.debug("Auth Id = {}", principal);
+        log.debug("RefreshToken save in Redis = {}", reissueTokenDto.getRefreshToken());
+
+        auth.setRefreshToken(reissueRefreshToken);
+
+        return reissueTokenDto;
+    }
+
+
 }

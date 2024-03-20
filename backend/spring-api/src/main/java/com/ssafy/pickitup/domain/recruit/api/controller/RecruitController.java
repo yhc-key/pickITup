@@ -1,5 +1,8 @@
 package com.ssafy.pickitup.domain.recruit.api.controller;
 
+import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
+
+import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.recruit.command.RecruitCommandElasticsearchRepository;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryRequestDto;
@@ -31,15 +34,19 @@ public class RecruitController {
 
     @Operation(summary = "채용 공고 조회(전체)")
     @GetMapping("/{pageNo}")
-    public Page<RecruitQueryResponseDto> getAllDocuments(@PathVariable Integer pageNo) {
-
-        return recruitQueryService.searchAll(pageNo);
+    public ApiResult<?> getAllDocuments(@PathVariable Integer pageNo) {
+        Page<RecruitQueryResponseDto> recruitQueryResponseDtoList = recruitQueryService.searchAll(
+            pageNo);
+        return success(recruitQueryResponseDtoList);
+//        return recruitQueryService.searchAll(pageNo);
     }
 
     @Operation(summary = "채용 공고 조회(키워드, 검색어)")
     @PostMapping("/search")
-    public Page<RecruitQueryResponseDto> getDocuments(@RequestBody RecruitQueryRequestDto dto) {
-        return recruitQueryService.search(dto);
+    public ApiResult<?> getDocuments(@RequestBody RecruitQueryRequestDto dto) {
+        Page<RecruitQueryResponseDto> search = recruitQueryService.search(dto);
+        return success(search);
+//        return recruitQueryService.search(dto);
     }
 
     @Operation(summary = "Elasticsearch 데이터를 mongodb로 마이그레이션")
