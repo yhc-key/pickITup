@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { useEffect, useState} from "react";
+import UserInfo from "./userInfo";
 interface LinkType {
   name: string;
   href: string;
@@ -19,9 +20,14 @@ const navLinks: LinkType[] = [
 export default function Header() {
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
-
+  const [logstate,setLogstate] = useState<boolean>(false);
+  useEffect(()=>{
+    // if(sessionStorage.getItem('accessToken')!==''){
+    //   setLogstate(false);
+    // }
+  },[])
   return (
-    <header className="flex justify-between border-b border-[#d9d9d9]">
+    <header className="flex justify-between border-b border-f5gray-400">
       <div>
         <Link href="/" className="flex items-center">
           <Image
@@ -32,11 +38,11 @@ export default function Header() {
             priority={true}
             className="m-3"
           />
-          <div className="mx-1 text-f5black-400 text-lg font-semibold">
+          <div className="mx-1 text-lg font-semibold text-f5black-400">
             pick
           </div>
-          <div className="mx-1 text-f5green-300 text-lg font-semibold">IT</div>
-          <div className="mx-1 text-f5black-400 text-lg font-semibold">up</div>
+          <div className="mx-1 text-lg font-semibold text-f5green-300">IT</div>
+          <div className="mx-1 text-lg font-semibold text-f5black-400">up</div>
         </Link>
       </div>
       <div className="flex">
@@ -57,13 +63,14 @@ export default function Header() {
           );
         })}
       </div>
-      <div className="mr-10 my-auto bg-f5gray-300 p-3 rounded-2xl">
-        <Link
+      <div className="p-3 my-auto mr-10 bg-f5gray-300 rounded-2xl">
+        {(sessionStorage.getItem('accessToken')!==''&&sessionStorage.getItem('accessToken')!==undefined)?<UserInfo/>:<Link
           href="/social"
           className="text-f5black-400 hover:text-f5green-300"
         >
           로그인 & 회원가입
         </Link>
+        }
       </div>
     </header>
   );
