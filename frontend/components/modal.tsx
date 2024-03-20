@@ -11,10 +11,10 @@ export default function Modal({ open, children }: ModalProps) {
   const [prevScrollY, setPrevScrollY] = useState<number | undefined>(undefined);
   const [hasScrollbar, setHasScrollbar] = useState<boolean>(false);
 
-    // 스크롤이 있는지 확인하는 함수
-    const checkScrollbar = (): void => {
-      setHasScrollbar(document.body.scrollHeight > window.innerHeight);
-    };
+  // 스크롤이 있는지 확인하는 함수
+  const checkScrollbar = (): void => {
+    setHasScrollbar(document.body.scrollHeight > window.innerHeight);
+  };
 
   // 스크롤을 방지하고 현재 위치를 반환
   const preventScroll = (): void => {
@@ -38,6 +38,19 @@ export default function Modal({ open, children }: ModalProps) {
   };
 
   useEffect((): void => {
+    // 컴포넌트가 마운트될 때 스크롤바 여부를 확인
+    checkScrollbar();
+
+    if (open) {
+      checkScrollbar();
+      preventScroll();
+    } else {
+      allowScroll();
+    }
+  }, []);
+
+  useEffect((): void => {
+    // 모달이 열릴 때마다 스크롤바 여부를 확인하고, 스크롤 방지/허용 함수 호출
     if (open) {
       checkScrollbar();
       preventScroll();
