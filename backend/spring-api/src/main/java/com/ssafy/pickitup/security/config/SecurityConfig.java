@@ -4,7 +4,6 @@ package com.ssafy.pickitup.security.config;
 import com.ssafy.pickitup.security.filter.JwtAuthenticationFilter;
 import com.ssafy.pickitup.security.handler.JwtAccessDeniedHandler;
 import com.ssafy.pickitup.security.handler.OAuth2LoginFailureHandler;
-//import com.ssafy.pickitup.security.handler.OAuth2LoginSuccessHandler;
 import com.ssafy.pickitup.security.handler.OAuth2LoginSuccessHandler;
 import com.ssafy.pickitup.security.jwt.JwtAuthenticationEntryPoint;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
@@ -19,7 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -29,6 +27,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private static final String[] swaggerURL = {
+        "/api/**", "/graphiql", "/graphql",
+        "/swagger-ui/**", "/api-docs", "/swagger-ui.html",
+        "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html"
+    };
     private final CorsConfig corsConfig;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
@@ -37,17 +40,11 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-
-    private static final String[] swaggerURL = {
-        "/api/**", "/graphiql", "/graphql",
-        "/swagger-ui/**", "/api-docs", "/swagger-ui.html",
-        "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html"
-    };
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-            .requestMatchers("/auth/**", "/recruit/**", "/self/**") // '인증','인가' 서비스 적용x
+            .requestMatchers("/auth/**", "/recruit/**", "/self/**",
+                "/quizzes/**") // '인증','인가' 서비스 적용x
             .requestMatchers(swaggerURL)
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // 정적 리소스들
     }

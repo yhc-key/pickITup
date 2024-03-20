@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +51,16 @@ public class UserController {
         int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         userCommandService.changeNickname(authId, nickname.getNickname());
         return success("닉네임 변경 성공");
+    }
+
+    @Operation(summary = "회원 스크랩 채용 공고 조회 API")
+    @GetMapping("/{authId}/scraps/recruit")
+    public ApiResult<?> getUserScrapList(@PathVariable("authId") Integer authId) {
+//    [1, 2,3,5, ,3,123 ,123,12,3,  10120, 213120123,,1230031,0123012,213012123];
+//        recruitService.findAllById(List);
+
+        return success("null");
+//        return succss(ReposnseList);
     }
 
 

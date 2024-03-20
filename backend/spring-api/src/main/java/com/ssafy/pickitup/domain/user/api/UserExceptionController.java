@@ -3,6 +3,7 @@ package com.ssafy.pickitup.domain.user.api;
 import static com.ssafy.pickitup.domain.auth.api.ApiUtils.error;
 
 import com.ssafy.pickitup.domain.auth.api.ApiUtils;
+import com.ssafy.pickitup.domain.user.exception.DuplicateUsernameException;
 import com.ssafy.pickitup.domain.user.exception.ErrorMessageDto;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.security.exception.AuthNotFoundException;
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class UserExceptionController {
 
-    private ResponseEntity<ApiUtils.ApiResult<?>> newResponse(Throwable throwable, HttpStatus status) {
+    private ResponseEntity<ApiUtils.ApiResult<?>> newResponse(Throwable throwable,
+        HttpStatus status) {
         return newResponse(throwable.getMessage(), status);
     }
 
@@ -34,9 +36,11 @@ public class UserExceptionController {
     public ResponseEntity<?> handleUserNotFoundException(Exception exception) {
         return newResponse(exception, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler({
         AuthNotFoundException.class,
-        PasswordException.class
+        PasswordException.class,
+        DuplicateUsernameException.class
     })
     public ResponseEntity<?> handleAuthException(Exception exception) {
         return newResponse(exception, HttpStatus.BAD_REQUEST);

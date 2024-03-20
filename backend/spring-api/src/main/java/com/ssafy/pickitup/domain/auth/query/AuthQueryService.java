@@ -2,12 +2,14 @@ package com.ssafy.pickitup.domain.auth.query;
 
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
+import com.ssafy.pickitup.domain.user.exception.DuplicateUsernameException;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.security.exception.JwtBlackListException;
 import com.ssafy.pickitup.security.exception.RefreshTokenException;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import com.ssafy.pickitup.security.service.RedisService;
 import io.jsonwebtoken.JwtException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -77,5 +79,12 @@ public class AuthQueryService {
         }
         log.debug("2. refresh token is identical.");
 
+    }
+
+    public void idDuplicated(String username) {
+        Optional<Auth> authByUsername = authQueryJpaRepository.findAuthByUsername(username);
+        if (authByUsername.isPresent()) {
+            throw new DuplicateUsernameException("이미 존재하는 아이디입니다.");
+        }
     }
 }

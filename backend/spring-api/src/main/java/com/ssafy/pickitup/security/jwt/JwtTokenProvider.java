@@ -56,7 +56,7 @@ public class JwtTokenProvider {
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
 
-        return new JwtTokenDto(accessToken, refreshToken);
+        return new JwtTokenDto(auth.getId(), accessToken, refreshToken);
     }
 
     public JwtTokenDto generateToken(Authentication authentication) {
