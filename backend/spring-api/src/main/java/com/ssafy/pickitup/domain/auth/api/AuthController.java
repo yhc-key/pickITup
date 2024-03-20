@@ -25,8 +25,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -95,14 +95,43 @@ public class AuthController {
         return success(authProfileDto);
     }
 
-    @Operation(summary = "회원 삭제 API")
-    @DeleteMapping
-    public ResponseEntity<?> deleteUser(HttpServletRequest request,
+    @Operation(summary = "회원 비활성화 API")
+    @PatchMapping("deactivate")
+    public ApiResult<String> deactivateAuth(HttpServletRequest request,
         @RequestBody PasswordDto password) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
-        authCommandService.deleteAuth(authId, password.getPassword());
-        return ResponseEntity.status(HttpStatus.OK).build();
+        authCommandService.deactivateAuth(authId, password.getPassword());
+        return success("비활성화 되었습니다.");
     }
 
+    @Operation(summary = "회원 활성화 API")
+    @PatchMapping("activate")
+    public ApiResult<String> activateAuth(HttpServletRequest request,
+        @RequestBody PasswordDto password) {
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        authCommandService.activateAuth(authId, password.getPassword());
+        return success("활성화 되었습니다.");
+    }
+
+    @Operation(summary = "비밀번호 재확인 API")
+    @PostMapping("/password")
+    public ApiResult<?> confirmPassword(HttpServletRequest request,
+        @RequestBody PasswordDto password) {
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        authCommandService.validatePassword(authId, password.getPassword(), true);
+        return success("비밀번호가 일치합니다.");
+    }
+
+
+    @Operation(summary = "RT 재발급 API, reqeust(헤더) : Access Token, Refresh Token")
+    @PostMapping("/token/refresh")
+    public ApiResult<?> reissue(HttpServletRequest request) {
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String refreshToken = request.getHeader(JwtProperties.REFRESH_TOKEN);
+        JwtTokenDto reissuedToken = authCommandService.reissueToken(accessToken, refreshToken);
+        return success(reissuedToken.responseDto());
+    }
 }

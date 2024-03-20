@@ -37,5 +37,11 @@ public class UserCommandService {
         return UserResponseDto.toDto(user);
     }
 
+    @Transactional
+    public void changeNickname(Integer authId, String nickname) {
+        User user = userCommandJpaRepository.findByAuthId(authId);
+        user.changeNickname(nickname);
+    }
+
 
 }

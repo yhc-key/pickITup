@@ -45,10 +45,10 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         Auth updatedAuth = Auth.toDto(authDto);
         // Redis에 Refreshtoken 저장
         RefreshToken refreshToken = RefreshToken.builder()
-            .userId(authentication.getName())
+            .authId(authentication.getName())
             .refreshToken(tokenSet.getRefreshToken())
             .build();
-        redisService.saveRefreshToken(refreshToken.getUserId(), refreshToken.getRefreshToken());
+        redisService.saveRefreshToken(refreshToken.getAuthId(), refreshToken.getRefreshToken());
         // token 쿼리스트링
         String targetUrl = UriComponentsBuilder.fromUriString(CALLBACK_URL)
             .queryParam(JwtProperties.TOKEN_TYPE, JwtProperties.TOKEN_PREFIX.substring(0, 6))

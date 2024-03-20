@@ -25,14 +25,14 @@ public class RedisService {
     private final Long RT_EXPIREATION_TIME = 60 * 24L; // 1day
     private final Long VC_EXPIREATION_TIME = 10L; // 10분
 
-    public void saveRefreshToken(String userId, String refreshToken) {
+    public void saveRefreshToken(String authId, String refreshToken) {
         refreshTokenRedisTemplate.opsForValue()
-            .set(RT_PREFIX + userId + SUFFIX, refreshToken, RT_EXPIREATION_TIME,
+            .set(RT_PREFIX + authId + SUFFIX, refreshToken, RT_EXPIREATION_TIME,
                 TimeUnit.MINUTES);
     }
 
-    public String getRefreshToken(Integer userId) {
-        return refreshTokenRedisTemplate.opsForValue().get(RT_PREFIX + userId + SUFFIX);
+    public String getRefreshToken(Integer authId) {
+        return refreshTokenRedisTemplate.opsForValue().get(RT_PREFIX + authId + SUFFIX);
     }
 
     public void deleteRefreshToken(Integer userId) {
@@ -45,7 +45,7 @@ public class RedisService {
                 TimeUnit.MINUTES);
     }
 
-    public boolean hasRefreshToken(Integer userId){
+    public boolean hasRefreshToken(Integer userId) {
         return Boolean.TRUE.equals(refreshTokenRedisTemplate.hasKey(RT_PREFIX + userId + SUFFIX));
     }
 
@@ -56,10 +56,12 @@ public class RedisService {
     public void deleteVerificationCode(String email) {
         verificationCodeRedisTemplate.delete(VC_PREFIX + email + SUFFIX);
     }
+
     public void saveJwtBlackList(String accessToken) {
         long expirationTime = jwtTokenProvider.getTokenExpiration(accessToken);
         jwtBlackListRedisTemplate.opsForValue()
-            .set(BL_PREFIX + jwtTokenProvider.resolveToken(accessToken) + SUFFIX, "logout", expirationTime,
+            .set(BL_PREFIX + jwtTokenProvider.resolveToken(accessToken) + SUFFIX, "logout",
+                expirationTime,
                 TimeUnit.MILLISECONDS);
     }
 
