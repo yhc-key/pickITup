@@ -40,7 +40,7 @@ export default function TechSelectOX() {
     <div>
       <button onClick={(): void => setIsModalOpen(true)}>
         <Image
-          src="/Images/OXQuiz.png"
+          src="/images/OXQuiz.png"
           alt="OXQuiz"
           width={400}
           height={280}
@@ -82,7 +82,7 @@ export default function TechSelectOX() {
                     className={`flex flex-row border-f5gray-300 border py-1 pr-2 rounded-2xl text-f5black-400 text-xs items-center  hover:transition-all hover:scale-105 hover:ease-in-out  ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
                   >
                     <Image
-                      src={`/Images/techLogo/${tech}.png`}
+                      src={`/images/techLogo/${tech}.png`}
                       alt={tech}
                       width={22}
                       height={22}

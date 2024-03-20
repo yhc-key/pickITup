@@ -14,7 +14,7 @@ export default function GamePage() {
     <div>
       <div className="flex flex-wrap justify-center mx-auto mt-4 mb-8">
         <Image
-          src="/Images/gameMachine.png"
+          src="/images/gameMachine.png"
           alt="gameMachine"
           width={150}
           height={150}

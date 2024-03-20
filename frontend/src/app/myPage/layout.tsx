@@ -5,10 +5,10 @@ import Link from "next/link";
 
 
 const dummyMyData: string[][] = [
-  ["내가 찜한 채용공고", "3 개", "/Images/starOutline.png"],
-  ["마감 임박 채용공고", "1 개", "/Images/history.png"],
-  ["문제 풀이 수", "64 개", "/Images/iconLibraryBooks.png"],
-  ["내 뱃지", "3 개", "/Images/iconShield.png"],
+  ["내가 찜한 채용공고", "3 개", "/images/starOutline.png"],
+  ["마감 임박 채용공고", "1 개", "/images/history.png"],
+  ["문제 풀이 수", "64 개", "/images/iconLibraryBooks.png"],
+  ["내 뱃지", "3 개", "/images/iconShield.png"],
 ];
 
 
@@ -22,7 +22,7 @@ export default function myPageLayout({
       <div className="min-w-[330px] max-w-[330px]">
         <div className="flex flex-row justify-between">
           <Image
-            src="/Images/pickITup.svg"
+            src="/images/pickITup.svg"
             alt="dummyPerson"
             width="100"
             height="100"
@@ -32,7 +32,7 @@ export default function myPageLayout({
             <p>조싸피</p>
             <Link href="/myPage/updateMyInfo" className="flex flex-row">
               <Image
-                src="/Images/personEdit.png"
+                src="/images/personEdit.png"
                 alt="profileUpdate"
                 width="100"
                 height="100"
@@ -72,28 +72,28 @@ export default function myPageLayout({
               프론트
             </div>
             <Image
-              src="/Images/techLogoEx/Angular.png"
+              src="/images/techLogoEx/Angular.png"
               alt="앵귤러"
               width="80"
               height="7"
               className="w-auto h-7"
             />
             <Image
-              src="/Images/techLogoEx/ReactJS.png"
+              src="/images/techLogoEx/ReactJS.png"
               alt="리액트"
               width="80"
               height="10"
               className="w-auto h-7"
             />
             <Image
-              src="/Images/techLogoEx/ReactNative.png"
+              src="/images/techLogoEx/ReactNative.png"
               alt="리액트네이티브"
               width="80"
               height="10"
               className="w-auto h-7"
             />
             <Image
-              src="/Images/techLogoEx/VueJS.png"
+              src="/images/techLogoEx/VueJS.png"
               alt="뷰"
               width="80"
               height="10"
@@ -105,21 +105,21 @@ export default function myPageLayout({
               백앤드
             </div>
             <Image
-              src="/Images/techLogoEx/Java.png"
+              src="/images/techLogoEx/Java.png"
               alt="자바"
               width="80"
               height="7"
               className="w-auto h-7"
             />
             <Image
-              src="/Images/techLogoEx/Spring.png"
+              src="/images/techLogoEx/Spring.png"
               alt="스프링"
               width="80"
               height="10"
               className="w-auto h-7"
             />
             <Image
-              src="/Images/techLogoEx/SpringBoot.png"
+              src="/images/techLogoEx/SpringBoot.png"
               alt="스프링부트"
               width="80"
               height="10"
@@ -131,30 +131,30 @@ export default function myPageLayout({
               DevOps
             </div>
             <Image
-              src="/Images/techLogoEx/Github.png"
+              src="/images/techLogoEx/Github.png"
               alt="깃허브"
               width="80"
               height="7"
               className="w-auto h-7"
             />
             <Image
-              src="/Images/techLogoEx/Docker.png"
+              src="/images/techLogoEx/Docker.png"
               alt="도커"
               width="80"
               height="10"
               className="w-auto h-7"
             />
             <Image
-              src="/Images/techLogoEx/Kubernetes.png"
+              src="/images/techLogoEx/Kubernetes.png"
               alt="젠킨스"
               width="80"
               height="10"
               className="w-auto h-7"
             />
           </div>
-          <div className="mt-4 flex flex-row gap-3 items-center"><Image src="/Images/Github.png" alt="velog" width="30" height="30"/> <a href="https://github.com/yhc-key">https://github.com/yhc-key</a></div>
-          <div className="mt-2 flex flex-row gap-3 items-center"><Image src="/Images/velog.png" alt="velog" width="30" height="30"/> <a href="http://velog.io/@yhc-key">https://velog.io/@yhc-key</a></div>
-          <div className="mt-2 flex flex-row gap-3 items-center"><Image src="/Images/email.png" alt="velog" width="30" height="30"/> yhcho0712@gmail.com</div>
+          <div className="mt-4 flex flex-row gap-3 items-center"><Image src="/images/Github.png" alt="velog" width="30" height="30"/> <a href="https://github.com/yhc-key">https://github.com/yhc-key</a></div>
+          <div className="mt-2 flex flex-row gap-3 items-center"><Image src="/images/velog.png" alt="velog" width="30" height="30"/> <a href="http://velog.io/@yhc-key">https://velog.io/@yhc-key</a></div>
+          <div className="mt-2 flex flex-row gap-3 items-center"><Image src="/images/email.png" alt="velog" width="30" height="30"/> yhcho0712@gmail.com</div>
         </div>
       </div>
       <div className="flex-grow ml-5">{children}</div>

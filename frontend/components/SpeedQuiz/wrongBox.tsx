@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import wrong from "/public/Images/wrong.png";
+import wrong from "/public/images/wrong.png";
 
 interface wrongBoxProps {
   user: string;

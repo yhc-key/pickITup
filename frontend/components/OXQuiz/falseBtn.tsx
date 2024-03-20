@@ -2,8 +2,8 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import falseRed from "/public/Images/falseRed.png";
-import falseGray from "/public/Images/falseGray.png";
+import falseRed from "/public/images/falseRed.png";
+import falseGray from "/public/images/falseGray.png";
 
 interface FalseBtnProps {
   onNextClick: () => void;

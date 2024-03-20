@@ -25,7 +25,7 @@ export default function Header() {
       <div>
         <Link href="/" className="flex items-center">
           <Image
-            src="/Images/ITUlogo.png"
+            src="/images/ITUlogo.png"
             alt="logo"
             width={36}
             height={36}

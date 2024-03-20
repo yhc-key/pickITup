@@ -40,7 +40,7 @@ export default function QuizResult({ answer }: quizResultProps) {
           <div className="text-xs text-f5black-400"></div>
         </div>
         <Image
-          src="/Images/hourglass2.png"
+          src="/images/hourglass2.png"
           alt="gameMachine"
           width={110}
           height={110}

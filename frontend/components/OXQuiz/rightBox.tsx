@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import trueAnswer from "/public/Images/trueAnswer.png";
+import trueAnswer from "/public/images/trueAnswer.png";
 
 export default function RightBox() {
   return (

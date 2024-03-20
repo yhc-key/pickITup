@@ -2,8 +2,8 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import trueBlue from "/public/Images/trueBlue.png";
-import trueGray from "/public/Images/trueGray.png";
+import trueBlue from "/public/images/trueBlue.png";
+import trueGray from "/public/images/trueGray.png";
 
 interface trueBtnProps {
   onNextClick: () => void;

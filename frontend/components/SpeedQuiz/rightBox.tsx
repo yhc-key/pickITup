@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import right from "/public/Images/right.png";
+import right from "/public/images/right.png";
 
 interface rightBoxProps {
   answer: string;

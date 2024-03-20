@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import falseAnswer from "/public/Images/falseAnswer.png";
+import falseAnswer from "/public/images/falseAnswer.png";
 
 export default function WrongBox() {
   return (

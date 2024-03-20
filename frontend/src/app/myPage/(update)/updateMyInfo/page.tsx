@@ -66,7 +66,7 @@ export default function MyPage() {
     >
       <h2 className="text-2xl font-bold">정보 수정하기</h2>
       <Image
-        src="/Images/pickItup.svg"
+        src="/images/pickItup.svg"
         alt="프로필사진"
         width="100"
         height="100"
@@ -101,7 +101,7 @@ export default function MyPage() {
               className="flex flex-row items-center p-1 pr-2 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5red-200"
             >
               <Image
-                src={`/Images/techLogo/${pickTech}.png`}
+                src={`/images/techLogo/${pickTech}.png`}
                 alt={pickTech}
                 width="28"
                 height="28"
@@ -137,7 +137,7 @@ export default function MyPage() {
               className="flex flex-row items-center p-1 pr-2 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5green-200"
             >
               <Image
-                src={`/Images/techLogo/${tech}.png`}
+                src={`/images/techLogo/${tech}.png`}
                 alt={tech}
                 width="28"
                 height="28"
