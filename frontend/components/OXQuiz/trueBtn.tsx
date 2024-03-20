@@ -2,9 +2,6 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import trueBlue from "/images/trueBlue.png";
-import trueGray from "/images/trueGray.png";
-
 interface trueBtnProps {
   onNextClick: () => void;
 }
@@ -30,8 +27,10 @@ export default function FalseBtn({ onNextClick }: trueBtnProps) {
         onClick={onNextClick}
       >
         <Image
-          src={hovered ? trueBlue : trueGray}
+          src={hovered ? "/images/trueBlue.png" : "/images/trueGray.png"}
           alt={hovered ? "trueBlue" : "trueGray"}
+          width={120}
+          height={120}
           className="transition-all duration-300 ease-in-out"
         />
       </div>
