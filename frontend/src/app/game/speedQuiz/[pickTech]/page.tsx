@@ -2,9 +2,9 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 
-import { speedQuizDataMap } from "@/../data/speedQuizData";
-import BackBtn from "../../../../../components/game/backBtn";
-import Question from "../../../../../components/game/question";
+import { speedQuizDataMap } from "@/data/speedQuizData";
+import BackBtn from "@/components/game/backBtn";
+import Question from "@/components/game/question";
 
 interface Quiz {
   question: string;
