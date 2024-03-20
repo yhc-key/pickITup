@@ -80,7 +80,7 @@ object RecommendService {
     // 유사도 계산
     val similarityScores = userFeatures.crossJoin(jobFeatures).map { row =>
         val userVec = row.getAs[SparseVector]("features_user")
-        val jobVec = row.getAs[SparseVector]("features_job")
+        val jobVec = row.getAs[SparseVector]("features_recruit")
         val similarity = SparkUtil.cosineSimilarity(userVec, jobVec)
         (row.getAs[Int]("userId"), row.getAs[Int]("jobId"), row.getAs[String]("company"), similarity)
       }.toDF("userId", "jobId", "company", "similarityScore")
