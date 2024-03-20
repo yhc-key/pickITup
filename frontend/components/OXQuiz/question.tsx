@@ -1,6 +1,4 @@
 "use-client";
-import { useCallback, useRef, useEffect } from "react";
-
 interface Quiz {
   question: string;
   answer: boolean;

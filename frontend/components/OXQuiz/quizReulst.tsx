@@ -1,7 +1,10 @@
-"use-client";
+"use-client"
+import { useState, useEffect } from "react";
 import Image from "next/image";
+
+import Realistic from "../realistic";
 import WrongBox from "./wrongBox";
-import RightBox from "./rigthBox";
+import RightBox from "./rightBox";
 
 interface Answer {
   question: string;
@@ -11,11 +14,21 @@ interface Answer {
   index: number;
 }
 
-interface quizResultProps {
+interface QuizResultProps {
   answer: Answer[];
 }
 
-export default function QuizResult({ answer }: quizResultProps) {
+export default function QuizResult ({ answer }: QuizResultProps)  {
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    const correctCount = answer.filter((e: Answer) => e.correct).length;
+
+    if (correctCount >= 7) {
+      setShowConfetti(true);
+    }
+  }, [answer]);
+
   return (
     <div>
       <div className="flex flex-wrap items-center justify-center">
@@ -32,7 +45,6 @@ export default function QuizResult({ answer }: quizResultProps) {
           width={190}
           height={130}
           priority={true}
-          className="animate-bounce"
         />
       </div>
       <div className="flex justify-center">
@@ -46,27 +58,16 @@ export default function QuizResult({ answer }: quizResultProps) {
       <div className="mt-12 mx-28">
         <div className="flex justify-around">
           {answer.slice(0, 5).map((e: Answer, idx: number) => (
-            <div key={idx}>
-              {e.correct ? (
-                <RightBox />
-              ) : (
-                <WrongBox />
-              )}
-            </div>
+            <div key={idx}>{e.correct ? <RightBox /> : <WrongBox />}</div>
           ))}
         </div>
         <div className="flex justify-around mt-8">
           {answer.slice(5, 10).map((e: Answer, idx: number) => (
-            <div key={idx}>
-              {e.correct ? (
-                <RightBox />
-              ) : (
-                <WrongBox />
-              )}
-            </div>
+            <div key={idx}>{e.correct ? <RightBox /> : <WrongBox />}</div>
           ))}
         </div>
       </div>
+      {showConfetti && <Realistic />}
     </div>
   );
-}
+};

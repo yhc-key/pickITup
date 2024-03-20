@@ -1,7 +1,10 @@
 "use-client";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+
+import Realistic from "../realistic";
 import WrongBox from "./wrongBox";
-import RightBox from "./rigthBox";
+import RightBox from "./rightBox";
 
 interface Answer {
   question: string;
@@ -16,11 +19,21 @@ interface quizResultProps {
 }
 
 export default function QuizResult({ answer }: quizResultProps) {
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    const correctCount = answer.filter((e: Answer) => e.correct).length;
+
+    if (correctCount >= 7) {
+      setShowConfetti(true);
+    }
+  }, [answer]);
+  
   return (
     <div>
       <div className="flex flex-wrap items-center justify-center">
         <div className="flex flex-col mx-1 ml-10">
-          <div className="flex flex-wrap justify-center my-3 text-4xl font-semibold tracking-widest">
+          <div className="flex flex-wrap justify-center my-10 text-4xl font-semibold tracking-widest">
             <div className="mr-3 text-f5green-300">게임</div>
             <div className="text-f5black-400">결과</div>
           </div>
@@ -32,7 +45,6 @@ export default function QuizResult({ answer }: quizResultProps) {
           width={110}
           height={110}
           priority={true}
-          className="animate-bounce"
         />
       </div>
       <div className="flex justify-center">
@@ -67,6 +79,7 @@ export default function QuizResult({ answer }: quizResultProps) {
           ))}
         </div>
       </div>
+      {showConfetti && <Realistic />}
     </div>
   );
 }

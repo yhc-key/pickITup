@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { speedQuizDataMap } from "@/data/speedQuizData";
 import BackBtn from "@/components/game/backBtn";
@@ -23,6 +24,8 @@ interface Answer {
 }
 
 export default function SpeedQuiz(props: any) {
+  const router = useRouter();
+
   const [index, setIndex] = useState(0);
   const [questionList, setQuestionList] = useState<Quiz[]>([]);
   const [answerList, setAnswerList] = useState<string[]>([]);
@@ -79,14 +82,18 @@ export default function SpeedQuiz(props: any) {
     // 제한시간 10초로 갱신
   }, [addValueToAnswer]);
 
+  const listCilckHandler = (): void => {
+    router.push("/game");
+  };
+
   return (
     <div className="flex flex-col">
-      <div className="mx-10 mt-4">
-        <BackBtn />
-      </div>
       {/* <div>{props.params.pickTech}</div> */}
       {questionList[index] ? (
         <div>
+          <div className="mx-10 mt-4">
+            <BackBtn />
+          </div>
           <div className="flex flex-wrap items-center justify-center">
             <div className="flex flex-col mx-1 ml-10">
               <div className="flex flex-wrap justify-center my-3 text-4xl font-semibold tracking-widest">
@@ -114,7 +121,17 @@ export default function SpeedQuiz(props: any) {
           <NextBtn onNextClick={onNextClick} />
         </div>
       ) : (
-        <QuizResult answer={answer} />
+        <div>
+          <QuizResult answer={answer} />
+          <div className="flex justify-end mt-8 mr-28">
+            <button
+              onClick={listCilckHandler}
+              className="px-5 py-2 text-sm font-semibold bg-opacity-80 rounded-3xl text-neutral-100 bg-f5gray-500 hover:bg-opacity-100 ring-1 ring-inset ring-f5gray-400/10"
+            >
+              {"게임 목록 >>"}
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
