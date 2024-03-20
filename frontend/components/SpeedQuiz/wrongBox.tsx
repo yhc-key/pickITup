@@ -2,8 +2,6 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import wrong from "/public/images/wrong.png";
-
 interface wrongBoxProps {
   user: string;
   answer: string;
@@ -28,7 +26,7 @@ export default function WrongBox({ user, answer }: wrongBoxProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Image src={wrong} alt="wrong" />
+      <Image src="/images/wrong.png" alt="wrong" width={23} height={23}/>
       <div className="text-lg font-semibold text-center">
         {hovered ? answer : user}
       </div>
