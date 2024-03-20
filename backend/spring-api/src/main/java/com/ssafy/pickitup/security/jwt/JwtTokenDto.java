@@ -12,6 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class JwtTokenDto {
 
+    private Integer authId;
     private String accessToken;
     private String refreshToken;
 

@@ -162,6 +162,12 @@ public class AuthCommandService {
         throw new PasswordException("비밀번호가 일치하지 않습니다.");
     }
 
+    @Transactional
+    public void changePassword(Integer authId, String password) {
+        Auth auth = authCommandJpaRepository.findAuthById(authId);
+        auth.changePassword(passwordEncoder.encode(password));
+    }
+
 
     public JwtTokenDto reissueToken(String accessToken, String refreshToken) {
         Authentication authentication = jwtTokenProvider.getAuthentication(

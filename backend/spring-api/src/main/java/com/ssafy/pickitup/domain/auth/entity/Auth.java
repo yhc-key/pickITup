@@ -81,4 +81,8 @@ public class Auth extends BaseTimeEntity {
         this.isDeleted = false;
     }
 
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
 }

@@ -27,7 +27,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -125,6 +127,22 @@ public class AuthController {
         return success("비밀번호가 일치합니다.");
     }
 
+    @Operation(summary = "비밀번호 변경 API")
+    @PutMapping("/password")
+    public ApiResult<?> changePassword(HttpServletRequest request,
+        @RequestBody PasswordDto password) {
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        authCommandService.changePassword(authId, password.getPassword());
+        return success("비밀번호 변경 성공");
+    }
+
+    @Operation(summary = "아이디 중복체크 API")
+    @PostMapping("/check/{username}")
+    public ApiResult<?> checkUserId(@PathVariable String username) {
+        authQueryService.idDuplicated(username);
+        return success("사용 가능한 아이디입니다.");
+    }
 
     @Operation(summary = "RT 재발급 API, reqeust(헤더) : Access Token, Refresh Token")
     @PostMapping("/token/refresh")
