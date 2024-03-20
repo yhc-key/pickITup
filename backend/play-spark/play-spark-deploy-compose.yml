@@ -8,7 +8,7 @@ services:
     volumes:
       - ${SBT_PROJECT_HOST_PATH}:/app
     networks:
-      - play-mongo-network
+      - my-network
     working_dir: /app/target/universal/play-spark-1.0-SNAPSHOT/bin
     command: >
       /bin/bash -c "
@@ -25,5 +25,5 @@ services:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
       - PLAY_HTTP_SECRET_KEY=${PLAY_HTTP_SECRET_KEY}
 networks:
-  play-mongo-network:
+  my-network:
     external: true
