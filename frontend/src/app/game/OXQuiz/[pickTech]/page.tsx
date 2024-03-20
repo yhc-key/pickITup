@@ -2,12 +2,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 
-import { OXQuizDataMap } from "@/../data/OXQuizData";
-import BackBtn from "../../../../../components/game/backBtn";
-import Question from "../../../../../components/OXQuiz/question";
-import TrueBtn from "../../../../../components/OXQuiz/trueBtn";
-import FalseBtn from "../../../../../components/OXQuiz/falseBtn";
-import QuizResult from "../../../../../components/OXQuiz/quizReulst";
+import { OXQuizDataMap } from "@/data/OXQuizData";
+import BackBtn from "@/components/game/backBtn";
+import Question from "@/components/OXQuiz/question";
+import TrueBtn from "@/components/OXQuiz/trueBtn";
+import FalseBtn from "@/components/OXQuiz/falseBtn";
+import QuizResult from "@/components/OXQuiz/quizReulst";
 
 interface Quiz {
   question: string;
@@ -111,10 +111,9 @@ export default function OXQuiz(props: any) {
             <FalseBtn onNextClick={FalseClickHandler} />
           </div>
         </div>
-      ) : 
-        (
-          <QuizResult answer={answer} />
-        )}
+      ) : (
+        <QuizResult answer={answer} />
+      )}
     </div>
   );
 }

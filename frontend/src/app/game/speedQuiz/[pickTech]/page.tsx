@@ -3,11 +3,11 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 
 import { speedQuizDataMap } from "@/data/speedQuizData";
-import BackBtn from "../../../../../components/game/backBtn";
-import Question from "../../../../../components/SpeedQuiz/question";
-import TimeBar from "../../../../../components/SpeedQuiz/timebar";
-import NextBtn from "../../../../../components/SpeedQuiz/nextBtn";
-import QuizResult from "../../../../../components/SpeedQuiz/quizResult";
+import BackBtn from "@/components/game/backBtn";
+import Question from "@/components/SpeedQuiz/question";
+import TimeBar from "@/components/SpeedQuiz/timebar";
+import NextBtn from "@/components/SpeedQuiz/nextBtn";
+import QuizResult from "@/components/SpeedQuiz/quizResult";
 
 interface Quiz {
   question: string;

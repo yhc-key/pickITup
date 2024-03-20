@@ -3,9 +3,9 @@ import Link from "next/link";
 
 import { IoHelpCircleSharp } from "react-icons/io5";
 
-import Tooltip from "../../../components/tooltip";
-import TechSelectSpeed from "../../../components/SpeedQuiz/techSelectSpeed";
-import TechSelectOX from "../../../components/OXQuiz/techSelectOX";
+import Tooltip from "@/components/tooltip";
+import TechSelectSpeed from "@/components/SpeedQuiz/techSelectSpeed";
+import TechSelectOX from "@/components/OXQuiz/techSelectOX";
 
 export default function GamePage() {
   const gameInfo: string =
