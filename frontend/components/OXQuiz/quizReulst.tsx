@@ -40,7 +40,7 @@ export default function QuizResult ({ answer }: QuizResultProps)  {
           <div className="text-xs text-f5black-400"></div>
         </div>
         <Image
-          src="/images/oxIntro.png"
+          src="/Images/oxIntro.png"
           alt="oxIntro"
           width={190}
           height={130}

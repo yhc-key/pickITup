@@ -105,7 +105,7 @@ export default function SpeedQuiz(props: any) {
               </div>
             </div>
             <Image
-              src="/images/hourglass2.png"
+              src="/Images/hourglass2.png"
               alt="gameMachine"
               width={130}
               height={130}

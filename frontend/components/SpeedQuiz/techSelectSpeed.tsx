@@ -40,7 +40,7 @@ export default function TechSelectOX() {
     <div>
       <button onClick={() => setIsModalOpen(true)}>
         <Image
-          src="/images/speedQuiz.png"
+          src="/Images/speedQuiz.png"
           alt="OXQuiz"
           width={400}
           height={280}
@@ -98,12 +98,12 @@ export default function TechSelectOX() {
           <div className="flex justify-center mt-5">
             <button
               onClick={modalCloseHandler}
-              className="px-12 py-2 mr-6 text-neutral-100 text-sm font-semibold rounded-md bg-f5red-350  hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10"
+              className="px-12 py-2 mr-6 text-sm font-semibold rounded-md text-neutral-100 bg-f5red-350 hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10"
             >
               취소하기
             </button>
             <Link href={`/game/speedQuiz/${pickTech}`}>
-              <button className="px-12 py-2 text-neutral-100 text-sm font-semibold rounded-md bg-f5green-350  hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
+              <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
                 시작하기
               </button>
             </Link>
