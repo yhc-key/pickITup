@@ -14,5 +14,4 @@ public class RecruitQueryRequestDto {
 
     private List<String> keywords;
     private String query;
-    private Integer pageNo = 0;
 }
