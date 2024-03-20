@@ -41,7 +41,7 @@ export default function QuizResult ({ answer }: QuizResultProps)  {
         </div>
         <Image
           src="/images/oxIntro.png"
-          alt="oxQuizIntro"
+          alt="oxIntro"
           width={190}
           height={130}
           priority={true}

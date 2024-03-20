@@ -32,11 +32,11 @@ export default function Header() {
             priority={true}
             className="m-3"
           />
-          <div className="mx-1 text-f5black-400 text-lg font-semibold">
+          <div className="mx-1 text-lg font-semibold text-f5black-400">
             pick
           </div>
-          <div className="mx-1 text-f5green-300 text-lg font-semibold">IT</div>
-          <div className="mx-1 text-f5black-400 text-lg font-semibold">up</div>
+          <div className="mx-1 text-lg font-semibold text-f5green-300">IT</div>
+          <div className="mx-1 text-lg font-semibold text-f5black-400">up</div>
         </Link>
       </div>
       <div className="flex">
@@ -57,7 +57,7 @@ export default function Header() {
           );
         })}
       </div>
-      <div className="mr-10 my-auto bg-f5gray-300 p-3 rounded-2xl">
+      <div className="p-3 my-auto mr-10 bg-f5gray-300 rounded-2xl">
         <Link
           href="/social"
           className="text-f5black-400 hover:text-f5green-300"
