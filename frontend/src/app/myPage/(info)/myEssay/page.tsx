@@ -223,22 +223,26 @@ export default function MyEssay(): JSX.Element {
       <Modal open={isModalOpen}>
         <div className="flex flex-col flex-wrap">
           <div className="text-xl font-medium text-center ">
-            🎮 게임 주제를 선택해주세요 🎮
+            🖋 추가할 자소서 항목을 작성해주세요 🖋
           </div>
 
-          <div className="flex justify-center mt-5">
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="px-12 py-2 mr-6 text-neutral-100 text-sm font-semibold rounded-md bg-f5red-350  hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10"
-            >
-              취소하기
-            </button>
-            <button>
-              <button className="px-12 py-2 text-neutral-100 text-sm font-semibold rounded-md bg-f5green-350  hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
-                시작하기
+          <form>
+            <input placeholder="추가할 자소서 항목을 작성해주세요" />
+            <div className="flex justify-center mt-5 ">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="px-12 py-2 mr-6 text-neutral-100 text-sm font-semibold rounded-md bg-f5red-350  hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10"
+              >
+                취소하기
               </button>
-            </button>
-          </div>
+              <button
+                type="submit"
+                className="px-12 py-2 text-neutral-100 text-sm font-semibold rounded-md bg-f5green-350  hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10"
+              >
+                추가하기
+              </button>
+            </div>
+          </form>
         </div>
       </Modal>
     </div>
