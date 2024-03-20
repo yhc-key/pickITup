@@ -2,7 +2,7 @@
 import Image from "next/image";
 
 import { FaCheck } from "react-icons/fa6";
-import { techDataMap } from "@/../data/techData";
+import { techDataMap } from "@/data/techData";
 import { useEffect, useState } from "react";
 
 const techTypes: string[] = [

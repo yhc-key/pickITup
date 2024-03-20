@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 
-import { speedQuizDataMap } from "@/../data/speedQuizData";
+import { speedQuizDataMap } from "@/data/speedQuizData";
 import BackBtn from "../../../../../components/game/backBtn";
 import Question from "../../../../../components/SpeedQuiz/question";
 import TimeBar from "../../../../../components/SpeedQuiz/timebar";
@@ -15,8 +15,8 @@ interface Quiz {
 }
 
 interface Answer {
-  question: string,
-  answer: string,
+  question: string;
+  answer: string;
   user: string;
   correct: boolean;
   index: number;
@@ -43,15 +43,19 @@ export default function SpeedQuiz(props: any) {
   const addValueToAnswer: () => void = useCallback(() => {
     if (index >= 0) {
       let curAnswer: string = "";
-      document.querySelectorAll<HTMLInputElement>(".question-input").forEach((e: HTMLInputElement) => {
-        curAnswer += e.value === "" ? " " : e.value;
-        e.value = "";
-      });
+      document
+        .querySelectorAll<HTMLInputElement>(".question-input")
+        .forEach((e: HTMLInputElement) => {
+          curAnswer += e.value === "" ? " " : e.value;
+          e.value = "";
+        });
 
-    // 영어인 경우 대소문자를 구분하지 않고 비교
-    const isEnglish: RegExp = /^[A-Za-z]+$/;
-    const correct: boolean = isEnglish.test(curAnswer) ? curAnswer.toUpperCase() === questionList[index].answer.toUpperCase() : curAnswer === questionList[index].answer;
-    
+      // 영어인 경우 대소문자를 구분하지 않고 비교
+      const isEnglish: RegExp = /^[A-Za-z]+$/;
+      const correct: boolean = isEnglish.test(curAnswer)
+        ? curAnswer.toUpperCase() === questionList[index].answer.toUpperCase()
+        : curAnswer === questionList[index].answer;
+
       // answer 배열에 추가
       setAnswer([
         ...answer,
@@ -74,7 +78,6 @@ export default function SpeedQuiz(props: any) {
     setIndex((prev: number) => prev + 1);
     // 제한시간 10초로 갱신
   }, [addValueToAnswer]);
-
 
   return (
     <div className="flex flex-col">
@@ -107,11 +110,8 @@ export default function SpeedQuiz(props: any) {
             index={index + 1}
             onNextClick={onNextClick}
           />
-          <TimeBar
-            onNextClick={onNextClick}
-            index={index}
-          />
-          <NextBtn onNextClick={onNextClick}/>
+          <TimeBar onNextClick={onNextClick} index={index} />
+          <NextBtn onNextClick={onNextClick} />
         </div>
       ) : (
         <QuizResult answer={answer} />
