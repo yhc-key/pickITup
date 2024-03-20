@@ -53,9 +53,15 @@ public class SubQuestionCommandServiceImpl implements SubQuestionCommandService 
         SubQuestionCommandRequestDto dto) {
         SubQuestion subQuestion = subQueryRepository.findById(subId)
             .orElseThrow(SubQuestionNotFoundException::new);
-        subQuestion.setTitle(dto.getTitle());
-        subQuestion.setContent(dto.getContent());
-        subQuestion.setCompany(dto.getCompany());
+        if (dto.getTitle() != null) {
+            subQuestion.setTitle(dto.getTitle());
+        }
+        if (dto.getContent() != null) {
+            subQuestion.setContent(dto.getContent());
+        }
+        if (dto.getCompany() != null) {
+            subQuestion.setCompany(dto.getCompany());
+        }
         return subCommandRepository.save(subQuestion).toCommandResponse();
     }
 }
