@@ -9,19 +9,25 @@ interface ModalProps {
 
 export default function Modal({ open, children }: ModalProps) {
   const [prevScrollY, setPrevScrollY] = useState<number | undefined>(undefined);
+  const [hasScrollbar, setHasScrollbar] = useState<boolean>(false);
+
+    // 스크롤이 있는지 확인하는 함수
+    const checkScrollbar = (): void => {
+      setHasScrollbar(document.body.scrollHeight > window.innerHeight);
+    };
 
   // 스크롤을 방지하고 현재 위치를 반환
-  const preventScroll = () => {
+  const preventScroll = (): void => {
     const currentScrollY = window.scrollY;
     document.body.style.position = "fixed";
     document.body.style.width = "100%";
     document.body.style.top = `-${currentScrollY}px`; // 현재 스크롤 위치
-    document.body.style.overflowY = "scroll";
+    document.body.style.overflowY = hasScrollbar ? "scroll" : "hidden";
     setPrevScrollY(currentScrollY);
   };
 
   // 스크롤을 허용하고, 스크롤 방지 함수에서 반환된 위치로 이동
-  const allowScroll = () => {
+  const allowScroll = (): void => {
     document.body.style.position = "";
     document.body.style.width = "";
     document.body.style.top = "";
@@ -31,8 +37,9 @@ export default function Modal({ open, children }: ModalProps) {
     }
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     if (open) {
+      checkScrollbar();
       preventScroll();
     } else {
       allowScroll();
