@@ -7,6 +7,7 @@ export default function Callback(){
   const login = useAuthStore(state => state.login);
   const searchParams = useSearchParams();
   useEffect(() => {
+    
     const refreshToken = searchParams.get('refresh-token') ?? '';
     const accessToken = searchParams.get('access-token') ?? '';
     const tokenType = searchParams.get('token_type') ?? '';
@@ -25,7 +26,7 @@ export default function Callback(){
     // fetch("https://spring.pickitup.online/users/me",{
     //   method:"GET",
     //   headers: {
-    //     Authorization: `${sessionStorage.getItem('tokenType')} ${sessionStorage.getItem('accessToken')}`
+    //     Authorization: tokenType+" "+accessToken
     //   },
     // })
     // .then(res=>res.json())

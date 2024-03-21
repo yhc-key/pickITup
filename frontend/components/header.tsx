@@ -31,10 +31,10 @@ export default function Header() {
     const tokenType:any = sessionStorage.getItem('tokenType');
     fetch("https://spring.pickitup.online/auth/logout",{
       method: "POST",
-      headers:{
-        Authorization : tokenType+" "+accessToken
+      headers: {
+        Authorization: tokenType+" "+accessToken
       },
-    }).then();
+    });
     sessionStorage.removeItem('accessToken');
     sessionStorage.removeItem('refreshToken');
     sessionStorage.removeItem('tokenType');

@@ -11,6 +11,8 @@ function Login(){
   const [password,setPassword] = useState(""); 
   const login = useAuthStore(state => state.login);
   const requestLogin = () =>{   
+    const accessToken:any = sessionStorage.getItem('accessToken');
+    const tokenType:any = sessionStorage.getItem('tokenType');
     if(id.length === 0){
       alert("아이디를 입력해주세요!")
       return;
@@ -38,7 +40,7 @@ function Login(){
       fetch("https://spring.pickitup.online/users/me",{
         method:"GET",
         headers: {
-          Authorization: `${sessionStorage.getItem('tokenType')} ${sessionStorage.getItem('accessToken')}`
+          Authorization: tokenType+" "+accessToken
           },
       })
       .then(res=>res.json())
