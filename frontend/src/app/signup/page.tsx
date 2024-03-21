@@ -89,8 +89,8 @@ export default function Signup(){
     .then(res=>res.json())
     .then(res=> {
       console.log(res)
+      router.push('/');
     })
-    router.push('/');
   }
     return (
       <div className="flex flex-col justify-center items-center w-full h-[82vh]">
