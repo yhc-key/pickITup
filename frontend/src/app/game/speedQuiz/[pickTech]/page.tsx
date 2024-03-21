@@ -28,19 +28,36 @@ export default function SpeedQuiz(props: any) {
 
   const [index, setIndex] = useState(0);
   const [questionList, setQuestionList] = useState<Quiz[]>([]);
-  const [answerList, setAnswerList] = useState<string[]>([]);
   const [answer, setAnswer] = useState<Answer[]>([]);
 
   // 선택한 주제
   const pickTech: string = props.params.pickTech;
 
+  const apiUrl = "https://spring.pickitup.online/quizzes/speed";
+
   useEffect(() => {
-    // 선택한 주제에 대한 질문 받아오기
-    const questions: Quiz[] | undefined = speedQuizDataMap.get(pickTech);
-    if (questions) {
-      setQuestionList(questions);
-    }
-  }, [pickTech]);
+    const fetchSpeedQuizData = async () => {
+      try {
+        // api로부터 데이터 받아오기
+        const resp: Response = await fetch(`${apiUrl}/${pickTech}`);
+        // HTTP 응답을 JSON객체로 변환
+        const data: any = await resp.json();
+    
+        setQuestionList(data.response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchSpeedQuizData();
+  }, [apiUrl, pickTech, setQuestionList]);
+
+  // useEffect(() => {
+  //   // 선택한 주제에 대한 질문 받아오기
+  //   const questions: Quiz[] | undefined = speedQuizDataMap.get(pickTech);
+  //   if (questions) {
+  //     setQuestionList(questions);
+  //   }
+  // }, [pickTech]);
 
   // 정답 정보 저장
   const addValueToAnswer: () => void = useCallback(() => {

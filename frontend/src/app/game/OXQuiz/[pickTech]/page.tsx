@@ -34,13 +34,31 @@ export default function OXQuiz(props: any) {
   // 선택한 주제
   const pickTech: string = props.params.pickTech;
 
+  const apiUrl = "https://spring.pickitup.online/quizzes/ox";
+
   useEffect(() => {
-    // 선택한 주제에 대한 질문 받아오기
-    const questions: Quiz[] | undefined = OXQuizDataMap.get(pickTech);
-    if (questions) {
-      setQuestionList(questions);
-    }
-  }, [pickTech]);
+    const fetchOXQuizData = async () => {
+      try {
+        // api로부터 데이터 받아오기
+        const resp: Response = await fetch(`${apiUrl}/${pickTech}`);
+        // HTTP 응답을 JSON객체로 변환
+        const data: any = await resp.json();
+    
+        setQuestionList(data.response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchOXQuizData();
+  }, [apiUrl, pickTech, setQuestionList]);
+
+  // useEffect(() => {
+  //   // 선택한 주제에 대한 질문 받아오기
+  //   const questions: Quiz[] | undefined = OXQuizDataMap.get(pickTech);
+  //   if (questions) {
+  //     setQuestionList(questions);
+  //   }
+  // }, [pickTech]);
 
   // trueBtn 클릭 시 실행되는 함수
   const TrueClickHandler = (): void => {
