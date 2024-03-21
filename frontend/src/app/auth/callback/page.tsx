@@ -1,8 +1,10 @@
 "use client"
 import { useSearchParams,useRouter } from "next/navigation";
 import { useEffect } from "react";
+import useAuthStore from "../../../../store/authStore";
 export default function Callback(){
   const router = useRouter();
+  const login = useAuthStore(state => state.login);
   const searchParams = useSearchParams();
   useEffect(() => {
     const refreshToken = searchParams.get('refresh-token') ?? '';
@@ -19,6 +21,21 @@ export default function Callback(){
     console.log(accessToken);
     console.log(refreshToken);
     console.log(expiresIn);
+
+    // fetch("https://spring.pickitup.online/users/me",{
+    //   method:"GET",
+    //   headers: {
+    //     Authorization: `${sessionStorage.getItem('tokenType')} ${sessionStorage.getItem('accessToken')}`
+    //   },
+    // })
+    // .then(res=>res.json())
+    // .then(res=>{
+    //   sessionStorage.setItem('authid',res.response.id);
+    //   sessionStorage.setItem('nickname',res.response.nickname);
+    //   login(sessionStorage.getItem('nickname')??'');
+    // })
+    // .catch(e=>{alert(e)});
+
 
     router.push('/');
   }, [searchParams, router]);

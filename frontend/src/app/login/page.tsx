@@ -3,10 +3,13 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react';
+import useAuthStore from '../../../store/authStore';
 function Login(){
+  const [nick,setNick] = useState("");
   const router = useRouter();
   const [id,setId] = useState("");
   const [password,setPassword] = useState(""); 
+  const login = useAuthStore(state => state.login);
   const requestLogin = () =>{   
     if(id.length === 0){
       alert("아이디를 입력해주세요!")
@@ -32,7 +35,20 @@ function Login(){
       sessionStorage.setItem('refreshToken', res.response.refreshToken);
       sessionStorage.setItem('tokenType',"Bearer");
       sessionStorage.setItem('expiresIn', "3600000");
-      router.push('/myPage/myBadge');
+      fetch("https://spring.pickitup.online/users/me",{
+        method:"GET",
+        headers: {
+          Authorization: `${sessionStorage.getItem('tokenType')} ${sessionStorage.getItem('accessToken')}`
+          },
+      })
+      .then(res=>res.json())
+      .then(res=>{
+        sessionStorage.setItem('authid',res.response.id);
+        sessionStorage.setItem('nickname',res.response.nickname);
+        login(res.response.nickname);
+      })
+      .catch(e=>{alert(e)});
+      router.push('/');
     })
     .catch(e=>{
       alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
