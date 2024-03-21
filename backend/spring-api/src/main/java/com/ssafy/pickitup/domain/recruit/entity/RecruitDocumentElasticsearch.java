@@ -84,7 +84,7 @@ public class RecruitDocumentElasticsearch {
         return RecruitDocumentMongo.builder()
             .id(this.id)
             .source(this.source)
-            .company(this.company)
+//            .companyId(companyId)
             .url(this.url)
             .thumbnailUrl(this.thumbnailUrl)
             .qualificationRequirements(new HashSet<>())

@@ -3,20 +3,17 @@ package com.ssafy.pickitup.domain.recruit.api.controller;
 import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
 
 import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
+import com.ssafy.pickitup.domain.company.query.CompanyQueryService;
 import com.ssafy.pickitup.domain.recruit.command.RecruitCommandElasticsearchRepository;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryRequestDto;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecruitController {
 
     private final RecruitQueryService recruitQueryService;
+    private final CompanyQueryService companyQueryService;
     @Autowired
     private RecruitCommandElasticsearchRepository recruitCommandElasticsearchRepository;
 
@@ -56,19 +54,7 @@ public class RecruitController {
     @Operation(summary = "Elasticsearch 데이터를 mongodb로 마이그레이션")
     @GetMapping("/read")
     public void read() {
+        companyQueryService.readForConvert();
         recruitQueryService.readKeywords();
-    }
-
-    @GetMapping("/test")
-    public ApiResult<?> test() {
-        List<Integer> idList = new ArrayList<>();
-        idList.add(449);
-        idList.add(542);
-        idList.add(478);
-        Pageable pageable = PageRequest.of(
-            0, 3, Sort.by("dueDate").ascending()
-        );
-
-        return success(recruitQueryService.searchByIdList(idList, pageable));
     }
 }
