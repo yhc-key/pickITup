@@ -5,7 +5,7 @@ import serializers.RecommendationSerializer._
 import play.api.Configuration
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import services.recommend.{RecommendService, SimilarityService}
+import services.recommend.{CollaborativeFilteringService, ContentBasedFilteringService, SimilarityService}
 
 import javax.inject.Inject
 
@@ -16,8 +16,13 @@ class RecommendController @Inject()(cc: ControllerComponents, config: Configurat
     Ok("Test API is working!!!")
   }
 
-  def recommend(): Action[AnyContent] = Action { implicit request =>
-    val list: List[Recommendation] = RecommendService.recommend()
+  def contentBasedRecommend(): Action[AnyContent] = Action { implicit request =>
+    val list: List[Recommendation] = ContentBasedFilteringService.recommend()
+    Ok(Json.toJson(list))
+  }
+
+  def collaborativeRecommend(): Action[AnyContent] = Action { implicit request =>
+    val list: List[Recommendation] = CollaborativeFilteringService.recommend()
     Ok(Json.toJson(list))
   }
 
