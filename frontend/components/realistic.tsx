@@ -2,7 +2,7 @@ import { CreateTypes } from "canvas-confetti";
 import { useEffect, useRef } from "react";
 import ReactCanvasConfetti from "./reactCanvasConfetti";
 
-const Realistic = () => {
+export default function Realistic() {
   const animationInstance = useRef<CreateTypes | null>(null);
 
   const makeShot = (particleRatio: number, opts: object) => {
@@ -45,7 +45,7 @@ const Realistic = () => {
   };
 
   useEffect(() => {
-    // 컴포넌트가 마운트되면 폭죽을 표시합니다.
+    // 컴포넌트가 마운트되면 폭죽을 표시
     fire();
   }, []);
 
@@ -54,6 +54,4 @@ const Realistic = () => {
       <ReactCanvasConfetti refConfetti={getInstance} className="canvas" />
     </div>
   );
-};
-
-export default Realistic;
+}
