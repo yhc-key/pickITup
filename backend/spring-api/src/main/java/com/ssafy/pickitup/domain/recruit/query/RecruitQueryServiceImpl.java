@@ -42,8 +42,8 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
             pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dueDate").ascending()
         );
 
-        Page<RecruitDocumentMongo> recruitDocumentMongoPages = recruitQueryMongoRepository.findAll(
-            new_pageable);
+        Page<RecruitDocumentMongo> recruitDocumentMongoPages =
+            recruitQueryMongoRepository.findAll(new_pageable);
         return recruitDocumentMongoPages.map(RecruitDocumentMongo::toQueryResponse);
     }
 
@@ -56,8 +56,8 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         for (String str : dto.getKeywords()) {
             sb.append(str).append(" ");
         }
-        return recruitQueryElasticsearchRepository.searchWithFilter(dto.getQuery(), sb.toString(),
-                new_pageable)
+        return recruitQueryElasticsearchRepository.searchWithFilter(
+                dto.getQuery(), sb.toString(), new_pageable)
             .map(RecruitDocumentElasticsearch::toMongo)
             .map(RecruitDocumentMongo::toQueryResponse);
     }
@@ -90,8 +90,8 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         query.with(pageable);
 
         List<RecruitDocumentMongo> entities = mongoTemplate.find(query, RecruitDocumentMongo.class);
-        Page<RecruitDocumentMongo> recruitDocumentMongoPages = new PageImpl<>(entities, pageable,
-            totalCount);
+        Page<RecruitDocumentMongo> recruitDocumentMongoPages =
+            new PageImpl<>(entities, pageable, totalCount);
         return recruitDocumentMongoPages.map(RecruitDocumentMongo::toQueryResponse);
     }
 
@@ -106,6 +106,7 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
 
         switch (field) {
             case "qualificationRequirements" -> result = recruitQueryElasticsearchRepository
+//                .findByQualificationRequirementsContaining(keyword, Pageable.unpaged());
                 .findByQualificationRequirementsContaining(keyword, pageable);
             case "preferredRequirements" -> result = recruitQueryElasticsearchRepository
                 .findByPreferredRequirementsContaining(keyword, pageable);
