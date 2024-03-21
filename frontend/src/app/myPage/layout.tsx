@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-
+import useAuthStore from "../../../store/authStore";
 
 const dummyMyData: string[][] = [
   ["내가 찜한 채용공고", "3 개", "/images/starOutline.png"],
@@ -29,7 +29,7 @@ export default function myPageLayout({
             className="w-auto"
           />
           <div className="flex flex-col items-center gap-4">
-            <p>조싸피</p>
+            <p>{sessionStorage.getItem('nickname')}</p>
             <Link href="/myPage/updateMyInfo" className="flex flex-row">
               <Image
                 src="/images/personEdit.png"
