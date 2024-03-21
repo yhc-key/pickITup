@@ -5,10 +5,10 @@ import { useState ,useEffect} from 'react';
 import {useRouter} from 'next/navigation';
 export default function Signup(){
   const router = useRouter();
-  const [availableId,setAvailableId] = useState<boolean>();
+  const [availableId,setAvailableId] = useState<string>("");
   const [id,setId] = useState<string>("");
 
-  const [isValidPassword,setIsValidPassword] = useState<boolean>();
+  const [isValidPassword,setIsValidPassword] = useState<string>("");
   const [password,setPassword] = useState<string>(""); 
   
   const [samepass,setSamepass] = useState<string>("");
@@ -29,12 +29,17 @@ export default function Signup(){
   useEffect(() => {
     // 비밀번호 유효성 검사
     const regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    setIsValidPassword(regex.test(password));
+    if(regex.test(password)){
+      setIsValidPassword("true");
+    }
+    else{
+      setIsValidPassword("false");
+    }
   }, [password]);
 
   const checkid = () =>{
     if(id===""){
-      setAvailableId(false);
+      setAvailableId("false");
       return;
     }
     fetch("https://spring.pickitup.online/auth/check/"+id,{
@@ -43,15 +48,15 @@ export default function Signup(){
     .then(res=>res.json())
     .then(res=>{
       if(res.success===true){
-        setAvailableId(true);
+        setAvailableId("true");
       }
       else if(res.success===false){
-        setAvailableId(false);
+        setAvailableId("false");
       }
     })
   }
   const signUpRequest = () =>{
-    if(availableId!==true){
+    if(availableId!=="true"){
       alert("중복확인 후 올바른 아이디를 다시 입력해주세요")
       return;
     }
@@ -106,9 +111,9 @@ export default function Signup(){
             </div>
             <div className='flex w-full h-[1vh] justify-center items-center mb-2'>
               <div className="w-[10vw]"></div>
-              {availableId===true?
+              {availableId==="true"?
               <div className='w-[24vw] text-xs text-[#5A85C5]'>사용 가능한 아이디 입니다!</div>:<></>}
-              {availableId===false?
+              {availableId==="false"?
               <div className='w-[24vw] text-xs text-[#C55A5A]'>사용할 수 없는 아이디입니다!</div>:<></>}
             </div>
 
@@ -122,7 +127,7 @@ export default function Signup(){
             </div>
             <div className='flex w-full h-[1vh] justify-center items-center mb-2'>
               <div className="w-[10vw]"></div>
-              <div className='w-[24vw] text-xs text-[#C55A5A]'>{!isValidPassword?"영문자, 숫자를 포함하여 8자 이상을 입력해주세요":""}</div>
+              <div className='w-[24vw] text-xs text-[#C55A5A]'>{isValidPassword==="false"?"영문자, 숫자를 포함하여 8자 이상을 입력해주세요":""}</div>
             </div>
 
             <div className='flex w-full h-[6vh] justify-center items-center'>
