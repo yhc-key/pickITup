@@ -22,13 +22,13 @@ export default function Header() {
   const nickname = useAuthStore(state => state.nickname);
   const isLoggedIn = useAuthStore(state => state.isLoggedIn);
   const logout = useAuthStore(state => state.logout);
+  const accessToken:any = sessionStorage.getItem('accessToken');
+  const tokenType:any = sessionStorage.getItem('tokenType');
   
   const router = useRouter();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
   const logoutRequest = () =>{
-    const accessToken:any = sessionStorage.getItem('accessToken');
-    const tokenType:any = sessionStorage.getItem('tokenType');
     fetch("https://spring.pickitup.online/auth/logout",{
       method: "POST",
       headers: {

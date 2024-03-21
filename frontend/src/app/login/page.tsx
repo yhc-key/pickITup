@@ -10,9 +10,9 @@ function Login(){
   const [id,setId] = useState("");
   const [password,setPassword] = useState(""); 
   const login = useAuthStore(state => state.login);
+  const accessToken:any = sessionStorage.getItem('accessToken');
+  const tokenType:any = sessionStorage.getItem('tokenType');
   const requestLogin = () =>{   
-    const accessToken:any = sessionStorage.getItem('accessToken');
-    const tokenType:any = sessionStorage.getItem('tokenType');
     if(id.length === 0){
       alert("아이디를 입력해주세요!")
       return;
