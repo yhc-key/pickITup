@@ -20,26 +20,32 @@ const navLinks: LinkType[] = [
 
 export default function Header() {
   const nickname: string = useAuthStore((state: AuthState) => state.nickname);
+  const setLogged : (nickname : string) => void = useAuthStore((state : AuthState) => state.setLogged);
   const isLoggedIn: boolean = useAuthStore(
     (state: AuthState) => state.isLoggedIn
   );
   const logout: () => void = useAuthStore((state: AuthState) => state.logout);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    setAccessToken(sessionStorage.getItem("accessToken"));
-  }, [accessToken]);
+  useEffect(()=>{
+    const accessToken: string | null = sessionStorage.getItem('accessToken');
+    const nickname: string|null = sessionStorage.getItem('nickname');
+
+    if(accessToken!==null&&nickname!==null){
+      setLogged(nickname);
+      console.log();
+    }
+  },[])
 
   const router = useRouter();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
   const logoutRequest = () => {
     if (isLoggedIn === true) {
-      setAccessToken(sessionStorage.getItem("accessToken"));
+      const token = sessionStorage.getItem("accessToken");
       fetch("https://spring.pickitup.online/auth/logout", {
         method: "POST",
         headers: {
-          Authorization: "Bearer " + accessToken,
+          Authorization: "Bearer " + token,
         },
       })
         .then((res) => res.json())

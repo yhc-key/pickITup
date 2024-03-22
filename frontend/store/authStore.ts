@@ -6,6 +6,7 @@ export interface AuthState {
   nickname:string;
   login: (nickname: string) => void;
   logout: () => void;
+  setLogged : (nickname : string) => void;
 }
 
 const useAuthStore = create<AuthState>(set => ({
@@ -13,6 +14,7 @@ const useAuthStore = create<AuthState>(set => ({
   nickname:'',
   login: (nickname:string) => set({ isLoggedIn: true, nickname}), // 로그인 액션
   logout: () => set({ isLoggedIn: false, nickname: '' }), // 로그아웃 액션
+  setLogged: (nickname:string) => set({isLoggedIn: true, nickname})
 }));
 
 export default useAuthStore;
