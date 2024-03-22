@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import useAuthStore from "../../../store/authStore";
+import useAuthStore,{AuthState} from "@/store/authStore";
 import { useEffect, useState } from "react";
 
 const dummyMyData: string[][] = [
@@ -17,10 +17,12 @@ export default function MyPageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [nickname, setNickname] = useState<string | null>(null);
-  useEffect(() => {
-    setNickname(sessionStorage.getItem("nickname"));
-  }, []);
+  const nickname :string = useAuthStore((state : AuthState) => state.nickname);
+  // const [nickname, setNickname] = useState<string | null>(null);
+
+  // useEffect(() => {
+  //   setNickname(sessionStorage.getItem("nickname"));
+  // }, []);
   return (
     <div className="flex mx-10 my-5">
       <div className="min-w-[330px] max-w-[330px]">
@@ -33,7 +35,7 @@ export default function MyPageLayout({
             className="w-auto"
           />
           <div className="flex flex-col items-center gap-4">
-            <p>{"nickname"}</p>
+            <p>{nickname}</p>
             <Link href="/myPage/updateMyInfo" className="flex flex-row">
               <Image
                 src="/images/personEdit.png"

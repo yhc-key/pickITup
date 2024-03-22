@@ -33,20 +33,31 @@ export default function Header() {
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
   const logoutRequest = () => {
-    fetch("https://spring.pickitup.online/auth/logout", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    });
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("refreshToken");
-    sessionStorage.removeItem("expiresIn");
-    sessionStorage.removeItem("authid");
-    sessionStorage.removeItem("nickname");
-    logout();
+    if(isLoggedIn===true){
+      fetch("https://spring.pickitup.online/auth/logout", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      })
+      .then(res=>res.json())
+      .then(res=>{
+        if(res.success===false){
+          alert("로그아웃실패");
+        }
+        else if(res.success===true){
+          sessionStorage.removeItem("accessToken");
+          sessionStorage.removeItem("refreshToken");
+          sessionStorage.removeItem("expiresIn");
+          sessionStorage.removeItem("authid");
+          sessionStorage.removeItem("nickname");
+        }
+      })
+      .catch((e)=>{alert(e)});
+      logout();
 
-    router.push("/");
+      router.push("/");
+    }
   };
   return (
     <header className="flex justify-between border-b border-f5gray-400">

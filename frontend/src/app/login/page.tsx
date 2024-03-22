@@ -16,50 +16,52 @@ function Login() {
   }, []);
 
   const requestLogin = () => {
-    if (id.length === 0) {
-      alert("아이디를 입력해주세요!");
+    if (id.length === 0 || password.length===0) {
+      alert("아이디와 비밀번호를 입력해주세요!");
       return;
     }
-    if (password.length === 0) {
-      alert("비밀번호를 입력해주세요!");
-      return;
-    }
-    fetch("https://spring.pickitup.online/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: id,
-        password: password,
-      }),
-    })
+    else{
+      fetch("https://spring.pickitup.online/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: id,
+          password: password,
+        }),
+      })
       .then((res) => res.json())
       .then((res) => {
-        sessionStorage.setItem("accessToken", res.response.accessToken);
-        sessionStorage.setItem("refreshToken", res.response.refreshToken);
-        sessionStorage.setItem("expiresIn", "3600000");
-        fetch("https://spring.pickitup.online/users/me", {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + accessToken,
-          },
-        })
+        console.log(res);
+        if(res.success===false){
+          alert("올바른 아이디와 비밀번호를 입력하세요.");
+          return;
+        }
+        if(res.success===true){
+          sessionStorage.setItem("accessToken", res.response.accessToken);
+          sessionStorage.setItem("refreshToken", res.response.refreshToken);
+          sessionStorage.setItem("expiresIn", "3600000");
+          fetch("https://spring.pickitup.online/users/me", {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + res.response.accessToken,
+            },
+          })
           .then((res) => res.json())
           .then((res) => {
             sessionStorage.setItem("authid", res.response.id);
             sessionStorage.setItem("nickname", res.response.nickname);
             login(res.response.nickname);
+            router.push("/");
           })
-          .catch((e) => {
-            alert(e);
-          });
-        router.push("/");
+        };
       })
       .catch((e) => {
-        alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
+        alert("아이디 혹은 비밀번호가 일치하지 않습니다."+e);
         return;
       });
+    }
   };
   return (
     <div className="flex flex-col justify-center items-center w-full h-[70vh]">
