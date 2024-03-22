@@ -55,7 +55,7 @@ function Login() {
                 sessionStorage.setItem("authid", res.response.id);
                 sessionStorage.setItem("nickname", res.response.nickname);
                 login(res.response.nickname);
-                router.push("/main");
+                router.push("/main/recruit");
               })
               .catch((error) => {
                 alert(error);

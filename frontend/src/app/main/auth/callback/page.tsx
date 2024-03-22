@@ -31,7 +31,7 @@ function Search() {
       .catch((e) => {
         alert(e);
       });
-    router.push("/main");
+    router.push("/main/recruit");
   }
 
   return <Fragment>hi</Fragment>;
