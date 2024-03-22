@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname,useRouter } from "next/navigation";
-import { useEffect, useState} from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import useAuthStore from "../store/authStore";
 interface LinkType {
   name: string;
@@ -19,32 +19,37 @@ const navLinks: LinkType[] = [
 ];
 
 export default function Header() {
-  const nickname = useAuthStore(state => state.nickname);
-  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
-  const logout = useAuthStore(state => state.logout);
-  const accessToken:any = sessionStorage.getItem('accessToken');
-  const tokenType:any = sessionStorage.getItem('tokenType');
-  
+  const nickname = useAuthStore((state) => state.nickname);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const logout = useAuthStore((state) => state.logout);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [tokenType, setTokenType] = useState<string | null>(null);
+
+  useEffect(() => {
+    setAccessToken(sessionStorage.getItem("accessToken"));
+    setTokenType(sessionStorage.getItem("tokenType"));
+  }, []);
+
   const router = useRouter();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
-  const logoutRequest = () =>{
-    fetch("https://spring.pickitup.online/auth/logout",{
+  const logoutRequest = () => {
+    fetch("https://spring.pickitup.online/auth/logout", {
       method: "POST",
       headers: {
-        Authorization: tokenType+" "+accessToken
+        Authorization: tokenType + " " + accessToken,
       },
     });
-    sessionStorage.removeItem('accessToken');
-    sessionStorage.removeItem('refreshToken');
-    sessionStorage.removeItem('tokenType');
-    sessionStorage.removeItem('expiresIn');
-    sessionStorage.removeItem('authid');
-    sessionStorage.removeItem('nickname');
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("tokenType");
+    sessionStorage.removeItem("expiresIn");
+    sessionStorage.removeItem("authid");
+    sessionStorage.removeItem("nickname");
     logout();
 
-    router.push('/');
-  }
+    router.push("/");
+  };
   return (
     <header className="flex justify-between border-b border-f5gray-400">
       <div>
@@ -82,13 +87,19 @@ export default function Header() {
           );
         })}
       </div>
-        {isLoggedIn?
+      {isLoggedIn ? (
         <div className="flex items-center">
           <div className="mr-2">{nickname}님</div>
           <div className="p-3 my-auto mr-10 bg-f5gray-300 rounded-2xl">
-            <button className="text-f5black-400 hover:text-f5green-300" onClick={logoutRequest}>로그아웃</button>
+            <button
+              className="text-f5black-400 hover:text-f5green-300"
+              onClick={logoutRequest}
+            >
+              로그아웃
+            </button>
           </div>
-        </div>:
+        </div>
+      ) : (
         <div className="p-3 my-auto mr-10 bg-f5gray-300 rounded-2xl">
           <Link
             href="/social"
@@ -97,7 +108,7 @@ export default function Header() {
             로그인 & 회원가입
           </Link>
         </div>
-        }
+      )}
     </header>
   );
 }
