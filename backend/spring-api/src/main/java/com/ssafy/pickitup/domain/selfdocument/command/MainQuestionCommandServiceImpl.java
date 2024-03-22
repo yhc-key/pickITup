@@ -10,6 +10,7 @@ import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.domain.user.query.UserQueryJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,8 +21,9 @@ public class MainQuestionCommandServiceImpl implements MainQuestionCommandServic
     private final UserQueryJpaRepository userQueryRepository;
 
     @Override
-    public MainQuestionCommandResponseDto registerMainQuestion(MainQuestionCommandRequestDto dto,
-        Integer userId) {
+    @Transactional
+    public MainQuestionCommandResponseDto registerMainQuestion(Integer userId,
+        MainQuestionCommandRequestDto dto) {
         User user = userQueryRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다"));
         MainQuestion mainQuestion = dto.toEntity(user);
@@ -29,6 +31,7 @@ public class MainQuestionCommandServiceImpl implements MainQuestionCommandServic
     }
 
     @Override
+    @Transactional
     public boolean deleteMainQuestion(Integer mainId) {
         try {
             MainQuestion mainQuestion = mainQueryRepository.findById(mainId)
@@ -42,6 +45,7 @@ public class MainQuestionCommandServiceImpl implements MainQuestionCommandServic
     }
 
     @Override
+    @Transactional
     public MainQuestionCommandResponseDto modifyMainQuestion(Integer id,
         MainQuestionCommandRequestDto dto) {
         MainQuestion mainQuestion = mainQueryRepository.findById(id)

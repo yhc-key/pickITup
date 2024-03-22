@@ -1,5 +1,8 @@
 package com.ssafy.pickitup.domain.recruit.query;
 
+import com.ssafy.pickitup.domain.company.command.CompanyCommandService;
+import com.ssafy.pickitup.domain.company.entity.CompanyElasticsearch;
+import com.ssafy.pickitup.domain.company.query.CompanyQueryService;
 import com.ssafy.pickitup.domain.recruit.command.RecruitCommandService;
 import com.ssafy.pickitup.domain.recruit.entity.RecruitDocumentElasticsearch;
 import com.ssafy.pickitup.domain.recruit.entity.RecruitDocumentMongo;
@@ -10,14 +13,19 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -25,40 +33,75 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RecruitQueryServiceImpl implements RecruitQueryService {
 
+    private final MongoTemplate mongoTemplate;
+
     private final RecruitCommandService recruitCommandService;
     private final RecruitQueryElasticsearchRepository recruitQueryElasticsearchRepository;
     private final RecruitQueryMongoRepository recruitQueryMongoRepository;
+    private final CompanyCommandService companyCommandService;
+    private final CompanyQueryService companyQueryService;
 
     @Override
-    public Page<RecruitQueryResponseDto> searchAll(int pageNo) {
-        final int pageSize = 6;
-        Pageable pageable = PageRequest.of(
-            pageNo, pageSize, Sort.by("dueDate").ascending()
+    public Page<RecruitQueryResponseDto> searchAll(Pageable pageable) {
+
+        Pageable new_pageable = PageRequest.of(
+            pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dueDate").ascending()
         );
 
-        Page<RecruitDocumentMongo> recruitDocumentMongoPages = recruitQueryMongoRepository.findAll(
-            pageable);
+        Page<RecruitDocumentMongo> recruitDocumentMongoPages =
+            recruitQueryMongoRepository.findAll(new_pageable);
         return recruitDocumentMongoPages.map(RecruitDocumentMongo::toQueryResponse);
     }
 
+    /*
+        키워드들과 검색어로 검색
+     */
     @Override
-    public Page<RecruitQueryResponseDto> search(RecruitQueryRequestDto dto) {
-        final int pageSize = 6;
-        Pageable pageable = PageRequest.of(
-            dto.getPageNo(), pageSize
+    public Page<RecruitQueryResponseDto> search(RecruitQueryRequestDto dto, Pageable pageable) {
+        Pageable new_pageable = PageRequest.of(
+            pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dueDate").ascending()
         );
         StringBuilder sb = new StringBuilder();
         for (String str : dto.getKeywords()) {
             sb.append(str).append(" ");
         }
-        return recruitQueryElasticsearchRepository.searchWithFilter(dto.getQuery(), sb.toString(),
-                pageable)
-            .map(RecruitDocumentElasticsearch::toMongo)
+        return recruitQueryElasticsearchRepository.searchWithFilter(
+                dto.getQuery(), sb.toString(), new_pageable)
+            .map(es -> {
+                Integer companyId = companyQueryService.searchByName(es.getCompany()).getId();
+                return es.toMongo(companyId);
+            })
             .map(RecruitDocumentMongo::toQueryResponse);
     }
 
     @Override
-    public void readKeywords() {
+    public void readRecruitForConvert() {
+        List<String> keywords = readKeywords();
+        for (String keyword : keywords) {
+            searchByKeyword(keyword);
+        }
+    }
+
+
+    @Override
+    public Page<RecruitQueryResponseDto> searchByIdList(List<Integer> idList, Pageable pageable) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").in(idList));
+
+        long totalCount = mongoTemplate.count(query, RecruitDocumentMongo.class);
+        query.with(pageable);
+
+        List<RecruitDocumentMongo> entities = mongoTemplate.find(query, RecruitDocumentMongo.class);
+        Page<RecruitDocumentMongo> recruitDocumentMongoPages =
+            new PageImpl<>(entities, pageable, totalCount);
+        return recruitDocumentMongoPages.map(RecruitDocumentMongo::toQueryResponse);
+    }
+
+    /*
+        keywords 파일에서 키워드 추출
+     */
+    private List<String> readKeywords() {
+        List<String> keywords = new ArrayList<>();
         try {
             ClassPathResource resource = new ClassPathResource("keywords.txt");
             BufferedReader reader = new BufferedReader(
@@ -66,7 +109,7 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                searchByKeyword(line);
+                keywords.add(line);
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -74,52 +117,40 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         } catch (IOException e) {
             log.error("An error occurred while reading keywords.", e);
         }
+        return keywords;
     }
 
+    /*
+        추출된 키워드로 자격요건, 우대사항 별로 탐색
+     */
     private void searchByKeyword(String keyword) {
         searchAndAddKeyword(keyword, "qualificationRequirements");
         searchAndAddKeyword(keyword, "preferredRequirements");
     }
 
+    /*
+        Elasticsearch에서 키워드 검색
+     */
     private void searchAndAddKeyword(String keyword, String field) {
-        Pageable pageable = PageRequest.of(0, 2000);
+//        Pageable pageable = PageRequest.of(0, 2000);
         Page<RecruitDocumentElasticsearch> result = null;
 
         switch (field) {
             case "qualificationRequirements" -> result = recruitQueryElasticsearchRepository
-                .findByQualificationRequirementsContaining(keyword, pageable);
+                .findByQualificationRequirementsContaining(keyword, Pageable.unpaged());
+//                .findByQualificationRequirementsContaining(keyword, pageable);
             case "preferredRequirements" -> result = recruitQueryElasticsearchRepository
-                .findByPreferredRequirementsContaining(keyword, pageable);
+                .findByPreferredRequirementsContaining(keyword, Pageable.unpaged());
+//                .findByPreferredRequirementsContaining(keyword, pageable);
             default -> throw new InvalidFieldTypeException();
         }
 
         List<RecruitDocumentElasticsearch> list = result.getContent();
         for (RecruitDocumentElasticsearch es : list) {
+            CompanyElasticsearch companyElasticsearch =
+                companyQueryService.searchByName(es.getCompany());
+            companyCommandService.addRecruit(companyElasticsearch, es.getId());
             recruitCommandService.addKeyword(es, keyword, field);
         }
-    }
-
-    @Override
-    public void test() {
-//        String careerText1 = "신입";
-//        String careerText2 = "2~7년 경력";
-//        String careerText3 = "10년 이상 경력";
-//        String careerText4 = "경력무관";
-//        String careerText5 = "2023년 졸업예정";
-//        String careerText6 = "15-20";
-//
-//        int[] result1 = parseYearsOfExperienceRange(careerText1);
-//        int[] result2 = parseYearsOfExperienceRange(careerText2);
-//        int[] result3 = parseYearsOfExperienceRange(careerText3);
-//        int[] result4 = parseYearsOfExperienceRange(careerText4);
-//        int[] result5 = parseYearsOfExperienceRange(careerText5);
-//        int[] result6 = parseYearsOfExperienceRange(careerText6);
-//
-//        System.out.println("Result 1: " + result1[0] + " ~ " + result1[1]);
-//        System.out.println("Result 2: " + result2[0] + " ~ " + result2[1]);
-//        System.out.println("Result 3: " + result3[0] + " ~ " + result3[1]);
-//        System.out.println("Result 4: " + result4[0] + " ~ " + result4[1]);
-//        System.out.println("Result 5: " + result5[0] + " ~ " + result5[1]);
-//        System.out.println("Result 6: " + result6[0] + " ~ " + result6[1]);
     }
 }

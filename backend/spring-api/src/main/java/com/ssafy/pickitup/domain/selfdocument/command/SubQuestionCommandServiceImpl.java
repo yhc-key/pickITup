@@ -9,6 +9,7 @@ import com.ssafy.pickitup.domain.selfdocument.query.MainQuestionQueryService;
 import com.ssafy.pickitup.domain.selfdocument.query.SubQuestionQueryJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,16 +21,20 @@ public class SubQuestionCommandServiceImpl implements SubQuestionCommandService 
     private final SubQuestionCommandJpaRepository subCommandRepository;
 
     @Override
+    @Transactional
     public SubQuestionCommandResponseDto registerSubQuestion(Integer mainId,
         SubQuestionCommandRequestDto dto) {
         MainQuestion mainQuestion = mainQueryService.searchById(mainId);
         SubQuestion subQuestion = dto.toEntity(mainQuestion);
+        SubQuestionCommandResponseDto responseDto = subCommandRepository.save(subQuestion)
+            .toCommandResponse();
         mainQuestion.getSubQuestions().add(subQuestion);
         mainCommandRepository.save(mainQuestion);
-        return subCommandRepository.save(subQuestion).toCommandResponse();
+        return responseDto;
     }
 
     @Override
+    @Transactional
     public boolean deleteSubQuestion(Integer subId) {
         try {
             SubQuestion subQuestion = subQueryRepository.findById(subId)
@@ -43,13 +48,20 @@ public class SubQuestionCommandServiceImpl implements SubQuestionCommandService 
     }
 
     @Override
+    @Transactional
     public SubQuestionCommandResponseDto modifySubQuestion(Integer subId,
         SubQuestionCommandRequestDto dto) {
         SubQuestion subQuestion = subQueryRepository.findById(subId)
             .orElseThrow(SubQuestionNotFoundException::new);
-        subQuestion.setTitle(dto.getTitle());
-        subQuestion.setContent(dto.getContent());
-        subQuestion.setCompany(dto.getCompany());
+        if (dto.getTitle() != null) {
+            subQuestion.setTitle(dto.getTitle());
+        }
+        if (dto.getContent() != null) {
+            subQuestion.setContent(dto.getContent());
+        }
+        if (dto.getCompany() != null) {
+            subQuestion.setCompany(dto.getCompany());
+        }
         return subCommandRepository.save(subQuestion).toCommandResponse();
     }
 }

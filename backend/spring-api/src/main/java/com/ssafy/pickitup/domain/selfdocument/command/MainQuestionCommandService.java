@@ -5,8 +5,8 @@ import com.ssafy.pickitup.domain.selfdocument.command.dto.MainQuestionCommandRes
 
 public interface MainQuestionCommandService {
 
-    MainQuestionCommandResponseDto registerMainQuestion(MainQuestionCommandRequestDto dto,
-        Integer userId);
+    MainQuestionCommandResponseDto registerMainQuestion(
+        Integer userId, MainQuestionCommandRequestDto dto);
 
     boolean deleteMainQuestion(Integer mainId);
 

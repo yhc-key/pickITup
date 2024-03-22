@@ -8,6 +8,8 @@ target
 /.settings
 /RUNNING_PID
 
+play-spark-local-compose.yml
+
 /.g8
 **/.env
 

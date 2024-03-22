@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfig
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "com.ssafy.pickitup.domain.recruit")
+@EnableElasticsearchRepositories(basePackages = "com.ssafy.pickitup.domain")
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
 
     @Value("${spring.data.elasticsearch.cluster-nodes}")

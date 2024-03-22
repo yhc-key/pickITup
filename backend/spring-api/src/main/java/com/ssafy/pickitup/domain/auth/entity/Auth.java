@@ -3,6 +3,7 @@ package com.ssafy.pickitup.domain.auth.entity;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
 import com.ssafy.pickitup.domain.user.entity.BaseTimeEntity;
 import com.ssafy.pickitup.domain.user.entity.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,10 +18,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
 @Builder
+@SQLRestriction("is_deleted = false")
 @ToString(of = {"id", "username", "password", "refreshToken"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -43,8 +46,9 @@ public class Auth extends BaseTimeEntity {
     private Role role = Role.USER;
 
     private String refreshToken;
+    private boolean isDeleted;
 
-    @OneToOne(mappedBy = "auth")
+    @OneToOne(mappedBy = "auth", cascade = CascadeType.ALL)
     private User user;
 
     public static Auth toDto(AuthDto authDto) {
@@ -61,8 +65,25 @@ public class Auth extends BaseTimeEntity {
             .build();
     }
 
-    public void deleteRefreshToken(){
+    public void deleteRefreshToken() {
         this.refreshToken = null;
     }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void deactivate() {
+        this.isDeleted = true;
+    }
+
+    public void activate() {
+        this.isDeleted = false;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
 
 }
