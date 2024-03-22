@@ -171,7 +171,7 @@ export default function AddEssay() {
           <div className="absolute bottom-0 right-0 mb-6 mr-6">
             <button
               type="button"
-              onClick={() => router.push("/myPage/myEssay")}
+              onClick={() => router.push("/main/myPage/myEssay")}
               className="px-6 py-2 mx-4 text-white rounded-lg bg-f5red-300"
             >
               취소하기
