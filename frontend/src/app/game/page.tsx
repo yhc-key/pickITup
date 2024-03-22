@@ -1,11 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 
 import { IoHelpCircleSharp } from "react-icons/io5";
 
-import Tooltip from "../../../components/tooltip";
-import TechSelectSpeed from "../../../components/game/techSelectSpeed";
-import TechSelectOX from "../../../components/game/techSelectOX";
+import Tooltip from "@/components/tooltip";
+import TechSelectSpeed from "@/components/SpeedQuiz/techSelectSpeed";
+import TechSelectOX from "@/components/OXQuiz/techSelectOX";
 
 export default function GamePage() {
   const gameInfo: string =
@@ -22,10 +21,10 @@ export default function GamePage() {
           priority={true}
         />
         <div className="flex flex-col justify-evenly">
-          <div className="flex justify-around font-semibold text-5xl tracking-wider">
-            <div className="text-f5black-400 mr-2 my-2">PICK</div>
-            <div className="text-f5green-300 mx-1 my-2">IT</div>
-            <div className="text-f5black-400 ml-2 my-2">GAME</div>
+          <div className="flex justify-around text-5xl font-semibold tracking-wider">
+            <div className="my-2 mr-2 text-f5black-400">PICK</div>
+            <div className="mx-1 my-2 text-f5green-300">IT</div>
+            <div className="my-2 ml-2 text-f5black-400">GAME</div>
           </div>
           <div className="flex items-center justify-center">
             <div className="font-medium text-f5black-400">
@@ -34,23 +33,23 @@ export default function GamePage() {
             <Tooltip content={gameInfo}>
               <IoHelpCircleSharp
                 size={35}
-                className=" text-f5gray-400 hover:text-f5gray-500 hover:cursor-pointer transition-all duration-150 ease-in-out"
+                className="transition-all duration-150 ease-in-out text-f5gray-400 hover:text-f5gray-500 hover:cursor-pointer"
               />
             </Tooltip>
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap justify-evenly mx-20 mb-10">
+      <div className="flex flex-wrap mx-20 mb-10 justify-evenly">
         <div>
-          <div className="flex justify-center font-semibold text-3xl tracking-widest my-5">
-            <div className="text-f5green-300 mr-3">SPEED</div>
+          <div className="flex justify-center my-5 text-3xl font-semibold tracking-widest">
+            <div className="mr-3 text-f5green-300">SPEED</div>
             <div className="text-f5black-400">QUIZ</div>
           </div>
           <TechSelectSpeed />
         </div>
         <div>
-          <div className="flex justify-center font-semibold text-3xl tracking-widest my-5">
-            <div className="text-f5green-300 mr-3">OX</div>
+          <div className="flex justify-center my-5 text-3xl font-semibold tracking-widest">
+            <div className="mr-3 text-f5green-300">OX</div>
             <div className="text-f5black-400">QUIZ</div>
           </div>
           <TechSelectOX />
