@@ -1,7 +1,7 @@
 package services.recommend
 
 import com.typesafe.config.ConfigFactory
-import config.MongoConfig.{MONGO_DATABASE, MONGO_URI}
+import config.MongoConfig.MONGO_URI
 import models.Recommendation
 import org.apache.spark.ml.feature.CountVectorizer
 import org.apache.spark.ml.linalg.{SparseVector, Vectors}
@@ -14,7 +14,7 @@ object ContentBasedFilteringService {
 
   case class JobPosting(jobId: Int, company: String, qualificationRequirements: Seq[String], preferredRequirements: Seq[String])
 
-  def recommend(): List[Recommendation] = {
+  def recommend(userId: Int): List[Recommendation] = {
 
     //    Logger.getLogger("org").setLevel(Level.ERROR)
 
@@ -41,7 +41,6 @@ object ContentBasedFilteringService {
 
     val recruits = spark.read
       .format("mongo")
-      .option("database", MONGO_DATABASE)
       .option("collection", "recruit")
       .load()
       .select("_id", "qualificationRequirements", "preferredRequirements")
