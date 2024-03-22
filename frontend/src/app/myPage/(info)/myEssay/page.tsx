@@ -10,6 +10,7 @@ import {
 import { cloneDeep } from "lodash";
 import Link from "next/link";
 import Modal from "@/components/modal";
+import useEssayStore from "@/store/essayStore";
 interface Essay {
   company: string;
   title: string;
@@ -227,6 +228,7 @@ export default function MyEssay(): JSX.Element {
         }
         const jsonData = await res.json();
         setTitles(jsonData.response);
+        useEssayStore.getState().updateEssayTitles(jsonData.response);
       } catch (error) {
         console.log(error);
       }
@@ -272,9 +274,6 @@ export default function MyEssay(): JSX.Element {
     setMyEssayActive(tmpEssayActive);
   }, [essays]);
   //메인 타이틀 받아오면 그 안의 essays 받아오기
-  if (myEssayActive.length == 0) {
-    return <Fragment></Fragment>;
-  }
 
   return (
     <div className="relative w-full pt-3 pr-3">
@@ -315,7 +314,7 @@ export default function MyEssay(): JSX.Element {
                 <div className="flex flex-row m-1">
                   {essays[index]?.map((essay: Essay, essayIndex: number) => {
                     const isActive: boolean =
-                      myEssayActive[index][essayIndex] || false;
+                      myEssayActive[index]?.[essayIndex] || false;
                     return (
                       <button
                         type="button"
@@ -329,7 +328,7 @@ export default function MyEssay(): JSX.Element {
                   })}
                 </div>
                 {essays[index]?.map((essay: Essay, essayIndex: number) => {
-                  if (!myEssayActive[index][essayIndex]) {
+                  if (!myEssayActive[index]?.[essayIndex]) {
                     return;
                   }
                   return (
@@ -365,7 +364,7 @@ export default function MyEssay(): JSX.Element {
         })}
       <button
         onClick={() => setIsAddModalOpen(true)}
-        className="flex flex-row items-center justify-center w-full gap-2 p-2 mt-2 border border-black rounded-lg min-h-10"
+        className={`flex flex-row items-center justify-center w-full gap-2 p-2 ${titles.length === 0 ? "mt-12 " : "mt-2"} border border-black rounded-lg min-h-10`}
       >
         <div className="text-f5green-300">
           <FaPlus />
@@ -412,7 +411,7 @@ export default function MyEssay(): JSX.Element {
       <Modal open={isChangeModalOpen}>
         <div className="flex flex-col h-min-[400px]">
           <div className="text-xl font-medium text-center ">
-            🖋 추가할 자소서 항목을 작성해주세요 🖋
+            🖋 변경할 자소서 항목을 작성해주세요 🖋
           </div>
 
           <form
