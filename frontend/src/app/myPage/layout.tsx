@@ -11,13 +11,12 @@ const dummyMyData: string[][] = [
   ["내 뱃지", "3 개", "/images/iconShield.png"],
 ];
 
-
 export default function myPageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const nickname = sessionStorage.getItem('nickname');
+  // const nickname = sessionStorage.getItem('nickname');
   return (
     <div className="flex mx-10 my-5">
       <div className="min-w-[330px] max-w-[330px]">
@@ -30,7 +29,7 @@ export default function myPageLayout({
             className="w-auto"
           />
           <div className="flex flex-col items-center gap-4">
-            <p>{nickname}</p>
+            <p>{"nickname"}</p>
             <Link href="/myPage/updateMyInfo" className="flex flex-row">
               <Image
                 src="/images/personEdit.png"
@@ -153,9 +152,23 @@ export default function myPageLayout({
               className="w-auto h-7"
             />
           </div>
-          <div className="mt-4 flex flex-row gap-3 items-center"><Image src="/images/Github.png" alt="velog" width="30" height="30"/> <a href="https://github.com/yhc-key">https://github.com/yhc-key</a></div>
-          <div className="mt-2 flex flex-row gap-3 items-center"><Image src="/images/velog.png" alt="velog" width="30" height="30"/> <a href="http://velog.io/@yhc-key">https://velog.io/@yhc-key</a></div>
-          <div className="mt-2 flex flex-row gap-3 items-center"><Image src="/images/email.png" alt="velog" width="30" height="30"/> yhcho0712@gmail.com</div>
+          <div className="mt-4 flex flex-row gap-3 items-center">
+            <Image
+              src="/images/Github.png"
+              alt="velog"
+              width="30"
+              height="30"
+            />{" "}
+            <a href="https://github.com/yhc-key">https://github.com/yhc-key</a>
+          </div>
+          <div className="mt-2 flex flex-row gap-3 items-center">
+            <Image src="/images/velog.png" alt="velog" width="30" height="30" />{" "}
+            <a href="http://velog.io/@yhc-key">https://velog.io/@yhc-key</a>
+          </div>
+          <div className="mt-2 flex flex-row gap-3 items-center">
+            <Image src="/images/email.png" alt="velog" width="30" height="30" />{" "}
+            yhcho0712@gmail.com
+          </div>
         </div>
       </div>
       <div className="flex-grow ml-5">{children}</div>
