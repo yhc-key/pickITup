@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import useAuthStore from "../../../store/authStore";
+import { useEffect, useState } from "react";
 
 const dummyMyData: string[][] = [
   ["내가 찜한 채용공고", "3 개", "/images/starOutline.png"],
@@ -11,12 +12,15 @@ const dummyMyData: string[][] = [
   ["내 뱃지", "3 개", "/images/iconShield.png"],
 ];
 
-export default function myPageLayout({
+export default function MyPageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const nickname = sessionStorage.getItem("nickname");
+  const [nickname, setNickname] = useState<string | null>(null);
+  useEffect(() => {
+    setNickname(sessionStorage.getItem("nickname"));
+  }, []);
   return (
     <div className="flex mx-10 my-5">
       <div className="min-w-[330px] max-w-[330px]">
