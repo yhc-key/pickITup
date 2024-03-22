@@ -16,7 +16,7 @@ export default function myPageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const nickname = sessionStorage.getItem('nickname');
+  const nickname = sessionStorage.getItem("nickname");
   return (
     <div className="flex mx-10 my-5">
       <div className="min-w-[330px] max-w-[330px]">
