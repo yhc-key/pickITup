@@ -34,7 +34,7 @@ export default function BackBtn() {
           <div className="flex flex-wrap justify-center gap-2 mt-3"></div>
           <div className="flex flex-col items-center justify-center mt-5">
             <div>
-              <Link href={`/game`}>
+              <Link href={`/main/game`}>
                 <button className="px-20 py-3 mb-5 text-sm font-semibold rounded-md text-neutral-100 bg-f5red-350 hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10">
                   종료하기
                 </button>

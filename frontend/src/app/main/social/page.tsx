@@ -40,7 +40,7 @@ function Social(){
                     <div className="w-[9vh]"></div>
                     <Image src="/images/googleLogo.png" width={21} height={21} alt="googleLogo"/>
                     <div className="w-[2.5vw]"></div>구글 계정으로 로그인</button>
-                <Link href="/login" className="w-[25vw] h-[5vh] py-5 my-4 flex items-center justify-start rounded-[10px] border border-f5gray-400 whitespace-pre font-bold">
+                <Link href="/main/login" className="w-[25vw] h-[5vh] py-5 my-4 flex items-center justify-start rounded-[10px] border border-f5gray-400 whitespace-pre font-bold">
                     <div className="w-[8.8vh]"></div>
                     <Image src="/images/pickITupLogo.png" width={24} height={21.84} alt="pickITupLogo"/>
                     <div className="w-[2.5vw]"></div>pick IT up 로그인</Link>

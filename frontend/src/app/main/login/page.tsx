@@ -119,7 +119,7 @@ function Login() {
       </div>
       <div className="flex items-center justify-center h-[8vh] whitespace-pre">
         아직 계정이 없으신가요?{" "}
-        <Link href="/signup" className="text-lg font-bold">
+        <Link href="/main/signup" className="text-lg font-bold">
           회원가입 하러가기
         </Link>
       </div>

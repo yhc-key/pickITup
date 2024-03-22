@@ -1,31 +1,32 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { speedQuizDataMap } from "@/data/speedQuizData";
+import { OXQuizDataMap } from "@/data/OXQuizData";
 import BackBtn from "@/components/game/backBtn";
-import Question from "@/components/SpeedQuiz/question";
-import TimeBar from "@/components/SpeedQuiz/timebar";
-import NextBtn from "@/components/SpeedQuiz/nextBtn";
-import QuizResult from "@/components/SpeedQuiz/quizResult";
+import Question from "@/components/OXQuiz/question";
+import TrueBtn from "@/components/OXQuiz/trueBtn";
+import FalseBtn from "@/components/OXQuiz/falseBtn";
+import QuizResult from "@/components/OXQuiz/quizReulst";
 
 interface Quiz {
   question: string;
-  answer: string;
+  answer: boolean;
 }
 
 interface Answer {
   question: string;
-  answer: string;
-  user: string;
+  answer: boolean;
+  user: boolean;
   correct: boolean;
   index: number;
 }
 
-export default function SpeedQuiz(props: any) {
+export default function OXQuiz(props: any) {
   const router = useRouter();
 
+  const userAnswerRef = useRef<boolean | null>(null);
   const [index, setIndex] = useState(0);
   const [questionList, setQuestionList] = useState<Quiz[]>([]);
   const [answer, setAnswer] = useState<Answer[]>([]);
@@ -33,10 +34,10 @@ export default function SpeedQuiz(props: any) {
   // 선택한 주제
   const pickTech: string = props.params.pickTech;
 
-  const apiUrl = "https://spring.pickitup.online/quizzes/speed";
+  const apiUrl = "https://spring.pickitup.online/quizzes/ox";
 
   useEffect(() => {
-    const fetchSpeedQuizData = async () => {
+    const fetchOXQuizData = async () => {
       try {
         // api로부터 데이터 받아오기
         const resp: Response = await fetch(`${apiUrl}/${pickTech}`);
@@ -48,33 +49,34 @@ export default function SpeedQuiz(props: any) {
         console.error(error);
       }
     };
-    fetchSpeedQuizData();
+    fetchOXQuizData();
   }, [apiUrl, pickTech, setQuestionList]);
 
   // useEffect(() => {
   //   // 선택한 주제에 대한 질문 받아오기
-  //   const questions: Quiz[] | undefined = speedQuizDataMap.get(pickTech);
+  //   const questions: Quiz[] | undefined = OXQuizDataMap.get(pickTech);
   //   if (questions) {
   //     setQuestionList(questions);
   //   }
   // }, [pickTech]);
 
-  // 정답 정보 저장
-  const addValueToAnswer: () => void = useCallback(() => {
-    if (index >= 0) {
-      let curAnswer: string = "";
-      document
-        .querySelectorAll<HTMLInputElement>(".question-input")
-        .forEach((e: HTMLInputElement) => {
-          curAnswer += e.value === "" ? " " : e.value;
-          e.value = "";
-        });
+  // trueBtn 클릭 시 실행되는 함수
+  const TrueClickHandler = (): void => {
+    userAnswerRef.current = true; // 사용자 답변을 true로 설정
+    onNextClick();
+  };
 
-      // 영어인 경우 대소문자를 구분하지 않고 비교
-      const isEnglish: RegExp = /^[A-Za-z]+$/;
-      const correct: boolean = isEnglish.test(curAnswer)
-        ? curAnswer.toUpperCase() === questionList[index].answer.toUpperCase()
-        : curAnswer === questionList[index].answer;
+  // falseBtn 클릭 시 실행되는 함수
+  const FalseClickHandler = (): void => {
+    userAnswerRef.current = false; // 사용자 답변을 false로 설정
+    onNextClick();
+  };
+
+  const addValueToAnswer = useCallback(() => {
+    if (index >= 0) {
+      // userAnswerRef를 통해 사용자의 답변 가져오기
+      const curAnswer: boolean =
+        userAnswerRef.current !== null ? userAnswerRef.current : false;
 
       // answer 배열에 추가
       setAnswer([
@@ -84,7 +86,7 @@ export default function SpeedQuiz(props: any) {
           question: questionList[index].question,
           answer: questionList[index].answer,
           user: curAnswer,
-          correct: correct,
+          correct: curAnswer === questionList[index].answer, // 정답 여부 확인
           index: index + 1,
         },
       ]);
@@ -96,11 +98,10 @@ export default function SpeedQuiz(props: any) {
     addValueToAnswer();
     // 문제번호 1 증가
     setIndex((prev: number) => prev + 1);
-    // 제한시간 10초로 갱신
   }, [addValueToAnswer]);
 
   const listCilckHandler = (): void => {
-    router.push("/game");
+    router.push("/main/game");
   };
 
   return (
@@ -112,30 +113,28 @@ export default function SpeedQuiz(props: any) {
             <BackBtn />
           </div>
           <div className="flex flex-wrap items-center justify-center">
-            <div className="flex flex-col mx-1 ml-10">
+            <div className="flex flex-col mx-1 ml-20">
               <div className="flex flex-wrap justify-center my-3 text-4xl font-semibold tracking-widest">
-                <div className="mr-3 text-f5green-300">스피드</div>
+                <div className="mr-3 text-f5green-300">OX</div>
                 <div className="text-f5black-400">퀴즈</div>
               </div>
               <div className="text-xs text-f5black-400">
-                문제를 읽고 알맞은 정답을 입력해주세요!
+                문제를 읽고 알맞은 정답을 선택해주세요!
               </div>
             </div>
             <Image
-              src="/images/hourglass2.png"
-              alt="gameMachine"
-              width={130}
+              src="/images/oxIntro.png"
+              alt="oxQuizIntro"
+              width={190}
               height={130}
               priority={true}
             />
           </div>
-          <Question
-            question={questionList[index]}
-            index={index + 1}
-            onNextClick={onNextClick}
-          />
-          <TimeBar onNextClick={onNextClick} index={index} />
-          <NextBtn onNextClick={onNextClick} />
+          <Question question={questionList[index]} index={index + 1} />
+          <div className="flex flex-wrap justify-center mt-10">
+            <TrueBtn onNextClick={TrueClickHandler} />
+            <FalseBtn onNextClick={FalseClickHandler} />
+          </div>
         </div>
       ) : (
         <div>

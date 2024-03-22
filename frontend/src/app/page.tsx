@@ -1,5 +1,9 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"] });
+
 import Dots from "@/components/onBoarding/dots";
 import Page1 from "@/components/onBoarding/page1";
 import Page2 from "@/components/onBoarding/page2";
@@ -14,11 +18,10 @@ export default function Home() {
 
   useEffect(() => {
     const wheelHandler = (e: WheelEvent) => {
-      e.preventDefault();
       const { deltaY } = e;
       const { scrollTop } = mainWrapperRef.current!;
       const pageHeight = window.innerHeight;
-  
+
       if (deltaY > 0) {
         if (scrollTop < pageHeight * 4) {
           mainWrapperRef.current?.scrollTo({
@@ -39,29 +42,36 @@ export default function Home() {
         }
       }
     };
-  
+
     const wrapperRefCurrent = mainWrapperRef.current!;
-    wrapperRefCurrent.addEventListener("wheel", wheelHandler);
-  
+    wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
+      passive: true,
+    });
+
     return () => {
       wrapperRefCurrent.removeEventListener("wheel", wheelHandler);
     };
   }, []);
 
   return (
-    <div ref={mainWrapperRef} className="overflow-hidden h-screen">
-      <Dots scrollIdx={scrollIdx} />
-      <div className="h-screen">
-        <Page1 />
-        <div className="w-[100%] h-1"></div>
-        <Page2 />
-        <div className="w-[100%] h-1"></div>
-        <Page3 />
-        <div className="w-[100%] h-1"></div>
-        <Page4 />
-        <div className="w-[100%] h-1"></div>
-        <Page5 />
+    <body className={`${inter.className} min-h-screen flex flex-col`}>
+      <div ref={mainWrapperRef} className="h-screen overflow-hidden">
+        <Link href="/main/login">
+          <button className="fixed p-3 text-sm transition-all duration-300 ease-in-out top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">로그인 | 회원가입</button>
+        </Link>
+        <Dots scrollIdx={scrollIdx} />
+        <div className="h-screen">
+          <Page1 />
+          <div className="w-[100%] h-1"></div>
+          <Page2 />
+          <div className="w-[100%] h-1"></div>
+          <Page3 />
+          <div className="w-[100%] h-1"></div>
+          <Page4 />
+          <div className="w-[100%] h-1"></div>
+          <Page5 />
+        </div>
       </div>
-    </div>
+    </body>
   );
 }

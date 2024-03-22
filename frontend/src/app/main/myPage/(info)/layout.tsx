@@ -14,25 +14,25 @@ export default function InfoLayout({
     <Fragment>
       <div className="border-b-2 border-black flex flex-row items-center mr-4">
         <Link
-          href="/myPage/myFavoriteRecruit"
+          href="/main/myPage/myFavoriteRecruit"
           className={`w-1/4 text-f5black-300 h-16 flex items-center justify-center hover:text-f5green-300 ${isActive("/myPage/myFavoriteRecruit") ? "border-t-4 border-f5green-300" : ""} `}
         >
           <span>내가 찜한 채용공고</span>
         </Link>
         <Link
-          href="/myPage/myBadge"
+          href="/main/myPage/myBadge"
           className={`w-1/4 text-f5black-300 h-16 flex items-center justify-center hover:text-f5green-300 ${isActive("/myPage/myBadge") ? "border-t-4 border-f5green-300" : ""} `}
         >
           <span>나의 뱃지</span>
         </Link>
         <Link
-          href="/myPage/myPastAns"
+          href="/main/myPage/myPastAns"
           className={`w-1/4 text-f5black-300 h-16 flex items-center justify-center hover:text-f5green-300 ${isActive("/myPage/myPastAns") ? "border-t-4 border-f5green-300" : ""} `}
         >
           <span>나의 과거 문제 내역</span>
         </Link>
         <Link
-          href="/myPage/myEssay"
+          href="/main/myPage/myEssay"
           className={`w-1/4 text-f5black-300 h-16 flex items-center justify-center hover:text-f5green-300 ${isActive("/myPage/myEssay") ? "border-t-4 border-f5green-300" : ""} `}
         >
           <span>자기소개서 관리</span>

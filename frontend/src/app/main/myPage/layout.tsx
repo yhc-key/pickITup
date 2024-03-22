@@ -36,7 +36,7 @@ export default function MyPageLayout({
           />
           <div className="flex flex-col items-center gap-4">
             <p>{nickname}</p>
-            <Link href="/myPage/updateMyInfo" className="flex flex-row">
+            <Link href="/main/myPage/updateMyInfo" className="flex flex-row">
               <Image
                 src="/images/personEdit.png"
                 alt="profileUpdate"
