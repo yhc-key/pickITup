@@ -67,7 +67,10 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         }
         return recruitQueryElasticsearchRepository.searchWithFilter(
                 dto.getQuery(), sb.toString(), new_pageable)
-            .map(RecruitDocumentElasticsearch::toMongo)
+            .map(es -> {
+                Integer companyId = companyQueryService.searchByName(es.getCompany()).getId();
+                return es.toMongo(companyId);
+            })
             .map(RecruitDocumentMongo::toQueryResponse);
     }
 
