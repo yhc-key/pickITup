@@ -26,7 +26,7 @@ function Search() {
 export default function Callback() {
   const router = useRouter();
   const login:(nickname : string) => void = useAuthStore((state : AuthState) => state.login);
-
+  router.push('/');
 
   // useEffect(() => {
   //   fetch("https://spring.pickitup.online/users/me",{
