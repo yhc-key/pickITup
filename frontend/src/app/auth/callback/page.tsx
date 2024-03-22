@@ -4,6 +4,7 @@ import { Fragment, Suspense, useEffect } from "react";
 import useAuthStore,{AuthState} from "@/store/authStore";
 
 function Search() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const refreshToken = searchParams.get("refresh-token") ?? "";
   const accessToken = searchParams.get("access-token") ?? "";
@@ -20,13 +21,13 @@ function Search() {
   console.log(accessToken);
   console.log(refreshToken);
   console.log(expiresIn);
+  router.push('/');
   return <Fragment>hi</Fragment>;
 }
 
 export default function Callback() {
-  const router = useRouter();
-  const login:(nickname : string) => void = useAuthStore((state : AuthState) => state.login);
-  router.push('/');
+  // const login:(nickname : string) => void = useAuthStore((state : AuthState) => state.login);
+  
 
   // useEffect(() => {
   //   fetch("https://spring.pickitup.online/users/me",{
