@@ -30,7 +30,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     private final AuthCommandService authCommandService;
     private final RedisService redisService;
     //    private final String CALLBACK_URL = "http://localhost:3000/auth/callback";
-    private final String CALLBACK_URL = "https://pickitup.online/auth/callback";
+    private final String CALLBACK_URL = "https://pickitup.online/main/auth/callback";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
