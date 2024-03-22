@@ -6,7 +6,7 @@ interface Title {
 }
 
 // Zustand 스토어 생성
-interface EssayState {
+export interface EssayState {
   essayTitles: Title[];
   updateEssayTitles: (titles: Title[]) => void;
 }
