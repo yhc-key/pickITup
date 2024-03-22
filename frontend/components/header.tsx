@@ -27,13 +27,14 @@ export default function Header() {
 
   useEffect(() => {
     setAccessToken(sessionStorage.getItem("accessToken"));
-  }, []);
+  }, [accessToken]);
 
   const router = useRouter();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
-  const logoutRequest = () => {
+  const logoutRequest = () => {    
     if(isLoggedIn===true){
+      setAccessToken(sessionStorage.getItem("accessToken"));
       fetch("https://spring.pickitup.online/auth/logout", {
         method: "POST",
         headers: {
@@ -42,8 +43,10 @@ export default function Header() {
       })
       .then(res=>res.json())
       .then(res=>{
+        console.log(res);
+        
         if(res.success===false){
-          alert("로그아웃실패");
+          alert(res.error.message);
         }
         else if(res.success===true){
           sessionStorage.removeItem("accessToken");

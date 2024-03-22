@@ -34,8 +34,9 @@ function Login() {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
+        
         if(res.success===false){
-          alert("올바른 아이디와 비밀번호를 입력하세요.");
+          alert(res.error.message);
           return;
         }
         if(res.success===true){
@@ -55,10 +56,11 @@ function Login() {
             login(res.response.nickname);
             router.push("/");
           })
+          .catch(error=>{alert(error)});
         };
       })
-      .catch((e) => {
-        alert("아이디 혹은 비밀번호가 일치하지 않습니다."+e);
+      .catch((error) => {
+        alert("아이디 혹은 비밀번호가 일치하지 않습니다."+error);
         return;
       });
     }

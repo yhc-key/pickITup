@@ -10,8 +10,7 @@ function Search() {
   const refreshToken = searchParams.get("refresh-token") ?? "";
   const accessToken = searchParams.get("access-token") ?? "";
   const expiresIn = searchParams.get("expires_in") ?? "";
-  if (refreshToken !== "") {
-
+  if (accessToken !== "") {    
     sessionStorage.setItem("accessToken", accessToken);
     sessionStorage.setItem("refreshToken", refreshToken);
     sessionStorage.setItem("expiresIn", expiresIn);
@@ -31,11 +30,6 @@ function Search() {
     router.push('/');
   }
 
-  console.log(searchParams.toString);
-
-  console.log(accessToken);
-  console.log(refreshToken);
-  console.log(expiresIn);
   return <Fragment>hi</Fragment>;
 }
 
