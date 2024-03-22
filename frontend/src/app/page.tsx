@@ -49,7 +49,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div ref={mainWrapperRef} className="overflow-y-hidden h-screen">
+    <div ref={mainWrapperRef} className="overflow-hidden h-screen">
       <Dots scrollIdx={scrollIdx} />
       <div className="h-screen">
         <Page1 />
