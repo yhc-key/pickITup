@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import useAuthStore from "../store/authStore";
+import useAuthStore,{AuthState} from "../store/authStore";
 interface LinkType {
   name: string;
   href: string;
@@ -19,15 +19,14 @@ const navLinks: LinkType[] = [
 ];
 
 export default function Header() {
-  const nickname = useAuthStore((state) => state.nickname);
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const logout = useAuthStore((state) => state.logout);
+
+  const nickname :string = useAuthStore((state : AuthState) => state.nickname);
+  const isLoggedIn :boolean = useAuthStore((state: AuthState) => state.isLoggedIn);
+  const logout : () => void = useAuthStore((state : AuthState) => state.logout);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [tokenType, setTokenType] = useState<string | null>(null);
 
   useEffect(() => {
     setAccessToken(sessionStorage.getItem("accessToken"));
-    setTokenType(sessionStorage.getItem("tokenType"));
   }, []);
 
   const router = useRouter();
@@ -37,12 +36,11 @@ export default function Header() {
     fetch("https://spring.pickitup.online/auth/logout", {
       method: "POST",
       headers: {
-        Authorization: tokenType + " " + accessToken,
+        Authorization: "Bearer " + accessToken,
       },
     });
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
-    sessionStorage.removeItem("tokenType");
     sessionStorage.removeItem("expiresIn");
     sessionStorage.removeItem("authid");
     sessionStorage.removeItem("nickname");
