@@ -62,11 +62,10 @@ public class AuthCommandService {
 
 //        AuthDto authDto = authCommandJpaRepository.findAuthByUsername(loginRequestDto.getUsername());
         Auth auth = authCommandJpaRepository.findAuthByUsername(loginRequestDto.getUsername());
-        AuthDto authDto = AuthDto.getAuth(auth);
         if (auth == null) {
             throw new AuthNotFoundException("존재하지 않는 아이디입니다.");
         }
-
+        AuthDto authDto = AuthDto.getAuth(auth);
         log.info("auth= {}", authDto.toString());
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), authDto.getPassword())) {
             throw new PasswordException("비밀번호가 일치하지 않습니다.");

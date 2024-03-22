@@ -7,6 +7,7 @@ import com.ssafy.pickitup.domain.selfdocument.command.SubQuestionCommandService;
 import com.ssafy.pickitup.domain.selfdocument.command.dto.MainQuestionCommandRequestDto;
 import com.ssafy.pickitup.domain.selfdocument.command.dto.SubQuestionCommandRequestDto;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ public class InitDB {
     private final MainQuestionCommandService mainQuestionCommandService;
     private final SubQuestionCommandService subQuestionCommandService;
 
+
+    @PostConstruct
     @Transactional
     public void init() {
         UserSignupDto userSignupDto1 = new UserSignupDto("hscho", "1234", "조현수", "존수존수",
