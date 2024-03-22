@@ -1,7 +1,7 @@
 import {create} from 'zustand';
 
 // Zustand 스토어 생성
-interface AuthState {
+export interface AuthState {
   isLoggedIn: boolean;
   nickname:string;
   login: (nickname: string) => void;

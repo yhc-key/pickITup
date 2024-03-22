@@ -3,19 +3,16 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import useAuthStore from "@/store/authStore";
+import useAuthStore,{AuthState} from "@/store/authStore";
 function Login() {
-  const [nick, setNick] = useState("");
   const router = useRouter();
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
-  const login = useAuthStore((state) => state.login);
+  const [id, setId] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const login:(nickname : string) => void = useAuthStore((state : AuthState) => state.login);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [tokenType, setTokenType] = useState<string | null>(null);
 
   useEffect(() => {
     setAccessToken(sessionStorage.getItem("accessToken"));
-    setTokenType(sessionStorage.getItem("tokenType"));
   }, []);
 
   const requestLogin = () => {
@@ -41,12 +38,11 @@ function Login() {
       .then((res) => {
         sessionStorage.setItem("accessToken", res.response.accessToken);
         sessionStorage.setItem("refreshToken", res.response.refreshToken);
-        sessionStorage.setItem("tokenType", "Bearer");
         sessionStorage.setItem("expiresIn", "3600000");
         fetch("https://spring.pickitup.online/users/me", {
           method: "GET",
           headers: {
-            Authorization: tokenType + " " + accessToken,
+            Authorization: "Bearer " + accessToken,
           },
         })
           .then((res) => res.json())
