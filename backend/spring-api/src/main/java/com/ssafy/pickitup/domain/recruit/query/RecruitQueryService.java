@@ -12,7 +12,7 @@ public interface RecruitQueryService {
 
     Page<RecruitQueryResponseDto> search(RecruitQueryRequestDto dto, Pageable pageable);
 
-    void readKeywords();
+    void readRecruitForConvert();
 
     Page<RecruitQueryResponseDto> searchByIdList(List<Integer> idList, Pageable pageable);
 }

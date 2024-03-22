@@ -1,5 +1,6 @@
 package com.ssafy.pickitup.domain.company.entity;
 
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,19 +24,5 @@ public class CompanyMongo {
     private int latitude;
     private int longitude;
     private int salary;
-
-//    public RecruitQueryResponseDto toQueryResponse() {
-//        return RecruitQueryResponseDto.builder()
-//            .id(this.id)
-//            .source(this.source)
-//            .title(this.title)
-//            .company(this.company)
-//            .url(this.url)
-//            .thumbnailUrl(this.thumbnailUrl)
-//            .qualificationRequirements(this.qualificationRequirements)
-//            .preferredRequirements(this.preferredRequirements)
-//            .dueDate(this.dueDate)
-//            .career(this.career)
-//            .build();
-//    }
+    private Set<Integer> recruits;
 }

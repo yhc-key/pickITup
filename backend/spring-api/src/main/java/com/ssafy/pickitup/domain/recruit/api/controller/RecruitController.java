@@ -54,7 +54,7 @@ public class RecruitController {
     @Operation(summary = "Elasticsearch 데이터를 mongodb로 마이그레이션")
     @GetMapping("/read")
     public void read() {
-        companyQueryService.readForConvert();
-        recruitQueryService.readKeywords();
+        companyQueryService.readCompanyForConvert();
+        recruitQueryService.readRecruitForConvert();
     }
 }

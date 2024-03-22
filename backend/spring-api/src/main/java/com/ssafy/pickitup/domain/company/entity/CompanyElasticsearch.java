@@ -1,5 +1,6 @@
 package com.ssafy.pickitup.domain.company.entity;
 
+import java.util.HashSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,7 @@ public class CompanyElasticsearch {
             .latitude(convertAddressToLatitude(this.address))
             .longitude(convertAddressToLongitude(this.address))
             .salary(convertSalaryIntoInt(this.salary))
+            .recruits(new HashSet<>())
             .build();
     }
 }

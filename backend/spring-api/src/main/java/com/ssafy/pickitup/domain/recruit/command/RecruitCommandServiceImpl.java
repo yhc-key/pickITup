@@ -19,6 +19,9 @@ public class RecruitCommandServiceImpl implements RecruitCommandService {
     private final RecruitCommandMongoRepository recruitCommandMongoRepository;
     private final RecruitQueryMongoRepository recruitQueryMongoRepository;
 
+    /*
+        MongoDB Recruit에 키워드 추가
+     */
     @Override
     public void addKeyword(
         RecruitDocumentElasticsearch recruitDocumentElasticsearch,
@@ -26,14 +29,14 @@ public class RecruitCommandServiceImpl implements RecruitCommandService {
         RecruitDocumentMongo mongo = recruitQueryMongoRepository
             .findById(recruitDocumentElasticsearch.getId())
             .orElseGet(recruitDocumentElasticsearch::toMongo);
-        Set<String> set;
+        Set<String> keywords;
         switch (field) {
-            case "qualificationRequirements" -> set = mongo.getQualificationRequirements();
-            case "preferredRequirements" -> set = mongo.getPreferredRequirements();
+            case "qualificationRequirements" -> keywords = mongo.getQualificationRequirements();
+            case "preferredRequirements" -> keywords = mongo.getPreferredRequirements();
             default -> throw new InvalidFieldTypeException();
         }
 
-        set.add(keyword);
+        keywords.add(keyword);
         recruitCommandMongoRepository.save(mongo);
     }
 }

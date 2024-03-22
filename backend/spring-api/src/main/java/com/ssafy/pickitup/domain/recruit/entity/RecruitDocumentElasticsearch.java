@@ -1,5 +1,6 @@
 package com.ssafy.pickitup.domain.recruit.entity;
 
+import com.ssafy.pickitup.domain.company.query.CompanyQueryService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -19,6 +20,8 @@ import org.springframework.data.elasticsearch.annotations.Field;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecruitDocumentElasticsearch {
+
+    CompanyQueryService companyQueryService;
 
     @Id
     private Integer id;
@@ -84,7 +87,7 @@ public class RecruitDocumentElasticsearch {
         return RecruitDocumentMongo.builder()
             .id(this.id)
             .source(this.source)
-//            .companyId(companyId)
+            .companyId(companyQueryService.searchByName(this.getCompany()).getId())
             .url(this.url)
             .thumbnailUrl(this.thumbnailUrl)
             .qualificationRequirements(new HashSet<>())
