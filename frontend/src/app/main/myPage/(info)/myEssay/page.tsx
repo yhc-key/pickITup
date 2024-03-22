@@ -11,6 +11,7 @@ import { cloneDeep } from "lodash";
 import Link from "next/link";
 import Modal from "@/components/modal";
 import useEssayStore from "@/store/essayStore";
+import { redirect } from "next/navigation";
 interface Essay {
   company: string;
   title: string;
@@ -99,6 +100,7 @@ export default function MyEssay(): JSX.Element {
     } catch (error) {
       console.error(error);
     }
+    redirect("/myPage/myEssay");
   };
 
   const addSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {

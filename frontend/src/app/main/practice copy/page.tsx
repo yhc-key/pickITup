@@ -64,9 +64,33 @@ export default function Practice() {
       }
     };
 
-    essayListfetchData();
-    essaySubListfetchData();
+    const postFetchData = async () => {
+      try {
+        const res: Response = await fetch(
+          "https://spring.pickITup.online/self/main/1/sub",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: "진짜 이렇게 저는 합격했습니다.",
+              company: "KTtttt",
+              content: "제가 어릴때부터 열심히 노력한 덕분에...",
+            }),
+          }
+        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch data");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    // essayListfetchData();
+    // essaySubListfetchData();
     // loginFetchData();
+    postFetchData();
   }, []);
   return <div> 먼가 연습할거임</div>;
 }
