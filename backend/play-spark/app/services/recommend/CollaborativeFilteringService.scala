@@ -1,16 +1,14 @@
 package services.recommend
 
-import config.MongoConfig.{MONGO_DATABASE, MONGO_URI}
+import config.MongoConfig.MONGO_URI
 import models.Recommendation
-import org.apache.spark.ml.stat.Correlation
-import org.apache.spark.mllib.recommendation.ALS
 import org.apache.spark.sql.SparkSession
 
 object CollaborativeFilteringService {
 
   case class userSimilarity(userId: Int, similarity: Double)
 
-  def recommend(): List[Recommendation] = {
+  def recommend(userId: Int): List[Recommendation] = {
 
     val spark = SparkSession.builder
       .appName("CollaborativeFiltering")
@@ -23,15 +21,14 @@ object CollaborativeFilteringService {
 
     val similarities = spark.read
       .format("mongo")
-      .option("database", MONGO_DATABASE)
       .option("collection", "userSimilarities")
       .load()
       .select("userId1", "userId2", "similarity")
 
-    val top20SimilarUsers = similarities.filter($"userId1" === 1)
+    val top20SimilarUsers = similarities.filter($"userId1" === userId)
       .select("userId2", "similarity")
       .withColumnRenamed("userId2", "userId")
-      .union(similarities.filter($"userId2" === 1)
+      .union(similarities.filter($"userId2" === userId)
         .select("userId1", "similarity")
         .withColumnRenamed("userId1", "userId")
       )
@@ -45,7 +42,6 @@ object CollaborativeFilteringService {
 
     val interactionScores = spark.read
       .format("mongo")
-      .option("database", MONGO_DATABASE)
       .option("collection", "interactionScores")
       .load()
       .select("userId", "jobId", "score")
