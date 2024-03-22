@@ -61,7 +61,7 @@ export default function Header() {
         });
       logout();
 
-      router.push("/main");
+      router.push("/main/recruit");
     }
   };
   return (

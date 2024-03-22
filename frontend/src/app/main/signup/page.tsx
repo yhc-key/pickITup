@@ -83,7 +83,7 @@ export default function Signup() {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        router.push("/main");
+        router.push("/main/recruit");
       });
   };
   return (
