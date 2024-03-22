@@ -17,12 +17,12 @@ class RecommendController @Inject()(cc: ControllerComponents, config: Configurat
   }
 
   def contentBasedRecommend(): Action[AnyContent] = Action { implicit request =>
-    val list: List[Recommendation] = ContentBasedFilteringService.recommend()
+    val list: List[Recommendation] = ContentBasedFilteringService.recommend(1)
     Ok(Json.toJson(list))
   }
 
   def collaborativeRecommend(): Action[AnyContent] = Action { implicit request =>
-    val list: List[Recommendation] = CollaborativeFilteringService.recommend()
+    val list: List[Recommendation] = CollaborativeFilteringService.recommend(1)
     Ok(Json.toJson(list))
   }
 
