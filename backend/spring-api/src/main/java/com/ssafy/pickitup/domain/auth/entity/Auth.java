@@ -85,4 +85,5 @@ public class Auth extends BaseTimeEntity {
         this.password = password;
     }
 
+
 }

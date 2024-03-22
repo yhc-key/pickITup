@@ -26,6 +26,8 @@ public class RedisService {
     private final Long VC_EXPIREATION_TIME = 10L; // 10분
 
     public void saveRefreshToken(String authId, String refreshToken) {
+        log.info("authId = {}", authId);
+        log.info("refreshToken = {}", refreshToken);
         refreshTokenRedisTemplate.opsForValue()
             .set(RT_PREFIX + authId + SUFFIX, refreshToken, RT_EXPIREATION_TIME,
                 TimeUnit.MINUTES);

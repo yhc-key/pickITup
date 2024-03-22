@@ -21,7 +21,6 @@ public class InitDB {
     private final MainQuestionCommandService mainQuestionCommandService;
     private final SubQuestionCommandService subQuestionCommandService;
 
-    //    @PostConstruct
     @Transactional
     public void init() {
         UserSignupDto userSignupDto1 = new UserSignupDto("hscho", "1234", "조현수", "존수존수",
