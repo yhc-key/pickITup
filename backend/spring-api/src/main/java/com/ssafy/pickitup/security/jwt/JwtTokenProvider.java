@@ -1,6 +1,7 @@
 package com.ssafy.pickitup.security.jwt;
 
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
+import com.ssafy.pickitup.security.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -66,7 +67,8 @@ public class JwtTokenProvider {
         long now = (new Date()).getTime();
         Date accessTokenExpirationTime = new Date(now + JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME);
         String accessToken = Jwts.builder()
-            .setSubject(authentication.getName()) // 사용자 userId
+            .setSubject(String.valueOf(((CustomUserDetails) authentication.getPrincipal()).getAuth()
+                .getId())) // 사용자 userId
             .claim(AUTHORITIES_KEY, authorities)
             .setExpiration(accessTokenExpirationTime)
             .signWith(key, SignatureAlgorithm.HS256)

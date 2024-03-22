@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 @NoArgsConstructor
 @Builder
 public class CustomUserDetails implements UserDetails, OAuth2User {
+
     private Auth auth;
     private Map<String, Object> attributes;
 
@@ -69,5 +70,13 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     @Override
     public String getName() {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomUserDetails{" +
+            "auth=" + auth +
+            ", attributes=" + attributes +
+            '}';
     }
 }

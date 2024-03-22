@@ -1,7 +1,6 @@
 package com.ssafy.pickitup.security.service;
 
 import com.ssafy.pickitup.domain.auth.command.AuthCommandJpaRepository;
-import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.entity.Role;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
@@ -27,18 +26,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final AuthCommandJpaRepository authCommandJpaRepository;
-    private final UserCommandService userCommandService;
     private static final String NAVER = "naver";
     private static final String KAKAO = "kakao";
-    private final String GOOGLE = "google";
     private static final String GET_NAVER_ATTRIBUTE = "response";
+    private final AuthCommandJpaRepository authCommandJpaRepository;
+    private final UserCommandService userCommandService;
+    private final String GOOGLE = "google";
     private Auth auth;
 
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info(userRequest.toString());
+        log.info("userRequest = {}", userRequest.toString());
         OAuth2User oAuth2User = super.loadUser(userRequest);
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         Oauth2UserInfo oauth2UserInfo = ofOAuth2UserInfo(registrationId, oAuth2User);

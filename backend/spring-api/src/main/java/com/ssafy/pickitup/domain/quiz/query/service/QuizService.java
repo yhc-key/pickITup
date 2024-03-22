@@ -6,9 +6,12 @@ import com.ssafy.pickitup.domain.quiz.entity.OxQuiz;
 import com.ssafy.pickitup.domain.quiz.entity.SpeedQuiz;
 import com.ssafy.pickitup.domain.quiz.query.repository.OxQuizJpaRepository;
 import com.ssafy.pickitup.domain.quiz.query.repository.SpeedQuizJpaRepository;
+import com.ssafy.pickitup.domain.user.command.UserCommandJpaRepository;
+import com.ssafy.pickitup.domain.user.entity.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +19,7 @@ public class QuizService {
 
     private final OxQuizJpaRepository oxQuizJpaRepository;
     private final SpeedQuizJpaRepository speedQuizJpaRepository;
+    private final UserCommandJpaRepository userCommandJpaRepository;
 
     public List<OxQuizResponseDto> getOxQuiz(String category) {
         List<OxQuiz> oxQuizList = oxQuizJpaRepository.findAllByCategory(category);
@@ -31,6 +35,12 @@ public class QuizService {
             .map(speedQuiz -> SpeedQuizResponseDto.toDto(speedQuiz))
             .toList();
         return speedQuizResponseDtoList;
+    }
+
+    @Transactional
+    public int increaseScore(Integer authId) {
+        User user = userCommandJpaRepository.findByAuthId(authId);
+        return user.increaseWinCount();
     }
 
 }

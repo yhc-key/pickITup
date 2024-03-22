@@ -3,6 +3,8 @@ package com.ssafy.pickitup.domain.user.api;
 import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
 
 import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
+import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
+import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
 import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.domain.user.query.dto.NicknameDto;
@@ -12,6 +14,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +36,7 @@ public class UserController {
 
     private final UserCommandService userCommandService;
     private final UserQueryService userQueryService;
+    private final RecruitQueryService recruitQueryService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "회원 정보 조회 API")
@@ -55,11 +60,11 @@ public class UserController {
 
     @Operation(summary = "회원 스크랩 채용 공고 조회 API")
     @GetMapping("/{authId}/scraps/recruit")
-    public ApiResult<?> getUserScrapList(@PathVariable("authId") Integer authId) {
-//    [1, 2,3,5, ,3,123 ,123,12,3,  10120, 213120123,,1230031,0123012,213012123];
-//        recruitService.findAllById(List);
-
-        return success("null");
+    public ApiResult<Page<RecruitQueryResponseDto>> getUserScrapList(
+        @PathVariable("authId") int authId, Pageable pageable) {
+        Page<RecruitQueryResponseDto> myRecruitByIdList = userQueryService.findMyRecruitById(authId,
+            pageable);
+        return success(myRecruitByIdList);
 //        return succss(ReposnseList);
     }
 
