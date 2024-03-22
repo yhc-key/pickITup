@@ -101,7 +101,7 @@ export default function TechSelectOX() {
             >
               취소하기
             </button>
-            <Link href={`/game/OXQuiz/${pickTech}`}>
+            <Link href={`/main/game/OXQuiz/${pickTech}`}>
               <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
                 시작하기
               </button>

@@ -11,11 +11,11 @@ interface LinkType {
 }
 
 const navLinks: LinkType[] = [
-  { name: "채용공고", href: "/recruit" },
-  { name: "기술블로그", href: "/techBlog" },
-  { name: "미니 게임", href: "/game" },
-  { name: "면접 대비", href: "/interview" },
-  { name: "마이 페이지", href: "/myPage/myBadge" },
+  { name: "채용공고", href: "/main/recruit" },
+  { name: "기술블로그", href: "/main/techBlog" },
+  { name: "미니 게임", href: "/main/game" },
+  { name: "면접 대비", href: "/main/interview" },
+  { name: "마이 페이지", href: "/main/myPage/myBadge" },
 ];
 
 export default function Header() {
@@ -27,13 +27,14 @@ export default function Header() {
 
   useEffect(() => {
     setAccessToken(sessionStorage.getItem("accessToken"));
-  }, []);
+  }, [accessToken]);
 
   const router = useRouter();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
-  const logoutRequest = () => {
+  const logoutRequest = () => {    
     if(isLoggedIn===true){
+      setAccessToken(sessionStorage.getItem("accessToken"));
       fetch("https://spring.pickitup.online/auth/logout", {
         method: "POST",
         headers: {
@@ -42,8 +43,10 @@ export default function Header() {
       })
       .then(res=>res.json())
       .then(res=>{
+        console.log(res);
+        
         if(res.success===false){
-          alert("로그아웃실패");
+          alert(res.error.message);
         }
         else if(res.success===true){
           sessionStorage.removeItem("accessToken");
@@ -109,12 +112,12 @@ export default function Header() {
           </div>
         </div>
       ) : (
-        <div className="p-3 my-auto mr-10 bg-f5gray-300 rounded-2xl">
+        <div className="p-3 my-auto mr-10 text-sm bg-f5gray-300 rounded-2xl">
           <Link
-            href="/social"
-            className="text-f5black-400 hover:text-f5green-300"
+            href="/main/social"
+            className="transition-all duration-200 ease-in-out text-f5black-400 hover:text-f5green-300"
           >
-            로그인 & 회원가입
+            로그인 | 회원가입
           </Link>
         </div>
       )}

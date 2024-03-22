@@ -34,8 +34,9 @@ function Login() {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
+        
         if(res.success===false){
-          alert("올바른 아이디와 비밀번호를 입력하세요.");
+          alert(res.error.message);
           return;
         }
         if(res.success===true){
@@ -55,10 +56,11 @@ function Login() {
             login(res.response.nickname);
             router.push("/");
           })
+          .catch(error=>{alert(error)});
         };
       })
-      .catch((e) => {
-        alert("아이디 혹은 비밀번호가 일치하지 않습니다."+e);
+      .catch((error) => {
+        alert("아이디 혹은 비밀번호가 일치하지 않습니다."+error);
         return;
       });
     }
@@ -119,7 +121,7 @@ function Login() {
       </div>
       <div className="flex items-center justify-center h-[8vh] whitespace-pre">
         아직 계정이 없으신가요?{" "}
-        <Link href="/signup" className="text-lg font-bold">
+        <Link href="/main/signup" className="text-lg font-bold">
           회원가입 하러가기
         </Link>
       </div>
