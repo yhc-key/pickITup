@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  next-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: next-app
+    # ports:
+    #   - 3000:3000
+    expose:
+      - 3000
+    #volumes:
+    #  - /home/ubuntu/secretzoo/frontend/client:/usr/src/app
+    #volumes:
+    #  - /usr/src/app:/usr/share/nginx/html
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true
