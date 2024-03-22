@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import useAuthStore from "../../../store/authStore";
+import useAuthStore from "@/store/authStore";
 function Login() {
   const [nick, setNick] = useState("");
   const router = useRouter();
