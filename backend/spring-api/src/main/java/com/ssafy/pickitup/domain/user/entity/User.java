@@ -1,15 +1,11 @@
 package com.ssafy.pickitup.domain.user.entity;
 
-import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,13 +22,15 @@ import lombok.ToString;
 @AllArgsConstructor
 public class User extends BaseTimeEntity {
 
+    //    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
 
     private String nickname;
     private String profile;
-    private String github;  
+    private String github;
     private String techBlog;
 
     @Builder.Default
@@ -54,8 +52,18 @@ public class User extends BaseTimeEntity {
     @Builder.Default
     private Integer exp = 0;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "auth_id",  referencedColumnName = "id")
+    @MapsId
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id")
+//    @JoinColumn
     private Auth auth;
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public int increaseWinCount() {
+        return ++gameWinCount;
+    }
 
 }

@@ -1,85 +1,79 @@
 package services.recommend
 
 import com.typesafe.config.ConfigFactory
+import config.MongoConfig.{MONGO_DATABASE, MONGO_URI}
+import models.Recommendation
 import org.apache.spark.ml.feature.CountVectorizer
-import org.apache.spark.ml.linalg.SparseVector
+import org.apache.spark.ml.linalg.{SparseVector, Vectors}
+import org.apache.spark.ml.recommendation.ALS
+import org.apache.spark.sql.functions.lit
 import org.apache.spark.sql.{DataFrame, SparkSession}
+import utils.SparkUtil
 
 object ContentBasedFilteringService {
 
-  private val config = ConfigFactory.load()
-  private val mongoConfig = config.getConfig("mongo")
+  case class JobPosting(jobId: Int, company: String, qualificationRequirements: Seq[String], preferredRequirements: Seq[String])
 
-//  private val mongoHostname: String = "localhost"
-  private val mongoHostname: String = mongoConfig.getString("hostname")
-  private val mongoPort: String = mongoConfig.getString("port")
-  private val mongoDatabase: String = mongoConfig.getString("database")
-  private val mongoUsername: String = mongoConfig.getString("username")
-  private val mongoPassword: String = mongoConfig.getString("password")
-
-  def recommend(): String = {
+  def recommend(): List[Recommendation] = {
 
     //    Logger.getLogger("org").setLevel(Level.ERROR)
-
-    val mongoUri: String = s"mongodb://${mongoUsername}:${mongoPassword}@${mongoHostname}:${mongoPort}/"
 
     // Spark 세션 초기화
     val spark = SparkSession.builder
       .appName("TechStackSimilarity")
       .master("local[*]")
-      .config("spark.mongodb.input.uri", mongoUri)
-//      .config("spark.mongodb.input.uri", "mongodb://oh:ohssafy@127.0.0.1:27017/")
-      .config("spark.mongodb.output.uri", "mongodb://oh:ohssafy@localhost:27017/")
+      .config("spark.mongodb.input.uri", MONGO_URI)
+      .config("spark.mongodb.output.uri", MONGO_URI)
       .getOrCreate()
 
     import spark.implicits._
 
     // 예시 데이터 (실제 데이터 로딩 로직 필요)
     val userProfiles = Seq(
-      (1, "Backend Developer", Seq("Java", "Spring", "Docker", "Kubernetes", "AWS", "MySQL", "Git")),
-      (2, "Data Scientist", Seq("Python", "R", "TensorFlow", "Keras", "Pandas", "NumPy", "Scikit-learn"))
-    ).toDF("userId", "position", "techStack")
+      (1, Seq("Java", "Spring", "Docker", "Kubernetes", "AWS", "MySQL", "Git")),
+      (2, Seq("Python", "R", "TensorFlow", "Keras", "Pandas", "NumPy", "Scikit-learn"))
+    ).toDF("userId", "techStack")
 
     //    val jobPostings0 = Seq(
     //      (1, "Backend Developer", Seq("Java", "Spring Boot", "MongoDB", "Docker", "AWS", "Git", "Jenkins"), Seq("Kubernetes", "Ansible", "Terraform")),
     //      (2, "Data Scientist", Seq("Python", "R", "SQL", "TensorFlow", "PyTorch"), Seq("Apache Spark", "Hadoop", "Keras"))
     //    ).toDF("jobId", "position", "requiredTechStack", "preferredTechStack")
 
-    val jobPostingsDF = spark.read
+    val recruits = spark.read
       .format("mongo")
-      .option("database", mongoDatabase)
-      .option("collection", "jobPostings")
+      .option("database", MONGO_DATABASE)
+      .option("collection", "recruit")
       .load()
-      .select("_id", "company", "qualificationRequirements", "preferredRequirements")
+      .select("_id", "qualificationRequirements", "preferredRequirements")
+      .map(
+        row => (
+          row.getInt(0),
+          row.getSeq[String](1) ++ row.getSeq[String](1) ++ row.getSeq[String](2))
+      ).toDF("jobId", "techStack")
 
     //    val str = measureExecutionTime(calculateSimilarity(spark, userProfiles, jobPostingsDF))
-    val jobPostings = jobPostingsDF.map(
-      row => (
-        row.getInt(0),
-        row.getString(1),
-        row.getSeq[String](2) ++ row.getSeq[String](2) ++ row.getSeq[String](3))
-    ).toDF("jobId", "company", "techStack")
 
     // CountVectorizer를 사용하여 기술 스택 벡터화
     val cvModel = new CountVectorizer()
       .setInputCol("techStack")
       .setOutputCol("features")
-      .fit(userProfiles.select("techStack").union(jobPostings.select("techStack")))
+      .fit(userProfiles.select("techStack").union(recruits.select("techStack")))
 
     val userFeatures = cvModel.transform(userProfiles)
-      .toDF("userId", "position", "techStack", "features_user")
-    val jobFeatures = cvModel.transform(jobPostings)
-      .toDF("jobId", "company", "techStack", "features_job")
+      .withColumnRenamed("features", "features_user")
+    val jobFeatures = cvModel.transform(recruits)
+      .withColumnRenamed("features", "features_recruit")
       .cache()
 
     // 유사도 계산
     val similarityScores = userFeatures.crossJoin(jobFeatures).map { row =>
         val userVec = row.getAs[SparseVector]("features_user")
-        val jobVec = row.getAs[SparseVector]("features_job")
-        val similarity = cosineSimilarity(userVec, jobVec)
-        (row.getAs[Int]("userId"), row.getAs[Int]("jobId"), row.getAs[String]("company"), similarity) // (userId, jobId, company, similarityScore)
-      }.toDF("userId", "jobId", "company", "similarityScore")
-      .sort($"userId", $"similarityScore".desc)
+        val jobVec = row.getAs[SparseVector]("features_recruit")
+        val similarity = SparkUtil.cosineSimilarity(userVec, jobVec)
+        (row.getAs[Int]("userId"), row.getAs[Int]("jobId"), similarity)
+      }.toDF("userId", "jobId", "score")
+      .select($"jobId", $"score")
+      .sort($"score".desc)
 
     similarityScores
       .filter($"userId" === 1)
@@ -91,92 +85,64 @@ object ContentBasedFilteringService {
       .limit(10)
       .show()
 
+    val recommendationList : List[Recommendation] = similarityScores
+      .filter($"userId" === 1)
+      .limit(10)
+      .as[Recommendation]
+      .collect()
+      .toList
+
     spark.stop()
-//    similarityScores.collect().mkString
-    "test"
+
+    recommendationList
   }
 
-  // 코사인 유사도 계산을 위한 사용자 정의 함수
-  private def cosineSimilarity(vectorA: SparseVector, vectorB: SparseVector): Double = {
+  private def contentBasedFiltering(): Unit = {
 
-    require(vectorA.size == vectorB.size, "Vector dimensions must match")
-
-    val indicesA = vectorA.indices
-    val valuesA = vectorA.values
-    val indicesB = vectorB.indices
-    val valuesB = vectorB.values
-
-
-    var dotProduct = 0.0
-    var normA = 0.0
-    var normB = 0.0
-
-    // dot product
-    var i = 0
-    var j = 0
-    while (i < indicesA.length && j < indicesB.length) {
-      if (indicesA(i) == indicesB(j)) {
-        dotProduct += valuesA(i) * valuesB(j)
-        i += 1
-        j += 1
-      } else if (indicesA(i) < indicesB(j)) {
-        i += 1
-      } else {
-        j += 1
-      }
-    }
-
-    //      println(s"dotProduct = $dotProduct")
-    // norm
-    normA = math.sqrt(valuesA.map(math.pow(_, 2)).sum)
-    normB = math.sqrt(valuesB.map(math.pow(_, 2)).sum)
-
-    if (normA * normB == 0) 0.0 else dotProduct / (normA * normB)
-  }
-
-  private def calculateSimilarity(spark: SparkSession, userProfiles: DataFrame, jobPostingsDF: DataFrame): String = {
+    val spark = SparkSession.builder
+      .appName("TechStackSimilarity")
+      .master("local[*]")
+      .config("spark.mongodb.input.uri", "mongodb://localhost:27017/")
+      .config("spark.mongodb.output.uri", "mongodb://localhost:27017/")
+      .getOrCreate()
 
     import spark.implicits._
 
-    val jobPostings = jobPostingsDF.map(
-      row => (
-        row.getInt(0),
-        row.getString(1),
-        row.getSeq[String](2) ++ row.getSeq[String](2) ++ row.getSeq[String](3))
-    ).toDF("jobId", "company", "techStack")
+    val clicksDF: DataFrame = spark.read
+      .format("mongo")
+      .option("database", "recommend")
+      .option("collection", "clicks")
+      .load()
+      .select("userId", "jobId", "clickCount")
 
-    // CountVectorizer를 사용하여 기술 스택 벡터화
-    val cvModel = new CountVectorizer()
-      .setInputCol("techStack")
-      .setOutputCol("features")
-      .fit(userProfiles.select("techStack").union(jobPostings.select("techStack")))
+    val scrapDF: DataFrame = spark.read
+      .format("mongo")
+      .option("database", "recommend")
+      .option("collection", "scrap")
+      .load()
+      .select("userId", "jobId")
+      .withColumn("scrap", lit(1))
 
-    val userFeatures = cvModel.transform(userProfiles)
-      .toDF("userId", "position", "techStack", "features_user")
-    val jobFeatures = cvModel.transform(jobPostings)
-      .toDF("jobId", "company", "techStack", "features_job")
-      .cache()
+    val ratingDF = clicksDF.join(scrapDF, Seq("userId", "jobId"), "outer")
+      .na.fill(0)
+      .withColumn("rating", ($"clickCount" + $"scrap" * 10).cast("double"))
 
-    // 유사도 계산
-    val similarityScores = userFeatures.crossJoin(jobFeatures).map { row =>
-        val userVec = row.getAs[SparseVector]("features_user")
-        val jobVec = row.getAs[SparseVector]("features_job")
-        val similarity = cosineSimilarity(userVec, jobVec)
-        (row.getAs[Int]("userId"), row.getAs[Int]("jobId"), row.getAs[String]("company"), similarity) // (userId, jobId, company, similarityScore)
-      }.toDF("userId", "jobId", "company", "similarityScore")
-      .sort($"userId", $"similarityScore".desc)
+    ratingDF.show()
 
-    similarityScores
-      .filter($"userId" === 1)
-      .limit(10)
-      .show()
+    val als = new ALS()
+      .setRank(10)
+      .setMaxIter(10)
+      .setRegParam(0.01)
+      .setUserCol("userId")
+      .setItemCol("jobId")
+      .setRatingCol("rating")
+      .setColdStartStrategy("drop")
 
-    similarityScores
-      .filter($"userId" === 2)
-      .limit(10)
-      .show()
+    val model = als.fit(ratingDF)
 
-    similarityScores.collect().mkString
+    val prediction: DataFrame = model.recommendForAllUsers(10)
+
+    prediction.show()
   }
 
   private def measureExecutionTime[T](block: => T): T = {
@@ -187,5 +153,4 @@ object ContentBasedFilteringService {
     println(s"Execution time: ${duration / 1e6} ms")
     result // 코드 블록의 실행 결과를 반환
   }
-
 }

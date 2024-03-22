@@ -19,12 +19,28 @@ public class UserCommandService {
     @Transactional
     public UserResponseDto create(Auth auth, UserSignupDto userSignupDto) {
         User user = User.builder()
-                .nickname(userSignupDto.getNickname())
-                .email(userSignupDto.getEmail())
-                .auth(auth)
-                .build();
+            .nickname(userSignupDto.getNickname())
+            .auth(auth)
+            .build();
+        System.out.println("user.toString() = " + user.toString());
         userCommandJpaRepository.save(user);
         return UserResponseDto.toDto(user);
+    }
+
+    @Transactional
+    public UserResponseDto create(Auth auth) {
+        User user = User.builder()
+            .nickname(auth.getName())
+            .auth(auth)
+            .build();
+        userCommandJpaRepository.save(user);
+        return UserResponseDto.toDto(user);
+    }
+
+    @Transactional
+    public void changeNickname(Integer authId, String nickname) {
+        User user = userCommandJpaRepository.findByAuthId(authId);
+        user.changeNickname(nickname);
     }
 
 

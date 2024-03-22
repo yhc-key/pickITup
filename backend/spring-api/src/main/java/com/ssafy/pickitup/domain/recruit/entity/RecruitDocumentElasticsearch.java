@@ -80,11 +80,11 @@ public class RecruitDocumentElasticsearch {
         }
     }
 
-    public RecruitDocumentMongo toMongo() {
+    public RecruitDocumentMongo toMongo(Integer companyId) {
         return RecruitDocumentMongo.builder()
             .id(this.id)
             .source(this.source)
-            .company(this.company)
+            .companyId(companyId)
             .url(this.url)
             .thumbnailUrl(this.thumbnailUrl)
             .qualificationRequirements(new HashSet<>())

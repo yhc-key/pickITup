@@ -1,9 +1,11 @@
 package controllers
 
-import com.typesafe.config.ConfigFactory
+import models.Recommendation
+import serializers.RecommendationSerializer._
 import play.api.Configuration
+import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import services.recommend.{ContentBasedFilteringService, ContentBasedFilteringServiceClass}
+import services.recommend.{CollaborativeFilteringService, ContentBasedFilteringService, SimilarityService}
 
 import javax.inject.Inject
 
@@ -14,10 +16,23 @@ class RecommendController @Inject()(cc: ControllerComponents, config: Configurat
     Ok("Test API is working!!!")
   }
 
-  def recommend(): Action[AnyContent] = Action { implicit request =>
-//    val str = cbfService.recommend()
-    val str = ContentBasedFilteringService.recommend()
-    Ok("Recommendation API is working! " + str)
+  def contentBasedRecommend(): Action[AnyContent] = Action { implicit request =>
+    val list: List[Recommendation] = ContentBasedFilteringService.recommend()
+    Ok(Json.toJson(list))
   }
 
+  def collaborativeRecommend(): Action[AnyContent] = Action { implicit request =>
+    val list: List[Recommendation] = CollaborativeFilteringService.recommend()
+    Ok(Json.toJson(list))
+  }
+
+  def userSimilarity(): Action[AnyContent] = Action { implicit request =>
+    val str = SimilarityService.calculateUserSimilarity()
+    Ok("Similarity API is working! " + str)
+  }
+
+  def recruitSimilarity(): Action[AnyContent] = Action { implicit request =>
+    val str = SimilarityService.calculateRecruitSimilarity()
+    Ok("Recruit Similarity API is working! " + str)
+  }
 }

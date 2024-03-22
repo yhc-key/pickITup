@@ -24,7 +24,7 @@ public class RecruitDocumentMongo {
 
     private String source;
     private String title;
-    private String company;
+    private Integer companyId;
     private String url;
     private String thumbnailUrl;
     private Set<String> qualificationRequirements;
@@ -38,7 +38,7 @@ public class RecruitDocumentMongo {
             .id(this.id)
             .source(this.source)
             .title(this.title)
-            .company(this.company)
+            .companyId(this.companyId)
             .url(this.url)
             .thumbnailUrl(this.thumbnailUrl)
             .qualificationRequirements(this.qualificationRequirements)

@@ -2,18 +2,20 @@ package com.ssafy.pickitup.security.jwt;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
 
-//@Getter
+@Getter
+@Builder
+@AllArgsConstructor
 public class JwtTokenDto {
 
+    private Integer authId;
     private String accessToken;
     private String refreshToken;
 
-    public JwtTokenDto(String accessToken, String refreshToken) {
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-    }
 
     public Map<String, Object> responseDto() {
         Map<String, Object> result = new HashMap<>();
@@ -24,11 +26,4 @@ public class JwtTokenDto {
         return result;
     }
 
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
 }
