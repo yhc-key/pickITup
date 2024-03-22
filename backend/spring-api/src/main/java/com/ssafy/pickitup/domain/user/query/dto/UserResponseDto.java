@@ -13,6 +13,8 @@ public class UserResponseDto {
     private String profile;
     private String github;
     private String techBlog;
+    private Integer exp;
+    private Integer level;
 
     public static UserResponseDto toDto(User user) {
         return new UserResponseDto(
@@ -20,8 +22,9 @@ public class UserResponseDto {
             user.getNickname(),
             user.getProfile(),
             user.getGithub(),
-            user.getTechBlog()
-
+            user.getTechBlog(),
+            user.getExp(),
+            user.getLevel()
         );
     }
 

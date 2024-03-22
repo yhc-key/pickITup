@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @MappedSuperclass
 @Getter
 public class BaseTimeEntity {
+
     //생성일은 수정되면 안되기 때문에 updatable = false 설정
     @CreatedDate
     @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT now()")
