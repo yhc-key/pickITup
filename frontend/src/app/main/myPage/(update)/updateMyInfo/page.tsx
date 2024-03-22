@@ -62,7 +62,7 @@ export default function MyPage() {
   return (
     <form
       onSubmit={submitHandler}
-      className="relative flex flex-col h-full py-6 pl-20 border border-f5gray-500 rounded-2xl"
+      className="relative flex flex-col h-full pt-6 pb-20 pl-20 border border-f5gray-500 rounded-2xl"
     >
       <h2 className="text-2xl font-bold">정보 수정하기</h2>
       <Image
@@ -84,7 +84,7 @@ export default function MyPage() {
           className="flex flex-row items-center h-8 gap-2 px-2 ml-4 font-bold border rounded-lg text-f5black-400 bg-f5gray-400 hover:bg-f5gray-500"
         >
           <FaCheck />
-          중복 체크
+          체크
         </button>
       </div>
       <p className="mt-1 ml-20 text-sm text-f5green-400">

@@ -32,7 +32,7 @@ export default function Signup() {
       setIsValidPassword("false");
     }
   }, [password]);
-
+  ``;
   const checkid = () => {
     if (id === "") {
       setAvailableId("false");
@@ -91,7 +91,7 @@ export default function Signup() {
       <div className="flex items-center justify-center h-[10vh] text-xl font-bold">
         pick IT up 회원가입
       </div>
-      <div className="h-[30vh] w-[48vw] h-[62vh] rounded-[10px] border border-f5gray-400">
+      <div className="w-[48vw] h-[62vh] rounded-[10px] border border-f5gray-400">
         <div>
           <div className="flex w-full h-[6vh] justify-center items-center mt-4">
             <label htmlFor="id" className="w-[10vw] text-lg font-black">
