@@ -3,12 +3,14 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import useAuthStore,{AuthState} from "@/store/authStore";
+import useAuthStore, { AuthState } from "@/store/authStore";
 function Login() {
   const router = useRouter();
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const login:(nickname : string) => void = useAuthStore((state : AuthState) => state.login);
+  const login: (nickname: string) => void = useAuthStore(
+    (state: AuthState) => state.login
+  );
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
@@ -16,11 +18,10 @@ function Login() {
   }, []);
 
   const requestLogin = () => {
-    if (id.length === 0 || password.length===0) {
+    if (id.length === 0 || password.length === 0) {
       alert("아이디와 비밀번호를 입력해주세요!");
       return;
-    }
-    else{
+    } else {
       fetch("https://spring.pickitup.online/auth/login", {
         method: "POST",
         headers: {
@@ -31,36 +32,40 @@ function Login() {
           password: password,
         }),
       })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        if(res.success===false){
-          alert("올바른 아이디와 비밀번호를 입력하세요.");
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+
+          if (res.success === false) {
+            alert(res.error.message);
+            return;
+          }
+          if (res.success === true) {
+            sessionStorage.setItem("accessToken", res.response.accessToken);
+            sessionStorage.setItem("refreshToken", res.response.refreshToken);
+            sessionStorage.setItem("expiresIn", "3600000");
+            fetch("https://spring.pickitup.online/users/me", {
+              method: "GET",
+              headers: {
+                Authorization: "Bearer " + res.response.accessToken,
+              },
+            })
+              .then((res) => res.json())
+              .then((res) => {
+                sessionStorage.setItem("authid", res.response.id);
+                sessionStorage.setItem("nickname", res.response.nickname);
+                login(res.response.nickname);
+                router.push("/main/recruit");
+              })
+              .catch((error) => {
+                alert(error);
+              });
+          }
+        })
+        .catch((error) => {
+          alert("아이디 혹은 비밀번호가 일치하지 않습니다." + error);
           return;
-        }
-        if(res.success===true){
-          sessionStorage.setItem("accessToken", res.response.accessToken);
-          sessionStorage.setItem("refreshToken", res.response.refreshToken);
-          sessionStorage.setItem("expiresIn", "3600000");
-          fetch("https://spring.pickitup.online/users/me", {
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + res.response.accessToken,
-            },
-          })
-          .then((res) => res.json())
-          .then((res) => {
-            sessionStorage.setItem("authid", res.response.id);
-            sessionStorage.setItem("nickname", res.response.nickname);
-            login(res.response.nickname);
-            router.push("/");
-          })
-        };
-      })
-      .catch((e) => {
-        alert("아이디 혹은 비밀번호가 일치하지 않습니다."+e);
-        return;
-      });
+        });
     }
   };
   return (

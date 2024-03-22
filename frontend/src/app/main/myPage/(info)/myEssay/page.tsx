@@ -11,6 +11,7 @@ import { cloneDeep } from "lodash";
 import Link from "next/link";
 import Modal from "@/components/modal";
 import useEssayStore from "@/store/essayStore";
+import { redirect } from "next/navigation";
 interface Essay {
   company: string;
   title: string;
@@ -25,32 +26,8 @@ interface Title {
 
 const apiAddress = "https://spring.pickITup.online/self/main";
 
-const dummyTitles: Title[] = [
-  { id: 1, title: "당신이 입사한 이유가 무엇입니까?" },
-  {
-    id: 2,
-    title: "본인의 장점과 단점을 적어보시오",
-  },
-];
-const myEssays: Essay[][] = [
-  [
-    {
-      company: "LG전자",
-      title: "입사하면 뭐하고 싶어요?(500자)",
-      id: 1,
-      content: "블라블라블라",
-    },
-  ],
-  [
-    {
-      company: "LG전자",
-
-      title: "본인의 장단점을 적어주세요(500자)",
-      id: 2,
-      content: "블라블라블라",
-    },
-  ],
-]; // essay 목록 가져오기
+const dummyTitles: Title[] = [];
+const myEssays: Essay[][] = [[]]; // essay 목록 가져오기
 
 const token: string =
   "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTcxMDkwNTM0Nn0.A-pDxNwD38jJhVGMt-NCbk1ykeZ79DrT57rq946pDE8";
@@ -123,6 +100,7 @@ export default function MyEssay(): JSX.Element {
     } catch (error) {
       console.error(error);
     }
+    redirect("/myPage/myEssay");
   };
 
   const addSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -421,7 +399,7 @@ export default function MyEssay(): JSX.Element {
           >
             <span>변경 전 : </span>
             <span className="w-[700px] max-w-[100%] p-1 h-auto mt-3">
-              {beforeChangeTitle.title}
+              {beforeChangeTitle?.title}
             </span>
             <hr />
             <label htmlFor="afterChangeTitle">변경 후 : </label>

@@ -184,13 +184,13 @@ export default function MyPage() {
 
       <div className="absolute bottom-0 right-0 mb-6 mr-6">
         <button
-          type="submit"
+          type="reset"
           className="px-6 py-2 mx-4 text-white rounded-lg bg-f5red-300"
         >
           취소하기
         </button>
         <button
-          type="reset"
+          type="submit"
           className="px-6 py-2 mx-4 text-white rounded-lg bg-f5green-300"
         >
           등록하기
