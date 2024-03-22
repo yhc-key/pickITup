@@ -5,6 +5,7 @@ import Image from "next/image";
 import Realistic from "../realistic";
 import WrongBox from "./wrongBox";
 import RightBox from "./rightBox";
+import useAuthStore, { AuthState } from "@/store/authStore";
 
 interface Answer {
   question: string;
@@ -19,7 +20,8 @@ interface QuizResultProps {
 }
 
 export default function QuizResult({ answer }: QuizResultProps) {
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [showConfetti, setShowConfetti] = useState<boolean>(false);
+  const apiURL = "https://spring.pickITup.online/quizzes/win";
 
   useEffect(() => {
     const correctCount = answer.filter((e: Answer) => e.correct).length;
@@ -70,4 +72,4 @@ export default function QuizResult({ answer }: QuizResultProps) {
       {showConfetti && <Realistic />}
     </div>
   );
-};
+}

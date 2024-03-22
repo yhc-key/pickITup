@@ -18,6 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     const wheelHandler = (e: WheelEvent) => {
+      e.preventDefault();
       const { deltaY } = e;
       const { scrollTop } = mainWrapperRef.current!;
       const pageHeight = window.innerHeight;
@@ -45,7 +46,7 @@ export default function Home() {
 
     const wrapperRefCurrent = mainWrapperRef.current!;
     wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
-      passive: true,
+      passive: false,
     });
 
     return () => {
@@ -55,8 +56,8 @@ export default function Home() {
 
   return (
     <body className={`${inter.className} min-h-screen flex flex-col`}>
-      <div ref={mainWrapperRef} className="h-screen overflow-hidden">
-        <Link href="/main/login">
+      <div ref={mainWrapperRef} className="h-screen overflow-hidden scroll-snap-y">
+        <Link href="/main/social">
           <button className="fixed p-3 text-sm transition-all duration-300 ease-in-out top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">로그인 | 회원가입</button>
         </Link>
         <Dots scrollIdx={scrollIdx} />

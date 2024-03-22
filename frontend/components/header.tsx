@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import useAuthStore,{AuthState} from "../store/authStore";
+import useAuthStore, { AuthState } from "../store/authStore";
+
 interface LinkType {
   name: string;
   href: string;
@@ -19,10 +20,11 @@ const navLinks: LinkType[] = [
 ];
 
 export default function Header() {
-
-  const nickname :string = useAuthStore((state : AuthState) => state.nickname);
-  const isLoggedIn :boolean = useAuthStore((state: AuthState) => state.isLoggedIn);
-  const logout : () => void = useAuthStore((state : AuthState) => state.logout);
+  const nickname: string = useAuthStore((state: AuthState) => state.nickname);
+  const isLoggedIn: boolean = useAuthStore(
+    (state: AuthState) => state.isLoggedIn
+  );
+  const logout: () => void = useAuthStore((state: AuthState) => state.logout);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
@@ -33,27 +35,28 @@ export default function Header() {
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
   const logoutRequest = () => {
-    if(isLoggedIn===true){
+    if (isLoggedIn === true) {
       fetch("https://spring.pickitup.online/auth/logout", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + accessToken,
         },
       })
-      .then(res=>res.json())
-      .then(res=>{
-        if(res.success===false){
-          alert("로그아웃실패");
-        }
-        else if(res.success===true){
-          sessionStorage.removeItem("accessToken");
-          sessionStorage.removeItem("refreshToken");
-          sessionStorage.removeItem("expiresIn");
-          sessionStorage.removeItem("authid");
-          sessionStorage.removeItem("nickname");
-        }
-      })
-      .catch((e)=>{alert(e)});
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.success === false) {
+            alert("로그아웃실패");
+          } else if (res.success === true) {
+            sessionStorage.removeItem("accessToken");
+            sessionStorage.removeItem("refreshToken");
+            sessionStorage.removeItem("expiresIn");
+            sessionStorage.removeItem("authid");
+            sessionStorage.removeItem("nickname");
+          }
+        })
+        .catch((e) => {
+          alert(e);
+        });
       logout();
 
       router.push("/");
