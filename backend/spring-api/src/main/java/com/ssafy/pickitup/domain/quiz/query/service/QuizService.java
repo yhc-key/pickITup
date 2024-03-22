@@ -8,6 +8,7 @@ import com.ssafy.pickitup.domain.quiz.query.repository.OxQuizJpaRepository;
 import com.ssafy.pickitup.domain.quiz.query.repository.SpeedQuizJpaRepository;
 import com.ssafy.pickitup.domain.user.command.UserCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
+import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,9 @@ public class QuizService {
     @Transactional
     public int increaseScore(Integer authId) {
         User user = userCommandJpaRepository.findByAuthId(authId);
+        if (user == null) {
+            throw new UserNotFoundException("유저를 찾을 수 없습니다");
+        }
         return user.increaseWinCount();
     }
 

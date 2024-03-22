@@ -9,7 +9,6 @@ import com.ssafy.pickitup.domain.quiz.dto.SpeedQuizResponseDto;
 import com.ssafy.pickitup.domain.quiz.query.service.QuizService;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,8 +48,7 @@ public class QuizController {
 
     @Operation(summary = "퀴즈 점수 수정 API")
     @PatchMapping("/win")
-    public ApiResult<?> t(HttpServletRequest request) {
-        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+    public ApiResult<?> t(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         return success(quizService.increaseScore(authId));
     }
