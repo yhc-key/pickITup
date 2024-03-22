@@ -1,4 +1,4 @@
-"use-client"
+"use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
@@ -18,7 +18,7 @@ interface QuizResultProps {
   answer: Answer[];
 }
 
-export default function QuizResult ({ answer }: QuizResultProps)  {
+export default function QuizResult({ answer }: QuizResultProps) {
   const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
