@@ -54,6 +54,7 @@ public class UserController {
         @RequestBody NicknameDto nickname) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.info("authId = {}", authId);
         userCommandService.changeNickname(authId, nickname.getNickname());
         return success("닉네임 변경 성공");
     }

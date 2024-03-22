@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @Getter
 @Builder
+@ToString
 @Document(collection = "company")
 public class CompanyMongo {
 
@@ -21,8 +23,9 @@ public class CompanyMongo {
     private Integer id;
 
     private String name;
-    private int latitude;
-    private int longitude;
+    private Float[] location;
+    private Float latitude;
+    private Float longitude;
     private int salary;
     private Set<Integer> recruits;
 }

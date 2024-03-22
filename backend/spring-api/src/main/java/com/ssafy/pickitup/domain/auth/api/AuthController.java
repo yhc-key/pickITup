@@ -91,7 +91,7 @@ public class AuthController {
     public ApiResult<AuthProfileDto> profileUser(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
-        log.debug("authId = {}", authId);
+        log.info("authId = {}", authId);
         AuthDto authDto = authQueryService.getUserById(authId);
         AuthProfileDto authProfileDto = AuthProfileDto.authInfoFromAuthDto(authDto);
         return success(authProfileDto);
