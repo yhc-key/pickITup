@@ -1,12 +1,7 @@
 package com.ssafy.pickitup.domain.user.entity;
 
 import com.ssafy.pickitup.domain.auth.entity.Auth;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,10 +9,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 @Entity
 @Getter
 @Builder
-@ToString(of = {"id"})
+@ToString(of = {"id", "nickname"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User extends BaseTimeEntity {
@@ -58,6 +58,10 @@ public class User extends BaseTimeEntity {
 //    @JoinColumn
     private Auth auth;
 
+    @OneToMany(mappedBy = "user")
+    private List<UserKeyword> userKeywords = new ArrayList<>();
+
+
     public void changeNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -65,5 +69,7 @@ public class User extends BaseTimeEntity {
     public int increaseWinCount() {
         return ++gameWinCount;
     }
+
+
 
 }
