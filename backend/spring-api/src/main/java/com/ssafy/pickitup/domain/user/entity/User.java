@@ -1,18 +1,21 @@
 package com.ssafy.pickitup.domain.user.entity;
 
 import com.ssafy.pickitup.domain.auth.entity.Auth;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Entity
 @Getter
@@ -51,6 +54,7 @@ public class User extends BaseTimeEntity {
     private Integer level = 0;
     @Builder.Default
     private Integer exp = 0;
+    private String address;
 
     @MapsId
     @OneToOne
@@ -69,7 +73,6 @@ public class User extends BaseTimeEntity {
     public int increaseWinCount() {
         return ++gameWinCount;
     }
-
 
 
 }

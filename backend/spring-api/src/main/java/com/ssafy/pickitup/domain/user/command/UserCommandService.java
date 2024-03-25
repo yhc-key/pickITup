@@ -5,13 +5,11 @@ import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -55,4 +53,5 @@ public class UserCommandService {
         userKeywordCommandJpaRepository.saveUserAndKeywords(authId, keywords);
 
     }
+
 }
