@@ -22,8 +22,8 @@ public class UserMongo {
     private Integer id;
 
     private List<String> keywords;
-    private Integer latitude;
-    private Integer longitude;
+    private double latitude;
+    private double longitude;
 
     public UserMongoQueryResponseDto toQueryResponse() {
         return UserMongoQueryResponseDto.builder()
