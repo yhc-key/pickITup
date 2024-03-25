@@ -6,7 +6,13 @@ import com.ssafy.pickitup.domain.selfdocument.command.MainQuestionCommandService
 import com.ssafy.pickitup.domain.selfdocument.command.SubQuestionCommandService;
 import com.ssafy.pickitup.domain.selfdocument.command.dto.MainQuestionCommandRequestDto;
 import com.ssafy.pickitup.domain.selfdocument.command.dto.SubQuestionCommandRequestDto;
+import com.ssafy.pickitup.domain.user.command.KeywordCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
+import com.ssafy.pickitup.domain.user.keyword.Category;
+import com.ssafy.pickitup.domain.user.keyword.Keyword;
+import jakarta.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,18 +26,23 @@ public class InitDB {
     private final UserCommandService userCommandService;
     private final MainQuestionCommandService mainQuestionCommandService;
     private final SubQuestionCommandService subQuestionCommandService;
+    private final KeywordCommandJpaRepository keywordCommandJpaRepository;
 
 
-    //    @PostConstruct
+    @PostConstruct
     @Transactional
     public void init() {
+
+        //auth 정보 저장
         UserSignupDto userSignupDto1 = new UserSignupDto("hscho", "1234", "조현수", "존수존수",
             "hyunsoo@naver.com");
         UserSignupDto userSignupDto2 = new UserSignupDto("shno", "12345", "노세희", "올리비아핫세",
             "sehee@naver.com");
         UserSignupDto userSignupDto3 = new UserSignupDto("yhcho", "12346", "조용환", "화니",
             "younghwan@naver.com");
-        //auth 정보 저장
+        authCommandService.signup(userSignupDto1);
+        authCommandService.signup(userSignupDto2);
+        authCommandService.signup(userSignupDto3);
 
         MainQuestionCommandRequestDto mainQuestionCommandRequestDto1 = new MainQuestionCommandRequestDto(
             "지원동기");
@@ -47,15 +58,23 @@ public class InitDB {
             "프로그램 개발, 알고리즘 풀이 등 SW개발 관련 경험 중 가장 어려웠던 경험과 해결방안에 대해 구체적으로 서술하여 주시기 바랍니다. (과제 개요, 어려웠던 점, 해결방법, 결과 포함)",
             "개발 너무 어려워요..", "삼성");
 
-        authCommandService.signup(userSignupDto1);
-        authCommandService.signup(userSignupDto2);
-        authCommandService.signup(userSignupDto3);
-
         mainQuestionCommandService.registerMainQuestion(1, mainQuestionCommandRequestDto1);
         mainQuestionCommandService.registerMainQuestion(1, mainQuestionCommandRequestDto2);
         subQuestionCommandService.registerSubQuestion(1, subQuestionCommandRequestDto1);
         subQuestionCommandService.registerSubQuestion(1, subQuestionCommandRequestDto2);
         subQuestionCommandService.registerSubQuestion(1, subQuestionCommandRequestDto3);
         subQuestionCommandService.registerSubQuestion(2, subQuestionCommandRequestDto4);
+
+        //Keyword
+
+        List<Keyword> keywordList = new ArrayList<>();
+        keywordList.add(new Keyword(1, Category.BACKEND.getCategory(), "spring"));
+        keywordList.add(new Keyword(2, Category.FRONTEND.getCategory(), "react"));
+        keywordList.add(new Keyword(3, Category.LANGUAGE.getCategory(), "java"));
+        keywordList.add(new Keyword(4, Category.LANGUAGE.getCategory(), "java script"));
+        keywordList.add(new Keyword(5, Category.INFRA.getCategory(), "docker"));
+
+        keywordCommandJpaRepository.saveAll(keywordList);
+
     }
 }

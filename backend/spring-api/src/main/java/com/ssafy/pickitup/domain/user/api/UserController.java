@@ -7,6 +7,8 @@ import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
 import com.ssafy.pickitup.domain.user.query.UserQueryService;
+import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
+import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.NicknameDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,6 +70,25 @@ public class UserController {
             pageable);
         return success(myRecruitByIdList);
 //        return succss(ReposnseList);
+    }
+
+    @Operation(summary = "회원 키워드 추가 API")
+    @PostMapping("/keywords")
+    public ApiResult<?> addUserKeyword(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+        @RequestBody KeywordRequestDto keywords) {
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.info("keywords = {}", keywords.toString());
+        userCommandService.addKeywords(authId, keywords);
+        return success("keywords 등록 성공");
+    }
+
+    @Operation(summary = "회원 키워드 조회 API")
+    @GetMapping("{authId}/keywords")
+    public ApiResult<KeywordResponseDto> addUserKeyword(
+        @PathVariable("authId") Integer authId) {
+        KeywordResponseDto userKeywords = userQueryService.findUserKeywords(authId);
+        return success(userKeywords);
     }
 
 

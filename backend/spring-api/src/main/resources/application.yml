@@ -61,3 +61,5 @@ springdoc:
   api-docs:
     path: /api-docs
 
+kakao:
+  api: ${kakao.api-key}

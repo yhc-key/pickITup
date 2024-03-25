@@ -1,18 +1,12 @@
 package com.ssafy.pickitup.domain.company.entity;
 
-import com.google.code.geocoder.Geocoder;
-import com.google.code.geocoder.GeocoderRequestBuilder;
-import com.google.code.geocoder.model.GeocodeResponse;
-import com.google.code.geocoder.model.GeocoderRequest;
-import com.google.code.geocoder.model.GeocoderResult;
-import com.google.code.geocoder.model.GeocoderStatus;
-import com.google.code.geocoder.model.LatLng;
-import java.io.IOException;
 import java.util.HashSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 
@@ -22,43 +16,23 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @NoArgsConstructor
 public class CompanyElasticsearch {
 
+
+    @Transient
+    private final String KAKAO_MAPS_GEOCODING_API_URL = "https://dapi.kakao.com/v2/local/search/address.json";
     @Id
     private Integer id;
-
     private String name;
     private String address;
     private String salary;
+    @Transient
+    @Value("${kakao.api}")
+    private String KAKAO_API_KEY;
+
 
     private static Float[] convertAddressToLongitudeAndLatitude(String address) {
-        Geocoder geocoder = new Geocoder();
-        GeocoderRequest geocoderRequest = new GeocoderRequestBuilder()
-            .setAddress(address)
-            .setLanguage("ko")
-            .getGeocoderRequest();
-
-        System.out.println("address = " + address);
-
-        try {
-            GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
-            System.out.println("geocoderResponse.getResults() = " + geocoderResponse.getResults());
-            System.out.println("geocoderResponse.getStatus() = " + geocoderResponse.getStatus());
-
-            if (geocoderResponse.getStatus() == GeocoderStatus.OK && !geocoderResponse.getResults()
-                .isEmpty()) {
-                GeocoderResult geocoderResult = geocoderResponse.getResults().get(0);
-                LatLng location = geocoderResult.getGeometry().getLocation();
-                System.out.println("location = " + location);
-                System.out.println("float = " + new Float[]{location.getLat().floatValue(),
-                    location.getLng().floatValue()});
-
-                return new Float[]{location.getLat().floatValue(), location.getLng().floatValue()};
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
         return null;
     }
+
 
     private static int convertAddressToLatitude(String address) {
         // 위도 변환
