@@ -19,17 +19,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserQueryService {
 
     private final UserQueryJpaRepository userQueryJpaRepository;
-    private final UserRecruitJpaRepository userRecruitJpaRepository;
+    private final UserRecruitQueryJpaRepository userRecruitJpaRepository;
     private final RecruitQueryService recruitQueryService;
     private final UserKeywordQueryJpaRepository userKeywordQueryJpaRepository;
 
     public UserResponseDto getUserById(int id) {
         User user = userQueryJpaRepository.findById(id);
+        int count = userRecruitJpaRepository.countByUserId(id);
+        System.out.println("count = " + count);
         if (user == null) {
             throw new UserNotFoundException("해당 유저를 찾을 수 없습니다");
         }
 
-        return UserResponseDto.toDto(user);
+        return UserResponseDto.toDto(user, count);
     }
 
     @Transactional(readOnly = true)

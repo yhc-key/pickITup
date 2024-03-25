@@ -34,4 +34,9 @@ public class UserRecruit {
     private User user;
 
 
+    public UserRecruit(User user, Integer recruitId) {
+        this.user = user;
+        this.recruitId = recruitId;
+    }
+
 }

@@ -15,8 +15,10 @@ public class UserResponseDto {
     private String techBlog;
     private Integer exp;
     private Integer level;
+    private Integer totalMyScrap;
 
-    public static UserResponseDto toDto(User user) {
+
+    public static UserResponseDto toDto(User user, int count) {
         return new UserResponseDto(
             user.getId(),
             user.getNickname(),
@@ -24,7 +26,8 @@ public class UserResponseDto {
             user.getGithub(),
             user.getTechBlog(),
             user.getExp(),
-            user.getLevel()
+            user.getLevel(),
+            count
         );
     }
 
