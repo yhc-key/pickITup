@@ -14,6 +14,13 @@ object SparkUtil {
     val indicesB = vectorB.indices
     val valuesB = vectorB.values
 
+    if (indicesA.isEmpty || indicesB.isEmpty) {
+      return 0.0
+    }
+
+    if (indicesA.sameElements(indicesB) && valuesA.sameElements(valuesB)) {
+      return 1.0
+    }
 
     var dotProduct = 0.0
 

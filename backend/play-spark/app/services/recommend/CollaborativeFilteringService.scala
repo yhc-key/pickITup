@@ -1,6 +1,6 @@
 package services.recommend
 
-import config.MongoConfig.MONGO_URI
+import config.MongoConfig.{MONGO_DATABASE, MONGO_URI}
 import models.Recommendation
 import org.apache.spark.sql.SparkSession
 
@@ -21,6 +21,7 @@ object CollaborativeFilteringService {
 
     val similarities = spark.read
       .format("mongo")
+      .option("database", MONGO_DATABASE)
       .option("collection", "userSimilarities")
       .load()
       .select("userId1", "userId2", "similarity")
