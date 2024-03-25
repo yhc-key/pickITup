@@ -71,8 +71,13 @@ public class CompanyElasticsearch {
     }
 
     private static int convertSalaryIntoInt(String salary) {
+        if (salary.isEmpty()) {
+            return 40_000_000;
+        }
         // 월급 int로 변환
-        return 0;
+        else {
+            return Integer.parseInt(salary) * 10_000;
+        }
     }
 
     public CompanyMongo toMongo() {
