@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Page4() {
   return (
     <div className="w-[100%] h-[100%]">
-      <div className="flex flex-wrap justify-start align-middle ml-52">
+      <div className="flex flex-wrap justify-start align-middle pt-28 pl-52">
         <div className="flex flex-col justify-evenly">
           <div className="flex flex-col justify-start text-4xl font-semibold tracking-widest">
             <div className="flex">
