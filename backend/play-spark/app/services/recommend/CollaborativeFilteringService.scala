@@ -43,6 +43,7 @@ object CollaborativeFilteringService {
 
     val interactionScores = spark.read
       .format("mongo")
+      .option("database", MONGO_DATABASE)
       .option("collection", "interactionScores")
       .load()
       .select("userId", "jobId", "score")

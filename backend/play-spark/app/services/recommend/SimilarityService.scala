@@ -23,6 +23,7 @@ object SimilarityService {
 
     val userProfiles = spark.read
       .format("mongo")
+      .option("database", MONGO_DATABASE)
       .option("collection", "userProfiles")
       .load()
       .select("userId", "techStack")
@@ -78,6 +79,7 @@ object SimilarityService {
 
     val userProfiles = spark.read
       .format("mongo")
+      .option("database", MONGO_DATABASE)
       .option("collection", "userProfiles")
       .load()
       .select("userId", "techStack")
@@ -126,6 +128,7 @@ object SimilarityService {
 
     val recruitDF = spark.read
       .format("mongo")
+      .option("database", MONGO_DATABASE)
       .option("collection", "recruit")
       .load()
       .select("_id", "company", "qualificationRequirements", "preferredRequirements")
