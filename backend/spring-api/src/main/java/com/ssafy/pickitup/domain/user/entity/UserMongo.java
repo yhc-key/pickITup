@@ -1,6 +1,5 @@
 package com.ssafy.pickitup.domain.user.entity;
 
-import com.ssafy.pickitup.domain.user.query.dto.UserMongoQueryResponseDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,13 +23,4 @@ public class UserMongo {
     private List<String> keywords;
     private double latitude;
     private double longitude;
-
-    public UserMongoQueryResponseDto toQueryResponse() {
-        return UserMongoQueryResponseDto.builder()
-            .id(this.id)
-            .keywords(this.keywords)
-            .latitude(this.latitude)
-            .longitude(this.longitude)
-            .build();
-    }
 }
