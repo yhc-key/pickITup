@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-import Realistic from "../realistic";
+import Realistic from "../../realistic";
 import WrongBox from "./wrongBox";
 import RightBox from "./rightBox";
 import useAuthStore, { AuthState } from "@/store/authStore";
@@ -22,13 +22,36 @@ interface QuizResultProps {
 export default function QuizResult({ answer }: QuizResultProps) {
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const apiURL = "https://spring.pickITup.online/quizzes/win";
+  const isLoggedIn: boolean = useAuthStore(
+    (state: AuthState) => state.isLoggedIn
+  );
+
+  // 7문제 이상 정답 시 뱃지 획득을 위한 승리횟수 1 증가
+  const addWinNumber = async () => {
+    if (isLoggedIn) {
+      const accessToken = sessionStorage.getItem("accessToken");
+      try {
+        await fetch(apiURL, {
+          method: "PATCH",
+          headers: {
+            Authorization: "Bearer " + accessToken,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("게임 결과를 저장하기 위해서 로그인이 필요합니다!");
+    }
+  };
 
   useEffect(() => {
     const correctCount = answer.filter((e: Answer) => e.correct).length;
-
-    if (correctCount >= 7) {
-      setShowConfetti(true);
-    }
+    
+      if (correctCount >= 7) {
+        setShowConfetti(true);
+        addWinNumber();
+      }
   }, [answer]);
 
   return (

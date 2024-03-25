@@ -3,7 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import Modal from "../modal";
+import Modal from "../../modal";
 import { techDataMap } from "@/data/techData";
 
 const techTypes: string[] = [

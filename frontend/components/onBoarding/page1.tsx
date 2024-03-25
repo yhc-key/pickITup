@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-export default function Page1() {
+export default function Page1({ activePage }: { activePage: boolean }) {
   return (
-    <div className="w-[100%] h-[100%]">
+    <div className="w-[100%] h-[100%] overflow-hidden">
       <div className="flex flex-wrap justify-start pt-20 pl-60">
         <Image
           src="/images/onBoarding.png"
@@ -13,7 +13,9 @@ export default function Page1() {
         <div className="flex flex-col justify-evenly">
           <div className="flex justify-start font-semibold tracking-widest text-7xl">
             <div className="mx-3 my-1 text-f5black-400">pick</div>
-            <div className="mx-3 my-1 text-transparent bg-clip-text bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300 ">IT</div>
+            <div className="mx-3 my-1 text-transparent bg-clip-text bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300 ">
+              IT
+            </div>
             <div className="my-1 ml-3 text-f5black-400">up</div>
           </div>
           <div className="ml-8 text-lg font-medium text-f5black-400">

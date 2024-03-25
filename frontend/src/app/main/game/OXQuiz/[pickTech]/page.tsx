@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 
 import { OXQuizDataMap } from "@/data/OXQuizData";
 import BackBtn from "@/components/game/backBtn";
-import Question from "@/components/OXQuiz/question";
-import TrueBtn from "@/components/OXQuiz/trueBtn";
-import FalseBtn from "@/components/OXQuiz/falseBtn";
-import QuizResult from "@/components/OXQuiz/quizReulst";
+import Question from "@/components/game/OXQuiz/question";
+import TrueBtn from "@/components/game/OXQuiz/trueBtn";
+import FalseBtn from "@/components/game/OXQuiz/falseBtn";
+import QuizResult from "@/components/game/OXQuiz/quizReulst";
 
 interface Quiz {
   question: string;

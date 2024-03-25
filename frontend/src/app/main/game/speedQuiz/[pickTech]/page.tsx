@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 
 import { speedQuizDataMap } from "@/data/speedQuizData";
 import BackBtn from "@/components/game/backBtn";
-import Question from "@/components/SpeedQuiz/question";
-import TimeBar from "@/components/SpeedQuiz/timebar";
-import NextBtn from "@/components/SpeedQuiz/nextBtn";
-import QuizResult from "@/components/SpeedQuiz/quizResult";
+import Question from "@/components/game/SpeedQuiz/question";
+import TimeBar from "@/components/game/SpeedQuiz/timebar";
+import NextBtn from "@/components/game/SpeedQuiz/nextBtn";
+import QuizResult from "@/components/game/SpeedQuiz/quizResult";
 
 interface Quiz {
   question: string;
