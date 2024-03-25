@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kr">
-      {children}
+      <div>{children}</div>
     </html>
   );
 }
