@@ -8,7 +8,6 @@ import com.ssafy.pickitup.domain.selfdocument.command.dto.MainQuestionCommandReq
 import com.ssafy.pickitup.domain.selfdocument.command.dto.SubQuestionCommandRequestDto;
 import com.ssafy.pickitup.domain.user.command.KeywordCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,7 @@ public class InitDB {
     private final KeywordCommandJpaRepository keywordCommandJpaRepository;
 
 
-    @PostConstruct
+    //    @PostConstruct
     @Transactional
     public void init() {
 

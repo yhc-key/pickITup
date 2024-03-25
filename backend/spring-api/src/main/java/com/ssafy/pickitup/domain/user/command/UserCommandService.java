@@ -4,6 +4,7 @@ import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
+import com.ssafy.pickitup.domain.user.entity.UserRecruit;
 import com.ssafy.pickitup.domain.user.keyword.Keyword;
 import com.ssafy.pickitup.domain.user.keyword.KeywordQueryJpaRepository;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
@@ -23,6 +24,7 @@ public class UserCommandService {
     private final UserCommandJpaRepository userCommandJpaRepository;
     private final UserKeywordCommandJpaRepository userKeywordCommandJpaRepository;
     private final KeywordQueryJpaRepository keywordQueryJpaRepository;
+    private final UserRecruitCommandJpaRepository userRecruitCommandJpaRepository;
 
     @Transactional
     public UserResponseDto create(Auth auth, UserSignupDto userSignupDto) {
@@ -32,7 +34,7 @@ public class UserCommandService {
             .build();
         System.out.println("user.toString() = " + user.toString());
         userCommandJpaRepository.save(user);
-        return UserResponseDto.toDto(user);
+        return UserResponseDto.toDto(user, 0);
     }
 
     @Transactional
@@ -42,7 +44,7 @@ public class UserCommandService {
             .auth(auth)
             .build();
         userCommandJpaRepository.save(user);
-        return UserResponseDto.toDto(user);
+        return UserResponseDto.toDto(user, 0);
     }
 
     @Transactional
@@ -104,6 +106,18 @@ public class UserCommandService {
         log.info("keywordsNameList = {}", keywordsNameList);
 
 //        User Mongo에 키워드 추가
-        
+
+    }
+
+    @Transactional
+    public void saveUserRecruit(Integer authId, Integer recruitId) {
+        User user = userCommandJpaRepository.findByAuthId(authId);
+        UserRecruit userRecruit = new UserRecruit(user, recruitId);
+        userRecruitCommandJpaRepository.save(userRecruit);
+    }
+
+    @Transactional
+    public void deleteUserRecruit(Integer authId, Integer recruitId) {
+        userRecruitCommandJpaRepository.deleteAllByUserIdAndRecruitId(authId, recruitId);
     }
 }
