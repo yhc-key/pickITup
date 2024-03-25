@@ -83,6 +83,18 @@ public class UserController {
         return success("keywords 등록 성공");
     }
 
+    @Operation(summary = "회원 키워드 수정 및 삭제 API - 빈 배열 요청하면 삭제")
+    @PatchMapping("/keywords")
+    public ApiResult<?> updateUserKeyword(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+        @RequestBody KeywordRequestDto keywords) {
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.info("keywords = {}", keywords.toString());
+        userCommandService.updateUserKeyword(authId, keywords);
+        return success("keywords 수정 성공");
+    }
+
+
     @Operation(summary = "회원 키워드 조회 API")
     @GetMapping("{authId}/keywords")
     public ApiResult<KeywordResponseDto> addUserKeyword(

@@ -1,6 +1,7 @@
 package com.ssafy.pickitup.domain.user.entity;
 
 import com.ssafy.pickitup.domain.auth.entity.Auth;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -62,7 +63,7 @@ public class User extends BaseTimeEntity {
 //    @JoinColumn
     private Auth auth;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserKeyword> userKeywords = new ArrayList<>();
 
 
@@ -72,6 +73,10 @@ public class User extends BaseTimeEntity {
 
     public int increaseWinCount() {
         return ++gameWinCount;
+    }
+
+    public void setUserKeywords(List<UserKeyword> userKeywords) {
+        this.userKeywords = userKeywords;
     }
 
 

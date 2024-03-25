@@ -35,4 +35,13 @@ public class UserKeyword {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "keyword_id")
     private Keyword keyword;
+
+    public UserKeyword(User user, Keyword keyword) {
+        this.user = user;
+        this.keyword = keyword;
+    }
+
+    public static UserKeyword makeUserKeyword(User user, Keyword keyword) {
+        return new UserKeyword(user, keyword);
+    }
 }
