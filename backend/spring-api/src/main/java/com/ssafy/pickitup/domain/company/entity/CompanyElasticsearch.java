@@ -84,7 +84,7 @@ public class CompanyElasticsearch {
         return CompanyMongo.builder()
             .id(this.id)
             .name(this.name)
-            .location(convertAddressToLongitudeAndLatitude(this.address))
+//            .location(convertAddressToLongitudeAndLatitude(this.address))
 //            .latitude(convertAddressToLatitude(this.address))
 //            .longitude(convertAddressToLongitude(this.address))
             .salary(convertSalaryIntoInt(this.salary))
