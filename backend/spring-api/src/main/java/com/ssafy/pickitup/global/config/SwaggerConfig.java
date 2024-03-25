@@ -23,4 +23,5 @@ public class SwaggerConfig {
             .info(info)
             .addServersItem(server);
     }
+
 }

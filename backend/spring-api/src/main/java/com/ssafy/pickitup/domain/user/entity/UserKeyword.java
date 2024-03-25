@@ -1,6 +1,6 @@
 package com.ssafy.pickitup.domain.user.entity;
 
-
+import com.ssafy.pickitup.domain.user.keyword.Keyword;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -18,25 +18,30 @@ import lombok.ToString;
 @Entity
 @Getter
 @Builder
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class UserRecruit {
+@ToString(of = {"id", "user", "keyword"})
+public class UserKeyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    private Integer recruitId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "keyword_id")
+    private Keyword keyword;
 
-    public UserRecruit(User user, Integer recruitId) {
+    public UserKeyword(User user, Keyword keyword) {
         this.user = user;
-        this.recruitId = recruitId;
+        this.keyword = keyword;
     }
 
+    public static UserKeyword makeUserKeyword(User user, Keyword keyword) {
+        return new UserKeyword(user, keyword);
+    }
 }

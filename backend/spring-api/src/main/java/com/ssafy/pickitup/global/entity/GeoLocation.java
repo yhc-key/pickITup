@@ -1,23 +1,18 @@
-package com.ssafy.pickitup.domain.user.query.dto;
+package com.ssafy.pickitup.global.entity;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserMongoQueryResponseDto {
+@Component
+public class GeoLocation {
 
-    private Integer id;
-
-    private List<String> keywords;
     private double latitude;
     private double longitude;
-
 }

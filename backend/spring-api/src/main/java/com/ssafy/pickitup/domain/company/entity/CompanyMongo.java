@@ -23,9 +23,8 @@ public class CompanyMongo {
     private Integer id;
 
     private String name;
-    private Float[] location;
-    private Float latitude;
-    private Float longitude;
+    private Double latitude;
+    private Double longitude;
     private int salary;
     private Set<Integer> recruits;
 }

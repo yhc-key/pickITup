@@ -7,6 +7,8 @@ import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
 import com.ssafy.pickitup.domain.user.query.UserQueryService;
+import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
+import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.NicknameDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
@@ -18,12 +20,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -66,7 +71,59 @@ public class UserController {
         Page<RecruitQueryResponseDto> myRecruitByIdList = userQueryService.findMyRecruitById(authId,
             pageable);
         return success(myRecruitByIdList);
-//        return succss(ReposnseList);
+    }
+
+    @Operation(summary = "회원 채용 공고 스크랩 API")
+    @PostMapping("/scraps/recruit")
+    public ApiResult<?> saveUserScrapList(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+        @RequestParam int recruitId) {
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        userCommandService.saveUserRecruit(authId, recruitId);
+
+        return success("스크랩 성공");
+    }
+
+    @Operation(summary = "회원 채용 공고 스크랩 삭제 API")
+    @DeleteMapping("/scraps/recruit")
+    public ApiResult<?> deleteUserScrap(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+        @RequestParam Integer recruitId) {
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        userCommandService.deleteUserRecruit(authId, recruitId);
+
+        return success("스크랩 삭제");
+    }
+
+    @Operation(summary = "회원 키워드 추가 API")
+    @PostMapping("/keywords")
+    public ApiResult<?> addUserKeyword(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+        @RequestBody KeywordRequestDto keywords) {
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.info("keywords = {}", keywords.toString());
+        userCommandService.addKeywords(authId, keywords);
+        return success("keywords 등록 성공");
+    }
+
+    @Operation(summary = "회원 키워드 수정 및 삭제 API - 빈 배열 요청하면 삭제")
+    @PatchMapping("/keywords")
+    public ApiResult<?> updateUserKeyword(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+        @RequestBody KeywordRequestDto keywords) {
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.info("keywords = {}", keywords.toString());
+        userCommandService.updateUserKeyword(authId, keywords);
+        return success("keywords 수정 성공");
+    }
+
+
+    @Operation(summary = "회원 키워드 조회 API")
+    @GetMapping("{authId}/keywords")
+    public ApiResult<KeywordResponseDto> addUserKeyword(
+        @PathVariable("authId") Integer authId) {
+        KeywordResponseDto userKeywords = userQueryService.findUserKeywords(authId);
+        return success(userKeywords);
     }
 
 

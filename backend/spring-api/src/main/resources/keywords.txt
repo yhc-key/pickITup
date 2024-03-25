@@ -101,7 +101,6 @@ Gitlab
 Glide
 Go
 Go CD
-고가용성
 Google BigQuery
 Google Cloud Build
 Google Data Studio
@@ -182,7 +181,6 @@ MongoDB
 Moya
 MSA
 MS-SQL
-무중단배포
 MyBatis
 MySQL
 Naver Works
