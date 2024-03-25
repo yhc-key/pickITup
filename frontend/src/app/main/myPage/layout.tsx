@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import useAuthStore,{AuthState} from "@/store/authStore";
+import useAuthStore, { AuthState } from "@/store/authStore";
 import { useEffect, useState } from "react";
 
 const dummyMyData: string[][] = [
@@ -17,7 +17,7 @@ export default function MyPageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const nickname :string = useAuthStore((state : AuthState) => state.nickname);
+  const nickname: string = useAuthStore((state: AuthState) => state.nickname);
   // const [nickname, setNickname] = useState<string | null>(null);
 
   // useEffect(() => {
