@@ -22,6 +22,9 @@ public class GeoLocationService {
     private String KAKAO_API_KEY;
 
     public GeoLocation getGeoLocation(String address) {
+        if (address == null) {
+            return new GeoLocation(0, 0);
+        }
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
