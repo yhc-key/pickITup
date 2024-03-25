@@ -16,18 +16,18 @@ class RecommendController @Inject()(cc: ControllerComponents, config: Configurat
     Ok("Test API is working!!!")
   }
 
-  def contentBasedRecommend(): Action[AnyContent] = Action { implicit request =>
-    val list: List[Recommendation] = ContentBasedFilteringService.recommend(1)
+  def contentBasedRecommend(userId: Int): Action[AnyContent] = Action { implicit request =>
+    val list: List[Recommendation] = ContentBasedFilteringService.recommend(userId)
     Ok(Json.toJson(list))
   }
 
-  def collaborativeRecommend(): Action[AnyContent] = Action { implicit request =>
-    val list: List[Recommendation] = CollaborativeFilteringService.recommend(1)
+  def collaborativeRecommend(userId: Int): Action[AnyContent] = Action { implicit request =>
+    val list: List[Recommendation] = CollaborativeFilteringService.recommend(userId)
     Ok(Json.toJson(list))
   }
 
   def userSimilarity(): Action[AnyContent] = Action { implicit request =>
-    val str = SimilarityService.calculateUserSimilarity()
+    val str = SimilarityService.calculateAllUserSimilarities()
     Ok("Similarity API is working! " + str)
   }
 

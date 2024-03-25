@@ -1,7 +1,7 @@
 package services.recommend
 
 import com.typesafe.config.ConfigFactory
-import config.MongoConfig.MONGO_URI
+import config.MongoConfig.{MONGO_DATABASE, MONGO_URI}
 import models.Recommendation
 import org.apache.spark.ml.feature.CountVectorizer
 import org.apache.spark.ml.linalg.{SparseVector, Vectors}
@@ -17,7 +17,7 @@ object ContentBasedFilteringService {
   def recommend(userId: Int): List[Recommendation] = {
 
     //    Logger.getLogger("org").setLevel(Level.ERROR)
-
+    println("MONGO_URI: " + MONGO_URI)
     // Spark 세션 초기화
     val spark = SparkSession.builder
       .appName("TechStackSimilarity")
@@ -33,6 +33,7 @@ object ContentBasedFilteringService {
       (1, Seq("Java", "Spring", "Docker", "Kubernetes", "AWS", "MySQL", "Git")),
       (2, Seq("Python", "R", "TensorFlow", "Keras", "Pandas", "NumPy", "Scikit-learn"))
     ).toDF("userId", "techStack")
+      .filter($"userId" === userId)
 
     //    val jobPostings0 = Seq(
     //      (1, "Backend Developer", Seq("Java", "Spring Boot", "MongoDB", "Docker", "AWS", "Git", "Jenkins"), Seq("Kubernetes", "Ansible", "Terraform")),
@@ -41,6 +42,7 @@ object ContentBasedFilteringService {
 
     val recruits = spark.read
       .format("mongo")
+      .option("database", MONGO_DATABASE)
       .option("collection", "recruit")
       .load()
       .select("_id", "qualificationRequirements", "preferredRequirements")
@@ -75,17 +77,10 @@ object ContentBasedFilteringService {
       .sort($"score".desc)
 
     similarityScores
-      .filter($"userId" === 1)
-      .limit(10)
-      .show()
-
-    similarityScores
-      .filter($"userId" === 2)
-      .limit(10)
+      .limit(20)
       .show()
 
     val recommendationList : List[Recommendation] = similarityScores
-      .filter($"userId" === 1)
       .limit(10)
       .as[Recommendation]
       .collect()

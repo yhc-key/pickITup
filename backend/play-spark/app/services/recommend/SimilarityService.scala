@@ -1,6 +1,7 @@
 package services.recommend
 
 import com.typesafe.config.ConfigFactory
+import config.MongoConfig.{MONGO_DATABASE, MONGO_URI}
 import org.apache.spark.ml.feature.CountVectorizer
 import org.apache.spark.ml.linalg.SparseVector
 import org.apache.spark.sql.SparkSession
@@ -9,32 +10,19 @@ import utils.SparkUtil
 
 object SimilarityService {
 
-  private val config = ConfigFactory.load()
-  private val mongoConfig = config.getConfig("mongo")
-
-  //  private val mongoHostname: String = "localhost"
-  private val mongoHostname: String = mongoConfig.getString("hostname")
-  private val mongoPort: String = mongoConfig.getString("port")
-  private val mongoDatabase: String = mongoConfig.getString("database")
-  private val mongoUsername: String = mongoConfig.getString("username")
-  private val mongoPassword: String = mongoConfig.getString("password")
-
-  def calculateUserSimilarity(): String = {
-
-    val mongoUri: String = s"mongodb://${mongoUsername}:${mongoPassword}@${mongoHostname}:${mongoPort}/"
+  def calculateAllUserSimilarities(): String = {
 
     val spark = SparkSession.builder
-      .appName("TechStackSimilarity")
+      .appName("AllUserSimilarities")
       .master("local[*]")
-      .config("spark.mongodb.input.uri", mongoUri)
-      .config("spark.mongodb.output.uri", mongoUri)
+      .config("spark.mongodb.input.uri", MONGO_URI)
+      .config("spark.mongodb.output.uri", MONGO_URI)
       .getOrCreate()
 
     import spark.implicits._
 
     val userProfiles = spark.read
       .format("mongo")
-      .option("database", mongoDatabase)
       .option("collection", "userProfiles")
       .load()
       .select("userId", "techStack")
@@ -68,31 +56,76 @@ object SimilarityService {
 
     similarityDF.write
       .format("mongo")
-      .option("database", mongoDatabase)
+      .option("database", MONGO_DATABASE)
       .option("collection", "userSimilarity")
       .mode("overwrite")
       .save()
 
     spark.stop()
-    "calculate user similarity is working!"
+    "calculating all user similarities is working!"
+  }
+
+  def calculateUserSimilarity(userId: Int): String = {
+
+    val spark = SparkSession.builder
+      .appName("UserSimilarity")
+      .master("local[*]")
+      .config("spark.mongodb.input.uri", MONGO_URI)
+      .config("spark.mongodb.output.uri", MONGO_URI)
+      .getOrCreate()
+
+    import spark.implicits._
+
+    val userProfiles = spark.read
+      .format("mongo")
+      .option("collection", "userProfiles")
+      .load()
+      .select("userId", "techStack")
+
+    val cvModel = new CountVectorizer()
+      .setInputCol("techStack")
+      .setOutputCol("features")
+      .fit(userProfiles.select("techStack"))
+
+    val userFeatures = cvModel.transform(userProfiles)
+
+    val newUser = userFeatures.filter($"userId" === userId)
+
+    val userSimilarities = userFeatures
+      .filter($"userId" =!= userId)
+      .select("userId", "features")
+      .map(row => (
+        row.getInt(0),
+        SparkUtil.cosineSimilarity(newUser.first().getAs[SparseVector]("features"), row.getAs[SparseVector]("features"))
+      )).toDF("userId", "similarity")
+
+    userSimilarities.show()
+
+    userSimilarities.write
+      .format("mongo")
+      .option("database", MONGO_DATABASE)
+      .option("collection", "userSimilarities")
+      .mode("append")
+      .save()
+
+    spark.stop()
+
+    "calculating user similarity is working!"
   }
 
   def calculateRecruitSimilarity(): String = {
 
-    val mongoUri: String = s"mongodb://${mongoUsername}:${mongoPassword}@${mongoHostname}:${mongoPort}/"
-
     val spark = SparkSession.builder
-      .appName("TechStackSimilarity")
+      .appName("AllRecruitSimilarities")
       .master("local[*]")
-      .config("spark.mongodb.input.uri", mongoUri)
-      .config("spark.mongodb.output.uri", mongoUri)
+      .config("spark.mongodb.input.uri", MONGO_URI)
+      .config("spark.mongodb.output.uri", MONGO_URI)
       .getOrCreate()
 
     import spark.implicits._
 
     val recruitDF = spark.read
       .format("mongo")
-      .option("database", mongoDatabase)
       .option("collection", "recruit")
       .load()
       .select("_id", "company", "qualificationRequirements", "preferredRequirements")
@@ -137,7 +170,7 @@ object SimilarityService {
 
     similarityDF.write
       .format("mongo")
-      .option("database", mongoDatabase)
+      .option("database", MONGO_DATABASE)
       .option("collection", "recruitSimilarity")
       .mode("overwrite")
       .save()
