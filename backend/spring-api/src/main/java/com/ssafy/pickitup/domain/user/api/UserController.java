@@ -6,7 +6,6 @@ import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
-import com.ssafy.pickitup.domain.user.entity.Keyword;
 import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
@@ -20,9 +19,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -70,7 +75,8 @@ public class UserController {
     @Operation(summary = "회원 키워드 추가 API")
     @PostMapping("/keywords")
     public ApiResult<?> addUserKeyword(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestBody KeywordRequestDto keywords) {
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+        @RequestBody KeywordRequestDto keywords) {
         int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         log.info("keywords = {}", keywords.toString());
         userCommandService.addKeywords(authId, keywords);
@@ -80,7 +86,7 @@ public class UserController {
     @Operation(summary = "회원 키워드 조회 API")
     @GetMapping("{authId}/keywords")
     public ApiResult<KeywordResponseDto> addUserKeyword(
-            @PathVariable("authId") Integer authId) {
+        @PathVariable("authId") Integer authId) {
         KeywordResponseDto userKeywords = userQueryService.findUserKeywords(authId);
         return success(userKeywords);
     }

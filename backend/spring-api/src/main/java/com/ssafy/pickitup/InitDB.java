@@ -8,14 +8,14 @@ import com.ssafy.pickitup.domain.selfdocument.command.dto.MainQuestionCommandReq
 import com.ssafy.pickitup.domain.selfdocument.command.dto.SubQuestionCommandRequestDto;
 import com.ssafy.pickitup.domain.user.command.KeywordCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
-import com.ssafy.pickitup.domain.user.entity.Keyword;
+import com.ssafy.pickitup.domain.user.keyword.Category;
+import com.ssafy.pickitup.domain.user.keyword.Keyword;
 import jakarta.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Component
@@ -68,11 +68,11 @@ public class InitDB {
         //Keyword
 
         List<Keyword> keywordList = new ArrayList<>();
-        keywordList.add(new Keyword(1, "spring"));
-        keywordList.add(new Keyword(2, "react"));
-        keywordList.add(new Keyword(3, "java"));
-        keywordList.add(new Keyword(4, "java script"));
-        keywordList.add(new Keyword(5, "docker"));
+        keywordList.add(new Keyword(1, Category.BACKEND.getCategory(), "spring"));
+        keywordList.add(new Keyword(2, Category.FRONTEND.getCategory(), "react"));
+        keywordList.add(new Keyword(3, Category.LANGUAGE.getCategory(), "java"));
+        keywordList.add(new Keyword(4, Category.LANGUAGE.getCategory(), "java script"));
+        keywordList.add(new Keyword(5, Category.INFRA.getCategory(), "docker"));
 
         keywordCommandJpaRepository.saveAll(keywordList);
 

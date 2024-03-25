@@ -2,17 +2,12 @@ package com.ssafy.pickitup.domain.user.query;
 
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
-import com.ssafy.pickitup.domain.user.entity.Keyword;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
-
-import java.security.Key;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +37,7 @@ public class UserQueryService {
         List<Integer> myRecruitIdList = userRecruitJpaRepository.findAllByUserId(authId);
 
         return recruitQueryService.searchByIdList(
-                myRecruitIdList, pageable);
+            myRecruitIdList, pageable);
     }
 
     @Transactional(readOnly = true)
@@ -53,8 +48,8 @@ public class UserQueryService {
         }
         List<UserKeyword> userKeywords = userKeywordQueryJpaRepository.findAllByUserId(authId);
         List<String> keywordsName = userKeywords.stream()
-                .map(userKeyword -> userKeyword.getKeyword().getName())
-                .toList();
+            .map(userKeyword -> userKeyword.getKeyword().getName())
+            .toList();
 
         return new KeywordResponseDto(keywordsName);
     }
