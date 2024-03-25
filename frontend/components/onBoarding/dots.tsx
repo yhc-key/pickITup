@@ -1,8 +1,7 @@
-const Dot = ({ num, scrollIdx, handleDotClick }: { num: number; scrollIdx: number; handleDotClick: (num: number) => void }) => {
+const Dot = ({ num, scrollIdx }: { num: number; scrollIdx: number }) => {
   return (
     <div
       className={`transition-all duration-500 ease-in-out relative w-3 border rounded-full cursor-pointer ${scrollIdx === num ? "h-8 bg-f5green-300" : "h-3 bg-f5gray-400"}`}
-      onClick={() => handleDotClick(num)} // 클릭 이벤트 추가
     ></div>
   );
 };
