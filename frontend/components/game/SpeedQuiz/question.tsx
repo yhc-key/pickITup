@@ -1,4 +1,4 @@
-"use-client";
+"use client";
 import { useCallback, useRef, useEffect } from "react";
 
 interface Quiz {
@@ -86,6 +86,7 @@ export default function Question({
   // input태그 렌더링
   const renderInput = useCallback(() => {
     const input: JSX.Element[] = [];
+    inputHTML.current = [];
     for (let i = 0; i < question.answer.length; i++) {
       input.push(
         <input
