@@ -5,7 +5,7 @@ import Link from "next/link";
 import { TiDeleteOutline } from "react-icons/ti";
 import Modal from "@/components/modal";;
 import { techDataMap } from "@/data/techData";
-import { techData2 } from "@/data/techData2";
+import { techData2,techInfos } from "@/data/techData2";
 import AutocompleteSearchBar from "@/components/AutoCompleteSearchBar";
 
 const techTypes: string[] = [
@@ -26,7 +26,9 @@ export default function TechSelectAfterLogin() {
 
   // 기술스택 선택 함수
   const techAddHandler = (tech: string): void => {
-    setPickTech([...pickTech,tech]);
+    if(!pickTech.includes(tech)){
+      setPickTech([...pickTech,tech]);
+    }
   };
 const deletePickTech = (item : string)=>{
   const newTechs = pickTech.filter(tech=>tech!== item);
@@ -41,6 +43,38 @@ const deletePickTech = (item : string)=>{
   
   const techs: string[] | undefined = techDataMap.get(pickType);
 
+  const setMyTech = () => {
+    const authid = sessionStorage.getItem('authid');
+    
+    fetch(`https://spring.pickitup.online/users/${authid}/keywords`,{
+      method : "GET"
+    })
+    .then(res=>res.json())
+    .then(res=>{
+        const techIds:number[] = [];
+        for (const tech of pickTech) {
+          const techId = techInfos.get(tech);
+          if (techId !== undefined&&!res.response.keywords.includes(tech)) {
+              techIds.push(techId);
+          }
+        }
+        const token = sessionStorage.getItem('accessToken');
+        fetch(`https://spring.pickitup.online/users/keywords`,{
+          method : "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer "+token,
+          },
+          body: JSON.stringify({
+            keywords : techIds
+          })
+        })
+        .then(res=>res.json())
+        .then(res=>console.log(res));
+      }
+    )
+  }
+
   return (
     <div>
       <button onClick={(): void => setIsModalOpen(true)}>
@@ -49,9 +83,9 @@ const deletePickTech = (item : string)=>{
       <Modal open={isModalOpen}>
         <div className="flex flex-col flex-wrap">
           <div className="mb-5 text-xl font-medium text-center">
-            🎮 관심 기술 스택을 선택해주세요 🎮
+            관심 기술 스택(영어)을 선택해주세요
           </div>
-           <div className="z-50 py-2 flex items-center justify-center"> 
+           <div className="z-50 py-2 h-[10vh] flex items-center justify-center"> 
             <AutocompleteSearchBar words={techData2} onSelect={techAddHandler} ></AutocompleteSearchBar>
           </div>
 
@@ -102,15 +136,9 @@ const deletePickTech = (item : string)=>{
             </div>
           </div>
           <div className="flex justify-center mt-5">
-            <button
-              onClick={modalCloseHandler}
-              className="px-12 py-2 mr-6 text-sm font-semibold rounded-md text-neutral-100 bg-f5red-350 hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10"
-            >
-              취소하기
-            </button>
-            <Link href={`/main/game/OXQuiz/${pickTech}`}>
+            <Link href={`/main/myPage/updateMyInfo`} onClick={setMyTech}>
               <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
-                시작하기
+                등록하기
               </button>
             </Link>
           </div>
