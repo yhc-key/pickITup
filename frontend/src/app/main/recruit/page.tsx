@@ -28,14 +28,9 @@ const apiAddress = "https://spring.pickITup.online/recruit";
 const techDataValues = Array.from(techDataMap.values());
 
 
-<<<<<<< HEAD
-const Recruits = () => {
-  const fetchRecruits = async ({ pageParam }: { pageParam: any }) => {
-=======
 export default function Recruit() {
   const bottom = useRef<HTMLDivElement>(null);
   const fetchRecruits = async ({ pageParam }) => {
->>>>>>> f-recruit
     const res = await fetch(`${apiAddress}?page=${pageParam}&size=9&sort=null`);
     return res.json();
   };
