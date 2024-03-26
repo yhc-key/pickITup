@@ -58,7 +58,7 @@ const Recruits = () => {
   ) : status === "error" ? (
     <p>Error: {error.message}</p>
   ) : (
-    <>
+    <div>
       <div className="flex flex-wrap justify-center ">
         {data?.pages.map((page, i: number) =>
           page.response.content.map((recruit: Recruit, recruitI: number) => {
@@ -121,7 +121,7 @@ const Recruits = () => {
         </button>
       </div>
       <div>{isFetching && !isFetchingNextPage ? "Fetching..." : null}</div>
-    </>
+    </div>
   );
 };
 
