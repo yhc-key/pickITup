@@ -155,15 +155,9 @@ export default function Home() {
         ref={mainWrapperRef}
         className="h-screen overflow-hidden scroll-snap-y"
       >
-<<<<<<< HEAD
         <Link href="/main/recruit">
           <button className="fixed p-3 text-sm transition-all duration-300 ease-in-out top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">
             {"건너뛰기 >>"}
-=======
-        <Link href="/main/social">
-          <button className="fixed p-3 text-sm transition-all duration-300 ease-in-out top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">
-            로그인 | 회원가입
->>>>>>> a84a014d43d2e730c6a4092fe4d5b0423845a05d
           </button>
         </Link>
         <Dots scrollIdx={scrollIdx} />
