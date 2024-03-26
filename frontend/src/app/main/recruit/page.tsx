@@ -29,7 +29,7 @@ const techDataValues = Array.from(techDataMap.values());
 
 export default function Recruit() {
   const bottom = useRef<HTMLDivElement>(null);
-  const fetchRecruits = async ({ pageParam }) => {
+  const fetchRecruits = async ({ pageParam: number }) => {
     const res = await fetch(`${apiAddress}?page=${pageParam}&size=9&sort=null`);
     return res.json();
   };
