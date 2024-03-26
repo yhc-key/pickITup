@@ -17,11 +17,14 @@ export default function Question({
   index,
   onNextClick,
 }: questionProps) {
-  const textAreaHTML = useRef<HTMLTextAreaElement[]>([]);
+  const textAreaHTML = useRef<HTMLTextAreaElement>(null);
 
   const onTextAreaChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const newValue = e.target.value;
+      if (textAreaHTML.current) {
+        textAreaHTML.current.value = newValue;
+      }
     },
     []
   );
@@ -42,7 +45,8 @@ export default function Question({
         <div className="flex justify-center my-4">
           <textarea
             className="question-textarea p-6 w-[60%] h-44 text-strat shadow-md question-input rounded-xl text-sm bg-f5gray-200 resize-none "
-            onChange={(e) => onTextAreaChange(e)}
+            onChange={onTextAreaChange}
+            ref={textAreaHTML}
           ></textarea>
         </div>
       </div>
