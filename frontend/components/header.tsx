@@ -5,37 +5,44 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useAuthStore, { AuthState } from "../store/authStore";
+import { useMediaQuery } from "react-responsive";
 
 interface LinkType {
   name: string;
   href: string;
+  icon: string;
 }
 
 const navLinks: LinkType[] = [
-  { name: "채용공고", href: "/main/recruit" },
-  { name: "기술블로그", href: "/main/techBlog" },
-  { name: "미니 게임", href: "/main/game" },
-  { name: "면접 대비", href: "/main/interview" },
-  { name: "마이 페이지", href: "/main/myPage/myBadge" },
+  { name: "채용공고", href: "/main/recruit", icon: "📆" },
+  // { name: "기술블로그", href: "/main/techBlog" },
+  { name: "미니 게임", href: "/main/game", icon: "🎮" },
+  { name: "면접 대비", href: "/main/interview", icon: "📝" },
+  { name: "마이 페이지", href: "/main/myPage/myBadge", icon: "" },
 ];
 
 export default function Header() {
+  const isMobile = useMediaQuery({
+    query: "(max-width:480px)",
+  });
   const nickname: string = useAuthStore((state: AuthState) => state.nickname);
-  const setLogged : (nickname : string) => void = useAuthStore((state : AuthState) => state.setLogged);
+  const setLogged: (nickname: string) => void = useAuthStore(
+    (state: AuthState) => state.setLogged
+  );
   const isLoggedIn: boolean = useAuthStore(
     (state: AuthState) => state.isLoggedIn
   );
   const logout: () => void = useAuthStore((state: AuthState) => state.logout);
 
-  useEffect(()=>{
-    const accessToken: string | null = sessionStorage.getItem('accessToken');
-    const nickname: string|null = sessionStorage.getItem('nickname');
+  useEffect(() => {
+    const accessToken: string | null = sessionStorage.getItem("accessToken");
+    const nickname: string | null = sessionStorage.getItem("nickname");
 
-    if(accessToken!==null&&nickname!==null){
+    if (accessToken !== null && nickname !== null) {
       setLogged(nickname);
       console.log();
     }
-  },[])
+  }, []);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -72,62 +79,89 @@ export default function Header() {
     }
   };
   return (
-    <header className="flex justify-between border-b border-f5gray-400">
-      <div>
-        <Link href="/" className="flex items-center">
-          <Image
-            src="/images/ITUlogo.png"
-            alt="logo"
-            width={36}
-            height={36}
-            priority={true}
-            className="m-3"
-          />
-          <div className="mx-1 text-lg font-semibold text-f5black-400">
-            pick
-          </div>
-          <div className="mx-1 text-lg font-semibold text-f5green-300">IT</div>
-          <div className="mx-1 text-lg font-semibold text-f5black-400">up</div>
-        </Link>
-      </div>
-      <div className="flex">
-        {navLinks.map((link: LinkType) => {
-          return (
-            <div key={link.name} className="m-auto">
-              <Link
-                href={link.href}
-                className={`mr-4 hover:text-f5green-300 ${
-                  !isActive(link.href)
-                    ? "text-f5black-400"
-                    : "text-f5green-400 font-bold"
-                }`}
-              >
-                {link.name}
-              </Link>
+    <header>
+      <div className="flex justify-between border-b border-f5gray-400 mb:hidden">
+        <div>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/ITUlogo.png"
+              alt="logo"
+              width={36}
+              height={36}
+              priority={true}
+              className="m-3"
+            />
+            <div className="mx-1 text-lg font-semibold text-f5black-400">
+              pick
             </div>
-          );
-        })}
-      </div>
-      {isLoggedIn ? (
-        <div className="flex items-center">
-          <div className="mr-2">{nickname}님</div>
-          <div className="p-3 my-auto mr-10 bg-f5gray-300 rounded-2xl">
-            <button
-              className="text-f5black-400 hover:text-f5green-300"
-              onClick={logoutRequest}
-            >
-              로그아웃
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="p-3 my-auto mr-10 text-sm bg-f5gray-300 rounded-2xl">
-          <Link
-            href="/main/social"
-            className="transition-all duration-200 ease-in-out text-f5black-400 hover:text-f5green-300"
-          >
-            로그인 | 회원가입
+            <div className="mx-1 text-lg font-semibold text-f5green-300">
+              IT
+            </div>
+            <div className="mx-1 text-lg font-semibold text-f5black-400">
+              up
+            </div>
           </Link>
+        </div>
+        <div className="flex">
+          {navLinks.map((link: LinkType) => {
+            return (
+              <div key={link.name} className="m-auto">
+                <Link
+                  href={link.href}
+                  className={`mr-4 hover:text-f5green-300 ${
+                    !isActive(link.href)
+                      ? "text-f5black-400"
+                      : "text-f5green-400 font-bold"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+        {isLoggedIn ? (
+          <div className="flex items-center">
+            <div className="mr-2">{nickname}님</div>
+            <div className="p-3 my-auto mr-10 bg-f5gray-300 rounded-2xl">
+              <button
+                className="text-f5black-400 hover:text-f5green-300"
+                onClick={logoutRequest}
+              >
+                로그아웃
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="p-3 my-auto mr-10 text-sm bg-f5gray-300 rounded-2xl">
+            <Link
+              href="/main/social"
+              className="transition-all duration-200 ease-in-out text-f5black-400 hover:text-f5green-300"
+            >
+              로그인 | 회원가입
+            </Link>
+          </div>
+        )}
+      </div>
+      {isMobile && (
+        <div className="flex w-[100%] fixed bottom-0">
+          {navLinks.map((link: LinkType) => {
+            return (
+              <div key={link.name} className=" mx-auto">
+                <Link
+                  href={link.href}
+                  className={` hover:text-f5green-300 ${
+                    !isActive(link.href)
+                      ? "text-f5black-400"
+                      : "text-f5green-400 font-bold"
+                  }`}
+                >
+                   <div className="text-center text-xl"> {link.icon}</div>
+                   <div className="text-center"> {link.name}</div>
+                </Link>
+              </div>
+            );
+          })}
         </div>
       )}
     </header>

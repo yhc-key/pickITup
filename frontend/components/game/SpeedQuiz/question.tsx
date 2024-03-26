@@ -86,7 +86,6 @@ export default function Question({
   // input태그 렌더링
   const renderInput = useCallback(() => {
     const input: JSX.Element[] = [];
-    inputHTML.current = [];
     for (let i = 0; i < question.answer.length; i++) {
       input.push(
         <input

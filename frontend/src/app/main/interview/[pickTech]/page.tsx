@@ -40,7 +40,11 @@ export default function InterView(props: any) {
   const addValueToAnswer = useCallback(() => {
     if (index >= 0) {
       let curAnswer: string = "";
-      document.querySelectorAll<HTMLTextAreaElement>(".question-textarea");
+      document
+        .querySelectorAll<HTMLTextAreaElement>(".question-textarea")
+        .forEach((textArea) => {
+          curAnswer += textArea.value.trim() + " ";
+        });
 
       // answer 배열에 추가
       setAnswer([
@@ -48,7 +52,7 @@ export default function InterView(props: any) {
         // 질문, 사용자 입력값, 정답유무, 문제번호
         {
           question: questionList[index].question,
-          user: curAnswer,
+          user: curAnswer.trim(), // 앞뒤 공백을 제거
           index: index + 1,
         },
       ]);
@@ -61,7 +65,12 @@ export default function InterView(props: any) {
     addValueToAnswer();
     // 문제번호 1 증가
     setIndex((prev: number) => prev + 1);
-    // 제한시간 10초로 갱신
+    // textarea 초기화
+    document
+      .querySelectorAll<HTMLTextAreaElement>(".question-textarea")
+      .forEach((textArea) => {
+        textArea.value = "";
+      });
   }, [addValueToAnswer]);
 
   return (
@@ -79,7 +88,7 @@ export default function InterView(props: any) {
               height={120}
               priority={true}
             />
-            <div className="my-2 mr-1 text-f5green-300">면접 대비 </div>
+            <div className="my-2 mr-1 text-f5green-300">면접 대비</div>
             <div className="my-2 ml-2 text-f5black-400">QUIZ</div>
           </div>
         </div>
