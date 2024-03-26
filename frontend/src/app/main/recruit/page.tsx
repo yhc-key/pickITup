@@ -52,6 +52,7 @@ const Recruits = () => {
     },
   });
   console.log(data);
+  console.log(data?.pages[0].response.content)
   return status === "pending" ? (
     <p>Loading...</p>
   ) : status === "error" ? (
@@ -64,7 +65,7 @@ const Recruits = () => {
             <button
               type="button"
               onClick={() => recruitClickHandler(recruit.url)}
-              key={i}
+              key={recruitI}
               className="w-[30%] max-w-72 h-[400px] m-4 rounded-xl overflow-hidden flex flex-col shadow "
             >
               <Image
