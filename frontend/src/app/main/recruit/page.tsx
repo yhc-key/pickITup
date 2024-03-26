@@ -60,9 +60,10 @@ const Recruits = () => {
   ) : (
     <>
       <div className="flex flex-wrap justify-center ">
-        {data.pages.map((page, i: number) =>
+        {data?.pages.map((page, i: number) =>
           page.response.content.map((recruit: Recruit, recruitI: number) => {
-            <button
+            
+            return <button
               type="button"
               onClick={() => recruitClickHandler(recruit.url)}
               key={recruitI}
