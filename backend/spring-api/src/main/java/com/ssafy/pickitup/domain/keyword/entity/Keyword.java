@@ -1,4 +1,4 @@
-package com.ssafy.pickitup.domain.user.keyword;
+package com.ssafy.pickitup.domain.keyword.entity;
 
 
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;

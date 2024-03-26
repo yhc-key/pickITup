@@ -1,6 +1,9 @@
-package com.ssafy.pickitup.domain.user.keyword;
+package com.ssafy.pickitup.domain.keyword.service;
 
 
+import com.ssafy.pickitup.domain.keyword.dto.KeywordResponseDto;
+import com.ssafy.pickitup.domain.keyword.entity.Keyword;
+import com.ssafy.pickitup.domain.keyword.repository.KeywordQueryJpaRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

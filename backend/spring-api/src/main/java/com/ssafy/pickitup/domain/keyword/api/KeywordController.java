@@ -1,11 +1,11 @@
-package com.ssafy.pickitup.domain.user.api;
+package com.ssafy.pickitup.domain.keyword.api;
 
 
 import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
 
 import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
-import com.ssafy.pickitup.domain.user.keyword.KeywordQueryService;
-import com.ssafy.pickitup.domain.user.keyword.KeywordResponseDto;
+import com.ssafy.pickitup.domain.keyword.dto.KeywordResponseDto;
+import com.ssafy.pickitup.domain.keyword.service.KeywordQueryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
