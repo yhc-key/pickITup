@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,6 +19,8 @@ const techTypes: string[] = [
 ];
 
 export default function TechSelectOX() {
+
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pickType, setPickType] = useState("언어");
   const [pickTech, setPickTech] = useState("");

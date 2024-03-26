@@ -18,7 +18,7 @@ const navLinks: LinkType[] = [
   // { name: "기술블로그", href: "/main/techBlog" },
   { name: "미니 게임", href: "/main/game", icon: "🎮" },
   { name: "면접 대비", href: "/main/interview", icon: "📝" },
-  { name: "마이 페이지", href: "/main/myPage/myBadge", icon: "" },
+  { name: "마이 페이지", href: "/main/myPage/myBadge", icon: "💻" },
 ];
 
 export default function Header() {
@@ -144,10 +144,10 @@ export default function Header() {
         )}
       </div>
       {isMobile && (
-        <div className="flex w-[100%] fixed bottom-0">
+        <div className="fixed flex w-[100%] bottom-0 left-0 bg-f5gray-200 pt-2 z-10">
           {navLinks.map((link: LinkType) => {
             return (
-              <div key={link.name} className=" mx-auto">
+              <div key={link.name} className="mx-auto ">
                 <Link
                   href={link.href}
                   className={` hover:text-f5green-300 ${
@@ -156,7 +156,7 @@ export default function Header() {
                       : "text-f5green-400 font-bold"
                   }`}
                 >
-                   <div className="text-center text-xl"> {link.icon}</div>
+                   <div className="text-xl text-center"> {link.icon}</div>
                    <div className="text-center"> {link.name}</div>
                 </Link>
               </div>
