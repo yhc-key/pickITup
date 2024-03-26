@@ -1,6 +1,7 @@
 package com.ssafy.pickitup.domain.user.entity;
 
 import com.ssafy.pickitup.domain.auth.entity.Auth;
+import com.ssafy.pickitup.domain.badge.entity.UserBadge;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,8 +17,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
+@Setter
 @Entity
 @Getter
 @Builder
@@ -26,8 +29,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class User extends BaseTimeEntity {
 
-    //    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @GeneratedValue
     private Integer id;
@@ -41,10 +42,6 @@ public class User extends BaseTimeEntity {
     private Integer recruitViewCount = 0;
     @Builder.Default
     private Integer recruitScrapCount = 0;
-    @Builder.Default
-    private Integer blogViewCount = 0;
-    @Builder.Default
-    private Integer blogScrapCount = 0;
     @Builder.Default
     private Integer attendCount = 0;
     @Builder.Default
@@ -60,12 +57,15 @@ public class User extends BaseTimeEntity {
     @MapsId
     @OneToOne
     @JoinColumn(name = "id", referencedColumnName = "id")
-//    @JoinColumn
     private Auth auth;
 
+    @Setter
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserKeyword> userKeywords = new ArrayList<>();
 
+    @Setter
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserBadge> userBadges = new ArrayList<>();
 
     public void changeNickname(String nickname) {
         this.nickname = nickname;
@@ -74,10 +74,4 @@ public class User extends BaseTimeEntity {
     public int increaseWinCount() {
         return ++gameWinCount;
     }
-
-    public void setUserKeywords(List<UserKeyword> userKeywords) {
-        this.userKeywords = userKeywords;
-    }
-
-
 }
