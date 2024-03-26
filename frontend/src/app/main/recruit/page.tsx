@@ -127,7 +127,7 @@ const Recruits = () => {
 };
 
 export default function Recruit() {
-  const [data, setData] = useState<Content[] | null>(null);
+  // const [data, setData] = useState<Content[] | null>(null);
 
   // useEffect(() => {
   //   const fetchRecruits = async () => {
