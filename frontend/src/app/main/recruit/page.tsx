@@ -57,8 +57,8 @@ export default function Recruit({}) {
   });
   
   useEffect(() => {
-    let observer;
-    const onIntersect = ([entry]) => {
+    let observer: IntersectionObserver;
+    const onIntersect = ([entry] : IntersectionObserverEntry[]) => {
       console.log("check 포인트");
       entry.isIntersecting && fetchNextPage();
     }
