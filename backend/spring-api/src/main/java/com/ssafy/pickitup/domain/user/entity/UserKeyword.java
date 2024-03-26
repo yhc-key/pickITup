@@ -1,6 +1,6 @@
 package com.ssafy.pickitup.domain.user.entity;
 
-import com.ssafy.pickitup.domain.user.keyword.Keyword;
+import com.ssafy.pickitup.domain.keyword.entity.Keyword;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
