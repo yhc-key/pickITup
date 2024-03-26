@@ -8,7 +8,6 @@ import {
 } from "@tanstack/react-query";
 import Image from "next/image";
 import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
-import { useObserver } from "@/hook/useObserver.tsx"
 
 interface Recruit {
   career: [number, number];
