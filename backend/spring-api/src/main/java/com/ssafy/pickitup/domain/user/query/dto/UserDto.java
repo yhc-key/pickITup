@@ -16,8 +16,6 @@ public class UserDto {
 
     private Integer recruitViewCount;
     private Integer recruitScrapCount;
-    private Integer blogViewCount;
-    private Integer blogScrapCount;
     private Integer selfAnswerCount;
     private Integer gameWinCount;
     private Integer attendCount;
@@ -28,8 +26,6 @@ public class UserDto {
         return new UserDto(
             user.getRecruitViewCount(),
             user.getRecruitScrapCount(),
-            user.getBlogViewCount(),
-            user.getBlogScrapCount(),
             user.getSelfAnswerCount(),
             user.getGameWinCount(),
             user.getAttendCount(),

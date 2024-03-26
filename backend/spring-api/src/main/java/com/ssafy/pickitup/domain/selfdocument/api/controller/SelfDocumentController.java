@@ -71,8 +71,6 @@ public class SelfDocumentController {
     public ApiResult<?> deleteMain(@PathVariable Integer mainId) {
         boolean result = mainCommandService.deleteMainQuestion(mainId);
         return success(result);
-//        return mainCommandService.deleteMainQuestion(mainId)
-//            ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
 
@@ -83,7 +81,6 @@ public class SelfDocumentController {
         MainQuestionCommandResponseDto mainQuestionCommandResponseDto = mainCommandService.modifyMainQuestion(
             mainId, dto);
         return success(mainQuestionCommandResponseDto);
-//        return ResponseEntity.ok(mainCommandService.modifyMainQuestion(mainId, dto));
     }
 
 
@@ -93,7 +90,6 @@ public class SelfDocumentController {
         List<SubQuestionQueryResponseDto> subQuestionQueryResponseDtoList = subQueryService.searchSubQuestions(
             mainId);
         return success(subQuestionQueryResponseDtoList);
-//        return ResponseEntity.ok(subQueryService.searchSubQuestions(mainId));
     }
 
     @Operation(summary = "서브 질문 등록")
@@ -103,7 +99,6 @@ public class SelfDocumentController {
         SubQuestionCommandResponseDto subQuestionCommandResponseDto = subCommandService.registerSubQuestion(
             mainId, dto);
         return success(subQuestionCommandResponseDto);
-//        return ResponseEntity.ok(subCommandService.registerSubQuestion(mainId, dto));
     }
 
     @Operation(summary = "서브 질문 삭제")
@@ -111,8 +106,6 @@ public class SelfDocumentController {
     public ApiResult<?> deleteSub(@PathVariable Integer subId) {
         boolean result = subCommandService.deleteSubQuestion(subId);
         return success(result);
-//        return subCommandService.deleteSubQuestion(subId)
-//            ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @Operation(summary = "서브 질문 수정")
@@ -122,6 +115,5 @@ public class SelfDocumentController {
         SubQuestionCommandResponseDto subQuestionCommandResponseDto = subCommandService.modifySubQuestion(
             subId, dto);
         return success(subQuestionCommandResponseDto);
-//        return ResponseEntity.ok(subCommandService.modifySubQuestion(subId, dto));
     }
 }
