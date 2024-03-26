@@ -29,7 +29,7 @@ export default function Question({
   index,
   onNextClick,
 }: questionProps) {
-  const inputHTML = useRef<HTMLInputElement[]>(Array(question.answer.length).fill(null));
+  const inputHTML = useRef<HTMLInputElement[]>([]);
 
   const onInputChange = useCallback((e: any, idx: number) => {
     // console.log(inputHTML.current.length);
@@ -96,7 +96,11 @@ export default function Question({
           key={i}
           onChange={(e) => onInputChange(e, i)}
           onKeyUp={(e) => inputKeyDown(e, i)}
-          ref={(el) => (inputHTML.current[i] = el as HTMLInputElement)}
+          ref={(el) => {
+            if (el) {
+              inputHTML.current[i] = el;
+            }
+          }}
         />
       );
     }
