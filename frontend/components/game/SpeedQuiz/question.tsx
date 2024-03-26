@@ -29,7 +29,7 @@ export default function Question({
   index,
   onNextClick,
 }: questionProps) {
-  const inputHTML = useRef<HTMLInputElement[]>([]);
+  const inputHTML = useRef<HTMLInputElement[]>(Array(question.answer.length).fill(null));
 
   const onInputChange = useCallback((e: any, idx: number) => {
     // console.log(inputHTML.current.length);
