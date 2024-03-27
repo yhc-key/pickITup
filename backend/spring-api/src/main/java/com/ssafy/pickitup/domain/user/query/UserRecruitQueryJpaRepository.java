@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRecruitQueryJpaRepository extends JpaRepository<UserRecruit, Integer> {
 
-    List<Integer> findAllByUserId(int authId);
+    List<UserRecruit> findAllByUserId(Integer userId);
 
-    int countByUserId(int userId);
+    int countByUserId(Integer userId);
 }
