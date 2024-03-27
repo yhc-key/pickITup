@@ -5,11 +5,13 @@ import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
 import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
+import com.ssafy.pickitup.domain.user.command.UserClickService;
 import com.ssafy.pickitup.domain.user.command.UserCommandService;
 import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.NicknameDto;
+import com.ssafy.pickitup.domain.user.query.dto.UserClickResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,6 +45,7 @@ public class UserController {
     private final UserQueryService userQueryService;
     private final RecruitQueryService recruitQueryService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserClickService userClickService;
 
     @Operation(summary = "회원 정보 조회 API")
     @GetMapping("/me")
@@ -95,6 +98,16 @@ public class UserController {
         return success("스크랩 삭제");
     }
 
+    @Operation(summary = "회원 채용 공고 클릭 API")
+    @PostMapping("/click/recruit")
+    public ApiResult<?> clickRecruit(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+        @RequestParam int recruitId) {
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        userCommandService.saveUserClick(authId, recruitId);
+        return success("채용 공고 클릭");
+    }
+
     @Operation(summary = "회원 키워드 추가 API")
     @PostMapping("/keywords")
     public ApiResult<?> addUserKeyword(
@@ -126,5 +139,11 @@ public class UserController {
         return success(userKeywords);
     }
 
-
+    @Operation(summary = "회원 클릳 데이터 조회 API - 서버 테스트용")
+    @GetMapping("{authId}/click/recruit")
+    public ApiResult<?> getUserClick(
+        @PathVariable("authId") Integer authId) {
+        UserClickResponseDto allUserClick = userClickService.findAllUserClick(authId);
+        return success(allUserClick);
+    }
 }

@@ -17,6 +17,7 @@ import com.ssafy.pickitup.security.jwt.JwtTokenDto;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import com.ssafy.pickitup.security.service.RedisService;
 import io.jsonwebtoken.MalformedJwtException;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,6 +66,7 @@ public class AuthCommandService {
         if (auth == null) {
             throw new AuthNotFoundException("존재하지 않는 아이디입니다.");
         }
+        increaseAttendCount(auth);
         AuthDto authDto = AuthDto.getAuth(auth);
         log.info("auth= {}", authDto.toString());
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), authDto.getPassword())) {
@@ -75,6 +77,8 @@ public class AuthCommandService {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
             = new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(),
             loginRequestDto.getPassword());
+        log.info("usernamePasswordAuthenticationToken = {}",
+            usernamePasswordAuthenticationToken.toString());
         System.out.println(
             "usernamePasswordAuthenticationToken.toString() = "
                 + usernamePasswordAuthenticationToken.toString());
@@ -91,6 +95,7 @@ public class AuthCommandService {
         Auth updatedAuth = Auth.toDto(authDto);
 //        updatedAuth.setRefreshToken(tokenSet.getRefreshToken());
         log.info("updatedAuth = {}", updatedAuth.toString());
+        updatedAuth.setLastLoginDate();
         authCommandJpaRepository.save(updatedAuth);
 
         // RefreshToken Redis에 저장
@@ -223,5 +228,20 @@ public class AuthCommandService {
         return reissueTokenDto;
     }
 
+    @Transactional
+    public void increaseAttendCount(Auth auth) {
+        System.out.println("auth last login = " + auth.getLastLoginDate());
+        LocalDate lastLoginDate = auth.getLastLoginDate();
+        System.out.println("auth = " + auth);
+        //최초 로그인이면 출석 증가
+        if (lastLoginDate == null) {
+            auth.getUser().increaseAttendCount();
 
+        } else {
+            //마지막 로그인 날짜가 현재 날짜 이전일 경우에만 출석 증가
+            if (lastLoginDate.compareTo(LocalDate.now()) < 0) {
+                auth.getUser().increaseAttendCount();
+            }
+        }
+    }
 }
