@@ -2,6 +2,7 @@
 import { useEffect, useState, ReactElement } from "react";
 import Image from 'next/image';
 import { badgeDataMap } from "@/data/badgeData";
+import TechSelectAfterLogin from "@/components/techSelectAfterLogin";
 function MyBadge() {
   let acquired:string[] = ["attend1","jobRead1","jobRead50","jobScrap1","attend50","attend100","blogRead1","blogRead50"]; //얻은 배지 정보
   let unacquired:string [] = ["blogRead100",
@@ -44,6 +45,7 @@ function MyBadge() {
 
   return (
     <div>
+        <TechSelectAfterLogin/>
       <div className="flex items-center justify-start mt-6">
         <div className="h-[5vh] w-[15vw] bg-[#CBFFC2] flex items-center justify-center rounded-lg font-bold">내가 획득한 뱃지</div>
       </div>
