@@ -20,7 +20,7 @@ public class UserInterviewQueryServiceImpl implements UserInterviewQueryService 
   @Override
   @Transactional(readOnly = true)
   public List<InterviewWithAnswerDto> findInterviewsAndAnswersByUserId(Integer userId) {
-    Stream<UserInterview> userInterviews = userInterviewRepository.findByUser_IdOrderByLastModifiedDateDesc(userId);
+    Stream<UserInterview> userInterviews = userInterviewRepository.findByUserIdOrderByLastModifiedDateDesc(userId);
     return userInterviews.map(userInterview -> InterviewWithAnswerDto.builder()
         .interviewId(userInterview.getInterview().getId())
         .mainCategory(userInterview.getInterview().getMainCategory())

@@ -6,11 +6,13 @@ import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface UserInterviewRepository extends JpaRepository<UserInterview, Integer> {
 
   @EntityGraph(attributePaths = {"interview"})
-  Stream<UserInterview> findByUser_IdOrderByLastModifiedDateDesc(Integer userId);
+  @Query("SELECT ui FROM UserInterview ui WHERE ui.user.id = :userId")
+  Stream<UserInterview> findByUserIdOrderByLastModifiedDateDesc(Integer userId);
 
   Optional<UserInterview> findByUserIdAndInterviewId(Integer userId, Integer interviewId);
 }
