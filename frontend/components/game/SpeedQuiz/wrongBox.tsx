@@ -22,12 +22,12 @@ export default function WrongBox({ user, answer }: wrongBoxProps) {
   
   return (
     <div
-      className={`relative p-5 text-center align-bottom cursor-pointer drop-shadow-md w-52 h-28 rounded-3xl bg-f5red-100 ${hovered ? "bg-f5gray-400 bg-opacity-50 transition-all ease-in-out" : ""}`}
+      className={`relative p-5 text-center align-bottom cursor-pointer drop-shadow-md w-52 h-28 rounded-3xl bg-f5red-100 mb:w-36 mb:h-28 ${hovered ? "bg-f5gray-400 bg-opacity-50 transition-all ease-in-out" : ""}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <Image src="/images/wrong.png" alt="wrong" width={23} height={23}/>
-      <div className="text-lg font-semibold text-center">
+      <div className="text-lg font-semibold text-center mb:text-base">
         {hovered ? answer : user}
       </div>
     </div>
