@@ -116,65 +116,36 @@ function AutocompleteSearchBar(props:AutocompleteSearchBarProps) {
   };
   
   return (
-  //   <div className="w-[20vw] flex flex-col  items-center justify-center " /*onBlur={()=>setSuggestions([])}*/>
-  //     <input type='text' value={inputValue} onChange={handleInputChange} placeholder="아래에 없는 기술은 검색해보세요!"
-  //     onFocus={() => {
-  //       if (inputValue.trim() !== "") {
-  //         const suggestions = trie.getAllWordsWithPrefix(inputValue.toLowerCase());
-  //         setSuggestions(suggestions);
-  //       }
-  //     }}
-  //     className="w-[20vw] h-[4vh] rounded-md  border border-f5gray-400
-  //     bg-gray-200 appearance-none px-2 
-  //     text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300"/>
-  //     {suggestions.length > 0 && (
-  //       <div className="relative w-[20vw] h-[4vh]">
-  //       <ul className="fixed w-[20vw] h-[4vh] ">
-  //         {suggestions.slice(0,5).map((suggestion) => (
-  //           <li
-  //             key={suggestion}
-  //             onClick={() => handleSuggestionClick(suggestion)}
-  //             className="bg-white border border-f5gray-400 rounded-md
-  //             text-gray-700 leading-tight hover:outline-none 
-  //             hover:bg-white hover:border-f5green-300 hover:bg-green-100 px-2"
-  //           >
-  //             {suggestion}
-  //           </li>
-  //         ))}
-  //       </ul>
-  //       </div>
-  //     )}
-  //   </div>
-  // );
-  <div className="relative w-[20vw]">
-  <input
-    type="text"
-    value={inputValue}
-    onChange={handleInputChange}
-    onFocus={() => {
-      if (inputValue.trim() !== "") {
-        const suggestions = trie.getAllWordsWithPrefix(inputValue.toLowerCase());
-        setSuggestions(suggestions);
-      }
-    }}
-    placeholder="아래에 없는 기술은 검색해보세요!"
-    className="w-full h-[4vh] rounded-md border border-f5gray-400 bg-gray-200 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300"
-  />
-  {suggestions.length > 0 && (
-    <ul className="absolute z-10 top-[calc(100% + 5px)] w-[20vw] max-h-[150px] overflow-y-auto bg-white border border-f5gray-400 rounded-b-md">
-      {suggestions.slice(0, 5).map((suggestion) => (
-        <li
-          key={suggestion}
-          onClick={() => handleSuggestionClick(suggestion)}
-          className="px-2 py-1 cursor-pointer 
-          hover:outline-none 
-          hover:bg-white hover:border-f5green-300 hover:bg-green-100"
-        >
-          {suggestion}
-        </li>
-      ))}
-    </ul>
-  )}
-</div>);
+    <div className="relative w-[20vw]">
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        onFocus={() => {
+          if (inputValue.trim() !== "") {
+            const suggestions = trie.getAllWordsWithPrefix(inputValue.toLowerCase());
+            setSuggestions(suggestions);
+          }
+        }}
+        placeholder="아래에 없는 기술은 검색해보세요!"
+        className="w-full h-[4vh] rounded-md border border-f5gray-400 bg-gray-200 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300"
+      />
+      {suggestions.length > 0 && (
+        <ul className="absolute z-10 top-[calc(100% + 5px)] w-[20vw] max-h-[130px] overflow-y-auto bg-white border border-f5gray-400 rounded-b-md">
+          {suggestions.map((suggestion) => (
+            <li
+              key={suggestion}
+              onClick={() => handleSuggestionClick(suggestion)}
+              className="px-2 py-1 cursor-pointer
+              hover:outline-none 
+            hover:border-f5green-300 hover:bg-green-100"
+            >
+              {suggestion}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
 export default AutocompleteSearchBar;

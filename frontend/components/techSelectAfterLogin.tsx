@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { TiDeleteOutline } from "react-icons/ti";
@@ -19,11 +19,26 @@ const techTypes: string[] = [
   "정보보안",
 ];
 
+
 export default function TechSelectAfterLogin() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pickType, setPickType] = useState("언어");
   const [pickTech, setPickTech] = useState<string[]>([]);
-
+  
+  useEffect(() => {
+    const authid = sessionStorage.getItem('authid');
+    if(authid !== null) {
+      fetch(`https://spring.pickitup.online/users/${authid}/keywords`,{
+        method : "GET"
+      })
+      .then(res=>res.json())
+      .then(res=>{
+        if(res.response.keywords.length==0){
+          setIsModalOpen(true); // 첫 로그인 후 모달 열기
+        }
+      })
+    }
+  }, []);
   // 기술스택 선택 함수
   const techAddHandler = (tech: string): void => {
     if(!pickTech.includes(tech)){
@@ -45,13 +60,13 @@ const deletePickTech = (item : string)=>{
 
   const setMyTech = () => {
     const authid = sessionStorage.getItem('authid');
-    
+    if(authid===null)return;
     fetch(`https://spring.pickitup.online/users/${authid}/keywords`,{
       method : "GET"
     })
     .then(res=>res.json())
     .then(res=>{
-        const techIds:number[] = [];
+      const techIds:number[] = [];
         for (const tech of pickTech) {
           const techId = techInfos.get(tech);
           if (techId !== undefined&&!res.response.keywords.includes(tech)) {
@@ -77,24 +92,23 @@ const deletePickTech = (item : string)=>{
 
   return (
     <div>
-      <button onClick={(): void => setIsModalOpen(true)}>
-        this is user Tech
-      </button>
+      {/* <button onClick={(): void => setIsModalOpen(true)}>
+      </button> */}
       <Modal open={isModalOpen}>
-        <div className="flex flex-col flex-wrap">
+        <div className="flex flex-col items-center">
           <div className="mb-5 text-xl font-medium text-center">
             관심 기술 스택(영어)을 선택해주세요
           </div>
-           <div className="z-50 py-2 h-[10vh] flex items-center justify-center"> 
+          <div className="z-50 py-2 h-[8vh] flex items-center justify-center"> 
             <AutocompleteSearchBar words={techData2} onSelect={techAddHandler} ></AutocompleteSearchBar>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center mb-5 text-sm text-center z-40">
+          <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-[14vh]">
             {pickTech.map((item:string,index:number)=>
               <button key={index} onClick={()=>deletePickTech(item)} className="relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1">{item}
               <div className="absolute -top-2 -right-2"><TiDeleteOutline color="red" /> </div></button>
             )}
-            </div>
+          </div>
           <div className="flex flex-wrap justify-center gap-2 mt-3">
             {techTypes.map((techType: string, index: number) => {
               const isActive: boolean = pickType == techType;
@@ -135,7 +149,7 @@ const deletePickTech = (item : string)=>{
               })}
             </div>
           </div>
-          <div className="flex justify-center mt-5">
+          <div className="fixed bottom-9 flex justify-center items-center">
             <Link href={`/main/myPage/updateMyInfo`} onClick={setMyTech}>
               <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
                 등록하기
