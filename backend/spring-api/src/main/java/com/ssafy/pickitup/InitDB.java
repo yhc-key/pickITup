@@ -6,8 +6,8 @@ import com.ssafy.pickitup.domain.selfdocument.command.MainQuestionCommandService
 import com.ssafy.pickitup.domain.selfdocument.command.SubQuestionCommandService;
 import com.ssafy.pickitup.domain.selfdocument.command.dto.MainQuestionCommandRequestDto;
 import com.ssafy.pickitup.domain.selfdocument.command.dto.SubQuestionCommandRequestDto;
-import com.ssafy.pickitup.domain.user.command.KeywordCommandJpaRepository;
-import com.ssafy.pickitup.domain.user.command.UserCommandService;
+import com.ssafy.pickitup.domain.user.command.repository.KeywordCommandJpaRepository;
+import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,17 +24,17 @@ public class InitDB {
     private final SubQuestionCommandService subQuestionCommandService;
     private final KeywordCommandJpaRepository keywordCommandJpaRepository;
 
-//    @PostConstruct
+    @PostConstruct
     @Transactional
     public void init() {
 
         //auth 정보 저장
         UserSignupDto userSignupDto1 = new UserSignupDto("hscho", "1234", "조현수", "존수존수",
-            "hyunsoo@naver.com");
+            "hyunsoo@naver.com", "서울시 강남구 역삼동");
         UserSignupDto userSignupDto2 = new UserSignupDto("shno", "12345", "노세희", "올리비아핫세",
-            "sehee@naver.com");
+            "sehee@naver.com", "서울시 강남구 역삼동");
         UserSignupDto userSignupDto3 = new UserSignupDto("yhcho", "12346", "조용환", "화니",
-            "younghwan@naver.com");
+            "younghwan@naver.com", "서울시 강남구 역삼동");
         authCommandService.signup(userSignupDto1);
         authCommandService.signup(userSignupDto2);
         authCommandService.signup(userSignupDto3);

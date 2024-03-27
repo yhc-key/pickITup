@@ -4,7 +4,7 @@ import com.ssafy.pickitup.domain.badge.command.dto.BadgeCommandResponseDto;
 
 public interface BadgeCommandService {
 
-    BadgeCommandResponseDto check(Integer userId);
+    BadgeCommandResponseDto renewBadge(Integer userId);
 
     void initBadge(Integer userId);
 }

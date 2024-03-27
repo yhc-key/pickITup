@@ -24,6 +24,15 @@ public interface RecruitQueryElasticsearchRepository extends
         + "{\"wildcard\": {\"title\": \"*?0*\"}}, "
         + "{\"wildcard\": {\"qualification_requirements\": \"*?0*\"}}, "
         + "{\"wildcard\": {\"preferred_requirements\": \"*?0*\"}}"
+        + "], \"minimum_should_match\": 1}}"
+        + "]}}")
+    Page<RecruitDocumentElasticsearch> searchWithQueryOnly(String query, Pageable pageable);
+
+    @Query("{\"bool\": {\"must\": ["
+        + "{\"bool\": {\"should\": ["
+        + "{\"wildcard\": {\"title\": \"*?0*\"}}, "
+        + "{\"wildcard\": {\"qualification_requirements\": \"*?0*\"}}, "
+        + "{\"wildcard\": {\"preferred_requirements\": \"*?0*\"}}"
         + "], \"minimum_should_match\": 1}}, "
         + "{\"multi_match\": {\"query\": \"?1\", \"fields\": "
         + "[\"qualification_requirements\", \"preferred_requirements\"]}}"

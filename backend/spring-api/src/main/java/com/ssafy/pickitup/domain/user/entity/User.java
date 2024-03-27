@@ -4,6 +4,8 @@ import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.badge.entity.UserBadge;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -24,7 +26,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Builder
-@ToString(of = {"id", "nickname"})
+@ToString(of = {"id", "nickname", "level"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User extends BaseTimeEntity {
@@ -34,7 +36,6 @@ public class User extends BaseTimeEntity {
     private Integer id;
 
     private String nickname;
-    private String profile;
     private String github;
     private String techBlog;
 
@@ -54,6 +55,10 @@ public class User extends BaseTimeEntity {
     private Integer exp = 0;
     private String address;
 
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private Rank userRank = Rank.NORMAL;
+
     @MapsId
     @OneToOne
     @JoinColumn(name = "id", referencedColumnName = "id")
@@ -67,11 +72,55 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserBadge> userBadges = new ArrayList<>();
 
+    public int expCalculator() {
+
+        return (3 * this.recruitViewCount) + (5 * this.recruitScrapCount) + (2 * this.attendCount)
+            + (6
+            * this.selfAnswerCount) + (4 * this.gameWinCount);
+    }
+
     public void changeNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void changeAddress(String address) {
+        this.address = address;
+    }
+
+    public void changeGithub(String github) {
+        this.github = github;
+    }
+
+    public void changeTechBlog(String techBlog) {
+        this.techBlog = techBlog;
     }
 
     public int increaseWinCount() {
         return ++gameWinCount;
     }
+
+    public void setUserKeywords(List<UserKeyword> userKeywords) {
+        this.userKeywords = userKeywords;
+    }
+
+    public void serUserLevel(int level) {
+        this.level = level;
+    }
+
+    public int increaseAttendCount() {
+        return ++this.attendCount;
+    }
+
+    public int increaseRecruitViewCount() {
+        return ++this.recruitViewCount;
+    }
+
+    public int increaseRecruitScrapCount() {
+        return ++this.recruitScrapCount;
+    }
+
+    public int increaseSelfAnswerCount() {
+        return ++this.selfAnswerCount;
+    }
+
 }

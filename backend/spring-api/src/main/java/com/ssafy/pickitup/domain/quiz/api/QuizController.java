@@ -1,9 +1,9 @@
 package com.ssafy.pickitup.domain.quiz.api;
 
 
-import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
+import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.quiz.dto.OxQuizResponseDto;
 import com.ssafy.pickitup.domain.quiz.dto.SpeedQuizResponseDto;
 import com.ssafy.pickitup.domain.quiz.query.service.QuizService;

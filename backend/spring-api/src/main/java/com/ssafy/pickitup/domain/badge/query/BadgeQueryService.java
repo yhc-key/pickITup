@@ -9,4 +9,6 @@ public interface BadgeQueryService {
     List<UserBadge> findNotAchievedBadges(List<UserBadge> userBadges);
 
     boolean isBadgeAchieved(User user, UserBadge userBadge);
+
+    int myBadgeCount(Integer userId);
 }

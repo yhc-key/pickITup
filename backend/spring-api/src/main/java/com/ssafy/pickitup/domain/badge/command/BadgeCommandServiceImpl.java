@@ -6,7 +6,7 @@ import com.ssafy.pickitup.domain.badge.entity.UserBadge;
 import com.ssafy.pickitup.domain.badge.query.BadgeQueryJpaRepository;
 import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
 import com.ssafy.pickitup.domain.badge.query.UserBadgeQueryJpaRepository;
-import com.ssafy.pickitup.domain.user.command.UserCommandJpaRepository;
+import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import java.util.ArrayList;
@@ -29,19 +29,20 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
 
     @Transactional
     @Override
-    public BadgeCommandResponseDto check(Integer userId) {
+    public BadgeCommandResponseDto renewBadge(Integer userId) {
+        log.info("뱃지 갱신하려는 userId : {}", userId);
         User user = userCommandJpaRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다."));
-        user.setAttendCount(70);
-        user.setGameWinCount(110);
         List<String> result = new ArrayList<>();
         List<UserBadge> userBadges = userBadgeQueryJpaRepository.findByUser(user);
         List<UserBadge> notAchievedBadges = badgeQueryService.findNotAchievedBadges(userBadges);
 
         for (UserBadge userBadge : notAchievedBadges) {
+            log.info("갱신 안된 뱃지 개수 : {}", notAchievedBadges.size());
             if (badgeQueryService.isBadgeAchieved(user, userBadge)) {
                 userBadge.setAchieved(true);
                 result.add(userBadge.getBadge().getName());
+                log.info("{} 갱신 성공 ! ", userBadge.getBadge().getName());
             }
         }
         return new BadgeCommandResponseDto(result);
