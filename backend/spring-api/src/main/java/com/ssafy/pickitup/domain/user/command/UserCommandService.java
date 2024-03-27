@@ -2,12 +2,12 @@ package com.ssafy.pickitup.domain.user.command;
 
 import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
+import com.ssafy.pickitup.domain.keyword.entity.Keyword;
+import com.ssafy.pickitup.domain.keyword.repository.KeywordQueryJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
-import com.ssafy.pickitup.domain.user.entity.UserRecruit;
 import com.ssafy.pickitup.domain.user.entity.UserMongo;
-import com.ssafy.pickitup.domain.user.keyword.Keyword;
-import com.ssafy.pickitup.domain.user.keyword.KeywordQueryJpaRepository;
+import com.ssafy.pickitup.domain.user.entity.UserRecruit;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.global.entity.GeoLocation;

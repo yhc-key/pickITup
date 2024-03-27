@@ -1,4 +1,4 @@
-package com.ssafy.pickitup.domain.user.keyword;
+package com.ssafy.pickitup.domain.keyword.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

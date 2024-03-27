@@ -1,6 +1,6 @@
-package com.ssafy.pickitup.domain.user.entity;
+package com.ssafy.pickitup.domain.badge.entity;
 
-import com.ssafy.pickitup.domain.keyword.entity.Keyword;
+import com.ssafy.pickitup.domain.user.entity.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -13,35 +13,27 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@ToString(of = {"id", "user", "keyword"})
-public class UserKeyword {
+public class UserBadge {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "keyword_id")
-    private Keyword keyword;
+    @JoinColumn(name = "badge_id")
+    private Badge badge;
 
-    public UserKeyword(User user, Keyword keyword) {
-        this.user = user;
-        this.keyword = keyword;
-    }
-
-    public static UserKeyword makeUserKeyword(User user, Keyword keyword) {
-        return new UserKeyword(user, keyword);
-    }
+    @Setter
+    private boolean isAchieved;
 }

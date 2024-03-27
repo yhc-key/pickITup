@@ -1,5 +1,6 @@
-package com.ssafy.pickitup.domain.user.keyword;
+package com.ssafy.pickitup.domain.keyword.dto;
 
+import com.ssafy.pickitup.domain.keyword.entity.Keyword;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
