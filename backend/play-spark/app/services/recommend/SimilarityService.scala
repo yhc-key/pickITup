@@ -24,7 +24,7 @@ object SimilarityService {
     val userProfiles = spark.read
       .format("mongo")
       .option("database", MONGO_DATABASE)
-      .option("collection", "userProfiles")
+      .option("collection", "user")
       .load()
       .select("userId", "techStack")
 
@@ -80,9 +80,10 @@ object SimilarityService {
     val userProfiles = spark.read
       .format("mongo")
       .option("database", MONGO_DATABASE)
-      .option("collection", "userProfiles")
+      .option("collection", "user")
       .load()
-      .select("userId", "techStack")
+      .select("_id", "keywords")
+      .toDF("userId", "techStack")
 
     val cvModel = new CountVectorizer()
       .setInputCol("techStack")
@@ -96,89 +97,26 @@ object SimilarityService {
     val userSimilarities = userFeatures
       .filter($"userId" =!= userId)
       .select("userId", "features")
-      .map(row => (
-        row.getInt(0),
-        SparkUtil.cosineSimilarity(newUser.first().getAs[SparseVector]("features"), row.getAs[SparseVector]("features"))
-      )).toDF("userId", "similarity")
+      .map(row => {
+        val otherUserId = row.getInt(0)
+        val similarity = SparkUtil.cosineSimilarity(newUser.first().getAs[SparseVector]("features"), row.getAs[SparseVector]("features"))
+        if (userId < otherUserId)
+          (userId, otherUserId, similarity)
+        else
+          (otherUserId, userId, similarity)
+      }).toDF("userId1", "userId2", "similarity")
 
     userSimilarities.show()
 
     userSimilarities.write
       .format("mongo")
       .option("database", MONGO_DATABASE)
-      .option("collection", "userSimilarities")
+      .option("collection", "userSimilaritiy")
       .mode("append")
       .save()
 
     spark.stop()
 
     "calculating user similarity is working!"
-  }
-
-  def calculateRecruitSimilarity(): String = {
-
-    val spark = SparkSession.builder
-      .appName("AllRecruitSimilarities")
-      .master("local[*]")
-      .config("spark.mongodb.input.uri", MONGO_URI)
-      .config("spark.mongodb.output.uri", MONGO_URI)
-      .getOrCreate()
-
-    import spark.implicits._
-
-    val recruitDF = spark.read
-      .format("mongo")
-      .option("database", MONGO_DATABASE)
-      .option("collection", "recruit")
-      .load()
-      .select("_id", "company", "qualificationRequirements", "preferredRequirements")
-
-    val recruits = recruitDF.map(
-      row => (
-        row.getInt(0),
-        row.getString(1),
-        row.getSeq[String](2) ++ row.getSeq[String](2) ++ row.getSeq[String](3))
-    ).toDF("jobId", "company", "techStack")
-
-    recruits.select("techStack").show(30)
-
-    val cvModel = new CountVectorizer()
-      .setInputCol("techStack")
-      .setOutputCol("features")
-      .fit(recruits.select("techStack"))
-
-    val jobFeatures = cvModel.transform(recruits)
-
-//    jobFeatures.show()
-
-    val jobPairs = jobFeatures.as("job1")
-      .crossJoin(jobFeatures.as("job2"))
-      .filter($"job1.jobId" < $"job2.jobId")
-
-//    jobPairs.show()
-
-    val calculateSimilarityUDF = udf((v1: SparseVector, v2: SparseVector) => SparkUtil.cosineSimilarity(v1, v2))
-
-    val similarityDF = jobPairs
-      .withColumn("similarity", calculateSimilarityUDF($"job1.features", $"job2.features"))
-      .select(
-        $"job1.jobId".as("jobId1"),
-        $"job1.company".as("company1"),
-        $"job2.jobId".as("jobId2"),
-        $"job2.company".as("company2"),
-        $"similarity"
-      ).sort($"similarity".desc, $"jobId1")
-
-    similarityDF.show(30)
-
-    similarityDF.write
-      .format("mongo")
-      .option("database", MONGO_DATABASE)
-      .option("collection", "recruitSimilarity")
-      .mode("overwrite")
-      .save()
-
-    spark.stop()
-    "calculate recruit similarity is working!"
   }
 }

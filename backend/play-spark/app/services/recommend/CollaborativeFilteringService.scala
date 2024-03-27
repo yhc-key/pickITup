@@ -22,7 +22,7 @@ object CollaborativeFilteringService {
     val similarities = spark.read
       .format("mongo")
       .option("database", MONGO_DATABASE)
-      .option("collection", "userSimilarities")
+      .option("collection", "userSimilaritiy")
       .load()
       .select("userId1", "userId2", "similarity")
 
