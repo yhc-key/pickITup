@@ -6,7 +6,7 @@ import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.entity.Role;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
-import com.ssafy.pickitup.domain.user.command.UserCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.entity.RefreshToken;

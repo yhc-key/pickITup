@@ -6,7 +6,7 @@ import com.ssafy.pickitup.domain.badge.entity.UserBadge;
 import com.ssafy.pickitup.domain.badge.query.BadgeQueryJpaRepository;
 import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
 import com.ssafy.pickitup.domain.badge.query.UserBadgeQueryJpaRepository;
-import com.ssafy.pickitup.domain.user.command.UserCommandJpaRepository;
+import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import java.util.ArrayList;

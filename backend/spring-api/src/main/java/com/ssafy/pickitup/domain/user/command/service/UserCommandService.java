@@ -1,4 +1,4 @@
-package com.ssafy.pickitup.domain.user.command;
+package com.ssafy.pickitup.domain.user.command.service;
 
 import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
@@ -7,6 +7,11 @@ import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
 import com.ssafy.pickitup.domain.keyword.entity.Keyword;
 import com.ssafy.pickitup.domain.keyword.repository.KeywordQueryJpaRepository;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
+import com.ssafy.pickitup.domain.user.command.repository.UserClickCommandJpaRepository;
+import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepository;
+import com.ssafy.pickitup.domain.user.command.repository.UserCommandMongoRepository;
+import com.ssafy.pickitup.domain.user.command.repository.UserKeywordCommandJpaRepository;
+import com.ssafy.pickitup.domain.user.command.repository.UserRecruitCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.entity.UserClick;
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
@@ -124,6 +129,11 @@ public class UserCommandService {
                 geoLocation.getLongitude()));
         userMongo.setKeywords(keywordsNameList);
         userCommandMongoRepository.save(userMongo);
+        /**
+         * scala.call(1, "create")
+         * scala.call(1, "update")
+         */
+
     }
 
     @Transactional
