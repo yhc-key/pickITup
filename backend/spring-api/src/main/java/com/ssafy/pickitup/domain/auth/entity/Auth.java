@@ -95,4 +95,8 @@ public class Auth extends BaseTimeEntity {
     public void setLastLoginDate() {
         this.lastLoginDate = LocalDate.now();
     }
+
+    public void changeEmail(String email) {
+        this.email = email;
+    }
 }

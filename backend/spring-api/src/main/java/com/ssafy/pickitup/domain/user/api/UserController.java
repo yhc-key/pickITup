@@ -7,6 +7,7 @@ import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.service.UserClickService;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
+import com.ssafy.pickitup.domain.user.dto.UserUpdateRequestDto;
 import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
@@ -65,6 +66,28 @@ public class UserController {
         log.info("authId = {}", authId);
         userCommandService.changeNickname(authId, nickname.getNickname());
         return success("닉네임 변경 성공");
+    }
+
+    @Operation(summary = "회원 주소 변경 API")
+    @PatchMapping("/address")
+    public ApiResult<?> changeAddress(HttpServletRequest request,
+        @RequestBody String address) {
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.info("authId = {}", authId);
+        userCommandService.changeAddress(authId, address);
+        return success("주소 변경 성공");
+    }
+
+    @Operation(summary = "회원 정보 변경 API")
+    @PatchMapping("/me")
+    public ApiResult<?> updateUser(HttpServletRequest request,
+        @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.info("authId = {}", authId);
+        userCommandService.changeUserInfo(authId, userUpdateRequestDto);
+        return success("회원 정보 변경 성공");
     }
 
     @Operation(summary = "회원 스크랩 채용 공고 조회 API")
@@ -139,7 +162,7 @@ public class UserController {
         return success(userKeywords);
     }
 
-    @Operation(summary = "회원 클릳 데이터 조회 API - 서버 테스트용")
+    @Operation(summary = "회원 클릭 데이터 조회 API - 서버 테스트용")
     @GetMapping("{authId}/click/recruit")
     public ApiResult<?> getUserClick(
         @PathVariable("authId") Integer authId) {

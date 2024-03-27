@@ -26,7 +26,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Builder
-@ToString(of = {"id", "nickname"})
+@ToString(of = {"id", "nickname", "level"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User extends BaseTimeEntity {
@@ -36,7 +36,6 @@ public class User extends BaseTimeEntity {
     private Integer id;
 
     private String nickname;
-    private String profile;
     private String github;
     private String techBlog;
 
@@ -58,7 +57,7 @@ public class User extends BaseTimeEntity {
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    private Rank rank = Rank.NORMAL;
+    private Rank userRank = Rank.NORMAL;
 
     @MapsId
     @OneToOne
@@ -82,6 +81,18 @@ public class User extends BaseTimeEntity {
 
     public void changeNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void changeAddress(String address) {
+        this.address = address;
+    }
+
+    public void changeGithub(String github) {
+        this.github = github;
+    }
+
+    public void changeTechBlog(String techBlog) {
+        this.techBlog = techBlog;
     }
 
     public int increaseWinCount() {
