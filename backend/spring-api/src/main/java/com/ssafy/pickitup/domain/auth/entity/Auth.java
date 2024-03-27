@@ -47,6 +47,8 @@ public class Auth extends BaseTimeEntity {
     private Role role = Role.USER;
 
     private String refreshToken;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isDeleted;
 
     @Column(columnDefinition = "DATE")
