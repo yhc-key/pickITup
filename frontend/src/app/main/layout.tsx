@@ -24,7 +24,7 @@ export default function MainLayout({
   return (
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Header />
-        <main className="flex-grow">{children}</main>
+        <main className="flex-grow mb:mb-24">{children}</main>
         <div id="globalModal"></div>
         <Footer />
       </body>

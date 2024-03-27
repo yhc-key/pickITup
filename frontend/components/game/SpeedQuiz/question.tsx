@@ -91,7 +91,7 @@ export default function Question({
       input.push(
         <input
           type="text"
-          className="w-20 h-20 text-center shadow-md question-input rounded-xl bg-f5gray-200 mr-7"
+          className="w-20 h-20 text-center shadow-md question-input rounded-xl bg-f5gray-200 mx-3 my-3 mb:mx-2"
           maxLength={1}
           key={i}
           onChange={(e) => onInputChange(e, i)}
@@ -110,9 +110,9 @@ export default function Question({
 
   return (
     <div>
-      <div className="flex justify-center my-8">
-        <div className="flex justify-start min-h-24 w-[60%] bg-f5green-100 rounded-lg p-5 shadow-md">
-          <div className="flex items-center justify-center mr-3 text-lg font-semibold rounded-full w-7 h-7 bg-f5green-300 text-neutral-50">
+      <div className="flex justify-center my-5">
+        <div className="flex justify-start min-h-24 w-[60%] bg-f5green-100 rounded-lg p-5 shadow-md mb:w-[82%]">
+          <div className="flex items-center justify-center mr-3 text-lg font-semibold rounded-full p-2 w-7 h-7 bg-f5green-300 text-neutral-50 mb:text-sm">
             {index}
           </div>
           <div className="flex flex-wrap text-sm text-f5black-400">
@@ -120,8 +120,8 @@ export default function Question({
           </div>
         </div>
       </div>
-      <div className="flex justify-center">
-        <div className="flex flex-wrap mb-9">{renderInput()}</div>
+      <div className="flex justify-center mx-auto mb:w-[80%]">
+        <div className="flex flex-wrap justify-center mb-9">{renderInput()}</div>
       </div>
     </div>
   );
