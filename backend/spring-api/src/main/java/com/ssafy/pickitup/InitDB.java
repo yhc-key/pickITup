@@ -24,7 +24,6 @@ public class InitDB {
     private final SubQuestionCommandService subQuestionCommandService;
     private final KeywordCommandJpaRepository keywordCommandJpaRepository;
 
-
     @PostConstruct
     @Transactional
     public void init() {
