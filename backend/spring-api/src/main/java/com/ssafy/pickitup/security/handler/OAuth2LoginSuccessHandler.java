@@ -1,5 +1,6 @@
 package com.ssafy.pickitup.security.handler;
 
+import com.ssafy.pickitup.domain.auth.command.AuthCommandJpaRepository;
 import com.ssafy.pickitup.domain.auth.command.AuthCommandService;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.query.AuthQueryService;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
@@ -29,10 +31,12 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     private final AuthQueryService authQueryService;
     private final AuthCommandService authCommandService;
     private final RedisService redisService;
+    private final AuthCommandJpaRepository authCommandJpaRepository;
     //    private final String CALLBACK_URL = "http://localhost:3000/auth/callback";
     private final String CALLBACK_URL = "https://pickitup.online/main/auth/callback";
 
     @Override
+    @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
         Authentication authentication) throws IOException, ServletException {
 
@@ -44,8 +48,16 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 //        userCommandService.saveUser(user);
         // DB에 Refreshtoken 저장
         AuthDto authDto = authQueryService.getUserByUsername(authentication.getName());
-        authDto.setRefreshToken(tokenSet.getRefreshToken());
+//        authDto.setRefreshToken(tokenSet.getRefreshToken());
         Auth updatedAuth = Auth.toDto(authDto);
+        log.info("updatedAuth before = {}", updatedAuth);
+        log.info("refreshToken = {}", tokenSet.getRefreshToken());
+        updatedAuth.setRefreshToken(tokenSet.getRefreshToken());
+
+        authCommandJpaRepository.save(updatedAuth);
+//        Auth auth = authCommandJpaRepository.findAuthById(updatedAuth.getId());
+//        authCommandService.increaseAttendCount(updatedAuth);
+        log.info("updatedAuth after = {}", updatedAuth);
         // Redis에 Refreshtoken 저장
         RefreshToken refreshToken = RefreshToken.builder()
             .authId(authentication.getName())

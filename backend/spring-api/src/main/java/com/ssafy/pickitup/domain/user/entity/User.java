@@ -74,4 +74,25 @@ public class User extends BaseTimeEntity {
     public int increaseWinCount() {
         return ++gameWinCount;
     }
+
+    public void setUserKeywords(List<UserKeyword> userKeywords) {
+        this.userKeywords = userKeywords;
+    }
+
+    public int increaseAttendCount() {
+        return ++this.attendCount;
+    }
+
+    public int increaseRecruitViewCount() {
+        return ++this.recruitViewCount;
+    }
+
+    public int increaseRecruitScrapCount() {
+        return ++this.recruitScrapCount;
+    }
+
+    public int increaseSelfAnswerCount() {
+        return ++this.selfAnswerCount;
+    }
+
 }

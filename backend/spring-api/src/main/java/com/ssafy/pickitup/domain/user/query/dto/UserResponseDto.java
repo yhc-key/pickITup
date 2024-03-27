@@ -15,6 +15,7 @@ public class UserResponseDto {
     private String techBlog;
     private Integer exp;
     private Integer level;
+    private Integer attendCount;
     private Integer totalMyScrap;
 
 
@@ -27,6 +28,7 @@ public class UserResponseDto {
             user.getTechBlog(),
             user.getExp(),
             user.getLevel(),
+            user.getAttendCount(),
             count
         );
     }

@@ -5,6 +5,7 @@ import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.keyword.entity.Keyword;
 import com.ssafy.pickitup.domain.keyword.repository.KeywordQueryJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
+import com.ssafy.pickitup.domain.user.entity.UserClick;
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
 import com.ssafy.pickitup.domain.user.entity.UserMongo;
 import com.ssafy.pickitup.domain.user.entity.UserRecruit;
@@ -29,6 +30,7 @@ public class UserCommandService {
     private final UserKeywordCommandJpaRepository userKeywordCommandJpaRepository;
     private final KeywordQueryJpaRepository keywordQueryJpaRepository;
     private final UserRecruitCommandJpaRepository userRecruitCommandJpaRepository;
+    private final UserClickCommandJpaRepository userClickCommandJpaRepository;
     private final GeoLocationService geoLocationService;
 
     @Transactional
@@ -98,7 +100,30 @@ public class UserCommandService {
     }
 
     @Transactional
+    public void saveUserClick(Integer authId, Integer recruitId) {
+        User user = userCommandJpaRepository.findByAuthId(authId);
+        UserClick userClick = userClickCommandJpaRepository.findByUserIdAndRecruitId(
+            user.getId(), recruitId);
+        if (userClick == null) {
+            UserClick newUserClick = new UserClick(user, recruitId);
+            userClickCommandJpaRepository.save(newUserClick);
+        } else {
+            userClick.increaseClickCount();
+        }
+
+    }
+
+
+    @Transactional
     public void deleteUserRecruit(Integer authId, Integer recruitId) {
         userRecruitCommandJpaRepository.deleteAllByUserIdAndRecruitId(authId, recruitId);
     }
+
+    @Transactional
+    public void increaseUserAttendCount(Integer authId) {
+        User user = userCommandJpaRepository.findByAuthId(authId);
+        //출석 횟수 증가
+        user.increaseAttendCount();
+    }
+
 }

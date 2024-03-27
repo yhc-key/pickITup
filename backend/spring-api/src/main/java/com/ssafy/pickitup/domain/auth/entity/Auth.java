@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Getter
 @Builder
 @SQLRestriction("is_deleted = false")
-@ToString(of = {"id", "username", "password", "refreshToken"})
+@ToString(of = {"id", "username", "password", "refreshToken", "user"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Auth extends BaseTimeEntity {
@@ -47,6 +48,9 @@ public class Auth extends BaseTimeEntity {
 
     private String refreshToken;
     private boolean isDeleted;
+
+    @Column(columnDefinition = "DATE")
+    private LocalDate lastLoginDate;
 
     @OneToOne(mappedBy = "auth", cascade = CascadeType.ALL)
     private User user;
@@ -86,4 +90,7 @@ public class Auth extends BaseTimeEntity {
     }
 
 
+    public void setLastLoginDate() {
+        this.lastLoginDate = LocalDate.now();
+    }
 }
