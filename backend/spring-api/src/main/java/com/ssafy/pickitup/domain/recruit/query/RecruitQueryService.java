@@ -15,4 +15,6 @@ public interface RecruitQueryService {
     void readRecruitForConvert();
 
     Page<RecruitQueryResponseDto> searchByIdList(List<Integer> idList, Pageable pageable);
+
+    int countClosingRecruitByIdList(List<Integer> idList);
 }

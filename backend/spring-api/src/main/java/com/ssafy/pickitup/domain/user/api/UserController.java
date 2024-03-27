@@ -51,9 +51,9 @@ public class UserController {
     @GetMapping("/me")
     public ApiResult<UserResponseDto> getUser(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         log.info("authId = {}", authId);
-        return success(userQueryService.getUserById(authId));
+        return success(userCommandService.getUserById(authId));
     }
 
     @Operation(summary = "닉네임 변경 API")
@@ -61,7 +61,7 @@ public class UserController {
     public ApiResult<?> changeNickname(HttpServletRequest request,
         @RequestBody NicknameDto nickname) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         log.info("authId = {}", authId);
         userCommandService.changeNickname(authId, nickname.getNickname());
         return success("닉네임 변경 성공");
@@ -70,7 +70,7 @@ public class UserController {
     @Operation(summary = "회원 스크랩 채용 공고 조회 API")
     @GetMapping("/{authId}/scraps/recruit")
     public ApiResult<Page<RecruitQueryResponseDto>> getUserScrapList(
-        @PathVariable("authId") int authId, Pageable pageable) {
+        @PathVariable("authId") Integer authId, Pageable pageable) {
         Page<RecruitQueryResponseDto> myRecruitByIdList = userQueryService.findMyRecruitById(authId,
             pageable);
         return success(myRecruitByIdList);
@@ -81,7 +81,7 @@ public class UserController {
     public ApiResult<?> saveUserScrapList(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestParam int recruitId) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         userCommandService.saveUserRecruit(authId, recruitId);
 
         return success("스크랩 성공");
@@ -92,7 +92,7 @@ public class UserController {
     public ApiResult<?> deleteUserScrap(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestParam Integer recruitId) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         userCommandService.deleteUserRecruit(authId, recruitId);
 
         return success("스크랩 삭제");
@@ -113,7 +113,7 @@ public class UserController {
     public ApiResult<?> addUserKeyword(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestBody KeywordRequestDto keywords) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         log.info("keywords = {}", keywords.toString());
         userCommandService.addKeywords(authId, keywords);
         return success("keywords 등록 성공");
@@ -124,7 +124,7 @@ public class UserController {
     public ApiResult<?> updateUserKeyword(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestBody KeywordRequestDto keywords) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         log.info("keywords = {}", keywords.toString());
         userCommandService.updateUserKeyword(authId, keywords);
         return success("keywords 수정 성공");

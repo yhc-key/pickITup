@@ -17,9 +17,11 @@ public class UserResponseDto {
     private Integer level;
     private Integer attendCount;
     private Integer totalMyScrap;
+    private Integer totalMyBadge;
+    private Integer closingScrap;
 
-
-    public static UserResponseDto toDto(User user, int count) {
+    public static UserResponseDto toDto(User user, int scrapCount, int badgeCount,
+        int closingCount) {
         return new UserResponseDto(
             user.getId(),
             user.getNickname(),
@@ -29,7 +31,9 @@ public class UserResponseDto {
             user.getExp(),
             user.getLevel(),
             user.getAttendCount(),
-            count
+            scrapCount,
+            badgeCount,
+            closingCount
         );
     }
 

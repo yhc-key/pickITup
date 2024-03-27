@@ -2,13 +2,20 @@ package com.ssafy.pickitup.domain.user.command;
 
 import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
+import com.ssafy.pickitup.domain.badge.command.BadgeCommandService;
+import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
 import com.ssafy.pickitup.domain.keyword.entity.Keyword;
 import com.ssafy.pickitup.domain.keyword.repository.KeywordQueryJpaRepository;
+import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.entity.UserClick;
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
 import com.ssafy.pickitup.domain.user.entity.UserMongo;
 import com.ssafy.pickitup.domain.user.entity.UserRecruit;
+import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
+import com.ssafy.pickitup.domain.user.query.UserQueryJpaRepository;
+import com.ssafy.pickitup.domain.user.query.UserQueryService;
+import com.ssafy.pickitup.domain.user.query.UserRecruitQueryJpaRepository;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.global.entity.GeoLocation;
@@ -31,7 +38,40 @@ public class UserCommandService {
     private final KeywordQueryJpaRepository keywordQueryJpaRepository;
     private final UserRecruitCommandJpaRepository userRecruitCommandJpaRepository;
     private final UserClickCommandJpaRepository userClickCommandJpaRepository;
+    private final UserRecruitQueryJpaRepository userRecruitQueryJpaRepository;
     private final GeoLocationService geoLocationService;
+    private final UserQueryJpaRepository userQueryJpaRepository;
+    private final BadgeCommandService badgeCommandService;
+    private final BadgeQueryService badgeQueryService;
+    private final RecruitQueryService recruitQueryService;
+    private final UserQueryService userQueryService;
+
+    @Transactional
+    public UserResponseDto getUserById(int userId) {
+
+        User user = userQueryJpaRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("해당 유저를 찾을 수 없습니다"));
+        int scrapCount = userRecruitQueryJpaRepository.countByUserId(userId); // 전체 스크랩 공고 개수
+        badgeCommandService.renewBadge(userId); // 뱃지 갱신
+        int badgeCount = badgeQueryService.myBadgeCount(userId); // 소유한 뱃지 개수 카운트
+        List<Integer> myRecruitIdList = userQueryService.findRecruitIdByUserId(userId);
+        int closingCount = recruitQueryService.countClosingRecruitByIdList(myRecruitIdList);
+        /*
+            뱃지 갱신 -> ok
+
+            내가 가진 뱃지 개수 카운트 -> ok
+
+            스크랩 한 공고 중 마감 임박 채용 공고 개수 카운트 -> ok
+
+            기술 면접 대비 문제 풀이 수 카운트
+         */
+
+        log.info("scrapCount : {}", scrapCount);
+        log.info("badgeCount : {}", badgeCount);
+        log.info("closingCount : {}", closingCount);
+
+        return UserResponseDto.toDto(user, scrapCount, badgeCount, closingCount);
+    }
 
     @Transactional
     public UserResponseDto create(Auth auth, UserSignupDto userSignupDto) {
@@ -50,7 +90,7 @@ public class UserCommandService {
             .auth(auth)
             .build();
         userCommandJpaRepository.save(user);
-        return UserResponseDto.toDto(user, 0);
+        return UserResponseDto.toDto(user, 0, 0, 0);
     }
 
     @Transactional
@@ -84,6 +124,11 @@ public class UserCommandService {
                 geoLocation.getLongitude()));
         userMongo.setKeywords(keywordsNameList);
         userCommandMongoRepository.save(userMongo);
+    }
+
+    @Transactional
+    public void allUserToMongo() {
+        // 현재 mysql에 있는 모든 유저 데이터를 몽고 db로 마이그레이션
     }
 
     @Transactional

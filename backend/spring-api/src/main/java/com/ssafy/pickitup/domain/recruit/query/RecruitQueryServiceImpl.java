@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -75,15 +76,6 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
     }
 
     @Override
-    public void readRecruitForConvert() {
-        List<String> keywords = readKeywords();
-        for (String keyword : keywords) {
-            searchByKeyword(keyword);
-        }
-    }
-
-
-    @Override
     public Page<RecruitQueryResponseDto> searchByIdList(List<Integer> idList, Pageable pageable) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").in(idList));
@@ -95,6 +87,26 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         Page<RecruitDocumentMongo> recruitDocumentMongoPages =
             new PageImpl<>(entities, pageable, totalCount);
         return recruitDocumentMongoPages.map(RecruitDocumentMongo::toQueryResponse);
+    }
+
+    @Override
+    public int countClosingRecruitByIdList(List<Integer> idList) {
+        // 3일 후의 날짜 계산
+        LocalDate threeDaysLater = LocalDate.now().plusDays(3);
+
+        // MongoDB 쿼리 생성 - recruitIdList에 포함된 아이디들 중 마감일이 3일 이내인 문서 조회
+        Query query = new Query(Criteria.where("id").in(idList).and("dueDate").lte(threeDaysLater));
+
+        // MongoDB 쿼리 실행하여 해당하는 문서 개수 반환
+        return (int) mongoTemplate.count(query, RecruitDocumentMongo.class);
+    }
+
+    @Override
+    public void readRecruitForConvert() {
+        List<String> keywords = readKeywords();
+        for (String keyword : keywords) {
+            searchByKeyword(keyword);
+        }
     }
 
     /*
@@ -132,16 +144,13 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         Elasticsearch에서 키워드 검색
      */
     private void searchAndAddKeyword(String keyword, String field) {
-//        Pageable pageable = PageRequest.of(0, 2000);
         Page<RecruitDocumentElasticsearch> result = null;
 
         switch (field) {
             case "qualificationRequirements" -> result = recruitQueryElasticsearchRepository
                 .findByQualificationRequirementsContaining(keyword, Pageable.unpaged());
-//                .findByQualificationRequirementsContaining(keyword, pageable);
             case "preferredRequirements" -> result = recruitQueryElasticsearchRepository
                 .findByPreferredRequirementsContaining(keyword, Pageable.unpaged());
-//                .findByPreferredRequirementsContaining(keyword, pageable);
             default -> throw new InvalidFieldTypeException();
         }
 

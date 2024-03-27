@@ -32,8 +32,8 @@ public class BadgeController {
     @Operation(summary = "Badge Test")
     @PostMapping("/test")
     public ApiResult<?> test(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        int userId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer userId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         badgeCommandService.initBadge(userId);
-        return success(badgeCommandService.check(userId));
+        return success(badgeCommandService.renewBadge(userId));
     }
 }
