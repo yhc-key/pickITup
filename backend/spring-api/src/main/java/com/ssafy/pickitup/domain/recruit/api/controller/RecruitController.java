@@ -1,8 +1,8 @@
 package com.ssafy.pickitup.domain.recruit.api.controller;
 
-import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
+import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.company.query.CompanyQueryService;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryRequestDto;

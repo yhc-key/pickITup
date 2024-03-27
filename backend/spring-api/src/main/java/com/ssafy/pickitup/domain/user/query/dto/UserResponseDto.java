@@ -10,7 +10,6 @@ public class UserResponseDto {
 
     private Integer id;
     private String nickname;
-    private String profile;
     private String github;
     private String techBlog;
     private Integer exp;
@@ -25,7 +24,6 @@ public class UserResponseDto {
         return new UserResponseDto(
             user.getId(),
             user.getNickname(),
-            user.getProfile(),
             user.getGithub(),
             user.getTechBlog(),
             user.getExp(),

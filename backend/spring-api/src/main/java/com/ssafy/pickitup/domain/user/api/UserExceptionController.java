@@ -1,8 +1,8 @@
 package com.ssafy.pickitup.domain.user.api;
 
-import static com.ssafy.pickitup.domain.auth.api.ApiUtils.error;
+import static com.ssafy.pickitup.global.api.ApiUtils.error;
 
-import com.ssafy.pickitup.domain.auth.api.ApiUtils;
+import com.ssafy.pickitup.global.api.ApiUtils;
 import com.ssafy.pickitup.domain.user.exception.DuplicateUsernameException;
 import com.ssafy.pickitup.domain.user.exception.ErrorMessageDto;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;

@@ -18,15 +18,20 @@ public class UserRankService {
     private final UserCommandJpaRepository userCommandJpaRepository;
 
     @Transactional
-    public void updateLevel(User user) {
+    public User updateLevel(User user) {
 
         int exp = user.expCalculator();
 
         UserLevel userLevel = userLevelJpaRepository.findFirstByExpGreaterThanOrderByExpAsc(
             exp);
         log.info("user level before = {}", user.getLevel());
-        user.setLevel(userLevel.getLevel());
+        if (userLevel == null) {
+            user.setLevel(20);
+        } else {
+            user.setLevel(userLevel.getLevel());
+        }
         log.info("user level after = {}", user.getLevel());
+        return user;
     }
 //    @Transactional
 //    public void updateLevel(Integer userId, Integer exp) {

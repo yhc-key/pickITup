@@ -12,6 +12,8 @@ import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepositor
 import com.ssafy.pickitup.domain.user.command.repository.UserCommandMongoRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserKeywordCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserRecruitCommandJpaRepository;
+import com.ssafy.pickitup.domain.user.dto.UserUpdateRequestDto;
+import com.ssafy.pickitup.domain.user.entity.Rank;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.entity.UserClick;
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
@@ -50,6 +52,7 @@ public class UserCommandService {
     private final BadgeQueryService badgeQueryService;
     private final RecruitQueryService recruitQueryService;
     private final UserQueryService userQueryService;
+    private final UserRankService userRankService;
 
     @Transactional
     public UserResponseDto getUserById(int userId) {
@@ -75,13 +78,19 @@ public class UserCommandService {
         log.info("badgeCount : {}", badgeCount);
         log.info("closingCount : {}", closingCount);
 
-        return UserResponseDto.toDto(user, scrapCount, badgeCount, closingCount);
+        log.info("user = {}", user.toString());
+        log.info("user level before = {}", user.getLevel());
+        // 유저 레벨 업데이트
+        User updatedUser = userRankService.updateLevel(user);
+        log.info("user level after = {}", updatedUser.getLevel());
+
+        return UserResponseDto.toDto(updatedUser, scrapCount, badgeCount, closingCount);
     }
 
     @Transactional
     public UserResponseDto create(Auth auth, UserSignupDto userSignupDto) {
         String nickname = userSignupDto != null ? userSignupDto.getNickname() : auth.getName();
-        return createUser(nickname, auth);
+        return createUser(userSignupDto, auth);
     }
 
     @Transactional
@@ -89,12 +98,33 @@ public class UserCommandService {
         return createUser(auth.getName(), auth);
     }
 
+
+
     private UserResponseDto createUser(String nickname, Auth auth) {
         User user = User.builder()
             .nickname(nickname)
             .auth(auth)
+            .userRank(Rank.NORMAL)
+            .level(1)
             .build();
         userCommandJpaRepository.save(user);
+        auth.setUser(user);
+//        badgeCommandService.initBadge(user.getId());
+        return UserResponseDto.toDto(user, 0, 0, 0);
+    }
+
+
+    private UserResponseDto createUser(UserSignupDto userSignupDto, Auth auth) {
+        User user = User.builder()
+            .nickname(userSignupDto.getNickname())
+            .address(userSignupDto.getAddress() != null ? userSignupDto.getAddress() : null)
+            .auth(auth)
+            .userRank(Rank.NORMAL)
+            .level(1)
+            .build();
+        userCommandJpaRepository.save(user);
+        auth.setUser(user);
+//        badgeCommandService.initBadge(user.getId());
         return UserResponseDto.toDto(user, 0, 0, 0);
     }
 
@@ -102,6 +132,27 @@ public class UserCommandService {
     public void changeNickname(Integer authId, String nickname) {
         User user = userCommandJpaRepository.findByAuthId(authId);
         user.changeNickname(nickname);
+    }
+
+    @Transactional
+    public void changeAddress(Integer authId, String address) {
+        User user = userCommandJpaRepository.findByAuthId(authId);
+        user.changeAddress(address);
+    }
+
+    @Transactional
+    public void changeUserInfo(Integer authId, UserUpdateRequestDto userUpdateRequestDto) {
+        User user = userCommandJpaRepository.findById(authId)
+            .orElseThrow(() -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
+        if (userUpdateRequestDto.getEmail() != null) {
+            user.getAuth().changeEmail(userUpdateRequestDto.getEmail());
+        }
+        if (userUpdateRequestDto.getGithub() != null) {
+            user.changeGithub(userUpdateRequestDto.getGithub());
+        }
+        if (userUpdateRequestDto.getTechBlog() != null) {
+            user.changeTechBlog(userUpdateRequestDto.getTechBlog());
+        }
     }
 
     @Transactional
