@@ -99,6 +99,7 @@ public class UserCommandService {
     }
 
 
+
     private UserResponseDto createUser(String nickname, Auth auth) {
         User user = User.builder()
             .nickname(nickname)
@@ -107,8 +108,11 @@ public class UserCommandService {
             .level(1)
             .build();
         userCommandJpaRepository.save(user);
+        auth.setUser(user);
+//        badgeCommandService.initBadge(user.getId());
         return UserResponseDto.toDto(user, 0, 0, 0);
     }
+
 
     private UserResponseDto createUser(UserSignupDto userSignupDto, Auth auth) {
         User user = User.builder()
@@ -119,6 +123,8 @@ public class UserCommandService {
             .level(1)
             .build();
         userCommandJpaRepository.save(user);
+        auth.setUser(user);
+//        badgeCommandService.initBadge(user.getId());
         return UserResponseDto.toDto(user, 0, 0, 0);
     }
 

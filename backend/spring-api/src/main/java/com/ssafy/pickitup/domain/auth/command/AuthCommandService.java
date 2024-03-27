@@ -61,11 +61,12 @@ public class AuthCommandService {
         log.info("login request username= {}", loginRequestDto.getUsername());
         log.info("login request password= {}", loginRequestDto.getPassword());
 
-//        AuthDto authDto = authCommandJpaRepository.findAuthByUsername(loginRequestDto.getUsername());
         Auth auth = authCommandJpaRepository.findAuthByUsername(loginRequestDto.getUsername());
+
         if (auth == null) {
             throw new AuthNotFoundException("존재하지 않는 아이디입니다.");
         }
+        //출석 횟수 증가
         increaseAttendCount(auth);
         AuthDto authDto = AuthDto.getAuth(auth);
         log.info("auth= {}", authDto.toString());
@@ -93,19 +94,21 @@ public class AuthCommandService {
         // DB에 Refreshtoken 저장
         authDto.setRefreshToken(tokenSet.getRefreshToken());
         Auth updatedAuth = Auth.toDto(authDto);
-//        updatedAuth.setRefreshToken(tokenSet.getRefreshToken());
         log.info("updatedAuth = {}", updatedAuth.toString());
         updatedAuth.setLastLoginDate();
         authCommandJpaRepository.save(updatedAuth);
 
         // RefreshToken Redis에 저장
         RefreshToken refreshToken = RefreshToken.builder()
-            .authId(authentication.getName())
+            .authId(updatedAuth.getId())
             .refreshToken(tokenSet.getRefreshToken())
             .build();
+//        RefreshToken refreshToken = RefreshToken.builder()
+//            .authId(authentication.getName())
+//            .refreshToken(tokenSet.getRefreshToken())
+//            .build();
 
         redisService.saveRefreshToken(refreshToken.getAuthId(), refreshToken.getRefreshToken());
-
         log.debug("RefreshToken in Redis = {}", refreshToken.getRefreshToken());
         return tokenSet;
     }
@@ -218,7 +221,7 @@ public class AuthCommandService {
 
         String reissueRefreshToken = reissueTokenDto.getRefreshToken();
         // Redis, DB 에 새로 발급 받은 RT 저장
-        redisService.saveRefreshToken(String.valueOf(principal), reissueRefreshToken);
+        redisService.saveRefreshToken(principal, reissueRefreshToken);
 
         log.debug("Auth Id = {}", principal);
         log.debug("RefreshToken save in Redis = {}", reissueTokenDto.getRefreshToken());

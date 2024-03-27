@@ -5,6 +5,9 @@ import com.ssafy.pickitup.domain.auth.command.AuthCommandService;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.query.AuthQueryService;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
+import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
+import com.ssafy.pickitup.domain.user.entity.User;
+import com.ssafy.pickitup.domain.user.query.UserQueryJpaRepository;
 import com.ssafy.pickitup.security.entity.RefreshToken;
 import com.ssafy.pickitup.security.jwt.JwtProperties;
 import com.ssafy.pickitup.security.jwt.JwtTokenDto;
@@ -14,9 +17,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +37,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     private final AuthQueryService authQueryService;
     private final AuthCommandService authCommandService;
     private final RedisService redisService;
+    private final UserQueryJpaRepository userQueryJpaRepository;
     private final AuthCommandJpaRepository authCommandJpaRepository;
     //    private final String CALLBACK_URL = "http://localhost:3000/auth/callback";
     private final String CALLBACK_URL = "https://pickitup.online/main/auth/callback";
@@ -53,16 +60,26 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         log.info("updatedAuth before = {}", updatedAuth);
         log.info("refreshToken = {}", tokenSet.getRefreshToken());
         updatedAuth.setRefreshToken(tokenSet.getRefreshToken());
-
+        User user = userQueryJpaRepository.findById(updatedAuth.getId()).orElseThrow(
+                ()->new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
+        log.info("user = {}", user);
+        updatedAuth.setUser(user);
+        authCommandService.increaseAttendCount(updatedAuth);
+        updatedAuth.setLastLoginDate();
         authCommandJpaRepository.save(updatedAuth);
+//        authCommandJpaRepository.save(updatedAuth);
 //        Auth auth = authCommandJpaRepository.findAuthById(updatedAuth.getId());
 //        authCommandService.increaseAttendCount(updatedAuth);
         log.info("updatedAuth after = {}", updatedAuth);
         // Redis에 Refreshtoken 저장
         RefreshToken refreshToken = RefreshToken.builder()
-            .authId(authentication.getName())
+            .authId(updatedAuth.getId())
             .refreshToken(tokenSet.getRefreshToken())
             .build();
+//        RefreshToken refreshToken = RefreshToken.builder()
+//            .authId(authentication.getName())
+//            .refreshToken(tokenSet.getRefreshToken())
+//            .build();
         redisService.saveRefreshToken(refreshToken.getAuthId(), refreshToken.getRefreshToken());
         // token 쿼리스트링
         String targetUrl = UriComponentsBuilder.fromUriString(CALLBACK_URL)

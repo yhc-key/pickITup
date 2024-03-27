@@ -1,8 +1,8 @@
 package com.ssafy.pickitup.domain.auth.api;
 
-import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
+import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.auth.command.AuthCommandService;
 import com.ssafy.pickitup.domain.auth.command.dto.LoginRequestDto;
 import com.ssafy.pickitup.domain.auth.command.dto.LogoutDto;

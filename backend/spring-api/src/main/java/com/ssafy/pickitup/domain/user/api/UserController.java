@@ -1,8 +1,8 @@
 package com.ssafy.pickitup.domain.user.api;
 
-import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
+import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.service.UserClickService;
@@ -11,7 +11,6 @@ import com.ssafy.pickitup.domain.user.dto.UserUpdateRequestDto;
 import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
-import com.ssafy.pickitup.domain.user.query.dto.NicknameDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserClickResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
@@ -60,11 +59,11 @@ public class UserController {
     @Operation(summary = "닉네임 변경 API")
     @PatchMapping("/nickname")
     public ApiResult<?> changeNickname(HttpServletRequest request,
-        @RequestBody NicknameDto nickname) {
+        @RequestBody String nickname) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         log.info("authId = {}", authId);
-        userCommandService.changeNickname(authId, nickname.getNickname());
+        userCommandService.changeNickname(authId, nickname);
         return success("닉네임 변경 성공");
     }
 

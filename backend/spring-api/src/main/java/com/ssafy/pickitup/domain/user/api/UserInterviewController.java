@@ -1,7 +1,7 @@
 package com.ssafy.pickitup.domain.user.api;
 
-import com.ssafy.pickitup.domain.auth.api.ApiUtils;
-import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
+import com.ssafy.pickitup.global.api.ApiUtils;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.user.command.service.UserInterviewCommandService;
 import com.ssafy.pickitup.domain.user.dto.InterviewWithAnswerDto;
 import com.ssafy.pickitup.domain.user.query.service.UserInterviewQueryService;

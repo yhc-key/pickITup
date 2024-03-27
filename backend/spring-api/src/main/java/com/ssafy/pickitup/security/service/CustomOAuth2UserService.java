@@ -58,7 +58,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .build();
         }
 
-        authCommandJpaRepository.save(auth);
+//        authCommandJpaRepository.save(auth);
         if (optionalUser.isEmpty()) {
             userCommandService.create(auth);
         }
