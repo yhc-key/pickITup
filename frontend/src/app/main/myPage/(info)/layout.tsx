@@ -13,30 +13,26 @@ export default function InfoLayout({
   return (
     <Fragment>
       <div className="border-b-2 border-black flex flex-row items-center mr-4">
-        <Link
-          href="/main/myPage/myFavoriteRecruit"
-          className={`w-1/4 text-f5black-300 h-16 flex items-center justify-center hover:text-f5green-300 ${isActive("/main/myPage/myFavoriteRecruit") ? "border-t-4 border-f5green-300" : ""} `}
-        >
-          <span>내가 찜한 채용공고</span>
-        </Link>
-        <Link
-          href="/main/myPage/myBadge"
-          className={`w-1/4 text-f5black-300 h-16 flex items-center justify-center hover:text-f5green-300 ${isActive("/main/myPage/myBadge") ? "border-t-4 border-f5green-300" : ""} `}
-        >
-          <span>나의 뱃지</span>
-        </Link>
-        <Link
-          href="/main/myPage/myPastAns"
-          className={`w-1/4 text-f5black-300 h-16 flex items-center justify-center hover:text-f5green-300 ${isActive("/main/myPage/myPastAns") ? "border-t-4 border-f5green-300" : ""} `}
-        >
-          <span>나의 과거 문제 내역</span>
-        </Link>
-        <Link
-          href="/main/myPage/myEssay"
-          className={`w-1/4 text-f5black-300 h-16 flex items-center justify-center hover:text-f5green-300 ${isActive("/main/myPage/myEssay") ? "border-t-4 border-f5green-300" : ""} `}
-        >
-          <span>자기소개서 관리</span>
-        </Link>
+        <div className={`w-1/4 h-16 flex items-center justify-center transition-all ease-in-out duration-200 hover:text-f5green-300 ${isActive("/main/myPage/myFavoriteRecruit") ? "border-t-4 border-f5green-300 text-f5green-300 font-semibold" : ""}`}>
+          <Link href="/main/myPage/myFavoriteRecruit">
+            <span>내가 찜한 채용공고</span>
+          </Link>
+        </div>
+        <div className={`w-1/4 h-16 flex items-center justify-center transition-all ease-in-out duration-200 hover:text-f5green-300 ${isActive("/main/myPage/myBadge") ? "border-t-4 border-f5green-300 text-f5green-300 font-semibold" : ""}`}>
+          <Link href="/main/myPage/myBadge">
+            <span>나의 뱃지</span>
+          </Link>
+        </div>
+        <div className={`w-1/4 h-16 flex items-center justify-center transition-all ease-in-out duration-200 hover:text-f5green-300 ${isActive("/main/myPage/myPastAns") ? "border-t-4 border-f5green-300 text-f5green-300 font-semibold" : ""}`}>
+          <Link href="/main/myPage/myPastAns">
+            <span>나의 과거 문제 내역</span>
+          </Link>
+        </div>
+        <div className={`w-1/4 h-16 flex items-center justify-center transition-all ease-in-out duration-200 hover:text-f5green-300 ${isActive("/main/myPage/myEssay") ? "border-t-4 border-f5green-300 text-f5green-300 font-semibold" : ""}`}>
+          <Link href="/main/myPage/myEssay">
+            <span>자기소개서 관리</span>
+          </Link>
+        </div>
       </div>
       <div className="flex-grow ml-5">{children}</div>
     </Fragment>
