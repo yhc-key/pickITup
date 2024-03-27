@@ -1,5 +1,6 @@
-package com.ssafy.pickitup.domain.user.command;
+package com.ssafy.pickitup.domain.user.command.service;
 
+import com.ssafy.pickitup.domain.user.command.repository.UserClickCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.UserClick;
 import com.ssafy.pickitup.domain.user.query.dto.UserClickResponseDto;
 import java.util.List;

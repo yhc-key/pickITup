@@ -6,7 +6,7 @@ import com.ssafy.pickitup.domain.quiz.entity.OxQuiz;
 import com.ssafy.pickitup.domain.quiz.entity.SpeedQuiz;
 import com.ssafy.pickitup.domain.quiz.query.repository.OxQuizJpaRepository;
 import com.ssafy.pickitup.domain.quiz.query.repository.SpeedQuizJpaRepository;
-import com.ssafy.pickitup.domain.user.command.UserCommandJpaRepository;
+import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import java.util.List;

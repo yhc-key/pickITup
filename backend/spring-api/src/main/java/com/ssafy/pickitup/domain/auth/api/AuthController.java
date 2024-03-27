@@ -11,7 +11,7 @@ import com.ssafy.pickitup.domain.auth.query.AuthQueryService;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthProfileDto;
 import com.ssafy.pickitup.domain.auth.query.dto.PasswordDto;
-import com.ssafy.pickitup.domain.user.command.UserCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.jwt.JwtProperties;
 import com.ssafy.pickitup.security.jwt.JwtTokenDto;

@@ -4,6 +4,8 @@ import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.badge.entity.UserBadge;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -54,6 +56,10 @@ public class User extends BaseTimeEntity {
     private Integer exp = 0;
     private String address;
 
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private Rank rank = Rank.NORMAL;
+
     @MapsId
     @OneToOne
     @JoinColumn(name = "id", referencedColumnName = "id")
@@ -67,6 +73,13 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserBadge> userBadges = new ArrayList<>();
 
+    public int expCalculator() {
+
+        return (3 * this.recruitViewCount) + (5 * this.recruitScrapCount) + (2 * this.attendCount)
+            + (6
+            * this.selfAnswerCount) + (4 * this.gameWinCount);
+    }
+
     public void changeNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -77,6 +90,10 @@ public class User extends BaseTimeEntity {
 
     public void setUserKeywords(List<UserKeyword> userKeywords) {
         this.userKeywords = userKeywords;
+    }
+
+    public void serUserLevel(int level) {
+        this.level = level;
     }
 
     public int increaseAttendCount() {
