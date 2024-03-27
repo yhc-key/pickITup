@@ -26,7 +26,7 @@ interface Answer {
 
 export default function SpeedQuiz(props: any) {
   const isMobile = useMediaQuery({
-    query: "(max-width:700px)",
+    query: "(max-width:480px)",
   });
 
   const router = useRouter();

@@ -1,17 +1,20 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
+import { interviewDataMap } from "@/data/interviewData";
 import Question from "@/components/interview/question";
 import TimeBar from "@/components/interview/timebar";
 import NextBtn from "@/components/interview/nextBtn";
 import BackBtn from "@/components/interview/backBtn";
+import useAuthStore, { AuthState } from "@/store/authStore";
 
-import { interviewDataMap } from "@/data/interviewData";
 interface Quiz {
+  id: number;
   question: string;
-  answer: string;
 }
 
 interface Answer {
@@ -21,57 +24,115 @@ interface Answer {
 }
 
 export default function InterView(props: any) {
+  const isMobile = useMediaQuery({
+    query: "(max-width:480px)",
+  });
+
+  const router = useRouter();
+
   const [index, setIndex] = useState(0);
   const [questionList, setQuestionList] = useState<Quiz[]>([]);
   const [answer, setAnswer] = useState<Answer[]>([]);
+  const [questionLength, setQuestrionLength] = useState(0);
 
   // 선택한 주제
   const pickTech: string = props.params.pickTech;
 
+  const apiUrlGet = "https://spring.pickitup.online/interviews/random";
+  const apiUrlPost = "https://spring.pickitup.online/my/interviews";
+  const isLoggedIn: boolean = useAuthStore(
+    (state: AuthState) => state.isLoggedIn
+  );
+
   useEffect(() => {
-    // 선택한 주제에 대한 질문 받아오기
-    const questions: Quiz[] | undefined = interviewDataMap.get(pickTech);
-    if (questions) {
-      setQuestionList(questions);
-    }
-  }, [pickTech]);
+    const fetchInterviewData = async () => {
+      const accessToken = sessionStorage.getItem("accessToken");
+      try {
+        // api로부터 데이터 받아오기
+        const resp: Response = await fetch(
+          `${apiUrlGet}?subCategory=${pickTech}`,
+          {
+            headers: {
+              Authorization: "Bearer " + accessToken,
+            },
+          }
+        );
+        // HTTP 응답을 JSON 객체로 변환
+        const data: any = await resp.json();
+
+        setQuestionList(data.response);
+        setQuestrionLength(data.response.length);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchInterviewData();
+  }, [apiUrlGet, pickTech, setQuestionList]);
+
+  // useEffect(() => {
+  //   // 선택한 주제에 대한 질문 받아오기
+  //   const questions: Quiz[] | undefined = interviewDataMap.get(pickTech);
+  //   if (questions) {
+  //     setQuestionList(questions);
+  //   }
+  // }, [pickTech]);
 
   // 정답 정보 저장
-  const addValueToAnswer = useCallback(() => {
-    if (index >= 0) {
-      let curAnswer: string = "";
+  const addValueToAnswer = useCallback(
+    async (questionId: number) => {
+      if (index >= 0 && index < questionLength) {
+        let curAnswer: string = "";
+        document
+          .querySelectorAll<HTMLTextAreaElement>(".question-textarea")
+          .forEach((textArea) => {
+            curAnswer += textArea.value.trim() + " ";
+          });
+
+        try {
+          const accessToken = sessionStorage.getItem("accessToken");
+          await fetch(`${apiUrlPost}/${questionId}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "text/plain",
+              Authorization: "Bearer " + accessToken,
+            },
+            body: curAnswer.trim(), // 텍스트 직접 전달
+          });
+        } catch (error) {
+          console.log(error);
+        }
+
+        // // answer 배열에 추가
+        // setAnswer([
+        //   ...answer,
+        //   // 질문, 사용자 입력값, 정답유무, 문제번호
+        //   {
+        //     question: questionList[index].question,
+        //     user: curAnswer.trim(), // 앞뒤 공백을 제거
+        //     index: index + 1,
+        //   },
+        // ]);
+        // console.log(answer);
+      }
+    },
+    [index, questionLength]
+  );
+
+  // 다음문제로 넘어가기
+  const onNextClick: (questionId: number) => void = useCallback(
+    (questionId: number) => {
+      addValueToAnswer(questionId);
+      // 문제번호 1 증가
+      setIndex((prev: number) => prev + 1);
+      // textarea 초기화
       document
         .querySelectorAll<HTMLTextAreaElement>(".question-textarea")
         .forEach((textArea) => {
-          curAnswer += textArea.value.trim() + " ";
+          textArea.value = "";
         });
-
-      // answer 배열에 추가
-      setAnswer([
-        ...answer,
-        // 질문, 사용자 입력값, 정답유무, 문제번호
-        {
-          question: questionList[index].question,
-          user: curAnswer.trim(), // 앞뒤 공백을 제거
-          index: index + 1,
-        },
-      ]);
-      console.log(answer);
-    }
-  }, [questionList, answer, index]);
-
-  // 다음문제로 넘어가기
-  const onNextClick: () => void = useCallback(() => {
-    addValueToAnswer();
-    // 문제번호 1 증가
-    setIndex((prev: number) => prev + 1);
-    // textarea 초기화
-    document
-      .querySelectorAll<HTMLTextAreaElement>(".question-textarea")
-      .forEach((textArea) => {
-        textArea.value = "";
-      });
-  }, [addValueToAnswer]);
+    },
+    [addValueToAnswer]
+  );
 
   return (
     <div className="flex flex-col my-4">
@@ -96,10 +157,13 @@ export default function InterView(props: any) {
       <Question
         question={questionList[index]}
         index={index + 1}
-        onNextClick={onNextClick}
+        onNextClick={() => onNextClick(questionList[index].id)}
       />
-      <TimeBar onNextClick={onNextClick} index={index} />
-      <NextBtn onNextClick={onNextClick} />
+      <TimeBar
+        onNextClick={() => onNextClick(questionList[index].id)}
+        index={index}
+      />
+      <NextBtn onNextClick={() => onNextClick(questionList[index].id)} />
     </div>
   );
 }

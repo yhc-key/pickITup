@@ -2,8 +2,8 @@
 import { useCallback, useRef, useEffect } from "react";
 
 interface Quiz {
+  id: number;
   question: string;
-  answer: string;
 }
 
 interface questionProps {

@@ -29,7 +29,7 @@ export default function BackBtn() {
             퀴즈를 종료하시겠습니까 ?
           </div>
           <div className="mb-5 font-medium text-center text-ml">
-            현재 작성한 답변까지 자동으로 저장됩니다 💡
+            현재 작성 중인 답변은 저장되지 않습니다 💡
           </div>
           <div className="flex flex-wrap justify-center gap-2 mt-3"></div>
           <div className="flex flex-col items-center justify-center mt-5">
