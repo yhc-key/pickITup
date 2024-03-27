@@ -45,7 +45,6 @@ function MyBadge() {
 
   return (
     <div>
-        <TechSelectAfterLogin/>
       <div className="flex items-center justify-start mt-6">
         <div className="h-[5vh] w-[15vw] bg-[#CBFFC2] flex items-center justify-center rounded-lg font-bold">내가 획득한 뱃지</div>
       </div>
@@ -58,6 +57,7 @@ function MyBadge() {
       <div className="flex items-center justify-start flex-wrap w-full">
         {unacq}
       </div>
+      <TechSelectAfterLogin/>
     </div>
   )
 }
