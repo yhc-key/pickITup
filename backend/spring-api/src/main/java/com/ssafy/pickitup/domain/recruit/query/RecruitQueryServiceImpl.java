@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
@@ -59,15 +61,26 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
      */
     @Override
     public Page<RecruitQueryResponseDto> search(RecruitQueryRequestDto dto, Pageable pageable) {
-        Pageable new_pageable = PageRequest.of(
-            pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dueDate").ascending()
-        );
-        StringBuilder sb = new StringBuilder();
-        for (String str : dto.getKeywords()) {
-            sb.append(str).append(" ");
+        Page<RecruitDocumentElasticsearch> searchResult;
+        if (dto.getKeywords().isEmpty()) {
+            searchResult = recruitQueryElasticsearchRepository
+                .searchWithQueryOnly(dto.getQuery(), pageable);
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (String str : dto.getKeywords()) {
+                sb.append(str).append(" ");
+            }
+            searchResult =
+                recruitQueryElasticsearchRepository
+                    .searchWithFilter(dto.getQuery(), sb.toString(), pageable);
         }
-        return recruitQueryElasticsearchRepository.searchWithFilter(
-                dto.getQuery(), sb.toString(), new_pageable)
+        // Elasticsearch에서 가져온 결과를 추가적으로 정렬
+        List<RecruitDocumentElasticsearch> sortedList = searchResult.getContent().stream()
+            .sorted(Comparator.comparing(RecruitDocumentElasticsearch::getDueDate))
+            .collect(Collectors.toList());
+
+        // 정렬된 결과를 다시 페이지로 만들어 반환
+        return new PageImpl<>(sortedList, pageable, searchResult.getTotalElements())
             .map(es -> {
                 Integer companyId = companyQueryService.searchByName(es.getCompany()).getId();
                 return es.toMongo(companyId);
