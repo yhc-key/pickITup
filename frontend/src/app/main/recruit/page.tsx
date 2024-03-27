@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import Image from "next/image";
 import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
+import useSearchStore, { searchState } from "@/store/searchStore";
 
 interface Recruit {
   career: [number, number];
@@ -23,13 +24,28 @@ interface Recruit {
   url: string;
 }
 
-const apiAddress = "https://spring.pickITup.online/recruit";
+const apiAddress = "https://spring.pickITup.online/recruit/search";
 const techDataValues = Array.from(techDataMap.values());
 
 export default function Recruit({}) {
+  const keywords = useSearchStore((state: searchState) => state.keywords);
+  const query = useSearchStore((state: searchState) => state.query);
   const bottom = useRef<HTMLDivElement>(null);
+  console.log(keywords);
   const fetchRecruits = async (pageParam: number) => {
-    const res = await fetch(`${apiAddress}?page=${pageParam}&size=9&sort=null`);
+    const res = await fetch(
+      `${apiAddress}?page=${pageParam}&size=9&sort=null`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          keywords: keywords,
+          query: query,
+        }),
+      }
+    );
     return res.json();
   };
 
@@ -57,7 +73,6 @@ export default function Recruit({}) {
   useEffect(() => {
     let observer: IntersectionObserver;
     const onIntersect = ([entry]: IntersectionObserverEntry[]) => {
-      console.log("check 포인트");
       entry.isIntersecting && fetchNextPage();
     };
     console.log(bottom);
@@ -77,7 +92,7 @@ export default function Recruit({}) {
     <>
       <div className="flex flex-wrap justify-center ">
         {data?.pages.map((page, i: number) =>
-          page.response.content.map((recruit: Recruit, recruitI: number) => {
+          page.response?.content.map((recruit: Recruit, recruitI: number) => {
             return (
               <button
                 type="button"
@@ -91,6 +106,9 @@ export default function Recruit({}) {
                   width="300"
                   height="300"
                   className="shadow-inner shadow-black object-cover h-[50%]"
+                  onError={(e) => {
+                    e.target.src = "/images/baseCompany.jpg";
+                  }}
                 />
                 <p className="m-1 text-sm text-f5gray-500 text-left">
                   {recruit.company}
