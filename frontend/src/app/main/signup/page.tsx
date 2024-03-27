@@ -83,7 +83,7 @@ export default function Signup() {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        router.push("/main/recruit");
+        router.push("/main/login");
       });
   };
   return (
@@ -101,7 +101,7 @@ export default function Signup() {
               value={id}
               onChange={(e) => setId(e.target.value)}
               className="w-[16vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none border-2 border-gray-200 
+              bg-gray-200 appearance-none 
               text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
               "
             />
@@ -144,7 +144,7 @@ export default function Signup() {
                 setPassword(e.target.value);
               }}
               className="w-[24vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none border-2 border-gray-200
+              bg-gray-200 appearance-none
               text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
               "
             />
@@ -167,7 +167,7 @@ export default function Signup() {
               value={samepass}
               onChange={(e) => setSamepass(e.target.value)}
               className="w-[24vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none border-2 border-gray-200 
+              bg-gray-200 appearance-none 
               text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
               "
             />
@@ -187,7 +187,7 @@ export default function Signup() {
                 setName(e.target.value);
               }}
               className="w-[24vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none border-2 border-gray-200
+              bg-gray-200 appearance-none 
               text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
               "
             />
@@ -204,7 +204,7 @@ export default function Signup() {
               }}
               placeholder="example@naver.com"
               className="w-[16vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none border-2 border-gray-200
+              bg-gray-200 appearance-none
               text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300
               "
             />
@@ -219,7 +219,7 @@ export default function Signup() {
             <input
               placeholder="인증번호 입력"
               className="w-[16vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none border-2 border-gray-200
+              bg-gray-200 appearance-none
               text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
               "
             />

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { TiDeleteOutline } from "react-icons/ti";
 import Modal from "@/components/modal";;
 import { techDataMap } from "@/data/techData";
-import { techData2,techInfos } from "@/data/techData2";
+import { techData2,techInfos } from "@/data/techData";
 import AutocompleteSearchBar from "@/components/AutoCompleteSearchBar";
 
 const techTypes: string[] = [
