@@ -1,5 +1,7 @@
 package com.ssafy.pickitup.domain.interview.api;
 
+import com.ssafy.pickitup.domain.auth.api.ApiUtils;
+import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.interview.query.dto.InterviewGameDto;
 import com.ssafy.pickitup.domain.interview.query.service.InterviewService;
 import com.ssafy.pickitup.global.annotation.AuthID;
@@ -19,8 +21,9 @@ public class InterviewController {
   private final InterviewService interviewService;
 
   @GetMapping("/random")
-  public List<InterviewGameDto> randomInterviews(String subCategory) {
-    return interviewService.findInterviewsBySubCategoryInRandomOrder(subCategory);
+  public ApiResult<List<InterviewGameDto>> randomInterviews(String subCategory) {
+    List<InterviewGameDto> interviewsInRandomOrder = interviewService.findInterviewsBySubCategoryInRandomOrder(subCategory);
+    return ApiUtils.success(interviewsInRandomOrder);
   }
 
   @GetMapping("/test")

@@ -1,6 +1,9 @@
 package com.ssafy.pickitup.domain.user.query.service;
 
+import com.ssafy.pickitup.domain.user.dto.InterviewWithAnswerDto;
+import java.util.List;
+
 public interface UserInterviewQueryService {
 
-  void findInterviewsAndAnswersByUserId(Integer userId);
+  List<InterviewWithAnswerDto> findInterviewsAndAnswersByUserId(Integer userId);
 }
