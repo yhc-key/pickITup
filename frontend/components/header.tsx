@@ -81,7 +81,7 @@ export default function Header() {
   return (
     <header>
       <div>
-        <div className="flex justify-between border-b border-f5gray-400 mb:hidden">
+        <div className="py-1 flex justify-between border-b border-f5gray-400 mb:hidden">
           <div>
             <Link href="/" className="flex items-center">
               <Image
@@ -109,10 +109,10 @@ export default function Header() {
                 <div key={link.name} className="m-auto">
                   <Link
                     href={link.href}
-                    className={`mr-4 hover:text-f5green-300 transition-all ease-in-out duration-300 ${
+                    className={`mr-4  hover:text-f5green-300 transition-all ease-in duration-300 ${
                       !isActive(link.href)
                         ? "text-f5black-400"
-                        : "text-f5green-400"
+                        : "text-f5green-300 font-semibold"
                     }`}
                   >
                     {link.name}
@@ -137,7 +137,7 @@ export default function Header() {
             <div className="p-3 my-auto mr-10 text-sm bg-f5gray-300 rounded-2xl">
               <Link
                 href="/main/social"
-                className="transition-all duration-200 ease-in-out text-f5black-400 hover:text-f5green-300"
+                className="transition-all duration-200 ease-in text-f5black-400 hover:text-f5green-300"
               >
                 로그인 | 회원가입
               </Link>
@@ -151,10 +151,10 @@ export default function Header() {
                 <div key={link.name} className="mx-auto ">
                   <Link
                     href={link.href}
-                    className={` hover:text-f5green-300 transition-all ease-in-out duration-300 ${
+                    className={` hover:text-f5green-300 transition-all ease-in duration-300 ${
                       !isActive(link.href)
                         ? "text-f5black-400"
-                        : "text-f5green-400 font-bold transition-all ease-in-out duration-300"
+                        : "text-f5green-400 font-bold transition-all ease-in duration-300"
                     }`}
                   >
                     <div className="text-xl text-center"> {link.icon}</div>

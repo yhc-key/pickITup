@@ -116,7 +116,7 @@ const deletePickTech = (item : string)=>{
                 <button
                   type="button"
                   onClick={(): void => setPickType(techType)}
-                  className={`border border-f5gray-300 rounded-2xl text-f5black-400 text-xs p-2  hover:transition-all hover:scale-105 hover:ease-in-out  ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
+                  className={`border border-f5gray-300 rounded-2xl text-f5black-400 text-xs p-2  hover:transition-all hover:scale-105 hover:ease-in  ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
                   key={index}
                 >
                   {techType}
@@ -134,7 +134,7 @@ const deletePickTech = (item : string)=>{
                     type="button"
                     key={index}
                     onClick={() => {!isActive?techAddHandler(tech):deletePickTech(tech)}}
-                    className={`flex flex-row border-f5gray-300 border py-1 pr-2 rounded-2xl text-f5black-400 text-xs items-center  hover:transition-all hover:scale-105 hover:ease-in-out  ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
+                    className={`flex flex-row border-f5gray-300 border py-1 pr-2 rounded-2xl text-f5black-400 text-xs items-center  hover:transition-all hover:scale-105 hover:ease-in  ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
                   >
                     <Image
                       src={`/images/techLogo/${tech}.png`}

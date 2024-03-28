@@ -27,6 +27,10 @@ const config: Config = {
           600: "#005d38",
           700: "#00482b",
         },
+        f5greenn: {
+          100: "#57b53f15",
+          200: "#57b53f",
+        },
         f5yellowgreen: {
           200: "#d7ffa4",
           300: "#c1ff72",
@@ -42,6 +46,10 @@ const config: Config = {
           550: "#992828",
           600: "#731e1e",
           700: "#591717",
+        },
+        f5redd: {
+          100: "#e75e5f15",
+          200: "#e75e5f",
         },
         f5black: {
           400: "#424242",
@@ -99,11 +107,11 @@ const config: Config = {
       animation: {
         startGauge: "startGauge 10s forwards linear",
         startGauge4: "startGauge 40s forwards linear",
-        "fade-in": "fadeIn 0.7s ease-in-out",
-        "fade-in-delayed": "fadeIn 0.7s ease-in-out forwards 0.3s",
-        "scale-in": "scaleIn 0.7s ease-in-out",
-        "slide-up": "slideUp 0.7s ease-in-out",
-        "slide-right": "slideRight 0.7s ease-in-out",
+        "fade-in": "fadeIn 0.7s ease-in",
+       "fade-in-delayed": "fadeIn 0.7s ease-in forwards 0.3s",
+        "scale-in": "scaleIn 0.7s ease-in",
+        "slide-up": "slideUp 0.7s ease-in",
+        "slide-right": "slideRight 0.7s ease-in",
       },
     },
   },

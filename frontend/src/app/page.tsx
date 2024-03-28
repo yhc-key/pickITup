@@ -159,7 +159,7 @@ export default function Home() {
         className="h-screen overflow-hidden scroll-snap-y"
       >
         <Link href="/main/recruit">
-          <button className="fixed p-3 text-sm transition-all duration-300 ease-in-out top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">
+          <button className="fixed p-3 text-sm transition-all duration-300 ease-in top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">
             {"건너뛰기 >>"}
           </button>
         </Link>
