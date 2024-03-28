@@ -20,15 +20,20 @@ public class GeoLocationService {
     private final String KAKAO_MAPS_GEOCODING_API_URL = "https://dapi.kakao.com/v2/local/search/address.json";
     @Value("${kakao.api}")
     private String KAKAO_API_KEY;
+    private String[] locations = {"서울", "인천", "경기", "제주", "부산", "울산", "대구", "대전", "광주", "강원", "충청",
+        "전라", "경상"};
 
     public GeoLocation getGeoLocation(String address) {
         if (address == null) {
             return new GeoLocation(0, 0);
         }
+
+        String extractedAddress = extractAddress(address);
+
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-            .url(KAKAO_MAPS_GEOCODING_API_URL + "?query=" + address)
+            .url(KAKAO_MAPS_GEOCODING_API_URL + "?query=" + extractedAddress)
             .addHeader("Authorization", KAKAO_API_KEY) // 카카오 REST API 키 입력
             .build();
 
@@ -50,5 +55,19 @@ public class GeoLocationService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private String extractAddress(String address) {
+        int startIndex = -1;
+        for (String location : locations) {
+            startIndex = address.indexOf(location);
+            if (startIndex != -1) {
+                break;
+            }
+        }
+        if (startIndex == -1) {
+            return "해당 주소에서 위치를 찾을 수 없습니다.";
+        }
+        return address.substring(startIndex);
     }
 }

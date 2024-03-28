@@ -31,6 +31,7 @@ import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.domain.user.query.UserRecruitQueryJpaRepository;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
+import com.ssafy.pickitup.domain.user.query.service.UserInterviewQueryService;
 import com.ssafy.pickitup.global.entity.GeoLocation;
 import com.ssafy.pickitup.global.service.GeoLocationService;
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class UserCommandService {
     private final ScrapCommandMongoRepository scrapCommandMongoRepository;
     private final ClickCommandMongoRepository clickCommandMongoRepository;
     private final UserRecommendService userRecommendService;
+    private final UserInterviewQueryService userInterviewQueryService;
 
     @Transactional
     public UserResponseDto getUserById(int userId) {
@@ -76,6 +78,8 @@ public class UserCommandService {
         int badgeCount = badgeQueryService.myBadgeCount(userId); // 소유한 뱃지 개수 카운트
         List<Integer> myRecruitIdList = userQueryService.findRecruitIdByUserId(userId);
         int closingCount = recruitQueryService.countClosingRecruitByIdList(myRecruitIdList);
+        int solvedInterviewAnswerCount = userInterviewQueryService.countSolvedInterviewsByUserId(
+            userId);
         /*
             뱃지 갱신 -> ok
 
@@ -100,10 +104,14 @@ public class UserCommandService {
         if (user.getUserRank() == Rank.NORMAL) {
             if (user.checkMyRank()) {
                 user.upgradeToSuper();
+                UserMongo userMongo = userCommandMongoRepository.findById(userId)
+                    .orElseThrow(UserNotFoundException::new);
+                userMongo.setRank(Rank.SUPER.name());
             }
         }
 
-        return UserResponseDto.toDto(updatedUser, scrapCount, badgeCount, closingCount);
+        return UserResponseDto.toDto(updatedUser, scrapCount, badgeCount, closingCount,
+            solvedInterviewAnswerCount);
     }
 
     @Transactional
@@ -129,7 +137,7 @@ public class UserCommandService {
         userCommandJpaRepository.save(user);
         auth.setUser(user);
 //        badgeCommandService.initBadge(user.getId());
-        return UserResponseDto.toDto(user, 0, 0, 0);
+        return UserResponseDto.toDto(user, 0, 0, 0, 0);
     }
 
 
@@ -144,7 +152,7 @@ public class UserCommandService {
         badgeCommandService.initBadge(user);
         userCommandJpaRepository.save(user);
         auth.setUser(user);
-        return UserResponseDto.toDto(user, 0, 0, 0);
+        return UserResponseDto.toDto(user, 0, 0, 0, 0);
     }
 
     @Transactional
