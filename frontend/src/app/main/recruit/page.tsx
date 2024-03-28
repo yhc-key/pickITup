@@ -7,19 +7,13 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import Image from "next/image";
-import {
-  Fragment,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import useSearchStore, { searchState } from "@/store/searchStore";
 import { Recruit } from "@/type/interface";
 import { MoonLoader } from "react-spinners";
+import { useMediaQuery } from "react-responsive";
 
-const apiAddress = "https://spring.pickITup.online/recruit/search";
+const apiAddress = "https://spring.pickITup.online/recruit";
 const baseImg = "/Images/baseCompany.jpg";
 const techDataValues = Array.from(techDataMap.values());
 const recruitClickHandler = (url: string) => {
@@ -30,10 +24,12 @@ export default function RecruitPage() {
   const keywords = useSearchStore((state: searchState) => state.keywords);
   const query = useSearchStore((state: searchState) => state.query);
   const [wrongSrcs, setWrongSrcs] = useState<boolean[]>([]);
-  const [loadingArr, setLoadingArr] = useState<boolean[]>([]);
   const bottom = useRef<HTMLDivElement>(null);
+  const isMobile = useMediaQuery({
+    query: "(max-width:480px)",
+  });
 
-  const fetchRecruits = useCallback(
+  const fetchRecruits2 = useCallback(
     async (pageParam: number) => {
       const res = await fetch(`${apiAddress}?page=${pageParam}&size=9`, {
         method: "POST",
@@ -49,6 +45,11 @@ export default function RecruitPage() {
     },
     [keywords, query]
   );
+
+  const fetchRecruits = useCallback(async (pageParam: number) => {
+    const res = await fetch(`${apiAddress}?page=${pageParam}&size=9&sort=null`);
+    return res.json();
+  }, []);
 
   const {
     data,
@@ -71,18 +72,6 @@ export default function RecruitPage() {
     const tmpWrongSrcs = [...wrongSrcs];
     tmpWrongSrcs[index] = true;
     setWrongSrcs(tmpWrongSrcs);
-  };
-
-  const loadingHandler = (index: number) => {
-    const tmpLoadingArr = [...loadingArr];
-    tmpLoadingArr[index] = true;
-    setLoadingArr(loadingArr);
-  };
-
-  const loadingCompleteHandler = (index: number) => {
-    const tmpLoadingArr = [...loadingArr];
-    tmpLoadingArr[index] = false;
-    setLoadingArr(loadingArr);
   };
 
   useEffect(() => {
@@ -113,25 +102,33 @@ export default function RecruitPage() {
                 type="button"
                 onClick={() => recruitClickHandler(recruit.url)}
                 key={recruitI}
-                className="w-[30%] max-w-72 h-[350px] m-4 rounded-xl overflow-hidden flex flex-col shadow "
+                className={`${isMobile ? "w-full" : "w-[30%] mx-4 max-w-72"} my-4 h-[350px] rounded-xl overflow-hidden flex flex-col shadow `}
               >
                 <Image
                   src={wrongSrcs[recruitI] ? baseImg : recruit.thumbnailUrl}
                   alt="thumbnail"
-                  width="300"
-                  height="300"
-                  className={`shadow-inner shadow-black object-cover h-[50%] ${loadingArr[recruitI] ? "animate-pulse bg-gray-200 blur-md" : ""}`}
-                  onLoad={() => loadingHandler(recruitI)}
-                  onLoadingComplete={() => loadingCompleteHandler(recruitI)}
+                  width="400"
+                  height="400"
+                  className={`shadow-inner shadow-black object-cover h-[50%] w-full`}
                   onError={() => imageErrorHandler(recruitI)}
                 />
-                <p className="m-1 text-sm text-f5gray-500 text-left">
-                  {recruit.company}
-                </p>
+                <div className="flex flex-row justify-between w-full">
+                  <div className="m-1 text-sm text-f5gray-500 ">
+                    {recruit.company}
+                  </div>
+                  <div className="m-1 text-sm text-f5gray-500">
+                    {"~" +
+                      recruit.dueDate[0] +
+                      "-" +
+                      recruit.dueDate[1] +
+                      "-" +
+                      recruit.dueDate[2]}
+                  </div>
+                </div>
                 <p className="text-f5black-300 font-bold h-12 text-left px-2">
                   {recruit.title}
                 </p>
-                <div className="gap-2 flex flex-wrap">
+                <div className="ml-2 gap-2 flex flex-wrap">
                   {recruit.qualificationRequirements.map((tech, i) => {
                     let techTmp = tech.replace(/\s/g, "");
                     techTmp = techTmp.replace(/#/g, "Sharp");

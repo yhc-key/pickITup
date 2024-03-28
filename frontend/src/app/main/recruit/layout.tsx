@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import TanstackProvider from "@/providers/TanstackProvider";
 import { techTypes } from "@/data/techData";
+import { useMediaQuery } from "react-responsive";
 
 export default function RecruitLayout({
   children,
@@ -18,6 +19,9 @@ export default function RecruitLayout({
   const [nowType, setNowType] = useState("언어");
   const [pickTechList, setPickTechList] = useState<string[]>([]);
   const [techs, setTechs] = useState<string[]>(techDataMap.get("언어") ?? []);
+  const isMobile = useMediaQuery({
+    query: "(max-width:480px)",
+  });
 
   const changeTechTypeHandler = (techType: string) => {
     setNowType(techType);
@@ -62,8 +66,8 @@ export default function RecruitLayout({
   }, [pickTechList, nowType, setKeywords]);
 
   return (
-    <div className="flex mx-10 my-5">
-      <div className="min-w-[330px] max-w-[330px] my-5">
+    <div className={`flex ${isMobile ? "flex-col" : ""}  mx-10 my-5`}>
+      <div className="min-w-[330px] max-w-[330px] my-5 min-h-96">
         <div className="flex w-full justify-center my-3 items-center gap-2 bg-f5gray-300 h-10 rounded-md text-f5gray-500 text-sm p-2">
           <input
             type="text"
@@ -132,7 +136,7 @@ export default function RecruitLayout({
         </div>
       </div>
       <TanstackProvider>
-        <div className="flex-grow ml-5">{children}</div>
+        <div className={`flex-grow ${isMobile ? "" : "ml-5"} `}>{children}</div>
       </TanstackProvider>
     </div>
   );

@@ -42,3 +42,24 @@ export interface Recruit {
   title: string;
   url: string;
 }
+
+export interface Interview {
+  interviewId: number;
+  mainCategory: string;
+  subCategory: string;
+  question: string;
+  example: string;
+  answer: string;
+}
+
+export interface Essay {
+  company: string;
+  title: string;
+  id: number;
+  content: string;
+}
+
+export interface Title {
+  id: number;
+  title: string;
+}

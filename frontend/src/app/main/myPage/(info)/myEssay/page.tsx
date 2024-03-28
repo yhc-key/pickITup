@@ -1,11 +1,5 @@
 "use client";
-import React, {
-  Fragment,
-  MutableRefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import {
   FaPlus,
   FaPen,
@@ -15,21 +9,10 @@ import {
 } from "react-icons/fa";
 import { cloneDeep } from "lodash";
 import Link from "next/link";
-import Modal from "@/components/modal";
 import useEssayStore from "@/store/essayStore";
 import { redirect } from "next/navigation";
 import ModalCustom from "@/components/modalCustom";
-interface Essay {
-  company: string;
-  title: string;
-  id: number;
-  content: string;
-}
-
-interface Title {
-  id: number;
-  title: string;
-}
+import { Essay, Title } from "@/type/interface";
 
 const apiAddress = "https://spring.pickITup.online/self/main";
 
@@ -46,7 +29,7 @@ export default function MyEssay(): JSX.Element {
   const nowClickEssay = useRef({
     titleId: 0,
     essayId: 0,
-  });
+  }); // 현재 클릭된 타이틀, 에세이 체크용
 
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [isChangeModalOpen, setIsChangeModalOpen] = useState<boolean>(false);
@@ -91,21 +74,13 @@ export default function MyEssay(): JSX.Element {
     if (e.key !== "Enter" && e.key !== "Escape") {
       e.stopPropagation();
     }
-  };
-
-  const makeChangeTitle = async (
-    id: number,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    event.preventDefault();
-  };
+  }; // input 바깥에서 keyDown 이벤트가 있어서 input 이벤트를 낚아채가기 때문에 stopPropagation으로 막음 esc, escape는 부모 이벤트 사용하기 위해 냅둠
 
   const deleteEssayHandler = async (titleId: number, essayId: number) => {
     try {
       await fetch(`${apiAddress}/${titleId}/sub/${essayId}`, {
         method: "DELETE",
       });
-
       // window.location.reload();
       // 혹시 전역 객체가 window가 아니어서 문제생길수있음 nodejs 환경에서는 서버 띄우고 글로벌 검토 요망
     } catch (error) {
@@ -226,7 +201,7 @@ export default function MyEssay(): JSX.Element {
         const urls: string[] = [];
         titles.map((title: Title): void => {
           urls.push(`${apiAddress}/${title.id}/sub`);
-        });
+        }); // Promise.all 을 만들기 위해 url들을 urls에 보관
 
         const res: Response[] = await Promise.all(
           urls.map((url: string): Promise<Response> => fetch(url))
@@ -279,9 +254,6 @@ export default function MyEssay(): JSX.Element {
               >
                 <input
                   value={`${index + 1}. ${title.title}`}
-                  onChange={(e) => {
-                    makeChangeTitle(title.id, e);
-                  }}
                   disabled
                   className="w-full mr-10 outline-none bg-white"
                 />
