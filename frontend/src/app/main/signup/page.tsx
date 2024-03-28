@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 export default function Signup() {
   const router = useRouter();
   const [availableId, setAvailableId] = useState<string>("");
@@ -32,7 +33,7 @@ export default function Signup() {
       setIsValidPassword("false");
     }
   }, [password]);
-  ``;
+
   const checkid = () => {
     if (id === "") {
       setAvailableId("false");
@@ -50,6 +51,7 @@ export default function Signup() {
         }
       });
   };
+
   const signUpRequest = () => {
     if (availableId !== "true") {
       alert("중복확인 후 올바른 아이디를 다시 입력해주세요");
@@ -86,8 +88,9 @@ export default function Signup() {
         router.push("/main/login");
       });
   };
+
   return (
-    <div className="flex flex-col justify-center items-center w-full h-[82vh]">
+    <div className="flex flex-col justify-center items-center w-full">
       <div className="flex items-center justify-center h-[10vh] text-xl font-bold">
         pick IT up 회원가입
       </div>
