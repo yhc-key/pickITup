@@ -22,7 +22,7 @@ interface QuizResultProps {
 
 export default function QuizResult({ answer }: QuizResultProps) {
   const isMobile = useMediaQuery({
-    query: "(max-width:700px)",
+    query: "(max-width:480px)",
   });
 
   const [showConfetti, setShowConfetti] = useState(false);

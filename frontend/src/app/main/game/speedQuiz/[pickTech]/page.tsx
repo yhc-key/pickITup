@@ -153,12 +153,12 @@ export default function SpeedQuiz(props: any) {
           <NextBtn onNextClick={onNextClick} />
         </div>
       ) : (
-        <div className="mt-4 mb:mt-12">
+        <div className="my-4 mb:mt-12">
           <QuizResult answer={answer} />
           <div className="flex justify-end mt-8 mr-28 mb:absolute mb:top-1 mb:right-1 mb:mr-6">
             <button
               onClick={listCilckHandler}
-              className="px-5 py-2 text-sm font-semibold bg-opacity-80 rounded-3xl text-neutral-100 bg-f5gray-500 hover:bg-opacity-100 ring-1 ring-inset ring-f5gray-400/10"
+              className="px-5 py-2 text-sm font-semibold bg-opacity-80 rounded-2xl  text-f5black-400 bg-f5gray-300 hover:bg-f5gray-400 ring-1 ring-inset ring-f5gray-400/10"
             >
               {"게임 목록 >>"}
             </button>

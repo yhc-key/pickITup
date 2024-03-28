@@ -47,7 +47,7 @@ export default function GamePage() {
             <Tooltip content={gameInfo}>
               <IoHelpCircleSharp
                 size={35}
-                className="transition-all duration-150 ease-in-out text-f5gray-400 hover:text-f5gray-500 hover:cursor-pointer"
+                className="transition-all duration-150 ease-in text-f5gray-400 hover:text-f5gray-500 hover:cursor-pointer"
               />
             </Tooltip>
           </div>
