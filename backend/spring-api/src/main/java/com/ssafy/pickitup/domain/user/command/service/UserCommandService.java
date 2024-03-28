@@ -167,6 +167,8 @@ public class UserCommandService {
         User user = userCommandJpaRepository.findById(authId)
             .orElseThrow(UserNotFoundException::new);
         user.changeAddress(address);
+        //스칼라 서버
+        callScalaByAddressChange();
     }
 
     @Transactional
@@ -216,7 +218,7 @@ public class UserCommandService {
         userCommandMongoRepository.save(userMongo);
 
         // 스칼라 서버에 유저 키워드 변경 사실 알리기
-//        callScalaByKeywordChange();
+        callScalaByKeywordChange();
 
     }
 
