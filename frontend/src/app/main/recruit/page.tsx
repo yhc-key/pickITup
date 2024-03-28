@@ -13,11 +13,14 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
+  useState,
 } from "react";
 import useSearchStore, { searchState } from "@/store/searchStore";
 import { Recruit } from "@/type/interface";
+import { MoonLoader } from "react-spinners";
 
 const apiAddress = "https://spring.pickITup.online/recruit/search";
+const baseImg = "/Images/baseCompany.jpg";
 const techDataValues = Array.from(techDataMap.values());
 const recruitClickHandler = (url: string) => {
   window.open(url, "_blank");
@@ -26,6 +29,7 @@ const recruitClickHandler = (url: string) => {
 export default function RecruitPage() {
   const keywords = useSearchStore((state: searchState) => state.keywords);
   const query = useSearchStore((state: searchState) => state.query);
+  const [wrongSrcs, setWrongSrcs] = useState<boolean[]>([]);
   const bottom = useRef<HTMLDivElement>(null);
 
   const fetchRecruits = useCallback(
@@ -62,6 +66,11 @@ export default function RecruitPage() {
     },
   });
 
+  const imageErrorHandler = (index: number) => {
+    const tmpWrongSrcs = [...wrongSrcs];
+    tmpWrongSrcs[index] = true;
+    setWrongSrcs(tmpWrongSrcs);
+  };
   useEffect(() => {
     let observer: IntersectionObserver;
     const onIntersect = ([entry]: IntersectionObserverEntry[]) => {
@@ -92,12 +101,12 @@ export default function RecruitPage() {
                 className="w-[30%] max-w-72 h-[400px] m-4 rounded-xl overflow-hidden flex flex-col shadow "
               >
                 <Image
-                  src={recruit.thumbnailUrl}
+                  src={wrongSrcs[recruitI] ? baseImg : recruit.thumbnailUrl}
                   alt="thumbnail"
                   width="300"
                   height="300"
                   className="shadow-inner shadow-black object-cover h-[50%]"
-                  onError={(error) => console.log(error)}
+                  onError={() => imageErrorHandler(recruitI)}
                 />
                 <p className="m-1 text-sm text-f5gray-500 text-left">
                   {recruit.company}
@@ -133,19 +142,11 @@ export default function RecruitPage() {
         )}
       </div>
 
-      {/* <div>
-      <button
-        onClick={() => fetchNextPage()}
-        disabled={!hasNextPage || isFetchingNextPage}
-      >
-        {isFetchingNextPage
-          ? "Loading more..."
-          : hasNextPage
-            ? "Load More"
-            : "Nothing more to load"}
-      </button>
-    </div> */}
-      <div>{isFetching && !isFetchingNextPage ? "Fetching..." : null}</div>
+      <div className="flex justify-center items-center h-[70vh]">
+        {isFetching && !isFetchingNextPage ? (
+          <MoonLoader color="#36d7b7" />
+        ) : null}
+      </div>
       <div ref={bottom} />
     </>
   );
