@@ -170,10 +170,12 @@ public class UserController {
         UserClickResponseDto allUserClick = userClickService.findAllUserClick(authId);
         return success(allUserClick);
     }
-    
+
     @Operation(summary = "회원 추천 채용 공고 조회")
-    @GetMapping("/recommend/{authId}")
-    public ApiResult<?> getUserRecommendRecruits(@PathVariable("authId") Integer authId) {
+    @GetMapping("/recommend/recruit")
+    public ApiResult<?> getUserRecommendRecruits(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         List<UserRecommendDto> userRecommendRecruitList = userRecommendService.getUserRecommendRecruitList(
             authId);
         return success(userRecommendRecruitList);
