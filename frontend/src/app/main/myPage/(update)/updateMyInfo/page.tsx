@@ -1,10 +1,15 @@
 "use client";
 import Image from "next/image";
-
+import DaumPostcode from "react-daum-postcode";
 import { FaCheck } from "react-icons/fa6";
 import { techDataMap } from "@/data/techData";
 import { useEffect, useState } from "react";
-
+import useAuthStore, { AuthState } from "@/store/authStore";
+import Modal from "@/components/modal2";
+import TechSelectMyPage from "@/components/techSelectMyPage";
+interface ModalProps{
+  Onclose: ()=>void;
+}
 const techTypes: string[] = [
   "언어",
   "프론트앤드",
@@ -17,185 +22,202 @@ const techTypes: string[] = [
 ];
 
 export default function MyPage() {
-  const [nowType, setNowType] = useState("언어");
-  const [pickTechList, setPickTechList] = useState<string[]>([]);
-  const [techs, setTechs] = useState<string[]>(techDataMap.get("언어") ?? []);
-  const submitHandler = () => {};
+  const nickname: string = useAuthStore((state: AuthState) => state.nickname);
+  const github: string = useAuthStore((state:AuthState)=>state.github);
+  const blog: string = useAuthStore((state:AuthState)=>state.blog);
+  const address: string = useAuthStore((state:AuthState)=>state.address);
+  
+  const email: string = useAuthStore((state:AuthState)=>state.email);
+  const setNickName :(newNickname:string) =>void = useAuthStore((state:AuthState)=>state.setNickname);
+  const setGithub: (newGithub:string)=> void=useAuthStore((state:AuthState)=>state.setGithub);
+  const setBlog: (newBlog:string)=> void=useAuthStore((state:AuthState)=>state.setBlog);
+  const setEmail: (newEmail:string)=> void=useAuthStore((state:AuthState)=>state.setEmail);
+  const setAddress: (newAddress:string)=> void=useAuthStore((state:AuthState)=>state.setAddress);
 
-  const changeTechTypeHandler = (techType: string) => {
-    setNowType(techType);
-    let techsTmp: string[] = [...(techDataMap.get(techType) || [])];
-    pickTechList.forEach((s) => {
-      const index: number = techsTmp?.indexOf(s) ?? -1;
-      if (index !== -1) {
-        techsTmp?.splice(index, 1);
-      }
-    });
-    setTechs(techsTmp);
-  };
-  const techClickHandler = (tech: string) => {
-    setPickTechList([...pickTechList, tech]);
-    const index: number = techs?.indexOf(tech) ?? -1;
-    if (index !== -1) {
-      techs?.splice(index, 1);
+  const [nickMessage,setNickMessage] = useState<string>("");
+  const [addressMessage,setAddressMessage] = useState<string>("");
+  const [newNickname,setNewNickname] = useState<string>("");
+  const [newEmail,setNewEmail] = useState<string>("");
+  const [newGithub,setNewGithub] = useState<string>("");
+  const [newBlog,setNewBlog] = useState<string>("");
+  const [newAddress,setNewAddress] = useState<string>("");
+  const [isTechSelectOpen,setIsTechSelectOpen]=useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false); 
+  const completeHandler = (data:any) =>{// 주소 받기 위한
+    setNewAddress(data.address);
+    setIsOpen(false); 
+  }
+  const resetHandler = () => {//reset 버튼
+    setNewNickname("");
+    setNewAddress("");
+    setNewGithub("");
+    setNewBlog("");
+    setNewEmail("");
+  }
+  const closeTech = () =>{  //기술 스택 모달 닫기
+    setIsTechSelectOpen(false);
+  }
+  const clickSide = () =>{  //바깥 선택 모달 닫기
+    setIsOpen(false);
+  }
+  const submitHandler = () => { //등록하기 버튼클릭
+    const token = sessionStorage.getItem("accessToken");
+    if(newNickname!==""){
+      const token = sessionStorage.getItem("accessToken");
+      fetch("https://spring.pickitup.online/users/nickname",{
+        method : "PATCH",
+        headers:{
+          "Content-Type" : "application/json",
+          "Authorization": "Bearer "+token
+        },
+        body: newNickname
+      })
+      .then(res=>res.json())
+      .then(res=>{
+        setNickName(newNickname);
+        sessionStorage.setItem("nickname",newNickname);
+        setNickMessage("닉네임 변경이 완료되었습니다.");
+        setNewNickname("");
+        console.log(res)}
+        );
     }
-  };
-  const techDeleteHandler = (tech: string) => {
-    setPickTechList((prevTechList) =>
-      prevTechList.filter((item) => item !== tech)
-    );
-  };
-
-  const duplClickHandler = () => {};
-
-  useEffect(() => {
-    let techsTmp: string[] = [...(techDataMap.get(nowType) || [])] ?? [];
-    pickTechList.forEach((s) => {
-      const index: number = techsTmp?.indexOf(s) ?? -1;
-      if (index !== -1) {
-        techsTmp?.splice(index, 1);
-      }
+    if(newAddress!==""){
+      fetch("https://spring.pickitup.online/users/address",{
+        method:"PATCH",
+        headers:{
+          "Authorization": "Bearer "+token
+        },
+        body:newAddress,
+      })
+      .then(res=>res.json())
+      .then(res=>{
+        console.log(res);
+        setAddress(newAddress);
+        setNewAddress("");
+        setAddressMessage("주소 변경이 완료되었습니다.")
+      })
+    }
+    if(newGithub===""){
+      setNewGithub(github);
+      console.log(newGithub);
+    }
+    if(newBlog===""){
+      setNewBlog(blog);
+      console.log(newGithub);
+    }
+    if(newEmail===""){
+      setNewEmail(email);
+      console.log(newGithub);
+    }
+    fetch("https://spring.pickitup.online/users/me",{
+      method:"PATCH",
+      headers:{
+        "Content-Type" : "application/json",
+        "Authorization": "Bearer "+token
+      },
+      body:JSON.stringify({
+        github : newGithub,
+        techBlog: newBlog,
+        email: newEmail
+      })
+    })
+    .then(res=>res.json())
+    .then(res=>{
+      console.log(res);
+      setEmail(newEmail);
+      setGithub(newGithub);
+      setBlog(newBlog);
+      setNewBlog("");
+      setNewEmail("");
+      setNewGithub("");
     });
-    setTechs(techsTmp);
-  }, [pickTechList]);
-
+  };
   return (
-    <form
-      onSubmit={submitHandler}
+    <div
       className="relative flex flex-col h-full pt-6 pb-20 pl-20 border border-f5gray-500 rounded-2xl"
     >
-      <h2 className="text-2xl font-bold">정보 수정하기</h2>
-      <Image
-        src="/images/pickItup.svg"
-        alt="프로필사진"
-        width="100"
-        height="100"
-        className="h-auto my-5 rounded-full"
-      />
+      <h2 className="text-2xl font-bold mb-4">정보 수정하기</h2>
       <div className="relative flex flex-row items-center">
-        <div className="absolute">닉네임 :</div>
+        <div className="absolute">닉네임 </div>
         <input
-          placeholder="조싸피"
+          value={newNickname}
+          onChange={(e)=>{setNewNickname(e.target.value)}}
+          placeholder={nickname}
           className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
         />
-        <button
-          type="button"
-          onClick={duplClickHandler}
-          className="flex flex-row items-center h-8 gap-2 px-2 ml-4 font-bold border rounded-lg text-f5black-400 bg-f5gray-400 hover:bg-f5gray-500"
-        >
-          <FaCheck />
-          체크
-        </button>
       </div>
-      <p className="mt-1 ml-20 text-sm text-f5green-400">
-        사용 가능한 닉네임입니다.
+      <p className="mt-1 ml-20 text-sm text-f5green-400 w-[200px] h-[30px]">
+        {nickMessage}
       </p>
-      <div className="flex flex-wrap mt-4 items-center min-h-12 gap-2 max-w-[1000px]">
-        <span className="font-bold">추가될 기술 스택 :</span>
-        {pickTechList.map((pickTech: string, index: number) => {
-          return (
-            <button
-              type="button"
-              onClick={() => techDeleteHandler(pickTech)}
-              key={index}
-              className="flex flex-row items-center p-1 pr-2 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5red-200"
-            >
-              <Image
-                src={`/images/techLogo/${pickTech}.png`}
-                alt={pickTech}
-                width="28"
-                height="28"
-                className="w-auto mr-1"
-              />
-              {pickTech}
-            </button>
-          );
-        })}
-      </div>
-      <div className="flex flex-wrap gap-4 mt-3">
-        {techTypes.map((techType: string, index: number) => {
-          const isActive: boolean = nowType == techType;
-          return (
-            <button
-              type="button"
-              onClick={(): void => changeTechTypeHandler(techType)}
-              className={`border border-f5gray-300 rounded-3xl p-2 hover:bg-f5green-200 ${isActive ? "border-f5green-400" : ""}`}
-              key={index}
-            >
-              {techType}
-            </button>
-          );
-        })}
-      </div>
-      <div className="flex flex-wrap gap-4 mt-3 max-w-[1000px]">
-        {techs?.map((tech: string, index: number) => {
-          return (
-            <button
-              type="button"
-              key={index}
-              onClick={() => techClickHandler(tech)}
-              className="flex flex-row items-center p-1 pr-2 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5green-200"
-            >
-              <Image
-                src={`/images/techLogo/${tech}.png`}
-                alt={tech}
-                width="28"
-                height="28"
-                className="w-auto mr-1"
-              />
-              {tech}
-            </button>
-          );
-        })}
-      </div>
       <div className="relative flex flex-row items-center mt-3">
-        <div className="absolute">Github :</div>
+        <div className="absolute">주소 </div>
         <input
-          placeholder="https://github.com/yhc-key"
+          readOnly
+          onClick={(e)=>setIsOpen(true)}
+          value={newAddress}
+          onChange={(e)=>setNewAddress(e.target.value)}
+          placeholder={address}
           className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
         />
+          {isOpen && 
+            <Modal open={isOpen} clickSide={clickSide} size="h-[500px] w-[800px]" >
+              <DaumPostcode onComplete={completeHandler}/>
+            </Modal>
+          }
       </div>
-      <div className="relative flex flex-row items-center mt-3">
-        <div className="absolute">Velog :</div>
-        <input
-          placeholder="https://velog.io/@yhc-key"
-          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
-        />
-      </div>
-      <div className="flex items-center justify-center w-1/3 h-8 p-2 ml-20 rounded-l min-w-80">
-        {" "}
-        or{" "}
-      </div>
-      <div className="relative flex flex-row items-center ">
-        <div className="absolute">Tistory :</div>
-        <input
-          placeholder=""
-          disabled
-          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
-        />
-      </div>
-      <div className="relative flex flex-row items-center mt-3">
-        <div className="absolute">Email :</div>
-        <input
-          placeholder="yhcho0712@gmail.com"
-          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
-        />
-      </div>
+        <p className="mt-1 ml-20 text-sm text-f5green-400 w-[200px] h-[30px]">
+        {addressMessage}
+      </p>
 
-      <div className="absolute bottom-0 right-0 mb-6 mr-6">
+      <div className="flex flex-wrap mt-4 items-center min-h-12 gap-2 max-w-[1000px]">
+        <span className="font-bold"> 기술 스택 </span>
+        <button type="button" onClick={()=>setIsTechSelectOpen(true)}>기술스택 수정하기</button>
+          {isTechSelectOpen&&<TechSelectMyPage onclose={closeTech}/>}
+      </div>
+      <div className="relative flex flex-row items-center mt-3">
+        <div className="absolute">Github </div>
+        <input
+          value={newGithub}
+          onChange={(e)=>setNewGithub(e.target.value)}
+          placeholder={github}
+          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
+        />
+      </div>
+      <div className="relative flex flex-row items-center mt-3">
+        <div className="absolute">tech blog </div>
+        <input
+          value={newBlog}
+          onChange={(e)=>setNewBlog(e.target.value)}
+          placeholder={blog}
+          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
+        />
+      </div>
+      <div className="relative flex flex-row items-center mt-3">
+        <div className="absolute">Email </div>
+        <input
+          value={newEmail}
+          onChange={(e)=>setNewEmail(e.target.value)}
+          placeholder={email}
+          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
+        />
+      </div>
+      
+
+       <div className="absolute bottom-0 right-0 mb-6 mr-6">
         <button
+          onClick={resetHandler}
           type="reset"
           className="px-6 py-2 mx-4 text-white rounded-lg bg-f5red-300"
         >
-          취소하기
+          초기화
         </button>
         <button
-          type="submit"
+          onClick={submitHandler}
           className="px-6 py-2 mx-4 text-white rounded-lg bg-f5green-300"
         >
           등록하기
         </button>
-      </div>
-    </form>
+      </div> 
+    </div>
   );
 }

@@ -4,11 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import { useEffect, useState } from "react";
-
 const dummyMyData: string[][] = [
   ["내가 찜한 채용공고", "3 개", "/images/starOutline.png"],
   ["마감 임박 채용공고", "1 개", "/images/history.png"],
-  ["문제 풀이 수", "64 개", "/images/iconLibraryBooks.png"],
+  ["문제 풀이 수", "64", "/images/iconLibraryBooks.png"],
   ["내 뱃지", "3 개", "/images/iconShield.png"],
 ];
 
@@ -18,11 +17,52 @@ export default function MyPageLayout({
   children: React.ReactNode;
 }>) {
   const nickname: string = useAuthStore((state: AuthState) => state.nickname);
-  // const [nickname, setNickname] = useState<string | null>(null);
+  const github: string = useAuthStore((state:AuthState)=>state.github);
+  const blog: string = useAuthStore((state:AuthState)=>state.blog);
+  const email: string = useAuthStore((state:AuthState)=>state.email);
+  const address: string = useAuthStore((state:AuthState)=>state.address);
+  const setGithub: (newGithub:string)=> void=useAuthStore((state:AuthState)=>state.setGithub);
+  const setBlog: (newGithub:string)=> void=useAuthStore((state:AuthState)=>state.setBlog);
+  const setEmail: (newGithub:string)=> void=useAuthStore((state:AuthState)=>state.setEmail);
+  const setAddress: (newAddress:string)=> void=useAuthStore((state:AuthState)=>state.setAddress);
 
-  // useEffect(() => {
-  //   setNickname(sessionStorage.getItem("nickname"));
-  // }, []);
+
+  const [scrapCount, setScrapCount] = useState<number>(0);
+  const [closeCount,setCloseCount] = useState<number>(0);
+  const [solvedCount,setSolvedCount] = useState<number>(0);
+  const [attendCount,setAttendCount] = useState<number>(0);
+  const [badgeCount,setBadgeCount] = useState<number>(0);
+  const [level,setLevel] = useState<number>(0);
+  useEffect(()=>{
+    const token = sessionStorage.getItem('accessToken');
+    if(token!==null){
+      fetch("https://spring.pickitup.online/users/me",{
+        method:"GET",
+        headers:{
+          "Authorization":"Bearer "+token
+        }
+      })
+      .then(res=>res.json())
+      .then(res=>{
+        console.log(res);
+        if(res.success===true){
+          setScrapCount(res.response.totalMyScrap);
+          setCloseCount(res.response.closingScrap);
+          // setSolvedCount(res.response.);
+          setAttendCount(res.response.attendCount);
+          setBadgeCount(res.response.totalMyBadge);
+          setEmail(res.response.email);
+          setLevel(res.response.level);
+          if(res.response.github===null) setGithub("정보 없음");
+          else setGithub(res.response.github);
+          if(res.response.techBlog===null) setBlog("정보 없음");
+          else setBlog(res.response.techBlog);
+          if(res.response.address===null) setAddress("정보 없음");
+          else setAddress(res.response.address);
+        }
+      })
+    }
+  },[])
   return (
     <div className="flex mx-10 my-5">
       <div className="min-w-[330px] max-w-[330px]">
@@ -49,27 +89,62 @@ export default function MyPageLayout({
           </div>
         </div>
         <div className="flex flex-row gap-4 my-4">
-          <p>Level 7</p>
+          <p>Level {level}</p>
           <p>경험치 바~~</p>
         </div>
-        <div className=" rounded-lg bg-f5green-100 p-4 my-4">
-          {dummyMyData.map((data: string[], index: number) => {
-            return (
-              <div className="flex justify-between mt-3" key={index}>
-                <div className="flex flex-row items-center gap-1">
-                  <Image
-                    src={data[2]}
-                    width="20"
-                    height="20"
-                    alt="icon"
-                    className="w-auto "
-                  />
-                  <p className="text-sm">{data[0]}</p>
-                </div>
-                <p className="text-sm">{data[1]}</p>
-              </div>
-            );
-          })}
+        <div className="border rounded-lg bg-f5green-200 px-4 py-2 my-4">
+          <div className="flex justify-between mt-3">
+            <div className="flex flex-row items-center gap-1">
+              <Image
+                src="/images/starOutline.png"
+                width="20"
+                height="20"
+                alt="icon"
+                className="w-auto"
+              />
+              <p className="text-sm">내가 찜한 채용공고</p>
+            </div>
+            <p className="text-sm">{scrapCount} 개</p>
+          </div>
+          <div className="flex justify-between mt-3">
+            <div className="flex flex-row items-center gap-1">
+              <Image
+                src="/images/history.png"
+                width="20"
+                height="20"
+                alt="icon"
+                className="w-auto"
+              />
+              <p className="text-sm">마감 임박 채용공고</p>
+            </div>
+            <p className="text-sm">{closeCount} 개</p>
+          </div>
+          <div className="flex justify-between mt-3">
+            <div className="flex flex-row items-center gap-1">
+              <Image
+                src="/images/iconLibraryBooks.png"
+                width="20"
+                height="20"
+                alt="icon"
+                className="w-auto"
+              />
+              <p className="text-sm">문제 풀이 수</p>
+            </div>
+            <p className="text-sm">{dummyMyData[2][1]} 개</p>
+          </div>
+          <div className="flex justify-between mt-3">
+            <div className="flex flex-row items-center gap-1">
+              <Image
+                src="/images/iconShield.png"
+                width="20"
+                height="20"
+                alt="icon"
+                className="w-auto"
+              />
+              <p className="text-sm">내 뱃지</p>
+            </div>
+            <p className="text-sm">{badgeCount} 개</p>
+          </div>
         </div>
         <div className="border border-f5gray-500 rounded-lg p-3">
           <p className="font-bold mb-2">내 기술 스택</p>
@@ -165,15 +240,15 @@ export default function MyPageLayout({
               width="30"
               height="30"
             />{" "}
-            <a href="https://github.com/yhc-key">https://github.com/yhc-key</a>
+            <a href={github}>{github}</a>
           </div>
           <div className="mt-2 flex flex-row gap-3 items-center">
             <Image src="/images/velog.png" alt="velog" width="30" height="30" />{" "}
-            <a href="http://velog.io/@yhc-key">https://velog.io/@yhc-key</a>
+            <a href={blog}>{blog}</a>
           </div>
           <div className="mt-2 flex flex-row gap-3 items-center">
             <Image src="/images/email.png" alt="velog" width="30" height="30" />{" "}
-            yhcho0712@gmail.com
+            {email}
           </div>
         </div>
       </div>

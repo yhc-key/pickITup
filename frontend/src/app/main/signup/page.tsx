@@ -1,4 +1,7 @@
+
 "use client";
+import DaumPostcode from "react-daum-postcode";
+import Modal from "@/components/modal2";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -15,7 +18,14 @@ export default function Signup() {
 
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false); 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const clickSide = () =>{
+    setIsModalOpen(false);
+    setIsOpen(false);
+  }
   useEffect(() => {
     if (samepass === password) {
       setIssame(true);
@@ -33,6 +43,12 @@ export default function Signup() {
       setIsValidPassword("false");
     }
   }, [password]);
+
+  const completeHandler = (data:any) =>{
+    setAddress(data.address);
+    setIsOpen(false); //추가
+    setIsModalOpen(false);
+  }
 
   const checkid = () => {
     if (id === "") {
@@ -69,6 +85,10 @@ export default function Signup() {
       alert("이름을 작성해주세요");
       return;
     }
+    if(address === ""){
+      alert("주소를 검색 후 선택해주세요");
+      return;
+    }
     fetch("https://spring.pickitup.online/auth/signup", {
       method: "POST",
       headers: {
@@ -80,6 +100,7 @@ export default function Signup() {
         name: name,
         nickname: name,
         email: email,
+        address: address,
       }),
     })
       .then((res) => res.json())
@@ -102,9 +123,9 @@ export default function Signup() {
             </label>
             <input
               value={id}
-              onChange={(e) => setId(e.target.value)}
+              onChange={(e) => {setId(e.target.value);setAvailableId("check");}}
               className="w-[16vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none 
+              bg-gray-200 appearance-none pl-2
               text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
               "
             />
@@ -134,6 +155,13 @@ export default function Signup() {
             ) : (
               <></>
             )}
+            {availableId === "check" ? (
+              <div className="w-[24vw] text-xs text-[#C55A5A]">
+                중복확인을 해주시길 바랍니다!
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
 
           <div className="flex w-full h-[6vh] justify-center items-center">
@@ -147,7 +175,7 @@ export default function Signup() {
                 setPassword(e.target.value);
               }}
               className="w-[24vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none
+              bg-gray-200 appearance-none pl-2
               text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
               "
             />
@@ -170,7 +198,7 @@ export default function Signup() {
               value={samepass}
               onChange={(e) => setSamepass(e.target.value)}
               className="w-[24vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none 
+              bg-gray-200 appearance-none pl-2
               text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
               "
             />
@@ -190,7 +218,7 @@ export default function Signup() {
                 setName(e.target.value);
               }}
               className="w-[24vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none 
+              bg-gray-200 appearance-none pl-2
               text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
               "
             />
@@ -199,45 +227,46 @@ export default function Signup() {
           <div className="w-full h-[1vh] mb-2" />
 
           <div className="flex w-full h-[6vh] justify-center items-center">
-            <label className="w-[10vw] text-lg font-black">이메일 인증</label>
+            <label className="w-[10vw] text-lg font-black">이메일</label>
             <input
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
               placeholder="example@naver.com"
-              className="w-[16vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none
-              text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300
-              "
+              className="w-[24vw] h-[4vh] rounded-md  border border-f5gray-400
+              bg-gray-200 appearance-none pl-2
+              text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300"
             />
-            <div className="w-[1vw]"></div>
-            <div className="w-[7vw] h-[4vh] flex items-center justify-center rounded-md bg-f5green-300 text-xs text-white font-bold">
-              인증번호 요청
-            </div>
-            {/* <div className='w-[7vw] h-[4vh] flex items-center justify-center rounded-md bg-f5green-300 text-white font-bold'>재요청</div> */}
           </div>
           <div className="flex w-full h-[6vh] justify-center items-center">
-            <div className="w-[10vw] font-black"></div>
+            <label htmlFor="password" className="w-[10vw] text-lg font-black">
+              주소
+            </label>
             <input
-              placeholder="인증번호 입력"
-              className="w-[16vw] h-[4vh] rounded-md  border border-f5gray-400
-              bg-gray-200 appearance-none
-              text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
-              "
+              value={address}
+              onChange={(e)=>{setAddress(e.target.value)}}
+              placeholder="주소"
+              disabled
+              className="
+              w-[20vw] h-[4vh] rounded-md  border border-f5gray-400
+              bg-gray-200 appearance-none pl-2 readOnly text-xs
+              text-gray-700 leading-tight focus:outline-none focus:bg-white"
             />
             <div className="w-[1vw]"></div>
-            <div className="w-[7vw] h-[4vh] flex items-center justify-center rounded-md bg-f5green-300 text-xs text-white font-bold">
-              인증
-            </div>
-            {/* <div className='w-[7vw] h-[4vh] flex items-center justify-center rounded-md bg-f5green-300 text-white font-bold'>인증완료</div> */}
+            <button
+              onClick={(e) => {setIsModalOpen(true),setIsOpen(true);}}
+              className="w-[3vw] h-[4vh] flex items-center justify-center rounded-md
+               bg-f5green-300 text-xs text-white font-bold"
+            >검색</button>
+            {isOpen && <Modal open={isModalOpen} clickSide={clickSide} size="h-[500px] w-[800px]" >
+              <DaumPostcode onComplete={completeHandler}/>
+            </Modal>}
           </div>
-
           <div className="flex w-full h-[14vh] justify-center items-center">
             <button
               onClick={signUpRequest}
-              className="w-[24vw] h-[6vh] rounded-md bg-f5green-300 text-white font-bold"
-            >
+              className="w-[24vw] h-[6vh] rounded-md bg-f5green-300 text-white font-bold">
               회원가입
             </button>
           </div>
