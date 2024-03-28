@@ -1,11 +1,8 @@
 logging:
   level:
     org:
-      springframework:
-        data:
-          elasticsearch:
-            client:
-              WIRE: TRACE
+      elasticsearch:
+        client: ERROR
 spring:
   config:
     import:
