@@ -167,6 +167,7 @@ public class UserCommandService {
         User user = userCommandJpaRepository.findById(authId)
             .orElseThrow(UserNotFoundException::new);
         user.changeAddress(address);
+        updateUserMongo(user);
         //스칼라 서버
         callScalaByAddressChange();
     }
@@ -205,21 +206,26 @@ public class UserCommandService {
             .toList();
         log.info("keywordsNameList = {}", keywordsNameList);
 
-        // UserMongo 업데이트
-        GeoLocation geoLocation = geoLocationService.getGeoLocation(user.getAddress());
-        UserMongo userMongo = userCommandMongoRepository.findById(userId)
-            .orElseGet(
-                () -> new UserMongo(userId,
-                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                    Rank.NORMAL.name(),
-                    geoLocation.getLatitude(),
-                    geoLocation.getLongitude()));
+        UserMongo userMongo = updateUserMongo(user);
+
         userMongo.setKeywords(keywordsNameList);
-        userCommandMongoRepository.save(userMongo);
 
         // 스칼라 서버에 유저 키워드 변경 사실 알리기
         callScalaByKeywordChange();
+    }
 
+    @Transactional
+    private UserMongo updateUserMongo(User user) {
+        // UserMongo 업데이트
+        Integer userId = user.getId();
+        GeoLocation geoLocation = geoLocationService.getGeoLocation(user.getAddress());
+        return userCommandMongoRepository.findById(userId)
+            .orElseGet(
+                () -> new UserMongo(userId,
+                    new ArrayList<>(),
+                    Rank.NORMAL.name(),
+                    geoLocation.getLatitude(),
+                    geoLocation.getLongitude()));
     }
 
     @Transactional
@@ -287,5 +293,4 @@ public class UserCommandService {
     public void callScalaByAddressChange() {
         userRecommendService.sendSignalToScalaServerByAddressChange();
     }
-
 }
