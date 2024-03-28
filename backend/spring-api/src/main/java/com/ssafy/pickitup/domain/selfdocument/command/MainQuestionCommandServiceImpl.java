@@ -46,8 +46,8 @@ public class MainQuestionCommandServiceImpl implements MainQuestionCommandServic
 
     @Override
     @Transactional
-    public MainQuestionCommandResponseDto modifyMainQuestion(Integer id,
-        MainQuestionCommandRequestDto dto) {
+    public MainQuestionCommandResponseDto modifyMainQuestion(
+        Integer id, MainQuestionCommandRequestDto dto) {
         MainQuestion mainQuestion = mainQueryRepository.findById(id)
             .orElseThrow(MainQuestionNotFoundException::new);
         mainQuestion.setTitle(dto.getTitle());

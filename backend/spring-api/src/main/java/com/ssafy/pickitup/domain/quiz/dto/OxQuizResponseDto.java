@@ -21,5 +21,4 @@ public class OxQuizResponseDto {
             .answer(oxQuiz.isAnswer())
             .build();
     }
-
 }

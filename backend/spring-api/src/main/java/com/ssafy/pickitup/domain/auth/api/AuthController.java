@@ -2,7 +2,6 @@ package com.ssafy.pickitup.domain.auth.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.auth.command.AuthCommandService;
 import com.ssafy.pickitup.domain.auth.command.dto.LoginRequestDto;
 import com.ssafy.pickitup.domain.auth.command.dto.LogoutDto;
@@ -13,6 +12,7 @@ import com.ssafy.pickitup.domain.auth.query.dto.AuthProfileDto;
 import com.ssafy.pickitup.domain.auth.query.dto.PasswordDto;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.security.jwt.JwtProperties;
 import com.ssafy.pickitup.security.jwt.JwtTokenDto;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
@@ -90,7 +90,7 @@ public class AuthController {
     @GetMapping("/profile")
     public ApiResult<AuthProfileDto> profileUser(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         log.info("authId = {}", authId);
         AuthDto authDto = authQueryService.getUserById(authId);
         AuthProfileDto authProfileDto = AuthProfileDto.authInfoFromAuthDto(authDto);
@@ -102,7 +102,7 @@ public class AuthController {
     public ApiResult<String> deactivateAuth(HttpServletRequest request,
         @RequestBody PasswordDto password) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         authCommandService.deactivateAuth(authId, password.getPassword());
         return success("비활성화 되었습니다.");
     }
@@ -112,7 +112,7 @@ public class AuthController {
     public ApiResult<String> activateAuth(HttpServletRequest request,
         @RequestBody PasswordDto password) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         authCommandService.activateAuth(authId, password.getPassword());
         return success("활성화 되었습니다.");
     }
@@ -122,7 +122,7 @@ public class AuthController {
     public ApiResult<?> confirmPassword(HttpServletRequest request,
         @RequestBody PasswordDto password) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         authCommandService.validatePassword(authId, password.getPassword(), true);
         return success("비밀번호가 일치합니다.");
     }
@@ -132,7 +132,7 @@ public class AuthController {
     public ApiResult<?> changePassword(HttpServletRequest request,
         @RequestBody PasswordDto password) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         authCommandService.changePassword(authId, password.getPassword());
         return success("비밀번호 변경 성공");
     }

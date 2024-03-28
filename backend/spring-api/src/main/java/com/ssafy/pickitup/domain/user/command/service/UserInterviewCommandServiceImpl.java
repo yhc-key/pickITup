@@ -9,11 +9,9 @@ import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.domain.user.query.UserQueryJpaRepository;
 import com.ssafy.pickitup.domain.user.repository.UserInterviewRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserInterviewCommandServiceImpl implements UserInterviewCommandService {
@@ -32,7 +30,7 @@ public class UserInterviewCommandServiceImpl implements UserInterviewCommandServ
         userInterviewRepository.findByUserIdAndInterviewId(userId, interviewId)
             .ifPresentOrElse(userInterview -> userInterview.updateAnswer(answer), () -> {
                 Interview interview = interviewRepository.findById(interviewId)
-                    .orElseThrow(() -> new InterviewNotFoundException("Interview not found"));
+                    .orElseThrow(InterviewNotFoundException::new);
 
                 UserInterview userInterview = UserInterview.builder()
                     .user(user)

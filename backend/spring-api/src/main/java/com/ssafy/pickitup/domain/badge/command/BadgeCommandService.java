@@ -7,7 +7,5 @@ public interface BadgeCommandService {
 
     BadgeCommandResponseDto renewBadge(Integer userId);
 
-//    void initBadge(Integer userId);
-
     void initBadge(User user);
 }
