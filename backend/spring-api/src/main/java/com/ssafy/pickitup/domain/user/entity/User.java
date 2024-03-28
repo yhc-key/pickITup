@@ -58,7 +58,7 @@ public class User extends BaseTimeEntity {
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    private Rank rank = Rank.NORMAL;
+    private Rank userRank = Rank.NORMAL;
 
     @MapsId
     @OneToOne

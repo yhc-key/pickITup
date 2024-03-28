@@ -5,8 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserCommandJpaRepository extends JpaRepository<User, Integer> {
 
-    //    @Query(value = "SELECT * FROM user u WHERE u.auth_id = :authId", nativeQuery = true)
-    User findByAuthId(Integer authId);
-
-
 }

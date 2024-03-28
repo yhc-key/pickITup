@@ -32,7 +32,7 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
     public BadgeCommandResponseDto renewBadge(Integer userId) {
         log.info("뱃지 갱신하려는 userId : {}", userId);
         User user = userCommandJpaRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다."));
+            .orElseThrow(UserNotFoundException::new);
         List<String> result = new ArrayList<>();
         List<UserBadge> userBadges = userBadgeQueryJpaRepository.findByUser(user);
         List<UserBadge> notAchievedBadges = badgeQueryService.findNotAchievedBadges(userBadges);
