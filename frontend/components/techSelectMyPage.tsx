@@ -9,11 +9,23 @@ import { techData2,techInfos,techAll } from "@/data/techData";
 import AllSearchBar from "@/components/AllSearchBar"
 interface TechSelectMyPageProps{
   onclose: ()=>void;
+  open : boolean;
 }
-export default function TechSelectMyPage({onclose}:TechSelectMyPageProps) {
+export default function TechSelectMyPage({onclose,open}:TechSelectMyPageProps) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [pickTech, setPickTech] = useState<string[]>([]);
-  
+  useEffect(()=>{
+    if(open){
+      setIsModalOpen(true);
+    }
+    else setIsModalOpen(false);
+  },[])
+  useEffect(()=>{
+    if(open){
+      setIsModalOpen(true);
+    }
+    else setIsModalOpen(false);
+  },[open])
   useEffect(() => {
     const authid = sessionStorage.getItem('authid');
     if(authid !== null) {
@@ -23,8 +35,13 @@ export default function TechSelectMyPage({onclose}:TechSelectMyPageProps) {
       .then(res=>res.json())
       .then(res=>{
           console.log(res);
-          setPickTech(res.response?.keywords);
-          setIsModalOpen(true);
+          setPickTech(res.response.keywords);
+          if(open){
+            setIsModalOpen(true);
+          }
+          else{setIsModalOpen(false);}
+
+
         }
       )
     }
@@ -32,6 +49,7 @@ export default function TechSelectMyPage({onclose}:TechSelectMyPageProps) {
 
   const clickSide = () => {
     modalCloseHandler();
+
   }
   // 기술스택 추가 함수
   const techAddHandler = (tech: string): void => {
@@ -46,7 +64,7 @@ const deletePickTech = (item : string)=>{
 }
   // 모달 닫는 함수
   const modalCloseHandler = (): void => {
-    setPickTech([]);
+    // setPickTech([]);
     setIsModalOpen(false);
     onclose();
   };
@@ -87,19 +105,36 @@ const deletePickTech = (item : string)=>{
     <div>
       {/* <button onClick={(): void => setIsModalOpen(true)}>
       </button> */}
-      { isModalOpen &&
-      <Modal open={isModalOpen} clickSide={clickSide} size="h-[90vh] w-[60vw]">
+      {/* { isModalOpen && */}
+      <Modal open={isModalOpen} clickSide={clickSide} size="h-9/12 w-7/12">
         <div className="flex flex-col items-center">
           <div className="mb-5 text-xl font-medium text-center">
             관심 기술 스택(영어)을 선택해주세요
           </div>
-          <div className="z-50 py-2 h-[8vh] flex items-center justify-center"> 
+          <div className="z-50 py-2 flex items-center justify-center"> 
             <AllSearchBar words={techAll} onSelect={techAddHandler} ></AllSearchBar>
           </div>
           
-          <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-[8vh]">
+          <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-12">
             {pickTech.map((item:string,index:number)=>
-              <button key={index} onClick={()=>deletePickTech(item)} className="relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1">{item}
+              <button key={index} onClick={()=>deletePickTech(item)} 
+              className="`flex flex-row items-center py-1 pr-2 relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1">
+                {techData2.includes(item)?
+                <Image
+                src={`/images/ITUlogo.png`}
+                alt={item}
+                width={22}
+                height={22}
+                className="inline-block"/>
+                :
+                <Image
+                src={`/images/techLogo/${item}.png`}
+                alt={item}
+                width={22}
+                height={22}
+                className="inline-block"
+                />
+                }{item}
               <div className="absolute -top-2 -right-2"><TiDeleteOutline color="red" /> </div></button>
             )}
           </div>
@@ -127,7 +162,7 @@ const deletePickTech = (item : string)=>{
           </div>
         </div>
       </Modal>
-      } 
+      {/* }  */}
     </div>
     
   );

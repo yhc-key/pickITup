@@ -116,7 +116,7 @@ function AllSearchBar(props:AutocompleteSearchBarProps) {
   };
   
   return (
-    <div className="relative w-[20vw]">
+    <div className="relative w-64">
       <input
         type="text"
         value={inputValue}
@@ -128,10 +128,10 @@ function AllSearchBar(props:AutocompleteSearchBarProps) {
           }
         }}
         placeholder="기술 스택을 검색해보세요!"
-        className="w-full h-[4vh] rounded-md border border-f5gray-400 bg-gray-200 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300"
+        className="w-full h-8 rounded-md border border-f5gray-400 bg-gray-200 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300"
       />
       {suggestions.length > 0 && (
-        <ul className="absolute z-10 top-[calc(100% + 5px)] w-[20vw] max-h-[130px] overflow-y-auto bg-white border border-f5gray-400 rounded-b-md">
+        <ul className="absolute z-10 w-64 max-h-32 overflow-y-auto bg-white border border-f5gray-400 rounded-b-md">
           {suggestions.map((suggestion) => (
             <li
               key={suggestion}

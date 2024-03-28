@@ -95,17 +95,16 @@ const deletePickTech = (item : string)=>{
 
   return (
     <div>
-      { isModalOpen &&
-      <Modal open={isModalOpen} clickSide={clickSide} size="h-[90vh] w-[60vw]">
-        <div className="flex flex-col items-center">
+      <Modal open={isModalOpen} clickSide={clickSide} size="w-7/12">
+        <div className="flex flex-col items-center ">
           <div className="mb-5 text-xl font-medium text-center">
             관심 기술 스택(영어)을 선택해주세요
           </div>
-          <div className="z-50 py-2 h-[8vh] flex items-center justify-center"> 
+          <div className="z-50 py-2 flex items-center justify-center"> 
             <AutocompleteSearchBar words={techData2} onSelect={techAddHandler} ></AutocompleteSearchBar>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-[8vh]">
+          <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-12">
             {pickTech.map((item:string,index:number)=>
               <button key={index} onClick={()=>deletePickTech(item)} className="relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1">{item}
               <div className="absolute -top-2 -right-2"><TiDeleteOutline color="red" /> </div></button>
@@ -127,7 +126,7 @@ const deletePickTech = (item : string)=>{
             })}
           </div>
           <div className="m-2"></div>
-          <div className="min-h-[300px]">
+          <div className="min-h-60">
             <div className="flex flex-wrap justify-center gap-3">
               {techs?.map((tech: string, index: number) => {
                 const isActive: boolean = pickTech.includes(tech);
@@ -166,7 +165,7 @@ const deletePickTech = (item : string)=>{
             </Link>
           </div>
         </div>
-      </Modal>}
+      </Modal>
     </div>
     
   );

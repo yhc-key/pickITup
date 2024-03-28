@@ -15,7 +15,7 @@ function MyBadge() {
     const newElements:ReactElement[] = [];
     for (let i = 0; i < acquired.length; i++) {
       newElements.push(
-        <div key={i} className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
+        <div key={i} className="flex flex-col items-center justify-center h-32 w-32 mx-4">
           <div className="flex items-center justify-center">
             <Image src={`/images/badge/${acquired[i]}.png`} width={100} height={100} alt={`${acquired[i]}`}/>
           </div>
@@ -30,7 +30,7 @@ function MyBadge() {
     const newElements:ReactElement[] = [];
     for (let i = 0; i < unacquired.length; i++) {
       newElements.push(
-        <div key={i} className="flex flex-col items-center justify-center h-[16vh] w-[16vh] mx-4">
+        <div key={i} className="flex flex-col items-center justify-center h-32 w-32 mx-4">
           <div className="h-[100px] w-[100px] flex items-center justify-center">
             {/* <Image src={`/images/badge/${unacquired[i]}.png`} width={100} height={100} alt="badge"/> */}
             <Image src="/images/badge/locked.png" width={50} height={50} alt="badge"/>
@@ -45,13 +45,13 @@ function MyBadge() {
   return (
     <div>
       <div className="flex items-center justify-start mt-6">
-        <div className="h-[5vh] w-[15vw] bg-[#CBFFC2] flex items-center justify-center rounded-lg font-bold">내가 획득한 뱃지</div>
+        <div className="h-12 w-48 bg-[#CBFFC2] flex items-center justify-center rounded-lg font-bold">내가 획득한 뱃지</div>
       </div>
       <div className="flex items-center justify-start flex-wrap w-full">
         {acq}
       </div>
       <div className="flex items-center justify-start mt-6">
-        <div className="h-[5vh] w-[15vw] bg-[#CBFFC2] flex items-center justify-center rounded-lg font-bold">획득 가능한 뱃지</div>
+        <div className="h-12 w-48 bg-[#CBFFC2] flex items-center justify-center rounded-lg font-bold">획득 가능한 뱃지</div>
       </div>
       <div className="flex items-center justify-start flex-wrap w-full">
         {unacq}

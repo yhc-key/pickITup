@@ -48,7 +48,7 @@ export default function MyPageLayout({
         if(res.success===true){
           setScrapCount(res.response.totalMyScrap);
           setCloseCount(res.response.closingScrap);
-          // setSolvedCount(res.response.);
+          setSolvedCount(res.response.solvedInterviewCount);
           setAttendCount(res.response.attendCount);
           setBadgeCount(res.response.totalMyBadge);
           setEmail(res.response.email);
@@ -130,7 +130,7 @@ export default function MyPageLayout({
               />
               <p className="text-sm">문제 풀이 수</p>
             </div>
-            <p className="text-sm">{dummyMyData[2][1]} 개</p>
+            <p className="text-sm">{solvedCount} 개</p>
           </div>
           <div className="flex justify-between mt-3">
             <div className="flex flex-row items-center gap-1">
@@ -240,7 +240,7 @@ export default function MyPageLayout({
               width="30"
               height="30"
             />{" "}
-            <a href={github}>{github}</a>
+            <a href={`https://${github}`}>{github}</a>  
           </div>
           <div className="mt-2 flex flex-row gap-3 items-center">
             <Image src="/images/velog.png" alt="velog" width="30" height="30" />{" "}

@@ -6,11 +6,7 @@ import { techDataMap } from "@/data/techData";
 import { useEffect, useState } from "react";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import Modal from "@/components/modal2";
-import TechSelectMyPage from "@/components/techSelectMyPage";
-
-interface ModalProps {
-  Onclose: () => void;
-}
+import TechSelectMyPage from "@/components/techSelectMyPage"; 
 
 export default function MyPage() {
   const nickname: string = useAuthStore((state: AuthState) => state.nickname);
@@ -36,6 +32,10 @@ export default function MyPage() {
 
   const [nickMessage, setNickMessage] = useState<string>("");
   const [addressMessage, setAddressMessage] = useState<string>("");
+  const [gitMessage, setGitMessage] = useState<string>("");
+  const [blogMessage, setBlogMessage] = useState<string>("");
+  const [emailMessage, setEmailMessage] = useState<string>("");
+
   const [newNickname, setNewNickname] = useState<string>("");
   const [newEmail, setNewEmail] = useState<string>("");
   const [newGithub, setNewGithub] = useState<string>("");
@@ -87,6 +87,9 @@ export default function MyPage() {
           console.log(res);
         });
     }
+    else{
+      setNickMessage("");
+    }
     if (newAddress !== "") {
       fetch("https://spring.pickitup.online/users/address", {
         method: "PATCH",
@@ -103,19 +106,28 @@ export default function MyPage() {
           setAddressMessage("주소 변경이 완료되었습니다.");
         });
     }
+    else{
+      setAddressMessage("");
+    }
     // 주소변경
     let githubValue = newGithub;
     let blogValue = newBlog;
     let emailValue = newEmail;
     if (newGithub === "") {
       githubValue = github;
+      setGitMessage("");
     }
+    else setGitMessage("깃허브 주소가 변경되었습니다.");
     if (newBlog === "") {
       blogValue = blog;
+      setBlogMessage("");
     }
+    else setBlogMessage("블로그 주소가 변경되었습니다.")
     if (newEmail === "") {
       emailValue = email;
+      setEmailMessage("");
     }
+    else setEmailMessage("이메일 주소가 변경되었습니다.");
     fetch("https://spring.pickitup.online/users/me", {
       method: "PATCH",
       headers: {
@@ -140,8 +152,26 @@ export default function MyPage() {
   };
   return (
     <div className="relative flex flex-col h-full pt-6 pb-20 pl-20 border border-f5gray-500 rounded-2xl">
-      <h2 className="text-2xl font-bold mb-4">정보 수정하기</h2>
-      <div className="relative flex flex-row items-center">
+      <Image
+        src="/images/ITUlogo.png"
+        alt="logo"
+        width={150}
+        height={150}
+        priority={true}
+        className="m-3"
+      />
+      <h2 className="text-2xl font-bold mb-4">내 정보 수정하기</h2>
+      <div className="flex flex-wrap mt-4 items-center min-h-12 gap-2 max-w-[1000px]">
+        <span className="font-bold"> 기술 스택 </span>
+        <button type="button" onClick={() => setIsTechSelectOpen(true)}
+        className="px-6 py-2 ml-6 text-white rounded-lg bg-f5green-300">
+          나의 기술스택 수정하기
+        </button>
+        {/* {isTechSelectOpen &&  */}
+        
+        {/* }  */}
+      </div>
+      <div className="relative flex flex-row items-center mt-4">
         <div className="absolute">닉네임 </div>
         <input
           value={newNickname}
@@ -149,13 +179,13 @@ export default function MyPage() {
             setNewNickname(e.target.value);
           }}
           placeholder={nickname}
-          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
+          className="flex items-center w-1/3 h-8 p-2 ml-24 border rounded-lg bg-f5gray-400 min-w-80"
         />
+        <p className="mt-1 ml-5 text-sm text-f5green-400">
+          {nickMessage}
+        </p>
       </div>
-      <p className="mt-1 ml-20 text-sm text-f5green-400 w-[200px] h-[30px]">
-        {nickMessage}
-      </p>
-      <div className="relative flex flex-row items-center mt-3">
+      <div className="relative flex flex-row items-center mt-4">
         <div className="absolute">주소 </div>
         <input
           readOnly
@@ -163,51 +193,53 @@ export default function MyPage() {
           value={newAddress}
           onChange={(e) => setNewAddress(e.target.value)}
           placeholder={address}
-          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
+          className="flex items-center w-1/3 h-8 p-2 ml-24 border rounded-lg bg-f5gray-400 min-w-80"
         />
-        {isOpen && (
-          <Modal open={isOpen} clickSide={clickSide} size="h-[500px] w-[800px]">
+        
+          <Modal open={isOpen} clickSide={clickSide} size="h-8/12 w-6/12">
             <DaumPostcode onComplete={completeHandler} />
           </Modal>
-        )}
+        
+        <p className="mt-1 ml-5 text-sm text-f5green-400">
+          {addressMessage}
+        </p>
       </div>
-      <p className="mt-1 ml-20 text-sm text-f5green-400 w-[200px] h-[30px]">
-        {addressMessage}
-      </p>
 
-      <div className="flex flex-wrap mt-4 items-center min-h-12 gap-2 max-w-[1000px]">
-        <span className="font-bold"> 기술 스택 </span>
-        <button type="button" onClick={() => setIsTechSelectOpen(true)}>
-          기술스택 수정하기
-        </button>
-        {isTechSelectOpen && <TechSelectMyPage onclose={closeTech} />}
-      </div>
-      <div className="relative flex flex-row items-center mt-3">
+      <div className="relative flex flex-row items-center mt-4">
         <div className="absolute">Github </div>
         <input
           value={newGithub}
           onChange={(e) => setNewGithub(e.target.value)}
           placeholder={github}
-          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
+          className="flex items-center w-1/3 h-8 p-2 ml-24 border rounded-lg bg-f5gray-400 min-w-80"
         />
+        <p className="mt-1 ml-5 text-sm text-f5green-400">
+          {gitMessage}
+        </p>
       </div>
-      <div className="relative flex flex-row items-center mt-3">
+      <div className="relative flex flex-row items-center mt-4">
         <div className="absolute">tech blog </div>
         <input
           value={newBlog}
           onChange={(e) => setNewBlog(e.target.value)}
           placeholder={blog}
-          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
+          className="flex items-center w-1/3 h-8 p-2 ml-24 border rounded-lg bg-f5gray-400 min-w-80"
         />
+        <p className="mt-1 ml-5 text-sm text-f5green-400">
+          {blogMessage}
+        </p>
       </div>
-      <div className="relative flex flex-row items-center mt-3">
+      <div className="relative flex flex-row items-center mt-4">
         <div className="absolute">Email </div>
         <input
           value={newEmail}
           onChange={(e) => setNewEmail(e.target.value)}
           placeholder={email}
-          className="flex items-center w-1/3 h-8 p-2 ml-20 border rounded-lg bg-f5gray-400 min-w-80"
+          className="flex items-center w-1/3 h-8 p-2 ml-24 border rounded-lg bg-f5gray-400 min-w-80"
         />
+        <p className="mt-1 ml-5 text-sm text-f5green-400">
+          {emailMessage}
+        </p>
       </div>
 
       <div className="absolute bottom-0 right-0 mb-6 mr-6">
@@ -225,6 +257,8 @@ export default function MyPage() {
           등록하기
         </button>
       </div>
+      <TechSelectMyPage open={isTechSelectOpen} onclose={closeTech} />
     </div>
+    
   );
 }
