@@ -30,6 +30,7 @@ export default function RecruitPage() {
   const keywords = useSearchStore((state: searchState) => state.keywords);
   const query = useSearchStore((state: searchState) => state.query);
   const [wrongSrcs, setWrongSrcs] = useState<boolean[]>([]);
+  const [loadingArr, setLoadingArr] = useState<boolean[]>([]);
   const bottom = useRef<HTMLDivElement>(null);
 
   const fetchRecruits = useCallback(
@@ -71,6 +72,19 @@ export default function RecruitPage() {
     tmpWrongSrcs[index] = true;
     setWrongSrcs(tmpWrongSrcs);
   };
+
+  const loadingHandler = (index: number) => {
+    const tmpLoadingArr = [...loadingArr];
+    tmpLoadingArr[index] = true;
+    setLoadingArr(loadingArr);
+  };
+
+  const loadingCompleteHandler = (index: number) => {
+    const tmpLoadingArr = [...loadingArr];
+    tmpLoadingArr[index] = false;
+    setLoadingArr(loadingArr);
+  };
+
   useEffect(() => {
     let observer: IntersectionObserver;
     const onIntersect = ([entry]: IntersectionObserverEntry[]) => {
@@ -93,19 +107,22 @@ export default function RecruitPage() {
       <div className="flex flex-wrap justify-center ">
         {data?.pages.map((page, i: number) =>
           page.response?.content.map((recruit: Recruit, recruitI: number) => {
+            console.log(recruit);
             return (
               <button
                 type="button"
                 onClick={() => recruitClickHandler(recruit.url)}
                 key={recruitI}
-                className="w-[30%] max-w-72 h-[400px] m-4 rounded-xl overflow-hidden flex flex-col shadow "
+                className="w-[30%] max-w-72 h-[350px] m-4 rounded-xl overflow-hidden flex flex-col shadow "
               >
                 <Image
                   src={wrongSrcs[recruitI] ? baseImg : recruit.thumbnailUrl}
                   alt="thumbnail"
                   width="300"
                   height="300"
-                  className="shadow-inner shadow-black object-cover h-[50%]"
+                  className={`shadow-inner shadow-black object-cover h-[50%] ${loadingArr[recruitI] ? "animate-pulse bg-gray-200 blur-md" : ""}`}
+                  onLoad={() => loadingHandler(recruitI)}
+                  onLoadingComplete={() => loadingCompleteHandler(recruitI)}
                   onError={() => imageErrorHandler(recruitI)}
                 />
                 <p className="m-1 text-sm text-f5gray-500 text-left">
@@ -118,6 +135,7 @@ export default function RecruitPage() {
                   {recruit.qualificationRequirements.map((tech, i) => {
                     let techTmp = tech.replace(/\s/g, "");
                     techTmp = techTmp.replace(/#/g, "Sharp");
+
                     if (
                       techDataValues.some((techDataValueArr) =>
                         techDataValueArr.includes(techTmp)
@@ -142,8 +160,8 @@ export default function RecruitPage() {
         )}
       </div>
 
-      <div className="flex justify-center items-center h-[70vh]">
-        {isFetching && !isFetchingNextPage ? (
+      <div className="flex justify-center items-center h-[40vh]">
+        {isFetching && isFetchingNextPage ? (
           <MoonLoader color="#36d7b7" />
         ) : null}
       </div>
