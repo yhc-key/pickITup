@@ -1,5 +1,11 @@
 "use client";
-import React, { Fragment, ReactNode, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  KeyboardEvent,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
 import ReactDOM from "react-dom";
 import { ModalCustomProps } from "@/type/interface";
 
@@ -20,7 +26,7 @@ export default function ModalCustom({
     setHasScrollbar(document.body.scrollHeight > window.innerHeight);
   };
 
-  const keyDownHandler = (event) => {
+  const keyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
     if (!open) {
       return;
     }
