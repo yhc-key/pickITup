@@ -23,7 +23,7 @@ const recruitClickHandler = (url: string) => {
   window.open(url, "_blank");
 };
 
-export default function Recruit() {
+export default function RecruitPage() {
   const keywords = useSearchStore((state: searchState) => state.keywords);
   const query = useSearchStore((state: searchState) => state.query);
   const bottom = useRef<HTMLDivElement>(null);
