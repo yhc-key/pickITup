@@ -152,8 +152,8 @@ export default function Header() {
                         : "text-f5green-400 font-bold transition-all ease-in duration-300"
                     }`}
                   >
-                    <div className="text-xl text-center"> {link.icon}</div>
-                    <div className="text-center"> {link.name}</div>
+                    <div className="text-lg text-center"> {link.icon}</div>
+                    <div className="text-sm text-center"> {link.name}</div>
                   </Link>
                 </div>
               );

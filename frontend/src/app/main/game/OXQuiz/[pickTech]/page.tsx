@@ -117,7 +117,7 @@ export default function OXQuiz(props: any) {
           <div className="mx-10 mt-4 mb:mx-5 mb:mt-5">
             <BackBtn />
           </div>
-          <div className="flex flex-wrap items-center justify-center mb:mt-16">
+          <div className="flex flex-wrap items-center justify-center mb:mt-12">
             <div className="flex flex-col mx-1 ml-20">
               <div className="flex flex-wrap justify-center my-3 text-4xl font-semibold tracking-widest">
                 <div className="mr-3 text-f5green-300">OX</div>

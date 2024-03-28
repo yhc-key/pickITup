@@ -16,7 +16,7 @@ export default function GamePage() {
 
   return (
     <div>
-      <div className="flex flex-wrap justify-center mx-auto mt-4 mb-8 mb:mt-20">
+      <div className="flex flex-wrap justify-center mx-auto mt-4 mb-8 mb:mt-12">
         {isMobile ? (
           <Image
             src="/images/gameMachine.png"
