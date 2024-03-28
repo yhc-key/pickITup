@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -26,6 +28,7 @@ public class AuthDto {
     private String providerId;
     private Role role = Role.USER;
     private String refreshToken;
+    private LocalDate lastLoginDate;
     private User user;
 
     public static AuthDto getAuth(Auth auth) {
@@ -35,6 +38,7 @@ public class AuthDto {
             .password(auth.getPassword())
             .name(auth.getName())
             .email(auth.getEmail())
+                .lastLoginDate(auth.getLastLoginDate())
             .provider(auth.getProvider())
             .providerId(auth.getProviderId())
             .role(auth.getRole())

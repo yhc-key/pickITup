@@ -1,15 +1,17 @@
 package com.ssafy.pickitup.domain.user.api;
 
-import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
+import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
-import com.ssafy.pickitup.domain.user.command.UserCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserClickService;
+import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
+import com.ssafy.pickitup.domain.user.dto.UserUpdateRequestDto;
 import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
-import com.ssafy.pickitup.domain.user.query.dto.NicknameDto;
+import com.ssafy.pickitup.domain.user.query.dto.UserClickResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,31 +45,54 @@ public class UserController {
     private final UserQueryService userQueryService;
     private final RecruitQueryService recruitQueryService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserClickService userClickService;
 
     @Operation(summary = "회원 정보 조회 API")
     @GetMapping("/me")
     public ApiResult<UserResponseDto> getUser(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         log.info("authId = {}", authId);
-        return success(userQueryService.getUserById(authId));
+        return success(userCommandService.getUserById(authId));
     }
 
     @Operation(summary = "닉네임 변경 API")
     @PatchMapping("/nickname")
     public ApiResult<?> changeNickname(HttpServletRequest request,
-        @RequestBody NicknameDto nickname) {
+        @RequestBody String nickname) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         log.info("authId = {}", authId);
-        userCommandService.changeNickname(authId, nickname.getNickname());
+        userCommandService.changeNickname(authId, nickname);
         return success("닉네임 변경 성공");
+    }
+
+    @Operation(summary = "회원 주소 변경 API")
+    @PatchMapping("/address")
+    public ApiResult<?> changeAddress(HttpServletRequest request,
+        @RequestBody String address) {
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.info("authId = {}", authId);
+        userCommandService.changeAddress(authId, address);
+        return success("주소 변경 성공");
+    }
+
+    @Operation(summary = "회원 정보 변경 API")
+    @PatchMapping("/me")
+    public ApiResult<?> updateUser(HttpServletRequest request,
+        @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        log.info("authId = {}", authId);
+        userCommandService.changeUserInfo(authId, userUpdateRequestDto);
+        return success("회원 정보 변경 성공");
     }
 
     @Operation(summary = "회원 스크랩 채용 공고 조회 API")
     @GetMapping("/{authId}/scraps/recruit")
     public ApiResult<Page<RecruitQueryResponseDto>> getUserScrapList(
-        @PathVariable("authId") int authId, Pageable pageable) {
+        @PathVariable("authId") Integer authId, Pageable pageable) {
         Page<RecruitQueryResponseDto> myRecruitByIdList = userQueryService.findMyRecruitById(authId,
             pageable);
         return success(myRecruitByIdList);
@@ -78,7 +103,7 @@ public class UserController {
     public ApiResult<?> saveUserScrapList(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestParam int recruitId) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         userCommandService.saveUserRecruit(authId, recruitId);
 
         return success("스크랩 성공");
@@ -89,10 +114,20 @@ public class UserController {
     public ApiResult<?> deleteUserScrap(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestParam Integer recruitId) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         userCommandService.deleteUserRecruit(authId, recruitId);
 
         return success("스크랩 삭제");
+    }
+
+    @Operation(summary = "회원 채용 공고 클릭 API")
+    @PostMapping("/click/recruit")
+    public ApiResult<?> clickRecruit(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+        @RequestParam int recruitId) {
+        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        userCommandService.saveUserClick(authId, recruitId);
+        return success("채용 공고 클릭");
     }
 
     @Operation(summary = "회원 키워드 추가 API")
@@ -100,7 +135,7 @@ public class UserController {
     public ApiResult<?> addUserKeyword(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestBody KeywordRequestDto keywords) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         log.info("keywords = {}", keywords.toString());
         userCommandService.addKeywords(authId, keywords);
         return success("keywords 등록 성공");
@@ -111,7 +146,7 @@ public class UserController {
     public ApiResult<?> updateUserKeyword(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestBody KeywordRequestDto keywords) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         log.info("keywords = {}", keywords.toString());
         userCommandService.updateUserKeyword(authId, keywords);
         return success("keywords 수정 성공");
@@ -126,5 +161,11 @@ public class UserController {
         return success(userKeywords);
     }
 
-
+    @Operation(summary = "회원 클릭 데이터 조회 API - 서버 테스트용")
+    @GetMapping("{authId}/click/recruit")
+    public ApiResult<?> getUserClick(
+        @PathVariable("authId") Integer authId) {
+        UserClickResponseDto allUserClick = userClickService.findAllUserClick(authId);
+        return success(allUserClick);
+    }
 }

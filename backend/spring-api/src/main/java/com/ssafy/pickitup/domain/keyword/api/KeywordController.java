@@ -1,9 +1,9 @@
 package com.ssafy.pickitup.domain.keyword.api;
 
 
-import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
+import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.keyword.dto.KeywordResponseDto;
 import com.ssafy.pickitup.domain.keyword.service.KeywordQueryService;
 import java.util.List;

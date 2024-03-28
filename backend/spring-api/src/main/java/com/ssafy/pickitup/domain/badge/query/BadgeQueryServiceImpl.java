@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BadgeQueryServiceImpl implements BadgeQueryService {
 
+    private final UserBadgeQueryJpaRepository userBadgeQueryJpaRepository;
+
     @Override
     public List<UserBadge> findNotAchievedBadges(List<UserBadge> userBadges) {
         List<UserBadge> notAchievedBadges = new ArrayList<>();
@@ -35,5 +37,11 @@ public class BadgeQueryServiceImpl implements BadgeQueryService {
             case RECRUIT_VIEW_COUNT -> user.getRecruitViewCount() > badge.getValue();
             case RECRUIT_SCRAP_COUNT -> user.getRecruitScrapCount() > badge.getValue();
         };
+    }
+
+    @Override
+    public int myBadgeCount(Integer userId) {
+//        return 0;
+        return userBadgeQueryJpaRepository.countAchievedBadgesByUserId(userId);
     }
 }

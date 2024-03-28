@@ -10,24 +10,28 @@ public class UserResponseDto {
 
     private Integer id;
     private String nickname;
-    private String profile;
     private String github;
     private String techBlog;
     private Integer exp;
     private Integer level;
+    private Integer attendCount;
     private Integer totalMyScrap;
+    private Integer totalMyBadge;
+    private Integer closingScrap;
 
-
-    public static UserResponseDto toDto(User user, int count) {
+    public static UserResponseDto toDto(User user, int scrapCount, int badgeCount,
+        int closingCount) {
         return new UserResponseDto(
             user.getId(),
             user.getNickname(),
-            user.getProfile(),
             user.getGithub(),
             user.getTechBlog(),
             user.getExp(),
             user.getLevel(),
-            count
+            user.getAttendCount(),
+            scrapCount,
+            badgeCount,
+            closingCount
         );
     }
 

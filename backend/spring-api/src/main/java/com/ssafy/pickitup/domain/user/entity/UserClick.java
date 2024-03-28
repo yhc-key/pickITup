@@ -1,6 +1,5 @@
 package com.ssafy.pickitup.domain.user.entity;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -21,11 +20,11 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class UserRecruit {
+public class UserClick {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private Integer recruitId;
 
@@ -33,10 +32,16 @@ public class UserRecruit {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    private Integer clickCount;
 
-    public UserRecruit(User user, Integer recruitId) {
+    public UserClick(User user, Integer recruitId) {
         this.user = user;
         this.recruitId = recruitId;
+        this.clickCount = 1;
+    }
+
+    public void increaseClickCount() {
+        this.clickCount++;
     }
 
 }

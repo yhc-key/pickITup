@@ -6,7 +6,7 @@ import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.entity.Role;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
-import com.ssafy.pickitup.domain.user.command.UserCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.security.entity.RefreshToken;
@@ -17,6 +17,7 @@ import com.ssafy.pickitup.security.jwt.JwtTokenDto;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import com.ssafy.pickitup.security.service.RedisService;
 import io.jsonwebtoken.MalformedJwtException;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,11 +61,13 @@ public class AuthCommandService {
         log.info("login request username= {}", loginRequestDto.getUsername());
         log.info("login request password= {}", loginRequestDto.getPassword());
 
-//        AuthDto authDto = authCommandJpaRepository.findAuthByUsername(loginRequestDto.getUsername());
         Auth auth = authCommandJpaRepository.findAuthByUsername(loginRequestDto.getUsername());
+
         if (auth == null) {
             throw new AuthNotFoundException("존재하지 않는 아이디입니다.");
         }
+        //출석 횟수 증가
+        increaseAttendCount(auth);
         AuthDto authDto = AuthDto.getAuth(auth);
         log.info("auth= {}", authDto.toString());
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), authDto.getPassword())) {
@@ -75,6 +78,8 @@ public class AuthCommandService {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
             = new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(),
             loginRequestDto.getPassword());
+        log.info("usernamePasswordAuthenticationToken = {}",
+            usernamePasswordAuthenticationToken.toString());
         System.out.println(
             "usernamePasswordAuthenticationToken.toString() = "
                 + usernamePasswordAuthenticationToken.toString());
@@ -89,18 +94,21 @@ public class AuthCommandService {
         // DB에 Refreshtoken 저장
         authDto.setRefreshToken(tokenSet.getRefreshToken());
         Auth updatedAuth = Auth.toDto(authDto);
-//        updatedAuth.setRefreshToken(tokenSet.getRefreshToken());
         log.info("updatedAuth = {}", updatedAuth.toString());
+        updatedAuth.setLastLoginDate();
         authCommandJpaRepository.save(updatedAuth);
 
         // RefreshToken Redis에 저장
         RefreshToken refreshToken = RefreshToken.builder()
-            .authId(authentication.getName())
+            .authId(updatedAuth.getId())
             .refreshToken(tokenSet.getRefreshToken())
             .build();
+//        RefreshToken refreshToken = RefreshToken.builder()
+//            .authId(authentication.getName())
+//            .refreshToken(tokenSet.getRefreshToken())
+//            .build();
 
         redisService.saveRefreshToken(refreshToken.getAuthId(), refreshToken.getRefreshToken());
-
         log.debug("RefreshToken in Redis = {}", refreshToken.getRefreshToken());
         return tokenSet;
     }
@@ -213,7 +221,7 @@ public class AuthCommandService {
 
         String reissueRefreshToken = reissueTokenDto.getRefreshToken();
         // Redis, DB 에 새로 발급 받은 RT 저장
-        redisService.saveRefreshToken(String.valueOf(principal), reissueRefreshToken);
+        redisService.saveRefreshToken(principal, reissueRefreshToken);
 
         log.debug("Auth Id = {}", principal);
         log.debug("RefreshToken save in Redis = {}", reissueTokenDto.getRefreshToken());
@@ -223,5 +231,20 @@ public class AuthCommandService {
         return reissueTokenDto;
     }
 
+    @Transactional
+    public void increaseAttendCount(Auth auth) {
+        System.out.println("auth last login = " + auth.getLastLoginDate());
+        LocalDate lastLoginDate = auth.getLastLoginDate();
+        System.out.println("auth = " + auth);
+        //최초 로그인이면 출석 증가
+        if (lastLoginDate == null) {
+            auth.getUser().increaseAttendCount();
 
+        } else {
+            //마지막 로그인 날짜가 현재 날짜 이전일 경우에만 출석 증가
+            if (lastLoginDate.compareTo(LocalDate.now()) < 0) {
+                auth.getUser().increaseAttendCount();
+            }
+        }
+    }
 }

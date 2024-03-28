@@ -1,4 +1,4 @@
-package com.ssafy.pickitup.domain.auth.api;
+package com.ssafy.pickitup.global.api;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

@@ -12,19 +12,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import java.time.LocalDate;
+
+import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
 @Builder
 @SQLRestriction("is_deleted = false")
-@ToString(of = {"id", "username", "password", "refreshToken"})
+@ToString(of = {"id", "username", "password", "refreshToken", "user", "lastLoginDate"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Auth extends BaseTimeEntity {
@@ -46,8 +43,14 @@ public class Auth extends BaseTimeEntity {
     private Role role = Role.USER;
 
     private String refreshToken;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isDeleted;
 
+    @Column(columnDefinition = "DATE")
+    private LocalDate lastLoginDate;
+
+    @Setter
     @OneToOne(mappedBy = "auth", cascade = CascadeType.ALL)
     private User user;
 
@@ -57,6 +60,7 @@ public class Auth extends BaseTimeEntity {
             .username(authDto.getUsername())
             .password(authDto.getPassword())
             .name(authDto.getName())
+                .lastLoginDate(authDto.getLastLoginDate())
             .role(authDto.getRole())
             .email(authDto.getEmail())
             .provider(authDto.getProvider())
@@ -86,4 +90,11 @@ public class Auth extends BaseTimeEntity {
     }
 
 
+    public void setLastLoginDate() {
+        this.lastLoginDate = LocalDate.now();
+    }
+
+    public void changeEmail(String email) {
+        this.email = email;
+    }
 }

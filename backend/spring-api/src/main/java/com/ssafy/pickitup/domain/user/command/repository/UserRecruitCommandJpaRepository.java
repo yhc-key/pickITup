@@ -1,4 +1,4 @@
-package com.ssafy.pickitup.domain.user.command;
+package com.ssafy.pickitup.domain.user.command.repository;
 
 import com.ssafy.pickitup.domain.user.entity.UserRecruit;
 import org.springframework.data.jpa.repository.JpaRepository;
