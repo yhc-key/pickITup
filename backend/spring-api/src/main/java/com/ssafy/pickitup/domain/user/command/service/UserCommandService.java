@@ -7,18 +7,24 @@ import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
 import com.ssafy.pickitup.domain.keyword.entity.Keyword;
 import com.ssafy.pickitup.domain.keyword.repository.KeywordQueryJpaRepository;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
+import com.ssafy.pickitup.domain.user.command.repository.ClickCommandMongoRepository;
+import com.ssafy.pickitup.domain.user.command.repository.ScrapCommandMongoRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserClickCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserCommandMongoRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserKeywordCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserRecruitCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.dto.UserUpdateRequestDto;
+import com.ssafy.pickitup.domain.user.entity.ClickMongo;
 import com.ssafy.pickitup.domain.user.entity.Rank;
+import com.ssafy.pickitup.domain.user.entity.ScrapMongo;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.entity.UserClick;
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
 import com.ssafy.pickitup.domain.user.entity.UserMongo;
 import com.ssafy.pickitup.domain.user.entity.UserRecruit;
+import com.ssafy.pickitup.domain.user.exception.DuplicateScrapException;
+import com.ssafy.pickitup.domain.user.exception.ScrapNotFoundException;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.domain.user.query.UserQueryJpaRepository;
 import com.ssafy.pickitup.domain.user.query.UserQueryService;
@@ -31,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +45,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UserCommandService {
+
+    private final MongoTemplate mongoTemplate;
 
     private final UserCommandJpaRepository userCommandJpaRepository;
     private final UserCommandMongoRepository userCommandMongoRepository;
@@ -53,6 +62,8 @@ public class UserCommandService {
     private final RecruitQueryService recruitQueryService;
     private final UserQueryService userQueryService;
     private final UserRankService userRankService;
+    private final ScrapCommandMongoRepository scrapCommandMongoRepository;
+    private final ClickCommandMongoRepository clickCommandMongoRepository;
 
     @Transactional
     public UserResponseDto getUserById(int userId) {
@@ -105,7 +116,6 @@ public class UserCommandService {
     }
 
 
-
     private UserResponseDto createUser(String nickname, Auth auth) {
         User user = User.builder()
             .nickname(nickname)
@@ -143,7 +153,8 @@ public class UserCommandService {
 
     @Transactional
     public void changeAddress(Integer authId, String address) {
-        User user = userCommandJpaRepository.findById(authId).orElseThrow(UserNotFoundException::new);;
+        User user = userCommandJpaRepository.findById(authId)
+            .orElseThrow(UserNotFoundException::new);
         user.changeAddress(address);
     }
 
@@ -210,6 +221,10 @@ public class UserCommandService {
         User user = userCommandJpaRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
         UserRecruit userRecruit = new UserRecruit(user, recruitId);
+        if (scrapCommandMongoRepository.existsByUserIdAndRecruitId(userId, recruitId)) {
+            throw new DuplicateScrapException();
+        }
+        scrapCommandMongoRepository.save(new ScrapMongo(userId, recruitId));
         userRecruitCommandJpaRepository.save(userRecruit);
     }
 
@@ -217,18 +232,25 @@ public class UserCommandService {
     public void saveUserClick(Integer userId, Integer recruitId) {
         User user = userCommandJpaRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
-        UserClick userClick = userClickCommandJpaRepository.findByUserIdAndRecruitId(
-            user.getId(), recruitId);
-        if (userClick == null) {
-            UserClick newUserClick = new UserClick(user, recruitId);
-            userClickCommandJpaRepository.save(newUserClick);
-        } else {
-            userClick.increaseClickCount();
-        }
+        UserClick userClick = userClickCommandJpaRepository
+            .findByUserIdAndRecruitId(userId, recruitId)
+            .orElse(new UserClick(user, recruitId));
+        userClick.increaseClickCount();
+        userClickCommandJpaRepository.save(userClick);
+
+        ClickMongo clickMongo = clickCommandMongoRepository
+            .findByUserIdAndRecruitId(userId, recruitId)
+            .orElse(new ClickMongo(userId, recruitId, 0));
+        clickMongo.increaseClickCount();
+        clickCommandMongoRepository.save(clickMongo);
     }
 
     @Transactional
     public void deleteUserRecruit(Integer authId, Integer recruitId) {
+        ScrapMongo scrapMongo = scrapCommandMongoRepository
+            .findByUserIdAndRecruitId(authId, recruitId)
+            .orElseThrow(ScrapNotFoundException::new);
+        scrapCommandMongoRepository.delete(scrapMongo);
         userRecruitCommandJpaRepository.deleteAllByUserIdAndRecruitId(authId, recruitId);
     }
 
@@ -239,5 +261,4 @@ public class UserCommandService {
         //출석 횟수 증가
         user.increaseAttendCount();
     }
-
 }

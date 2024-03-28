@@ -2,8 +2,6 @@ package com.ssafy.pickitup.domain.user.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
-import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.service.UserClickService;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
@@ -13,6 +11,7 @@ import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserClickResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -101,7 +100,7 @@ public class UserController {
     @PostMapping("/scraps/recruit")
     public ApiResult<?> saveUserScrapList(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
-        @RequestParam int recruitId) {
+        @RequestParam Integer recruitId) {
         Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         userCommandService.saveUserRecruit(authId, recruitId);
 
