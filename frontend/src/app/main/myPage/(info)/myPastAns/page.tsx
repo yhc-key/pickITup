@@ -40,9 +40,9 @@ export default function MyPastAns() {
   const exAnsClickHandler = () => {};
   return (
     <div className="w-full pr-4 mt-4">
-    <div className="w-[100%] rounded-2xl border">
-    <table className="w-[100%] mt-4 ">
-      <thead>
+    <div className="w-[100%] rounded-2xl border flex justify-center">
+    <table className="w-[96%]">
+      <thead className="border-b">
         <tr className="text-center text-base h-16 m-2">
           <th className="pl-2 w-1/12">번호</th>
           <th className="pl-2 w-1/12 text-center">대분류</th>
@@ -54,7 +54,7 @@ export default function MyPastAns() {
       </thead>
       <tbody>
         {myFavList && myFavList.map((interview: Interview, index: number) => (
-          <tr key={index} className="h-20 text-center text-sm">
+          <tr key={index} className="h-20 text-center text-sm transition-all ease-in duration-200">
             <td>{interview.interviewId}</td>
             <td className="font-bold">{interview.mainCategory}</td>
             <td className="font-bold">{interview.subCategory}</td>

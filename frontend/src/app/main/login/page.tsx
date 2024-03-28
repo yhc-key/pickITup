@@ -70,64 +70,70 @@ function Login() {
     }
   };
   return (
-    <div className="flex flex-col justify-center items-center w-full h-[70vh]">
-      <div className="flex items-center justify-center h-[10vh] text-xl font-bold">
-        pick IT up 로그인
-      </div>
-      <div className="w-[45vw] h-[36vh] rounded-[10px] border border-f5gray-400">
-        <form>
-          <div className="flex w-full h-[6vh] justify-center items-center mt-14">
-            <label htmlFor="id" className="w-[6vw] font-black">
-              아이디
-            </label>
-            <input
-              value={id}
-              onChange={(e) => setId(e.target.value)}
-              placeholder="아이디를 입력하세요"
-              type="text"
-              required
-              className="w-[20vw] h-[5vh] ml-6 rounded-md border border-f5gray-400
-            bg-gray-200 appearance-none border-2 border-gray-200
-            text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300
-            "
-            />
-          </div>
-
-          <div className="flex w-full h-[6vh] justify-center items-center">
-            <label htmlFor="password" className="w-[6vw] font-black">
-              비밀번호
-            </label>
-            <input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="비밀번호를 입력하세요"
-              type="password"
-              required
-              className="w-[20vw] h-[5vh] ml-6 rounded-md border border-f5gray-400
-            bg-gray-200 appearance-none border-2 border-gray-200
-            text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300
-            "
-            />
-          </div>
-
-          <div className="flex w-full h-[14vh] justify-center items-center">
-            <button
-              type="submit"
-              onClick={(e) => {
-                e.preventDefault(), requestLogin();
-              }}
-              className="w-[18vw] h-[5vh] rounded-md bg-f5green-300 text-white text-lg font-bold"
-            >
-              로그인
+    <div className="flex flex-col justify-center items-center w-full mt-10">
+      <div className="min-w-[400px] mx-auto mb:min-w-[350px]">
+        <div className="flex items-center justify-center mb-12 text-xl font-bold text-f5black-400">
+          pick IT up 로그인
+        </div>
+        <div>
+          <form>
+            <div className="flex flex-col gap-7">
+              <div>
+                <div className="flex w-full justify-start items-center mb-2">
+                  <label htmlFor="id" className=" text-f5black-400 text-sm">
+                    아이디
+                  </label>
+                </div>
+                <div>
+                  <input
+                    value={id}
+                    onChange={(e) => setId(e.target.value)}
+                    placeholder="아이디를 입력해주세요"
+                    type="text"
+                    required
+                    className="w-full rounded-lg min-h-12 border border-f5gray-400 appearance-none px-4 placeholder:text-f5gray-400 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300"
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="flex w-full justify-start items-center mb-2">
+                  <label htmlFor="id" className=" text-f5black-400 text-sm">
+                    비밀번호
+                  </label>
+                </div>
+                <div>
+                  <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="비밀번호를 입력하세요"
+                    type="password"
+                    required
+                    className="w-full rounded-lg min-h-12 border border-f5gray-400 appearance-none px-4 placeholder:text-f5gray-400 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300"
+                  />
+                </div>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  onClick={(e) => {
+                    e.preventDefault(), requestLogin();
+                  }}
+                  className="w-full rounded-md bg-f5green-300 text-white font-bold min-h-12"
+                >
+                  로그인
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div className="flex flex-col items-center justify-center whitespace-pre border-t-[1px] border-gray-400 mt-12">
+         <p className="text-f5black-400 bg-white relative px-4 -top-3 translate-x-0.5 translate-y-0.5 text-xs">또는</p>
+          <Link href="/main/signup" className="w-full mt-8">
+            <button  className="w-full rounded-md border text-f5green-300 font-bold min-h-12">
+          이메일로 회원가입
             </button>
-          </div>
-        </form>
-      </div>
-      <div className="flex items-center justify-center h-[8vh] whitespace-pre">
-        아직 계정이 없으신가요?{" "}
-        <Link href="/main/signup" className="text-lg font-bold">
-          회원가입 하러가기
-        </Link>
+          </Link>
+        </div>
       </div>
     </div>
   );
