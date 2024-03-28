@@ -16,7 +16,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '3'
+          cpus: '3.6'
     environment:
       - MONGO_HOSTNAME=${MONGO_HOSTNAME}
       - MONGO_PORT=${MONGO_PORT}
