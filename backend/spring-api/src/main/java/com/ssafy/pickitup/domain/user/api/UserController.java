@@ -2,20 +2,23 @@ package com.ssafy.pickitup.domain.user.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.service.UserClickService;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserRecommendService;
+import com.ssafy.pickitup.domain.user.dto.UserRecommendDto;
 import com.ssafy.pickitup.domain.user.dto.UserUpdateRequestDto;
 import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserClickResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -43,9 +46,9 @@ public class UserController {
 
     private final UserCommandService userCommandService;
     private final UserQueryService userQueryService;
-    private final RecruitQueryService recruitQueryService;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserClickService userClickService;
+    private final UserRecommendService userRecommendService;
 
     @Operation(summary = "회원 정보 조회 API")
     @GetMapping("/me")
@@ -102,7 +105,7 @@ public class UserController {
     @PostMapping("/scraps/recruit")
     public ApiResult<?> saveUserScrapList(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
-        @RequestParam int recruitId) {
+        @RequestParam Integer recruitId) {
         Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         userCommandService.saveUserRecruit(authId, recruitId);
 
@@ -124,8 +127,8 @@ public class UserController {
     @PostMapping("/click/recruit")
     public ApiResult<?> clickRecruit(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
-        @RequestParam int recruitId) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        @RequestParam Integer recruitId) {
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         userCommandService.saveUserClick(authId, recruitId);
         return success("채용 공고 클릭");
     }
@@ -167,5 +170,20 @@ public class UserController {
         @PathVariable("authId") Integer authId) {
         UserClickResponseDto allUserClick = userClickService.findAllUserClick(authId);
         return success(allUserClick);
+    }
+
+    @Operation(summary = "스칼라 테스트")
+    @GetMapping("/test")
+    public ApiResult<?> getUserClick() {
+        userCommandService.scala();
+        return success(null);
+    }
+
+    @Operation(summary = "회원 추천 채용 공고 조회")
+    @GetMapping("/recommend/{authId}")
+    public ApiResult<?> getUserRecommendRecruits(@PathVariable("authId") Integer authId) {
+        List<UserRecommendDto> userRecommendRecruitList = userRecommendService.getUserRecommendRecruitList(
+            authId);
+        return success(userRecommendRecruitList);
     }
 }

@@ -14,5 +14,7 @@ public interface UserInterviewRepository extends JpaRepository<UserInterview, In
   @Query("SELECT ui FROM UserInterview ui WHERE ui.user.id = :userId")
   Stream<UserInterview> findByUserIdOrderByLastModifiedDateDesc(Integer userId);
 
+  int countByUserId(Integer userId);
+
   Optional<UserInterview> findByUserIdAndInterviewId(Integer userId, Integer interviewId);
 }

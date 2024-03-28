@@ -25,11 +25,8 @@ public class AuthQueryService {
 
     private final AuthQueryJpaRepository authQueryJpaRepository;
 
-    public AuthDto getUserById(int id) {
-        Auth auth = authQueryJpaRepository.findAuthById(id);
-        if (auth == null) {
-            throw new UserNotFoundException("해당 유저를 찾을 수 없습니다");
-        }
+    public AuthDto getUserById(Integer authId) {
+        Auth auth = authQueryJpaRepository.findById(authId).orElseThrow(UserNotFoundException::new);
         return AuthDto.getAuth(auth);
     }
 
@@ -64,10 +61,8 @@ public class AuthQueryService {
                 throw new RefreshTokenException("Refresh Token 값이 일치하지 않습니다.");
             }
         } else {
-            Auth auth = authQueryJpaRepository.findAuthById(authId);
-            if (auth == null) {
-                throw new UserNotFoundException("해당 유저를 찾을 수 없습니다.");
-            }
+            Auth auth = authQueryJpaRepository.findById(authId)
+                .orElseThrow(UserNotFoundException::new);
             String refreshToken = auth.getRefreshToken();
             log.debug("detectConcurrentUser.requestRefreshToken = {}", requestRefreshToken);
             log.debug("detectConcurrentUser.refreshToken = {}", refreshToken);

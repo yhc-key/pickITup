@@ -2,9 +2,11 @@ package com.ssafy.pickitup.domain.badge.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.badge.command.BadgeCommandService;
+import com.ssafy.pickitup.domain.user.entity.User;
+import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.domain.user.query.UserQueryJpaRepository;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +35,9 @@ public class BadgeController {
     @PostMapping("/test")
     public ApiResult<?> test(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         Integer userId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
-        badgeCommandService.initBadge(userId);
+        User user = userQueryJpaRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
+        badgeCommandService.initBadge(user);
         return success(badgeCommandService.renewBadge(userId));
     }
 }

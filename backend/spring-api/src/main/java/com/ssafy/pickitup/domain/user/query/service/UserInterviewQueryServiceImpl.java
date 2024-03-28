@@ -32,4 +32,9 @@ public class UserInterviewQueryServiceImpl implements UserInterviewQueryService 
         .build())
         .toList();
   }
+
+  @Override
+  public int countSolvedInterviewsByUserId(Integer userId) {
+    return userInterviewRepository.countByUserId(userId);
+  }
 }

@@ -39,7 +39,7 @@ public class SubQuestionCommandServiceImpl implements SubQuestionCommandService 
         try {
             SubQuestion subQuestion = subQueryRepository.findById(subId)
                 .orElseThrow(SubQuestionNotFoundException::new);
-
+            subQuestion.getMainQuestion().getSubQuestions().remove(subQuestion);
             subCommandRepository.delete(subQuestion);
             return true;
         } catch (Exception e) {

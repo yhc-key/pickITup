@@ -145,7 +145,7 @@ public class AuthCommandService {
         if (validatePassword(authId, password, false)) {
             log.info("활성화");
             Auth auth = authCommandJpaRepository.findDeletedAuthById(authId).orElseThrow(
-                () -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
+                UserNotFoundException::new);
             //유저 비활성화
             auth.activate();
         }
@@ -156,11 +156,11 @@ public class AuthCommandService {
         if (flag) {
             //활성화 유저
             auth = authCommandJpaRepository.findById(authId).orElseThrow(
-                () -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
+                UserNotFoundException::new);
         } else {
             //비활성화 유저
             auth = authCommandJpaRepository.findDeletedAuthById(authId).orElseThrow(
-                () -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
+                UserNotFoundException::new);
         }
 
         if (passwordEncoder.matches(password, auth.getPassword())) {

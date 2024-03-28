@@ -24,26 +24,22 @@ public class QuizService {
 
     public List<OxQuizResponseDto> getOxQuiz(String category) {
         List<OxQuiz> oxQuizList = oxQuizJpaRepository.findAllByCategory(category);
-        List<OxQuizResponseDto> oxQuizResponseDtoList = oxQuizList.stream()
-            .map(oxQuiz -> OxQuizResponseDto.toDto(oxQuiz))
+        return oxQuizList.stream()
+            .map(OxQuizResponseDto::toDto)
             .toList();
-        return oxQuizResponseDtoList;
     }
 
     public List<SpeedQuizResponseDto> getSpeedQuiz(String category) {
         List<SpeedQuiz> speedQuizList = speedQuizJpaRepository.findAllByCategory(category);
-        List<SpeedQuizResponseDto> speedQuizResponseDtoList = speedQuizList.stream()
-            .map(speedQuiz -> SpeedQuizResponseDto.toDto(speedQuiz))
+        return speedQuizList.stream()
+            .map(SpeedQuizResponseDto::toDto)
             .toList();
-        return speedQuizResponseDtoList;
     }
 
     @Transactional
     public int increaseScore(Integer authId) {
-        User user = userCommandJpaRepository.findByAuthId(authId);
-        if (user == null) {
-            throw new UserNotFoundException("유저를 찾을 수 없습니다");
-        }
+        User user = userCommandJpaRepository.findById(authId)
+            .orElseThrow(UserNotFoundException::new);
         return user.increaseWinCount();
     }
 

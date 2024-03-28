@@ -37,7 +37,7 @@ public class UserClick {
     public UserClick(User user, Integer recruitId) {
         this.user = user;
         this.recruitId = recruitId;
-        this.clickCount = 1;
+        this.clickCount = 0;
     }
 
     public void increaseClickCount() {

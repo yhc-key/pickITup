@@ -13,8 +13,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
-
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
@@ -42,6 +47,7 @@ public class Auth extends BaseTimeEntity {
     @Builder.Default
     private Role role = Role.USER;
 
+    @Setter
     private String refreshToken;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT false")
@@ -60,7 +66,7 @@ public class Auth extends BaseTimeEntity {
             .username(authDto.getUsername())
             .password(authDto.getPassword())
             .name(authDto.getName())
-                .lastLoginDate(authDto.getLastLoginDate())
+            .lastLoginDate(authDto.getLastLoginDate())
             .role(authDto.getRole())
             .email(authDto.getEmail())
             .provider(authDto.getProvider())
@@ -71,10 +77,6 @@ public class Auth extends BaseTimeEntity {
 
     public void deleteRefreshToken() {
         this.refreshToken = null;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
     }
 
     public void deactivate() {
@@ -88,7 +90,6 @@ public class Auth extends BaseTimeEntity {
     public void changePassword(String password) {
         this.password = password;
     }
-
 
     public void setLastLoginDate() {
         this.lastLoginDate = LocalDate.now();

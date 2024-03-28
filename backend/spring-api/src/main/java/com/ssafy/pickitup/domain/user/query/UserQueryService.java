@@ -43,7 +43,7 @@ public class UserQueryService {
     @Transactional(readOnly = true)
     public KeywordResponseDto findUserKeywords(int authId) {
         User user = userQueryJpaRepository.findById(authId)
-            .orElseThrow(() -> new UserNotFoundException("해당 유저를 찾을 수 없습니다"));
+            .orElseThrow(UserNotFoundException::new);
 
         List<UserKeyword> userKeywords = userKeywordQueryJpaRepository.findAllByUserId(authId);
         List<String> keywordsName = userKeywords.stream()

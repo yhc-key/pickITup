@@ -32,7 +32,7 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
     public BadgeCommandResponseDto renewBadge(Integer userId) {
         log.info("뱃지 갱신하려는 userId : {}", userId);
         User user = userCommandJpaRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다."));
+            .orElseThrow(UserNotFoundException::new);
         List<String> result = new ArrayList<>();
         List<UserBadge> userBadges = userBadgeQueryJpaRepository.findByUser(user);
         List<UserBadge> notAchievedBadges = badgeQueryService.findNotAchievedBadges(userBadges);
@@ -48,20 +48,32 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
         return new BadgeCommandResponseDto(result);
     }
 
+//    @Transactional
+//    @Override
+//    public void initBadge(Integer userId) {
+//        log.info("init 시작");
+//        User user = userCommandJpaRepository.findById(userId).get();
+//        List<Badge> badges = badgeQueryJpaRepository.findAll();
+//        for (Badge badge : badges) {
+//            UserBadge userBadge = UserBadge.builder()
+//                .badge(badge)
+//                .user(user)
+//                .isAchieved(false)
+//                .build();
+//            userBadgeCommandJpaRepository.save(userBadge);
+//        }
+//        log.info("init 끝");
+//    }
+
     @Transactional
-    @Override
-    public void initBadge(Integer userId) {
+    public void initBadge(User user) {
         log.info("init 시작");
-        User user = userCommandJpaRepository.findById(userId).get();
         List<Badge> badges = badgeQueryJpaRepository.findAll();
-        for (Badge badge : badges) {
-            UserBadge userBadge = UserBadge.builder()
-                .badge(badge)
-                .user(user)
-                .isAchieved(false)
-                .build();
-            userBadgeCommandJpaRepository.save(userBadge);
-        }
+        List<UserBadge> userBadgeList = badges.stream()
+            .map(badge -> UserBadge.builder().user(user).badge(badge).isAchieved(false).build())
+            .toList();
+        user.setUserBadges(userBadgeList);
+        log.info("user badges = {}", user.getUserBadges());
         log.info("init 끝");
     }
 }
