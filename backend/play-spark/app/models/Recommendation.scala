@@ -1,3 +1,6 @@
 package models
 
-case class Recommendation(jobId: Int, score: Double)
+case class Recommendation(recruitId: Int,
+                          company: String,
+                          intersection: Seq[String],
+                          distance: Double)
