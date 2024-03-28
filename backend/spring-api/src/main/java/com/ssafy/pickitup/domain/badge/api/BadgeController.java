@@ -36,7 +36,7 @@ public class BadgeController {
     public ApiResult<?> test(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         Integer userId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         User user = userQueryJpaRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+            .orElseThrow(UserNotFoundException::new);
         badgeCommandService.initBadge(user);
         return success(badgeCommandService.renewBadge(userId));
     }
