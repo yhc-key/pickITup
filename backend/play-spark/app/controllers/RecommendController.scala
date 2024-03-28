@@ -28,9 +28,4 @@ class RecommendController @Inject()(cc: ControllerComponents) extends AbstractCo
     val str = SimilarityService.calculateAllUserSimilarities()
     Ok("Similarity API is working! " + str)
   }
-
-  def recruitSimilarity(): Action[AnyContent] = Action { implicit request =>
-    val str = SimilarityService.calculateRecruitSimilarity()
-    Ok("Recruit Similarity API is working! " + str)
-  }
 }

@@ -28,6 +28,8 @@ object UserCompanyDistanceService {
       .select("_id", "latitude", "longitude")
       .toDF("userId", "userLat", "userLon")
 
+    userPositions.show()
+
     val companyPositions = spark.read
       .format("mongo")
       .option("database", MONGO_DATABASE)
@@ -36,9 +38,15 @@ object UserCompanyDistanceService {
       .select("_id", "latitude", "longitude")
       .toDF("companyId", "companyLat", "companyLon")
 
+    companyPositions.show()
+
     val userCompanyDistances = userPositions.crossJoin(companyPositions)
-      .withColumn("distance", calculateDistanceUDF($"latitude", $"longitude", $"latitude", $"longitude"))
+      .withColumn("distance", calculateDistanceUDF($"userLat", $"userLon", $"companyLat", $"companyLon"))
       .select("userId", "companyId", "distance")
+
+    userCompanyDistances
+      .sort("companyId")
+      .show()
 
     userCompanyDistances.write
       .format("mongo")
@@ -50,7 +58,7 @@ object UserCompanyDistanceService {
     spark.stop()
   }
 
-  def calculateUserAllCompanyDistances(userId: Int): Double = {
+  def calculateUserAllCompanyDistances(userId: Int): Unit = {
 
     val spark = SparkSession.builder
       .appName("UserCompanyDistanceService")
@@ -66,7 +74,7 @@ object UserCompanyDistanceService {
       .option("database", MONGO_DATABASE)
       .option("collection", "user")
       .load()
-      .select("_id", "companyId", "latitude", "longitude")
+      .select("_id", "latitude", "longitude")
       .where($"_id" === userId)
       .toDF("userId", "userLat", "userLon")
 
@@ -78,9 +86,14 @@ object UserCompanyDistanceService {
       .select("_id", "latitude", "longitude")
       .toDF("companyId", "companyLat", "companyLon")
 
+    userPosition.show()
+    companyPosition.show()
+
     val userCompanyDistance = userPosition.crossJoin(companyPosition)
-      .withColumn("distance", calculateDistanceUDF($"latitude", $"longitude", $"latitude", $"longitude"))
+      .withColumn("distance", calculateDistanceUDF($"userLat", $"userLon", $"companyLat", $"companyLon"))
       .select("userId", "companyId", "distance")
+
+    userCompanyDistance.show()
 
     userCompanyDistance.write
       .format("mongo")

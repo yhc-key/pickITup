@@ -26,7 +26,8 @@ object SimilarityService {
       .option("database", MONGO_DATABASE)
       .option("collection", "user")
       .load()
-      .select("userId", "techStack")
+      .select("_id", "keywords")
+      .toDF("userId", "techStack")
 
     val cvModel = new CountVectorizer()
       .setInputCol("techStack")

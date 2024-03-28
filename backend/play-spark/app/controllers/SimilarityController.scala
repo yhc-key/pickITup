@@ -1,6 +1,6 @@
 package controllers;
 
-import models.UserSimilarityRequest
+import models.UserRequest
 import serializers.UserSimilarityRequestSerializer._
 import play.api.mvc._
 
@@ -14,26 +14,16 @@ import scala.concurrent.Future;
 
 class SimilarityController @Inject()(cc: ControllerComponents, mongoService: MongoService) extends AbstractController(cc) {
 
-  def asyncCalculateUserSimilarity(): Action[AnyContent] = Action.async(parse.json) { implicit request =>
+  def asyncCalculateAllUserSimilarity(): Action[AnyContent] = Action.async { implicit request =>
 
-    request.body.validate[UserSimilarityRequest].fold(
-      errors => {
-        Future.successful(BadRequest("Invalid request."))
-      },
-      userSimilarityRequest => {
-        val futureWork = Future {
-          if (userSimilarityRequest.status == "update") {
-            mongoService.deleteUserSimilarities(userSimilarityRequest.userId)
-          }
-          SimilarityService.calculateUserSimilarity(userSimilarityRequest.userId)
-        }
+    val futureWork = Future {
+      SimilarityService.calculateAllUserSimilarities()
+    }
 
-        futureWork.map { result =>
-          println("User similarity " + userSimilarityRequest.status + " for user " + userSimilarityRequest.userId + " completed.")
-        }
+    futureWork.map { _ =>
+      println("User similarity calculation completed.")
+    }
 
-        Future.successful(Accepted("User similarity calculation started."));
-      }
-    )
+    Future.successful(Accepted("User similarity calculation started."))
   }
 }

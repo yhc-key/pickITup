@@ -6,6 +6,9 @@ object DistanceCalculator {
 
   // Haversine formula로 두 지점(위도/경도) 간의 거리 계산
   def calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double = {
+
+    if ((lat1 == lat2) && (lon1 == lon2)) return 0.0
+
     val latDistance = Math.toRadians(lat2 - lat1)
     val lonDistance = Math.toRadians(lon2 - lon1)
     val originLat = Math.toRadians(lat1)
