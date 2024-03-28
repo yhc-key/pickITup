@@ -2,8 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Inter } from "next/font/google";
-const inter = Inter({ subsets: ["latin"] });
+import { Noto_Sans_KR } from 'next/font/google';
 
 import Dots from "@/components/onBoarding/dots";
 import Page1 from "@/components/onBoarding/page1";
@@ -11,6 +10,10 @@ import Page2 from "@/components/onBoarding/page2";
 import Page3 from "@/components/onBoarding/page3";
 import Page4 from "@/components/onBoarding/page4";
 import Page5 from "@/components/onBoarding/page5";
+
+const noto = Noto_Sans_KR({
+  subsets: ['latin'], // 또는 preload: false
+});
 
 export default function Home() {
   const [scrollIdx, setScrollIdx] = useState<number>(1);
@@ -150,7 +153,7 @@ export default function Home() {
   }, [scrollIdx]);
 
   return (
-    <body className={`${inter.className} min-h-screen flex flex-col`}>
+    <body className={`${noto.className} min-h-screen flex flex-col`}>
       <div
         ref={mainWrapperRef}
         className="h-screen overflow-hidden scroll-snap-y"
