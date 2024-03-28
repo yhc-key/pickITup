@@ -21,18 +21,20 @@ public interface RecruitQueryElasticsearchRepository extends
 
     @Query("{\"bool\": {\"must\": ["
         + "{\"bool\": {\"should\": ["
-        + "{\"wildcard\": {\"title\": \"*?0*\"}}, "
-        + "{\"wildcard\": {\"qualification_requirements\": \"*?0*\"}}, "
-        + "{\"wildcard\": {\"preferred_requirements\": \"*?0*\"}}"
+        + "{\"match\": {\"title\": {\"query\": \"?0\", \"operator\": \"and\"}}}, "
+        + "{\"match\": {\"company\": {\"query\": \"?0\", \"operator\": \"and\"}}}, "
+        + "{\"match\": {\"qualification_requirements\": {\"query\": \"?0\", \"operator\": \"and\"}}}, "
+        + "{\"match\": {\"preferred_requirements\": {\"query\": \"?0\", \"operator\": \"and\"}}}"
         + "], \"minimum_should_match\": 1}}"
         + "]}}")
     Page<RecruitDocumentElasticsearch> searchWithQueryOnly(String query, Pageable pageable);
 
     @Query("{\"bool\": {\"must\": ["
         + "{\"bool\": {\"should\": ["
-        + "{\"wildcard\": {\"title\": \"*?0*\"}}, "
-        + "{\"wildcard\": {\"qualification_requirements\": \"*?0*\"}}, "
-        + "{\"wildcard\": {\"preferred_requirements\": \"*?0*\"}}"
+        + "{\"match\": {\"title\": {\"query\": \"?0\", \"operator\": \"and\"}}}, "
+        + "{\"match\": {\"company\": {\"query\": \"?0\", \"operator\": \"and\"}}}, "
+        + "{\"match\": {\"qualification_requirements\": {\"query\": \"?0\", \"operator\": \"and\"}}}, "
+        + "{\"match\": {\"preferred_requirements\": {\"query\": \"?0\", \"operator\": \"and\"}}}"
         + "], \"minimum_should_match\": 1}}, "
         + "{\"multi_match\": {\"query\": \"?1\", \"fields\": "
         + "[\"qualification_requirements\", \"preferred_requirements\"]}}"
