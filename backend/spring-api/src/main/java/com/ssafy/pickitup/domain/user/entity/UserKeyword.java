@@ -20,7 +20,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@ToString(of = {"id", "user", "keyword"})
+@ToString(of = {"id", "keyword"})
 public class UserKeyword {
 
     @Id

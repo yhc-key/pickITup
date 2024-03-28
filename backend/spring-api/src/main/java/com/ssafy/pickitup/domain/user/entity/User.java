@@ -26,7 +26,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Builder
-@ToString(of = {"id", "nickname", "level"})
+@ToString(of = {"id", "nickname", "level", "userKeywords", "address"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User extends BaseTimeEntity {

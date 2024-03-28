@@ -2,7 +2,6 @@ package com.ssafy.pickitup.domain.user.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.service.UserClickService;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
@@ -171,14 +170,7 @@ public class UserController {
         UserClickResponseDto allUserClick = userClickService.findAllUserClick(authId);
         return success(allUserClick);
     }
-
-    @Operation(summary = "스칼라 테스트")
-    @GetMapping("/test")
-    public ApiResult<?> getUserClick() {
-        userCommandService.scala();
-        return success(null);
-    }
-
+    
     @Operation(summary = "회원 추천 채용 공고 조회")
     @GetMapping("/recommend/{authId}")
     public ApiResult<?> getUserRecommendRecruits(@PathVariable("authId") Integer authId) {
