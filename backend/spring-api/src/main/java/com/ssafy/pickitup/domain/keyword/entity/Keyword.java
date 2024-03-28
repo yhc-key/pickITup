@@ -3,6 +3,8 @@ package com.ssafy.pickitup.domain.keyword.entity;
 
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,17 +30,11 @@ public class Keyword {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     private String name;
 
     @OneToMany(mappedBy = "keyword")
     private List<UserKeyword> userKeywords = new ArrayList<>();
-
-    public Keyword(Integer id, String category, String name) {
-        this.id = id;
-        this.category = category;
-        this.name = name;
-    }
-
 }

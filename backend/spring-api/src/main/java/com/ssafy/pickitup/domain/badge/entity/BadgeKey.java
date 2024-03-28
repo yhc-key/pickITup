@@ -1,9 +1,7 @@
 package com.ssafy.pickitup.domain.badge.entity;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
 
 public enum BadgeKey {

@@ -100,6 +100,9 @@ public class UserCommandService {
         if (user.getUserRank() == Rank.NORMAL) {
             if (user.checkMyRank()) {
                 user.upgradeToSuper();
+                UserMongo userMongo = userCommandMongoRepository.findById(userId)
+                    .orElseThrow(UserNotFoundException::new);
+                userMongo.setRank(Rank.SUPER.name());
             }
         }
 

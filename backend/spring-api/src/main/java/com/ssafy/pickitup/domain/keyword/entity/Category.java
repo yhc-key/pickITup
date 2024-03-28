@@ -1,9 +1,7 @@
 package com.ssafy.pickitup.domain.keyword.entity;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
 public enum Category {
 
