@@ -53,6 +53,7 @@ public class UserCommandService {
     private final RecruitQueryService recruitQueryService;
     private final UserQueryService userQueryService;
     private final UserRankService userRankService;
+    private final UserRecommendService userRecommendService;
 
     @Transactional
     public UserResponseDto getUserById(int userId) {
@@ -84,6 +85,13 @@ public class UserCommandService {
         User updatedUser = userRankService.updateLevel(user);
         log.info("user level after = {}", updatedUser.getLevel());
 
+        //유저 랭크 업데이트
+        if (user.getUserRank() == Rank.NORMAL) {
+            if (user.checkMyRank()) {
+                user.upgradeToSuper();
+            }
+        }
+
         return UserResponseDto.toDto(updatedUser, scrapCount, badgeCount, closingCount);
     }
 
@@ -99,7 +107,6 @@ public class UserCommandService {
     }
 
 
-
     private UserResponseDto createUser(String nickname, Auth auth) {
         User user = User.builder()
             .nickname(nickname)
@@ -107,6 +114,7 @@ public class UserCommandService {
             .userRank(Rank.NORMAL)
             .level(1)
             .build();
+        badgeCommandService.initBadge(user);
         userCommandJpaRepository.save(user);
         auth.setUser(user);
 //        badgeCommandService.initBadge(user.getId());
@@ -122,9 +130,9 @@ public class UserCommandService {
             .userRank(Rank.NORMAL)
             .level(1)
             .build();
+        badgeCommandService.initBadge(user);
         userCommandJpaRepository.save(user);
         auth.setUser(user);
-//        badgeCommandService.initBadge(user.getId());
         return UserResponseDto.toDto(user, 0, 0, 0);
     }
 
@@ -180,6 +188,7 @@ public class UserCommandService {
                 geoLocation.getLongitude()));
         userMongo.setKeywords(keywordsNameList);
         userCommandMongoRepository.save(userMongo);
+
         /**
          * scala.call(1, "create")
          * scala.call(1, "update")
@@ -201,6 +210,7 @@ public class UserCommandService {
     @Transactional
     public void saveUserRecruit(Integer authId, Integer recruitId) {
         User user = userCommandJpaRepository.findByAuthId(authId);
+        user.increaseRecruitScrapCount();
         UserRecruit userRecruit = new UserRecruit(user, recruitId);
         userRecruitCommandJpaRepository.save(userRecruit);
     }
@@ -208,6 +218,8 @@ public class UserCommandService {
     @Transactional
     public void saveUserClick(Integer authId, Integer recruitId) {
         User user = userCommandJpaRepository.findByAuthId(authId);
+        //공고 열람 횟수 증가
+        user.increaseRecruitViewCount();
         UserClick userClick = userClickCommandJpaRepository.findByUserIdAndRecruitId(
             user.getId(), recruitId);
         if (userClick == null) {
@@ -219,7 +231,6 @@ public class UserCommandService {
 
     }
 
-
     @Transactional
     public void deleteUserRecruit(Integer authId, Integer recruitId) {
         userRecruitCommandJpaRepository.deleteAllByUserIdAndRecruitId(authId, recruitId);
@@ -230,6 +241,11 @@ public class UserCommandService {
         User user = userCommandJpaRepository.findByAuthId(authId);
         //출석 횟수 증가
         user.increaseAttendCount();
+    }
+
+    @Transactional
+    public void scala() {
+        userRecommendService.sendRequestToScalaServer();
     }
 
 }

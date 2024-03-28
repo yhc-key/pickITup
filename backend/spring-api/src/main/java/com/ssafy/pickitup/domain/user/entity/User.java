@@ -40,9 +40,9 @@ public class User extends BaseTimeEntity {
     private String techBlog;
 
     @Builder.Default
-    private Integer recruitViewCount = 0;
-    @Builder.Default
     private Integer recruitScrapCount = 0;
+    @Builder.Default
+    private Integer recruitViewCount = 0;
     @Builder.Default
     private Integer attendCount = 0;
     @Builder.Default
@@ -121,6 +121,14 @@ public class User extends BaseTimeEntity {
 
     public int increaseSelfAnswerCount() {
         return ++this.selfAnswerCount;
+    }
+
+    public boolean checkMyRank() {
+        return (0.3 * (this.recruitViewCount) + (0.7 * this.recruitScrapCount) > 50);
+    }
+
+    public void upgradeToSuper() {
+        this.userRank = Rank.SUPER;
     }
 
 }
