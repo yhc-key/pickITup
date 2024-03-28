@@ -6,4 +6,6 @@ import java.util.List;
 public interface UserInterviewQueryService {
 
   List<InterviewWithAnswerDto> findInterviewsAndAnswersByUserId(Integer userId);
+
+  int countSolvedInterviewsByUserId(Integer userId);
 }
