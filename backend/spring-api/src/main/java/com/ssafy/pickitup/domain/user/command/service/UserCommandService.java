@@ -215,10 +215,8 @@ public class UserCommandService {
         userMongo.setKeywords(keywordsNameList);
         userCommandMongoRepository.save(userMongo);
 
-        /**
-         * scala.call(1, "create")
-         * scala.call(1, "update")
-         */
+        // 스칼라 서버에 유저 키워드 변경 사실 알리기
+//        callScalaByKeywordChange();
 
     }
 
@@ -277,6 +275,15 @@ public class UserCommandService {
     @Transactional
     public void scala() {
         userRecommendService.sendRequestToScalaServer();
+    }
+
+    private void callScalaByKeywordChange() {
+        userRecommendService.sendSignalToScalaServerByKeywordChange();
+    }
+
+    @Transactional
+    public void callScalaByAddressChange() {
+        userRecommendService.sendSignalToScalaServerByAddressChange();
     }
 
 }
