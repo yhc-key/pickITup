@@ -45,7 +45,7 @@ export default function RecruitLayout({
     );
   };
 
-  const searchChangeHandler = (event) => {
+  const searchChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
 
