@@ -58,7 +58,7 @@ public class UserCommandService {
     public UserResponseDto getUserById(int userId) {
 
         User user = userQueryJpaRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("해당 유저를 찾을 수 없습니다"));
+            .orElseThrow(UserNotFoundException::new);
         int scrapCount = userRecruitQueryJpaRepository.countByUserId(userId); // 전체 스크랩 공고 개수
         badgeCommandService.renewBadge(userId); // 뱃지 갱신
         int badgeCount = badgeQueryService.myBadgeCount(userId); // 소유한 뱃지 개수 카운트
@@ -83,6 +83,12 @@ public class UserCommandService {
         // 유저 레벨 업데이트
         User updatedUser = userRankService.updateLevel(user);
         log.info("user level after = {}", updatedUser.getLevel());
+
+        //        if (rank = userRank.NORMAL) {
+        //            isifSuper(user) = user.setRank(Super)
+        //                mongo.toUser*(Ser)
+        //
+        //        }
 
         return UserResponseDto.toDto(updatedUser, scrapCount, badgeCount, closingCount);
     }
@@ -129,21 +135,22 @@ public class UserCommandService {
     }
 
     @Transactional
-    public void changeNickname(Integer authId, String nickname) {
-        User user = userCommandJpaRepository.findByAuthId(authId);
+    public void changeNickname(Integer userId, String nickname) {
+        User user = userCommandJpaRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
         user.changeNickname(nickname);
     }
 
     @Transactional
     public void changeAddress(Integer authId, String address) {
-        User user = userCommandJpaRepository.findByAuthId(authId);
+        User user = userCommandJpaRepository.findById(authId).orElseThrow(UserNotFoundException::new);;
         user.changeAddress(address);
     }
 
     @Transactional
     public void changeUserInfo(Integer authId, UserUpdateRequestDto userUpdateRequestDto) {
         User user = userCommandJpaRepository.findById(authId)
-            .orElseThrow(() -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
+            .orElseThrow(UserNotFoundException::new);
         if (userUpdateRequestDto.getEmail() != null) {
             user.getAuth().changeEmail(userUpdateRequestDto.getEmail());
         }
@@ -156,8 +163,9 @@ public class UserCommandService {
     }
 
     @Transactional
-    public void addKeywords(Integer authId, KeywordRequestDto keywordRequestDto) {
-        User user = userCommandJpaRepository.findByAuthId(authId);
+    public void addKeywords(Integer userId, KeywordRequestDto keywordRequestDto) {
+        User user = userCommandJpaRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
         List<Integer> keywordIdList = keywordRequestDto.getKeywords();
 
         List<Keyword> keywords = keywordQueryJpaRepository.findAllById(keywordIdList);
@@ -175,9 +183,13 @@ public class UserCommandService {
 
         // UserMongo 업데이트
         GeoLocation geoLocation = geoLocationService.getGeoLocation(user.getAddress());
-        UserMongo userMongo = userCommandMongoRepository.findById(authId)
-            .orElseGet(() -> new UserMongo(authId, new ArrayList<>(), geoLocation.getLatitude(),
-                geoLocation.getLongitude()));
+        UserMongo userMongo = userCommandMongoRepository.findById(userId)
+            .orElseGet(
+                () -> new UserMongo(userId,
+                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                    Rank.NORMAL.name(),
+                    geoLocation.getLatitude(),
+                    geoLocation.getLongitude()));
         userMongo.setKeywords(keywordsNameList);
         userCommandMongoRepository.save(userMongo);
         /**
@@ -188,26 +200,23 @@ public class UserCommandService {
     }
 
     @Transactional
-    public void allUserToMongo() {
-        // 현재 mysql에 있는 모든 유저 데이터를 몽고 db로 마이그레이션
-    }
-
-    @Transactional
     public void updateUserKeyword(Integer authId, KeywordRequestDto keywordRequestDto) {
         userKeywordCommandJpaRepository.deleteAllByUserId(authId);
         addKeywords(authId, keywordRequestDto);
     }
 
     @Transactional
-    public void saveUserRecruit(Integer authId, Integer recruitId) {
-        User user = userCommandJpaRepository.findByAuthId(authId);
+    public void saveUserRecruit(Integer userId, Integer recruitId) {
+        User user = userCommandJpaRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
         UserRecruit userRecruit = new UserRecruit(user, recruitId);
         userRecruitCommandJpaRepository.save(userRecruit);
     }
 
     @Transactional
-    public void saveUserClick(Integer authId, Integer recruitId) {
-        User user = userCommandJpaRepository.findByAuthId(authId);
+    public void saveUserClick(Integer userId, Integer recruitId) {
+        User user = userCommandJpaRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
         UserClick userClick = userClickCommandJpaRepository.findByUserIdAndRecruitId(
             user.getId(), recruitId);
         if (userClick == null) {
@@ -216,9 +225,7 @@ public class UserCommandService {
         } else {
             userClick.increaseClickCount();
         }
-
     }
-
 
     @Transactional
     public void deleteUserRecruit(Integer authId, Integer recruitId) {
@@ -227,7 +234,8 @@ public class UserCommandService {
 
     @Transactional
     public void increaseUserAttendCount(Integer authId) {
-        User user = userCommandJpaRepository.findByAuthId(authId);
+        User user = userCommandJpaRepository.findById(authId)
+            .orElseThrow(UserNotFoundException::new);
         //출석 횟수 증가
         user.increaseAttendCount();
     }

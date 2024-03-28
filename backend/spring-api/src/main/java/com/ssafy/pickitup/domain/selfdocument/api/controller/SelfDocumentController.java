@@ -48,7 +48,7 @@ public class SelfDocumentController {
     @GetMapping("/main")
     public ApiResult<List<MainQuestionQueryResponseDto>> searchMain(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        int authId = Integer.parseInt(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         List<MainQuestionQueryResponseDto> mainQuestionQueryResponseDtoList = mainQueryService.searchMainQuestions(
             authId);
         return success(mainQuestionQueryResponseDtoList);
@@ -59,7 +59,7 @@ public class SelfDocumentController {
     public ApiResult<MainQuestionCommandResponseDto> registerMain(
         @RequestBody MainQuestionCommandRequestDto dto,
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        int authId = Integer.parseInt(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         MainQuestionCommandResponseDto registeredMainQuestionDto = mainCommandService.registerMainQuestion(
             authId, dto);
         return success(registeredMainQuestionDto);

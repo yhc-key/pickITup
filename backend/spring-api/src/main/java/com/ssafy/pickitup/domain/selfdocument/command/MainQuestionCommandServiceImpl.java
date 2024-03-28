@@ -25,7 +25,7 @@ public class MainQuestionCommandServiceImpl implements MainQuestionCommandServic
     public MainQuestionCommandResponseDto registerMainQuestion(Integer userId,
         MainQuestionCommandRequestDto dto) {
         User user = userQueryRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다"));
+            .orElseThrow(UserNotFoundException::new);
         MainQuestion mainQuestion = dto.toEntity(user);
         return mainCommandRepository.save(mainQuestion).toCommandResponse();
     }

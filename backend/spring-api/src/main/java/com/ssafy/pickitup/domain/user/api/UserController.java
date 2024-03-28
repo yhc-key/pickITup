@@ -43,7 +43,6 @@ public class UserController {
 
     private final UserCommandService userCommandService;
     private final UserQueryService userQueryService;
-    private final RecruitQueryService recruitQueryService;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserClickService userClickService;
 
@@ -124,8 +123,8 @@ public class UserController {
     @PostMapping("/click/recruit")
     public ApiResult<?> clickRecruit(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
-        @RequestParam int recruitId) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        @RequestParam Integer recruitId) {
+        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
         userCommandService.saveUserClick(authId, recruitId);
         return success("채용 공고 클릭");
     }

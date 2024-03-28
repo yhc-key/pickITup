@@ -21,12 +21,13 @@ public class CompanyElasticsearch {
     private String address;
     private String salary;
 
+    /*
+        월급 int로 변환
+     */
     private int convertSalaryIntoInt(String salary) {
         if (salary.isEmpty()) {
-            return 40_000_000;
-        }
-        // 월급 int로 변환
-        else {
+            return -1; // 연봉 정보가 없는 경우 -1 리턴
+        } else {
             return Integer.parseInt(salary) * 10_000;
         }
     }
