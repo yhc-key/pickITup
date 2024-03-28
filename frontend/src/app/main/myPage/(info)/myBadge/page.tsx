@@ -4,10 +4,9 @@ import Image from 'next/image';
 import { badgeDataMap } from "@/data/badgeData";
 import TechSelectAfterLogin from "@/components/techSelectAfterLogin";
 function MyBadge() {
-  let acquired:string[] = ["attend1","jobRead1","jobRead50","jobScrap1","attend50","attend100","blogRead1","blogRead50"]; //얻은 배지 정보
-  let unacquired:string [] = ["blogRead100",
-                              "blogScrap1","blogScrap50","blogScrap100","selfDocWrite1","selfDocWrite50","selfDocWrite100",
-                              "game10","game30","game50","game150","game300","jobRead100","jobScrap50","jobScrap100"];  //얻지 못한 배지 정보
+  let acquired:string[] = ["attend1","jobRead1","jobRead50","jobScrap1","attend50","attend100"]; //얻은 배지 정보
+  let unacquired:string [] = ["selfDocWrite1","selfDocWrite50","selfDocWrite100",
+  "game10","game30","game50","game150","game300","jobRead100","jobScrap50","jobScrap100"];  //얻지 못한 배지 정보
   
   const [acq,setAcq] = useState<ReactElement[]>([]); //react 문 보낼것
   const [unacq,setUnacq] = useState<ReactElement[]>([]); //react 문 보낼것

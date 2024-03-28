@@ -5,23 +5,13 @@ import Link from "next/link";
 import { TiDeleteOutline } from "react-icons/ti";
 import Modal from "@/components/modal2";;
 import { techDataMap } from "@/data/techData";
-import { techData2,techInfos } from "@/data/techData";
-import AutocompleteSearchBar from "@/components/AutoCompleteSearchBar";
-
-const techTypes: string[] = [
-  "언어",
-  "프론트앤드",
-  "백앤드",
-  "모바일",
-  "데이터",
-  "데브옵스",
-  "테스팅툴",
-  "정보보안",
-];
-
-export default function TechSelectAfterLogin() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [pickType, setPickType] = useState("언어");
+import { techData2,techInfos,techAll } from "@/data/techData";
+import AllSearchBar from "@/components/AllSearchBar"
+interface TechSelectMyPageProps{
+  onclose: ()=>void;
+}
+export default function TechSelectMyPage({onclose}:TechSelectMyPageProps) {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [pickTech, setPickTech] = useState<string[]>([]);
   
   useEffect(() => {
@@ -32,34 +22,34 @@ export default function TechSelectAfterLogin() {
       })
       .then(res=>res.json())
       .then(res=>{
-        if(res.success===true&& res.response.keywords.length==0){
-          setIsModalOpen(true); // 첫 로그인 후 모달 열기
+          console.log(res);
+          setPickTech(res.response?.keywords);
+          setIsModalOpen(true);
         }
-      })
+      )
     }
   }, []);
 
   const clickSide = () => {
-    setIsModalOpen(false);
+    modalCloseHandler();
   }
-  // 기술스택 선택 함수
+  // 기술스택 추가 함수
   const techAddHandler = (tech: string): void => {
     if(!pickTech.includes(tech)){
       setPickTech([...pickTech,tech]);
     }
   };
+  //기술스택 제거 함수
 const deletePickTech = (item : string)=>{
   const newTechs = pickTech.filter(tech=>tech!== item);
   setPickTech(newTechs);
 }
   // 모달 닫는 함수
   const modalCloseHandler = (): void => {
-    setPickType("언어");
     setPickTech([]);
     setIsModalOpen(false);
+    onclose();
   };
-  
-  const techs: string[] | undefined = techDataMap.get(pickType);
 
   const setMyTech = () :void => {
     const authid = sessionStorage.getItem('authid');
@@ -72,13 +62,13 @@ const deletePickTech = (item : string)=>{
       const techIds:number[] = [];
         for (const tech of pickTech) {
           const techId = techInfos.get(tech);
-          if (techId !== undefined&&!res.response.keywords.includes(tech)) {
+          if (techId !== undefined) {
               techIds.push(techId);
           }
         }
         const token = sessionStorage.getItem('accessToken');
         fetch(`https://spring.pickitup.online/users/keywords`,{
-          method : "POST",
+          method : "PATCH",
           headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer "+token,
@@ -95,6 +85,8 @@ const deletePickTech = (item : string)=>{
 
   return (
     <div>
+      {/* <button onClick={(): void => setIsModalOpen(true)}>
+      </button> */}
       { isModalOpen &&
       <Modal open={isModalOpen} clickSide={clickSide} size="h-[90vh] w-[60vw]">
         <div className="flex flex-col items-center">
@@ -102,9 +94,9 @@ const deletePickTech = (item : string)=>{
             관심 기술 스택(영어)을 선택해주세요
           </div>
           <div className="z-50 py-2 h-[8vh] flex items-center justify-center"> 
-            <AutocompleteSearchBar words={techData2} onSelect={techAddHandler} ></AutocompleteSearchBar>
+            <AllSearchBar words={techAll} onSelect={techAddHandler} ></AllSearchBar>
           </div>
-
+          
           <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-[8vh]">
             {pickTech.map((item:string,index:number)=>
               <button key={index} onClick={()=>deletePickTech(item)} className="relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1">{item}
@@ -112,43 +104,11 @@ const deletePickTech = (item : string)=>{
             )}
           </div>
           <div className="flex flex-wrap justify-center gap-2 mt-1">
-            {techTypes.map((techType: string, index: number) => {
-              const isActive: boolean = pickType == techType;
-              return (
-                <button
-                  type="button"
-                  onClick={(): void => setPickType(techType)}
-                  className={`border border-f5gray-300 rounded-2xl text-f5black-400 text-xs p-2 hover:transition-all hover:scale-105 hover:ease-in-out  ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
-                  key={index}
-                >
-                  {techType}
-                </button>
-              );
-            })}
+
           </div>
           <div className="m-2"></div>
           <div className="min-h-[300px]">
             <div className="flex flex-wrap justify-center gap-3">
-              {techs?.map((tech: string, index: number) => {
-                const isActive: boolean = pickTech.includes(tech);
-                return (
-                  <button
-                    type="button"
-                    key={index}
-                    onClick={() => {!isActive?techAddHandler(tech):deletePickTech(tech)}}
-                    className={`flex flex-row border-f5gray-300 border py-1 pr-2 rounded-2xl text-f5black-400 text-xs items-center  hover:transition-all hover:scale-105 hover:ease-in-out  ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
-                  >
-                    <Image
-                      src={`/images/techLogo/${tech}.png`}
-                      alt={tech}
-                      width={22}
-                      height={22}
-                      className="mx-1"
-                    />
-                    {tech}
-                  </button>
-                );
-              })}
             </div>
           </div>
           <div className="fixed bottom-4 flex justify-center items-center">
@@ -166,7 +126,8 @@ const deletePickTech = (item : string)=>{
             </Link>
           </div>
         </div>
-      </Modal>}
+      </Modal>
+      } 
     </div>
     
   );

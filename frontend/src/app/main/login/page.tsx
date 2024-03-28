@@ -87,7 +87,7 @@ function Login() {
               type="text"
               required
               className="w-[20vw] h-[5vh] ml-6 rounded-md border border-f5gray-400
-            bg-gray-200 appearance-none border-2 border-gray-200
+            bg-gray-200 appearance-none pl-2
             text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300
             "
             />
@@ -104,7 +104,7 @@ function Login() {
               type="password"
               required
               className="w-[20vw] h-[5vh] ml-6 rounded-md border border-f5gray-400
-            bg-gray-200 appearance-none border-2 border-gray-200
+            bg-gray-200 appearance-none pl-2
             text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300
             "
             />
