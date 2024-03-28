@@ -51,7 +51,7 @@ public class AuthQueryService {
         }
         log.debug("case2 : access token in not in blacklist");
 
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(requestAccessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(requestAccessToken);
         log.debug("user id = {}", authId);
 
         if (redisService.hasRefreshToken(authId)) {
@@ -79,7 +79,7 @@ public class AuthQueryService {
     public void idDuplicated(String username) {
         Optional<Auth> authByUsername = authQueryJpaRepository.findAuthByUsername(username);
         if (authByUsername.isPresent()) {
-            throw new DuplicateUsernameException("이미 존재하는 아이디입니다.");
+            throw new DuplicateUsernameException();
         }
     }
 }

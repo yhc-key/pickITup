@@ -27,6 +27,4 @@ public class OxQuiz {
     private String question;
     private boolean answer;
     private String category;
-
-
 }

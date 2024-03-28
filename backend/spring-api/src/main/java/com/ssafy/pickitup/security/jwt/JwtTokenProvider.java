@@ -137,8 +137,8 @@ public class JwtTokenProvider {
         throw new UnsupportedJwtException("지원하지 않는 토큰 형식입니다.");
     }
 
-    public String extractAuthId(String accessToken) {
-        return parseClaims(resolveToken(accessToken)).getSubject();
+    public Integer extractAuthId(String accessToken) {
+        return Integer.valueOf(parseClaims(resolveToken(accessToken)).getSubject());
     }
 
     public long getTokenExpiration(String accessToken) {

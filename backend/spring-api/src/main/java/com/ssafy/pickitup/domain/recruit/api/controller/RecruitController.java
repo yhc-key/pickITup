@@ -2,11 +2,11 @@ package com.ssafy.pickitup.domain.recruit.api.controller;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.company.query.CompanyQueryService;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryRequestDto;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000", "http://localhost:8080",
-    "https://spring.pickitup.online"}, exposedHeaders = "*")
+@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000",
+    "http://localhost:8080", "https://spring.pickitup.online"}, exposedHeaders = "*")
 @RequestMapping("/recruit")
 @RestController
 @RequiredArgsConstructor

@@ -41,7 +41,6 @@ public class BadgeQueryServiceImpl implements BadgeQueryService {
 
     @Override
     public int myBadgeCount(Integer userId) {
-//        return 0;
         return userBadgeQueryJpaRepository.countAchievedBadgesByUserId(userId);
     }
 }
