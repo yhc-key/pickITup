@@ -12,6 +12,7 @@ public class UserResponseDto {
     private String nickname;
     private String github;
     private String techBlog;
+    private String address;
     private Integer exp;
     private Integer level;
     private Integer attendCount;
@@ -26,6 +27,7 @@ public class UserResponseDto {
             user.getNickname(),
             user.getGithub(),
             user.getTechBlog(),
+            user.getAddress(),
             user.getExp(),
             user.getLevel(),
             user.getAttendCount(),

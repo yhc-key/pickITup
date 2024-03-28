@@ -64,6 +64,7 @@ public class UserCommandService {
     private final UserRankService userRankService;
     private final ScrapCommandMongoRepository scrapCommandMongoRepository;
     private final ClickCommandMongoRepository clickCommandMongoRepository;
+    private final UserRecommendService userRecommendService;
 
     @Transactional
     public UserResponseDto getUserById(int userId) {
@@ -95,11 +96,12 @@ public class UserCommandService {
         User updatedUser = userRankService.updateLevel(user);
         log.info("user level after = {}", updatedUser.getLevel());
 
-        //        if (rank = userRank.NORMAL) {
-        //            isifSuper(user) = user.setRank(Super)
-        //                mongo.toUser*(Ser)
-        //
-        //        }
+        //유저 랭크 업데이트
+        if (user.getUserRank() == Rank.NORMAL) {
+            if (user.checkMyRank()) {
+                user.upgradeToSuper();
+            }
+        }
 
         return UserResponseDto.toDto(updatedUser, scrapCount, badgeCount, closingCount);
     }
@@ -123,6 +125,7 @@ public class UserCommandService {
             .userRank(Rank.NORMAL)
             .level(1)
             .build();
+        badgeCommandService.initBadge(user);
         userCommandJpaRepository.save(user);
         auth.setUser(user);
 //        badgeCommandService.initBadge(user.getId());
@@ -138,9 +141,9 @@ public class UserCommandService {
             .userRank(Rank.NORMAL)
             .level(1)
             .build();
+        badgeCommandService.initBadge(user);
         userCommandJpaRepository.save(user);
         auth.setUser(user);
-//        badgeCommandService.initBadge(user.getId());
         return UserResponseDto.toDto(user, 0, 0, 0);
     }
 
@@ -203,6 +206,7 @@ public class UserCommandService {
                     geoLocation.getLongitude()));
         userMongo.setKeywords(keywordsNameList);
         userCommandMongoRepository.save(userMongo);
+
         /**
          * scala.call(1, "create")
          * scala.call(1, "update")
@@ -261,4 +265,10 @@ public class UserCommandService {
         //출석 횟수 증가
         user.increaseAttendCount();
     }
+
+    @Transactional
+    public void scala() {
+        userRecommendService.sendRequestToScalaServer();
+    }
+
 }
