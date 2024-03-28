@@ -105,7 +105,8 @@ export default function Home() {
           if (laptopImageRef.current) {
             laptopImageRef.current.style.bottom = "-80vh";
             laptopImageRef.current.style.left = "50%";
-            laptopImageRef.current.style.transform = "translate(-50%, 0) scale(1.05)";
+            laptopImageRef.current.style.transform =
+              "translate(-50%, 0) scale(1.05)";
           }
           setScrollIdx(1);
         } else if (scrollTop >= pageHeight * 2 && scrollTop < pageHeight * 3) {
@@ -173,15 +174,15 @@ export default function Home() {
             height={1053}
             className="laptop fixed bottom-[-80vh] translate-x-[-50%] scale-105 transform transition-all duration-700 ease-in-out left-1/2"
           />
-          <Page1 activePage={scrollIdx === 1 ? true : false}/>
+          <Page1 activePage={scrollIdx === 1 ? true : false} />
           <div className="w-[100%] h-1"></div>
-          <Page2 activePage={scrollIdx === 2 ? true : false}/>
+          <Page2 activePage={scrollIdx === 2 ? true : false} />
           <div className="w-[100%] h-1"></div>
-          <Page3 activePage={scrollIdx === 3 ? true : false}/>
+          <Page3 activePage={scrollIdx === 3 ? true : false} />
           <div className="w-[100%] h-1"></div>
-          <Page4 activePage={scrollIdx === 4 ? true : false}/>
+          <Page4 activePage={scrollIdx === 4 ? true : false} />
           <div className="w-[100%] h-1"></div>
-          <Page5 activePage={scrollIdx === 5 ? true : false}  />
+          <Page5 activePage={scrollIdx === 5 ? true : false} />
         </div>
       </div>
     </body>

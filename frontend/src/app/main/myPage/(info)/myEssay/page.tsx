@@ -1,5 +1,11 @@
 "use client";
-import { Fragment, MutableRefObject, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  MutableRefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   FaPlus,
   FaPen,
@@ -12,6 +18,7 @@ import Link from "next/link";
 import Modal from "@/components/modal";
 import useEssayStore from "@/store/essayStore";
 import { redirect } from "next/navigation";
+import ModalCustom from "@/components/modalCustom";
 interface Essay {
   company: string;
   title: string;
@@ -60,8 +67,6 @@ export default function MyEssay(): JSX.Element {
     setIsChangeModalOpen(true);
   };
 
-  const makeCanEditTitleContentHandler = (index: number) => {};
-
   const dropDownClickHandler: (index: number) => void = (
     index: number
   ): void => {
@@ -80,7 +85,13 @@ export default function MyEssay(): JSX.Element {
     setMyEssayActive(tmpEssays);
   };
 
-  const clickAddEssayHandler = () => {};
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (e.key !== "Enter" && e.key !== "Escape") {
+      e.stopPropagation();
+    }
+  };
 
   const makeChangeTitle = async (
     id: number,
@@ -100,11 +111,10 @@ export default function MyEssay(): JSX.Element {
     } catch (error) {
       console.error(error);
     }
-    redirect("/myPage/myEssay");
+    // redirect("/main/myPage/myEssay");
   };
 
-  const addSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const addSubmitHandler = async () => {
     if (!essayTitleAddRef.current) return;
     if (essayTitleAddRef.current.value.trim() == "") {
       setTitleValidate(false);
@@ -127,11 +137,7 @@ export default function MyEssay(): JSX.Element {
     }
   };
 
-  const changeSubmitHandler = async (
-    event: React.FormEvent<HTMLFormElement>,
-    id: number
-  ) => {
-    event.preventDefault();
+  const changeTitleHandler = async (id: number) => {
     if (!essayTitleAddRef.current) return;
     if (essayTitleAddRef.current.value.trim() == "") {
       setTitleValidate(false);
@@ -256,7 +262,7 @@ export default function MyEssay(): JSX.Element {
   return (
     <div className="relative w-full pt-3 pr-3">
       <Link
-        href="/myPage/addEssay"
+        href="/main/myPage/addEssay"
         className="absolute flex flex-row items-center gap-2 px-4 py-2 border border-black rounded-lg right-3"
       >
         <div className="text-f5green-300">
@@ -277,7 +283,7 @@ export default function MyEssay(): JSX.Element {
                     makeChangeTitle(title.id, e);
                   }}
                   disabled
-                  className="w-full mr-10 outline-none"
+                  className="w-full mr-10 outline-none bg-white"
                 />
                 <div className="flex flex-row gap-6 mr-4 text-lg">
                   <button onClick={() => makeCanEditHandler(index)}>
@@ -349,18 +355,25 @@ export default function MyEssay(): JSX.Element {
         </div>
         <div>자소서 항목 추가</div>
       </button>
-      <Modal open={isAddModalOpen}>
+      <ModalCustom
+        open={isAddModalOpen}
+        name="add"
+        onClose={() => setIsAddModalOpen(false)}
+        onClickEvent={addSubmitHandler}
+        buttonString={{ cancel: "취소하기", add: "추가하기" }}
+      >
         <div className="flex flex-col flex-wrap h-min-[400px]">
           <div className="text-xl font-medium text-center ">
             🖋 추가할 자소서 항목을 작성해주세요 🖋
           </div>
 
-          <form onSubmit={addSubmitHandler}>
+          <div>
             <input
               type="text"
               placeholder="추가할 자소서 항목을 작성해주세요"
               className="w-[700px] max-w-[100%] p-1 h-auto mt-3"
               ref={essayTitleAddRef}
+              onKeyDown={(e) => handleKeyDown(e)}
             />
             <div className="min-h-10">
               <span
@@ -369,34 +382,22 @@ export default function MyEssay(): JSX.Element {
                 올바른 값을 입력해주세요
               </span>
             </div>
-            <div className="flex justify-center mt-5 ">
-              <button
-                onClick={() => setIsAddModalOpen(false)}
-                className="px-12 py-2 mr-6 text-sm font-semibold rounded-md text-neutral-100 bg-f5red-350 hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10"
-              >
-                취소하기
-              </button>
-              <button
-                type="submit"
-                className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10"
-              >
-                추가하기
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
-      </Modal>
-      <Modal open={isChangeModalOpen}>
+      </ModalCustom>
+      <ModalCustom
+        open={isChangeModalOpen}
+        name="change"
+        onClose={() => setIsChangeModalOpen(false)}
+        onClickEvent={() => changeTitleHandler(beforeChangeTitle.id)}
+        buttonString={{ cancel: "취소하기", add: "변경하기" }}
+      >
         <div className="flex flex-col h-min-[400px]">
           <div className="text-xl font-medium text-center ">
             🖋 변경할 자소서 항목을 작성해주세요 🖋
           </div>
 
-          <form
-            onSubmit={(event) =>
-              changeSubmitHandler(event, beforeChangeTitle.id)
-            }
-          >
+          <div>
             <span>변경 전 : </span>
             <span className="w-[700px] max-w-[100%] p-1 h-auto mt-3">
               {beforeChangeTitle?.title}
@@ -409,6 +410,7 @@ export default function MyEssay(): JSX.Element {
               className="w-[700px] max-w-[100%] p-1 h-auto mt-3"
               ref={essayTitleAddRef}
               id="afterChangeTitle"
+              onKeyDown={(e) => handleKeyDown(e)}
             />
             <div className="min-h-10">
               <span
@@ -417,68 +419,41 @@ export default function MyEssay(): JSX.Element {
                 올바른 값을 입력해주세요
               </span>
             </div>
-            <div className="flex justify-center mt-5 ">
-              <button
-                onClick={() => setIsChangeModalOpen(false)}
-                className="px-12 py-2 mr-6 text-sm font-semibold rounded-md text-neutral-100 bg-f5red-350 hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10"
-              >
-                취소하기
-              </button>
-              <button
-                type="submit"
-                className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10"
-              >
-                변경하기
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal>
-      <Modal open={isEssayChangeModalOpen}>
-        <div className="flex flex-col h-min-[800px]">
-          <div className="text-xl font-medium text-center ">
-            🖋 자소서 변경하기 🖋
-          </div>
-
-          <div>
-            <label htmlFor="inputTitle" className="font-bold">
-              자기소개서 항목
-            </label>
-            <input
-              type="text"
-              placeholder="빌 경우 원래 항목이 들어갑니다"
-              className="w-[700px] min-h-16 p-1 h-auto text-sm focus:outline-f5green-300 my-3 "
-              ref={essayTitleChangeRef}
-              id="inputTitle"
-            ></input>
-            <label htmlFor="inputEssay" className="font-bold ">
-              자기소개서 내용
-            </label>
-            <textarea
-              placeholder="빌 경우 원래 내용이 들어갑니다."
-              className="w-[700px] max-w-[100%] p-1 h-auto mt-3 min-h-40 text-sm my-3 focus:outline-f5green-300 text-start"
-              ref={essayChangeRef}
-              id="inputEssay"
-            />
-
-            <div className="flex justify-center mt-5">
-              <button
-                onClick={() => setIsEssayChangeModalOpen(false)}
-                className="px-12 py-2 mr-6 text-sm font-semibold rounded-md text-neutral-100 bg-f5red-350 hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10"
-              >
-                취소하기
-              </button>
-              <button
-                type="button"
-                onClick={() => changeEssay()}
-                className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10"
-              >
-                변경하기
-              </button>
-            </div>
           </div>
         </div>
-      </Modal>
+      </ModalCustom>
+      <ModalCustom
+        open={isEssayChangeModalOpen}
+        name="changeEssay"
+        onClose={() => setIsEssayChangeModalOpen(false)}
+        onClickEvent={changeEssay}
+        buttonString={{ cancel: "취소하기", add: "변경하기" }}
+      >
+        <div className="flex flex-col h-min-[800px] text-xl font-medium ">
+          <span className="text-center">🖋 자소서 변경하기 🖋</span>
+          <label htmlFor="inputTitle" className="font-bold">
+            자기소개서 항목
+          </label>
+          <input
+            type="text"
+            placeholder="빌 경우 원래 항목이 들어갑니다"
+            className="w-[700px] min-h-16 p-1 h-auto text-sm focus:outline-f5green-300 my-3 "
+            ref={essayTitleChangeRef}
+            id="inputTitle"
+            onKeyDown={(e) => handleKeyDown(e)}
+          />
+          <label htmlFor="inputEssay" className="font-bold ">
+            자기소개서 내용
+          </label>
+          <textarea
+            placeholder="빌 경우 원래 내용이 들어갑니다."
+            className="w-[700px] max-w-[100%] p-1 h-auto mt-3 min-h-40 text-sm my-3 focus:outline-f5green-300 text-start"
+            ref={essayChangeRef}
+            id="inputEssay"
+            onKeyDown={(e) => handleKeyDown(e)}
+          />
+        </div>
+      </ModalCustom>
     </div>
   );
 }

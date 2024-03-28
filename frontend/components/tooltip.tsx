@@ -1,12 +1,7 @@
 "use client";
 import React, { ReactNode } from "react";
 import { useState } from "react";
-
-
-interface hoverProps {
-  content: string;
-  children: ReactNode;
-}
+import { hoverProps } from "@/type/interface";
 
 export default function Tooltip({ content, children }: hoverProps) {
   // 호버 상태 저장
@@ -14,7 +9,7 @@ export default function Tooltip({ content, children }: hoverProps) {
 
   return (
     <div className="mb:hidden">
-     {/* 마우스 이벤트에 따라 호버 상태 저장  */}
+      {/* 마우스 이벤트에 따라 호버 상태 저장  */}
       <div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

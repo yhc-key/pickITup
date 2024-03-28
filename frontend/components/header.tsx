@@ -6,12 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useAuthStore, { AuthState } from "../store/authStore";
 import { useMediaQuery } from "react-responsive";
-
-interface LinkType {
-  name: string;
-  href: string;
-  icon: string;
-}
+import { LinkType } from "@/type/interface";
 
 const navLinks: LinkType[] = [
   { name: "채용공고", href: "/main/recruit", icon: "📆" },
