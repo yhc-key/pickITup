@@ -16,6 +16,6 @@ public class KeywordResponseDto {
 
     public static KeywordResponseDto toDto(Keyword keyword) {
         return new KeywordResponseDto(keyword.getId(),
-            keyword.getCategory().name(), keyword.getName());
+            keyword.getCategory(), keyword.getName());
     }
 }

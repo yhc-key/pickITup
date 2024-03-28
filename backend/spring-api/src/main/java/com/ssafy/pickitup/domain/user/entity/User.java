@@ -53,7 +53,8 @@ public class User extends BaseTimeEntity {
     private Integer level = 0;
     @Builder.Default
     private Integer exp = 0;
-    private String address;
+    @Builder.Default
+    private String address = "";
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
