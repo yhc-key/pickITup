@@ -22,7 +22,7 @@ export default function FalseBtn({ onNextClick }: FalseBtnProps) {
   return (
     <div className="mx-10 my-5">
       <div
-        className={`flex items-center justify-center cursor-pointer w-80 h-40  rounded-3xl drop-shadow-md transition-all ease-in-out duration-300 ${hovered ? "bg-f5red-100 scale-105" : "bg-f5gray-200"}`}
+        className={`flex items-center justify-center cursor-pointer w-80 h-40 rounded-3xl drop-shadow-md transition-all ease-in duration-300 ${hovered ? "bg-f5red-100 scale-105" : "bg-f5gray-200"}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={onNextClick}
@@ -32,7 +32,7 @@ export default function FalseBtn({ onNextClick }: FalseBtnProps) {
           alt={hovered ? "falseRed" : "falseGray"}
           width={120}
           height={120}
-          className="transition-all duration-300 ease-in-out"
+          className="transition-all duration-300 ease-in"
         />
       </div>
     </div>

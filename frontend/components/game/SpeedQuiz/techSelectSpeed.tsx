@@ -19,8 +19,6 @@ const techTypes: string[] = [
 ];
 
 export default function TechSelectOX() {
-
-  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pickType, setPickType] = useState("언어");
   const [pickTech, setPickTech] = useState("");
@@ -48,7 +46,7 @@ export default function TechSelectOX() {
           width={400}
           height={280}
           priority={true}
-          className="transition-all duration-500 ease-in-out hover:-translate-y-1 hover:scale-105"
+          className="transition-all duration-500 ease-in hover:-translate-y-1 hover:scale-105"
         />
       </button>
       <Modal open={isModalOpen}>
@@ -64,7 +62,7 @@ export default function TechSelectOX() {
                 <button
                   type="button"
                   onClick={(): void => setPickType(techType)}
-                  className={`border border-f5gray-300 rounded-2xl text-f5black-400 text-xs p-2  mb:p-1 hover:transition-all hover:scale-105 hover:ease-in-out  ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
+                  className={`border border-f5gray-300 rounded-2xl text-f5black-400 text-xs p-2 mb:p-1 transition-all hover:scale-105 ease-in duration-150 ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
                   key={index}
                 >
                   {techType}
@@ -82,7 +80,7 @@ export default function TechSelectOX() {
                     type="button"
                     key={index}
                     onClick={() => techClickHandler(tech)}
-                    className={`flex flex-row border-f5gray-300 border py-1 pr-2 mb:pr-1 mb:py-0.5 rounded-2xl text-f5black-400 text-xs items-center  hover:transition-all hover:scale-105 hover:ease-in-out  ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
+                    className={`flex flex-row border-f5gray-300 border py-1 pr-2 mb:pr-1 mb:py-0.5 rounded-2xl text-f5black-400 text-xs items-center transition-all ease-in duration-150 hover:scale-105 ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
                   >
                     <Image
                       src={`/images/techLogo/${tech}.png`}
@@ -105,7 +103,10 @@ export default function TechSelectOX() {
             >
               취소하기
             </button>
-            <Link href={`/main/game/speedQuiz/${pickTech}`} className="mb:mx-auto mb:my-3">
+            <Link
+              href={`/main/game/speedQuiz/${pickTech}`}
+              className="mb:mx-auto mb:my-3"
+            >
               <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10 ">
                 시작하기
               </button>

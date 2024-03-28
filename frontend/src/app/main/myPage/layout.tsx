@@ -52,7 +52,7 @@ export default function MyPageLayout({
           <p>Level 7</p>
           <p>경험치 바~~</p>
         </div>
-        <div className="border rounded-lg bg-f5green-200 px-4 py-2 my-4">
+        <div className=" rounded-lg bg-f5green-100 p-4 my-4">
           {dummyMyData.map((data: string[], index: number) => {
             return (
               <div className="flex justify-between mt-3" key={index}>
@@ -177,7 +177,7 @@ export default function MyPageLayout({
           </div>
         </div>
       </div>
-      <div className="flex-grow ml-5">{children}</div>
+      <div className="flex-grow ml-7">{children}</div>
     </div>
   );
 }

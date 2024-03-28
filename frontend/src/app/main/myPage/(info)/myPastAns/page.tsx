@@ -20,31 +20,31 @@ export default function MyPastAns() {
     const fetchMyInterviewData = async () => {
       const accessToken = sessionStorage.getItem("accessToken");
       try {
-        const resp: Response = await fetch(
-          apiUrl, {
-            headers: {
-              Authorization: "Bearer " + accessToken,
-            },
-          }
-        );
+        const resp: Response = await fetch(apiUrl, {
+          headers: {
+            Authorization: "Bearer " + accessToken,
+          },
+        });
         const data: any = await resp.json();
 
         setMyFavList(data.response);
         console.log(data.response);
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
     };
     fetchMyInterviewData();
-  },[apiUrl, setMyFavList])
+  }, [apiUrl, setMyFavList]);
 
   const pastAnsClickHandler = () => {};
   const exAnsClickHandler = () => {};
   return (
-    <table className="w-full">
+    <div className="w-full pr-4 mt-4">
+    <div className="w-[100%] rounded-2xl border">
+    <table className="w-[100%] mt-4 ">
       <thead>
-        <tr className="text-center h-20 border-b-[1px]">
-          <th className="pl-2 w-1/12">문제번호</th>
+        <tr className="text-center text-base h-16 m-2">
+          <th className="pl-2 w-1/12">번호</th>
           <th className="pl-2 w-1/12 text-center">대분류</th>
           <th className="w-1/12 text-center">소분류</th>
           <th className="pl-2 w-5/12">문제</th>
@@ -53,33 +53,36 @@ export default function MyPastAns() {
         </tr>
       </thead>
       <tbody>
-  {myFavList.map((interview: Interview, index: number) => (
-    <tr key={index} className="h-20 text-center">
-      <td>{interview.interviewId}</td>
-      <td className="font-bold">{interview.mainCategory}</td>
-      <td className="font-bold">{interview.subCategory}</td>
-      <td>{interview.question}</td>
-      <td className="text-center">
-        <button
-          type="button"
-          onClick={pastAnsClickHandler}
-          className="rounded-lg py-2 px-4 bg-f5green-300 text-white font-bold "
-        >
-          더보기
-        </button>
-      </td>
-      <td className="text-center">
-        <button
-          type="button"
-          onClick={exAnsClickHandler}
-          className="rounded-lg py-2 px-4 bg-f5red-300 text-white font-bold "
-        >
-          예시 답변
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
+        {myFavList && myFavList.map((interview: Interview, index: number) => (
+          <tr key={index} className="h-20 text-center text-sm">
+            <td>{interview.interviewId}</td>
+            <td className="font-bold">{interview.mainCategory}</td>
+            <td className="font-bold">{interview.subCategory}</td>
+            <td>{interview.question}</td>
+            <td className="text-center">
+              <button
+                type="button"
+                onClick={pastAnsClickHandler}
+                className="rounded-lg py-2 px-4 bg-f5greenn-100 text-f5greenn-200 font-bold transition-all ease-in hover:scale-105 "
+              >
+                더보기
+              </button>
+              <p className=" hidden absolute w-28 p-3">말풍선 등장!</p>
+            </td>
+            <td className="text-center">
+              <button
+                type="button"
+                onClick={exAnsClickHandler}
+                className="rounded-lg py-2 px-4 bg-f5redd-100 text-f5redd-200 font-bold transition-all ease-in hover:scale-105 "
+              >
+                예시 답변
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
     </table>
+    </div>
+    </div>
   );
 }
