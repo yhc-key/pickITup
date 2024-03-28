@@ -7,17 +7,7 @@ import { techDataMap } from "@/data/techData";
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import TanstackProvider from "@/providers/TanstackProvider";
-
-const techTypes: string[] = [
-  "언어",
-  "프론트앤드",
-  "백앤드",
-  "모바일",
-  "데이터",
-  "데브옵스",
-  "테스팅툴",
-  "정보보안",
-];
+import { techTypes } from "@/data/techData";
 
 export default function RecruitLayout({
   children,
@@ -77,7 +67,7 @@ export default function RecruitLayout({
         <div className="flex w-full justify-center my-3 items-center gap-2 bg-f5gray-300 h-10 rounded-md text-f5gray-500 text-sm p-2">
           <input
             type="text"
-            placeholder="검색 조건을 입력해주세요"
+            placeholder="검색어를 입력해주세요"
             className="flex-1 outline-none bg-f5gray-300"
             onChange={searchChangeHandler}
           />
@@ -85,21 +75,21 @@ export default function RecruitLayout({
             <FaSearch />
           </span>
         </div>
-        <div className="flex flex-wrap gap-x-2 gap-y-1 min-h-10">
+        <div className="flex flex-wrap gap-x-2 gap-y-1 min-h-8">
           {pickTechList.map((pickTech: string, index: number) => {
             return (
               <button
                 type="button"
                 onClick={() => techDeleteHandler(pickTech)}
                 key={index}
-                className="flex flex-row items-center p-1 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5red-200"
+                className="p-1 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5red-200 "
               >
                 <Image
                   src={`/images/techLogo/${pickTech}.png`}
                   alt={pickTech}
-                  width="28"
-                  height="28"
-                  className="w-auto"
+                  width="20"
+                  height="20"
+                  className="w-5 h-5"
                 />
               </button>
             );

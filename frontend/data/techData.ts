@@ -1,3 +1,14 @@
+export const techTypes: string[] = [
+  "언어",
+  "프론트앤드",
+  "백앤드",
+  "모바일",
+  "데이터",
+  "데브옵스",
+  "테스팅툴",
+  "정보보안",
+];
+
 export const techDataMap: Map<string, string[]> = new Map([
   [
     "언어",
@@ -326,9 +337,9 @@ export const techData2: string[] = [
   "Web",
   "WebPack",
   "Xcode",
-  "Zipkin"
+  "Zipkin",
 ];
-export const techMap2: Map<string,string> = new Map([
+export const techMap2: Map<string, string> = new Map([
   ["agit", "Agit"],
   ["airflow", "Airflow"],
   ["android", "Android"],
@@ -477,9 +488,9 @@ export const techMap2: Map<string,string> = new Map([
   ["web", "Web"],
   ["webpack", "WebPack"],
   ["xcode", "Xcode"],
-  ["zipkin", "Zipkin"]
+  ["zipkin", "Zipkin"],
 ]);
-export const techInfos: Map<string,number> =new Map([
+export const techInfos: Map<string, number> = new Map([
   ["Java", 1],
   ["Python", 2],
   ["Javascript", 3],
@@ -775,5 +786,5 @@ export const techInfos: Map<string,number> =new Map([
   ["Web", 294],
   ["WebPack", 295],
   ["Xcode", 296],
-  ["Zipkin", 297]
+  ["Zipkin", 297],
 ]);

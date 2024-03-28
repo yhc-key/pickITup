@@ -106,12 +106,12 @@ export default function MyEssay(): JSX.Element {
         method: "DELETE",
       });
 
-      window.location.reload();
+      // window.location.reload();
       // 혹시 전역 객체가 window가 아니어서 문제생길수있음 nodejs 환경에서는 서버 띄우고 글로벌 검토 요망
     } catch (error) {
       console.error(error);
     }
-    redirect("/main/myPage/myEssay");
+    // redirect("/main/myPage/myEssay");
   };
 
   const addSubmitHandler = async () => {
@@ -283,7 +283,7 @@ export default function MyEssay(): JSX.Element {
                     makeChangeTitle(title.id, e);
                   }}
                   disabled
-                  className="w-full mr-10 outline-none"
+                  className="w-full mr-10 outline-none bg-white"
                 />
                 <div className="flex flex-row gap-6 mr-4 text-lg">
                   <button onClick={() => makeCanEditHandler(index)}>

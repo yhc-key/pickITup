@@ -1,11 +1,7 @@
 "use client";
 import React, { ReactNode, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-
-interface ModalProps {
-  open: boolean;
-  children: ReactNode;
-}
+import { ModalProps } from "@/type/interface";
 
 export default function Modal({ open, children }: ModalProps) {
   const [prevScrollY, setPrevScrollY] = useState<number | undefined>(undefined);

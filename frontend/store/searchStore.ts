@@ -9,7 +9,7 @@ export interface searchState {
 }
 
 const useSearchStore = create<searchState>((set) => ({
-  keywords: [""], // 기본값 : 비어있음
+  keywords: [], // 기본값 : 비어있음
   query: "",
   setKeywords: (keywords: string[]) => set({ keywords }), // 로그인 액션
   setQuery: (searchSentence: string) => set({ query: searchSentence }),

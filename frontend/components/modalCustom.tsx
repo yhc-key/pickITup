@@ -1,23 +1,13 @@
 "use client";
 import React, { Fragment, ReactNode, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-
-interface ModalCustomProps {
-  name: string;
-  buttonString?: {
-    cancel: string;
-    add: string;
-  };
-  open: boolean;
-  onClose: () => void;
-  onClickEvent: () => void;
-  children: ReactNode;
-}
+import { ModalCustomProps } from "@/type/interface";
 
 // name: 필수
 export default function ModalCustom({
   name,
   buttonString = { cancel: "취소하기", add: "등록하기" },
+  design = "",
   open,
   onClose,
   onClickEvent,
@@ -34,7 +24,6 @@ export default function ModalCustom({
     if (!open) {
       return;
     }
-    console.log(event);
     event.preventDefault();
     if (event.key === "Enter") {
       document.getElementById(`${name}AddButton`)?.click();
@@ -85,7 +74,7 @@ export default function ModalCustom({
       <div
         tabIndex={0}
         onKeyDown={keyDownHandler}
-        className="fixed z-50 px-20 py-12 transform -translate-x-1/2 -translate-y-1/2 bg-white top-1/2 left-1/2 rounded-xl outline-none"
+        className={`fixed z-50 px-20 py-12 transform -translate-x-1/2 -translate-y-1/2 bg-white top-1/2 left-1/2 rounded-xl outline-none ${design}`}
       >
         {children}
         <div className="flex justify-center mt-5 ">

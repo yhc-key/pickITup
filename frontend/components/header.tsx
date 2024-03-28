@@ -6,12 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useAuthStore, { AuthState } from "../store/authStore";
 import { useMediaQuery } from "react-responsive";
-
-interface LinkType {
-  name: string;
-  href: string;
-  icon: string;
-}
+import { LinkType } from "@/type/interface";
 
 const navLinks: LinkType[] = [
   { name: "채용공고", href: "/main/recruit", icon: "📆" },
@@ -156,8 +151,8 @@ export default function Header() {
                       : "text-f5green-400 font-bold"
                   }`}
                 >
-                   <div className="text-xl text-center"> {link.icon}</div>
-                   <div className="text-center"> {link.name}</div>
+                  <div className="text-xl text-center"> {link.icon}</div>
+                  <div className="text-center"> {link.name}</div>
                 </Link>
               </div>
             );

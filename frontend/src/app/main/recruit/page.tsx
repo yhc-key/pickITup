@@ -7,35 +7,30 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import Image from "next/image";
-import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import useSearchStore, { searchState } from "@/store/searchStore";
-
-interface Recruit {
-  career: [number, number];
-  company: string;
-  companyId: number;
-  dueDate: [number, number, number];
-  id: number;
-  preferredRequirements: string[];
-  qualificationRequirements: string[];
-  source: string;
-  thumbnailUrl: string;
-  title: string;
-  url: string;
-}
+import { Recruit } from "@/type/interface";
 
 const apiAddress = "https://spring.pickITup.online/recruit/search";
 const techDataValues = Array.from(techDataMap.values());
+const recruitClickHandler = (url: string) => {
+  window.open(url, "_blank");
+};
 
-export default function Recruit({}) {
+export default function Recruit() {
   const keywords = useSearchStore((state: searchState) => state.keywords);
   const query = useSearchStore((state: searchState) => state.query);
   const bottom = useRef<HTMLDivElement>(null);
-  console.log(keywords);
-  const fetchRecruits = async (pageParam: number) => {
-    const res = await fetch(
-      `${apiAddress}?page=${pageParam}&size=9&sort=null`,
-      {
+
+  const fetchRecruits = useCallback(
+    async (pageParam: number) => {
+      const res = await fetch(`${apiAddress}?page=${pageParam}&size=9`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,14 +39,11 @@ export default function Recruit({}) {
           keywords: keywords,
           query: query,
         }),
-      }
-    );
-    return res.json();
-  };
-
-  const recruitClickHandler = (url: string) => {
-    window.open(url, "_blank");
-  };
+      });
+      return res.json();
+    },
+    [keywords, query]
+  );
 
   const {
     data,
@@ -62,7 +54,7 @@ export default function Recruit({}) {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["recruits"],
+    queryKey: ["recruits", keywords, query],
     queryFn: ({ pageParam }) => fetchRecruits(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage: number, pages) => {
@@ -75,8 +67,6 @@ export default function Recruit({}) {
     const onIntersect = ([entry]: IntersectionObserverEntry[]) => {
       entry.isIntersecting && fetchNextPage();
     };
-    console.log(bottom);
-    console.log(bottom.current);
     if (bottom && bottom.current) {
       observer = new IntersectionObserver(onIntersect, {
         root: null,
@@ -85,8 +75,9 @@ export default function Recruit({}) {
       });
       observer.observe(bottom.current);
     }
+
     return () => observer && observer.disconnect();
-  }, [bottom, fetchNextPage]);
+  }, [bottom, fetchNextPage, fetchRecruits]);
 
   return (
     <>
@@ -106,9 +97,7 @@ export default function Recruit({}) {
                   width="300"
                   height="300"
                   className="shadow-inner shadow-black object-cover h-[50%]"
-                  onError={(e) => {
-                    e.target.src = "/images/baseCompany.jpg";
-                  }}
+                  onError={(error) => console.log(error)}
                 />
                 <p className="m-1 text-sm text-f5gray-500 text-left">
                   {recruit.company}
@@ -156,8 +145,8 @@ export default function Recruit({}) {
             : "Nothing more to load"}
       </button>
     </div> */}
-      <div ref={bottom} />
       <div>{isFetching && !isFetchingNextPage ? "Fetching..." : null}</div>
+      <div ref={bottom} />
     </>
   );
 }
