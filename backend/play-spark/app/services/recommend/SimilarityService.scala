@@ -1,6 +1,5 @@
 package services.recommend
 
-import com.typesafe.config.ConfigFactory
 import config.MongoConfig.{MONGO_DATABASE, MONGO_URI}
 import org.apache.spark.ml.feature.CountVectorizer
 import org.apache.spark.ml.linalg.SparseVector
@@ -12,12 +11,7 @@ object SimilarityService {
 
   def calculateAllUserSimilarities(): String = {
 
-    val spark = SparkSession.builder
-      .appName("AllUserSimilarities")
-      .master("local[*]")
-      .config("spark.mongodb.input.uri", MONGO_URI)
-      .config("spark.mongodb.output.uri", MONGO_URI)
-      .getOrCreate()
+    val spark = SparkUtil.getOrCreateSparkSession()
 
     import spark.implicits._
 
@@ -26,6 +20,7 @@ object SimilarityService {
       .option("database", MONGO_DATABASE)
       .option("collection", "user")
       .load()
+      .filter($"rank" === "SUPER")
       .select("_id", "keywords")
       .toDF("userId", "techStack")
 
@@ -63,7 +58,6 @@ object SimilarityService {
       .mode("overwrite")
       .save()
 
-    spark.stop()
     "calculating all user similarities is working!"
   }
 
@@ -115,8 +109,6 @@ object SimilarityService {
       .option("collection", "userSimilaritiy")
       .mode("append")
       .save()
-
-    spark.stop()
 
     "calculating user similarity is working!"
   }
