@@ -8,9 +8,8 @@ import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.global.annotation.AuthID;
 import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,10 +30,10 @@ public class UserScrapController {
 
     @Operation(summary = "회원 스크랩 채용 공고 조회 API")
     @GetMapping("/recruit")
-    public ApiResult<Page<RecruitQueryResponseDto>> getUserScrapList(
-        @AuthID Integer userId, Pageable pageable) {
-        Page<RecruitQueryResponseDto> myRecruitByIdList =
-            userQueryService.findMyRecruitById(userId, pageable);
+    public ApiResult<?> getUserScrapList(
+        @AuthID Integer userId) {
+        List<RecruitQueryResponseDto> myRecruitByIdList =
+            userQueryService.findMyRecruitById(userId);
         return success(myRecruitByIdList);
     }
 

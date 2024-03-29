@@ -23,7 +23,6 @@ public class InitDB {
     private final SubQuestionCommandService subQuestionCommandService;
     private final KeywordCommandJpaRepository keywordCommandJpaRepository;
 
-    //    @PostConstruct
     @Transactional
     public void init() {
 
@@ -58,16 +57,5 @@ public class InitDB {
         subQuestionCommandService.registerSubQuestion(1, subQuestionCommandRequestDto2);
         subQuestionCommandService.registerSubQuestion(1, subQuestionCommandRequestDto3);
         subQuestionCommandService.registerSubQuestion(2, subQuestionCommandRequestDto4);
-
-        //Keyword
-
-//        List<Keyword> keywordList = new ArrayList<>();
-//        keywordList.add(new Keyword(1, Category.BACKEND.getCategory(), "spring"));
-//        keywordList.add(new Keyword(2, Category.FRONTEND.getCategory(), "react"));
-//        keywordList.add(new Keyword(3, Category.LANGUAGE.getCategory(), "java"));
-//        keywordList.add(new Keyword(4, Category.LANGUAGE.getCategory(), "java script"));
-//        keywordList.add(new Keyword(5, Category.INFRA.getCategory(), "docker"));
-//        keywordCommandJpaRepository.saveAll(keywordList);
-
     }
 }

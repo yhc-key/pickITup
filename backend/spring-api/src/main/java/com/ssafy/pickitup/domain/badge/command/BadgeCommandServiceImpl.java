@@ -6,6 +6,7 @@ import com.ssafy.pickitup.domain.badge.entity.UserBadge;
 import com.ssafy.pickitup.domain.badge.query.BadgeQueryJpaRepository;
 import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
 import com.ssafy.pickitup.domain.badge.query.UserBadgeQueryJpaRepository;
+import com.ssafy.pickitup.domain.badge.query.dto.BadgeQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
@@ -48,23 +49,6 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
         return new BadgeCommandResponseDto(result);
     }
 
-//    @Transactional
-//    @Override
-//    public void initBadge(Integer userId) {
-//        log.info("init 시작");
-//        User user = userCommandJpaRepository.findById(userId).get();
-//        List<Badge> badges = badgeQueryJpaRepository.findAll();
-//        for (Badge badge : badges) {
-//            UserBadge userBadge = UserBadge.builder()
-//                .badge(badge)
-//                .user(user)
-//                .isAchieved(false)
-//                .build();
-//            userBadgeCommandJpaRepository.save(userBadge);
-//        }
-//        log.info("init 끝");
-//    }
-
     @Transactional
     public void initBadge(User user) {
         log.info("init 시작");
@@ -75,5 +59,15 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
         user.setUserBadges(userBadgeList);
         log.info("user badges = {}", user.getUserBadges());
         log.info("init 끝");
+    }
+
+
+    @Override
+    public List<BadgeQueryResponseDto> findMyBadges(Integer userId) {
+        renewBadge(userId);
+        return userBadgeQueryJpaRepository.findByUserId(userId)
+            .stream()
+            .map(UserBadge::toResponse)
+            .toList();
     }
 }
