@@ -7,23 +7,16 @@ import { useEffect, useState } from "react";
 import useAuthStore, { AuthState } from "../store/authStore";
 import { useMediaQuery } from "react-responsive";
 import { LinkType } from "@/type/interface";
+import { navLinks } from "@/data/techData";
 
-const navLinks: LinkType[] = [
-  { name: "채용공고", href: "/main/recruit", icon: "📆" },
-  // { name: "기술블로그", href: "/main/techBlog" },
-  { name: "미니 게임", href: "/main/game", icon: "🎮" },
-  { name: "면접 대비", href: "/main/interview", icon: "📝" },
-  { name: "마이 페이지", href: "/main/myPage/myBadge", icon: "💻" },
-];
+const apiAddress = "https://spring.pickITup.online/users/scraps/recruit";
 
 export default function Header() {
   const isMobile = useMediaQuery({
     query: "(max-width:480px)",
   });
   const nickname: string = useAuthStore((state: AuthState) => state.nickname);
-  const setLogged: (nickname: string) => void = useAuthStore(
-    (state: AuthState) => state.setLogged
-  );
+  const { setLogged, setBookmarks } = useAuthStore();
   const isLoggedIn: boolean = useAuthStore(
     (state: AuthState) => state.isLoggedIn
   );
@@ -33,11 +26,27 @@ export default function Header() {
     const accessToken: string | null = sessionStorage.getItem("accessToken");
     const nickname: string | null = sessionStorage.getItem("nickname");
 
+    const fetchBookmarks = async () => {
+      try {
+        const res = await fetch(`${apiAddress}`, {
+          headers: {
+            Authorization: "Bearer " + accessToken,
+          },
+        });
+        const data = await res.json();
+        console.log("북마크fetch해옴");
+        console.log(data);
+        setBookmarks(data?.response.content);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     if (accessToken !== null && nickname !== null) {
       setLogged(nickname);
-      console.log();
+      fetchBookmarks();
     }
-  }, []);
+  }, [setBookmarks, setLogged]);
 
   const router = useRouter();
   const pathname = usePathname();

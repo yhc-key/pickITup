@@ -43,6 +43,9 @@ export default function MyPage() {
   const [newAddress, setNewAddress] = useState<string>("");
   const [isTechSelectOpen, setIsTechSelectOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [state, setState] = useState({
+    nickname: "yonghwna",
+  });
   const completeHandler = (data: any) => {
     // 주소 받기 위한
     setNewAddress(data.address);
