@@ -239,7 +239,7 @@ public class UserCommandService {
         if (scrapCommandMongoRepository.existsByUserIdAndRecruitId(userId, recruitId)) {
             throw new DuplicateScrapException();
         }
-        scrapCommandMongoRepository.save(new ScrapMongo(userId, recruitId));
+        scrapCommandMongoRepository.save(ScrapMongo.createScrap(userId, recruitId));
         userRecruitCommandJpaRepository.save(userRecruit);
     }
 
