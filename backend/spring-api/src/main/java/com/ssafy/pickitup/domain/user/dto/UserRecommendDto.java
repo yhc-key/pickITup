@@ -1,5 +1,6 @@
 package com.ssafy.pickitup.domain.user.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 import lombok.Data;
 
@@ -10,4 +11,8 @@ public class UserRecommendDto {
     private String company;
     private List<String> intersection;
     private double distance;
+    private List<String> qualificationRequirements;
+    private List<String> preferredRequirements;
+    private LocalDate dueDate;
+    private String title;
 }
