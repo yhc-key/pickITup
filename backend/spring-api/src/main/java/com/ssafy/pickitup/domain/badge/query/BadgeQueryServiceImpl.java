@@ -3,6 +3,7 @@ package com.ssafy.pickitup.domain.badge.query;
 import com.ssafy.pickitup.domain.badge.entity.Badge;
 import com.ssafy.pickitup.domain.badge.entity.BadgeKey;
 import com.ssafy.pickitup.domain.badge.entity.UserBadge;
+import com.ssafy.pickitup.domain.badge.query.dto.BadgeQueryResponseDto;
 import com.ssafy.pickitup.domain.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,5 +43,13 @@ public class BadgeQueryServiceImpl implements BadgeQueryService {
     @Override
     public int myBadgeCount(Integer userId) {
         return userBadgeQueryJpaRepository.countAchievedBadgesByUserId(userId);
+    }
+
+    @Override
+    public List<BadgeQueryResponseDto> findMyBadges(Integer userId) {
+        return userBadgeQueryJpaRepository.findByUserId(userId)
+            .stream()
+            .map(UserBadge::toResponse)
+            .toList();
     }
 }

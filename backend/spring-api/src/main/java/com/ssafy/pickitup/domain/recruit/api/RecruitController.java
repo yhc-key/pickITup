@@ -1,4 +1,4 @@
-package com.ssafy.pickitup.domain.recruit.api.controller;
+package com.ssafy.pickitup.domain.recruit.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 

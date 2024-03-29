@@ -34,7 +34,7 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
         User user = userCommandJpaRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
         List<String> result = new ArrayList<>();
-        List<UserBadge> userBadges = userBadgeQueryJpaRepository.findByUser(user);
+        List<UserBadge> userBadges = userBadgeQueryJpaRepository.findByUserId(userId);
         List<UserBadge> notAchievedBadges = badgeQueryService.findNotAchievedBadges(userBadges);
 
         for (UserBadge userBadge : notAchievedBadges) {
