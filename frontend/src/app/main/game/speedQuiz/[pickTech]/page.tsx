@@ -111,7 +111,7 @@ export default function SpeedQuiz(props: any) {
   return (
     <div className="flex flex-col">
       {/* <div>{props.params.pickTech}</div> */}
-      {questionList[index] ? (
+      {questionList && questionList[index] ? (
         <div>
           <div className="mx-10 mt-4 mb:mx-5 mb:mt-5">
             <BackBtn />

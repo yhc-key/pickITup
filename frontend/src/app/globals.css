@@ -7,3 +7,7 @@
   font-weight: 100;
   src: url("/public/fonts/SCDream1.otf") format("truetype");
 }
+
+.custom-title-class {
+  font-size: 18px;
+}
