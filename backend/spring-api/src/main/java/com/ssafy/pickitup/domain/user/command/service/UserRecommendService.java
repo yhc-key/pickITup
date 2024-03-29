@@ -104,7 +104,8 @@ public class UserRecommendService {
         Flux<UserRecommendDto> response = webClient.get()
             .uri(
                 "/api/recommend/" +
-                    (isSuperUser ? "super" : "normal") +
+//                    (isSuperUser ? "super" : "normal") +
+                    "normal" +
                     "/{userId}",
                 userId)
             .accept(MediaType.APPLICATION_JSON)
