@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
+import Swal from "sweetalert2";
 
 import Realistic from "../../realistic";
 import WrongBox from "./wrongBox";
@@ -33,6 +34,7 @@ export default function QuizResult({ answer }: QuizResultProps) {
 
   // 7문제 이상 정답 시 뱃지 획득을 위한 승리횟수 1 증가
   const addWinNumber = async () => {
+    let winCount: number = 0;
     if (isLoggedIn) {
       const accessToken = sessionStorage.getItem("accessToken");
       try {
@@ -41,6 +43,21 @@ export default function QuizResult({ answer }: QuizResultProps) {
           headers: {
             Authorization: "Bearer " + accessToken,
           },
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            winCount = res.response;
+          });
+        Swal.fire({
+          icon: "success",
+          title: "축하합니다 😀🎉",
+          text: `총 승리 횟수는 ${winCount}번 입니다.`,
+          confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+          confirmButtonText: "확인", // confirm 버튼 텍스트 지정
+        }).then((res) => {
+          if (res.isConfirmed) {
+            setShowConfetti(true);
+          }
         });
       } catch (error) {
         console.log(error);
@@ -54,7 +71,6 @@ export default function QuizResult({ answer }: QuizResultProps) {
     const correctCount = answer.filter((e: Answer) => e.correct).length;
 
     if (correctCount >= 7) {
-      setShowConfetti(true);
       addWinNumber();
     }
   }, [answer]);
