@@ -1,7 +1,6 @@
 package com.ssafy.pickitup.domain.user.entity;
 
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,8 +21,6 @@ public class UserMongo {
     private Integer id;
 
     private List<String> keywords;
-    private List<Integer> scrapedRecruit;
-    private List<Map<Integer, Integer>> clicked;
     private String rank;
     private double latitude;
     private double longitude;

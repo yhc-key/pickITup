@@ -52,8 +52,8 @@ public class RecruitDocumentElasticsearch {
                 // 범위가 있는 경우 추출
                 int startRange =
                     (matcher.group(1) != null) ? Integer.parseInt(matcher.group(1)) : 0;
-                int endRange = (matcher.group(3) != null) ? Integer.parseInt(matcher.group(3))
-                    : 100;
+                int endRange =
+                    (matcher.group(3) != null) ? Integer.parseInt(matcher.group(3)) : 100;
                 return new int[]{startRange, endRange};
             }
         } else {
@@ -69,11 +69,7 @@ public class RecruitDocumentElasticsearch {
 
         if (matcher.find()) {
             int year = Integer.parseInt(matcher.group(1));
-            if (0 <= year && year < 100) {
-                return Integer.parseInt(matcher.group(1));
-            } else {
-                return 0;
-            }
+            return 0 <= year && year < 100 ? Integer.parseInt(matcher.group(1)) : 0;
         } else {
             // 연도를 찾을 수 없는 경우 기본값 설정
             return 0;

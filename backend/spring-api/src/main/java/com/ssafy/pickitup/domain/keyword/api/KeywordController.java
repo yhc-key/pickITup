@@ -3,9 +3,9 @@ package com.ssafy.pickitup.domain.keyword.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.keyword.dto.KeywordResponseDto;
 import com.ssafy.pickitup.domain.keyword.service.KeywordQueryService;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000", "http://localhost:8080",
-    "https://spring.pickitup.online"}, exposedHeaders = "*")
+@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000",
+    "http://localhost:8080", "https://spring.pickitup.online"}, exposedHeaders = "*")
 @RequestMapping("/keywords")
 public class KeywordController {
 

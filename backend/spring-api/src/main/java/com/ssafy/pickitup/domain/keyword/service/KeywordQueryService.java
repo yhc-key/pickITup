@@ -17,7 +17,7 @@ public class KeywordQueryService {
     public List<KeywordResponseDto> findAllKeyword() {
         List<Keyword> keywords = keywordQueryJpaRepository.findAll();
         return keywords.stream()
-            .map(keyword -> KeywordResponseDto.toDto(keyword))
+            .map(KeywordResponseDto::toDto)
             .toList();
 
     }

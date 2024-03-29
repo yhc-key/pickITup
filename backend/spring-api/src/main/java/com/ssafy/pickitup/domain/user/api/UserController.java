@@ -2,7 +2,6 @@ package com.ssafy.pickitup.domain.user.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.service.UserClickService;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
@@ -54,7 +53,7 @@ public class UserController {
     @GetMapping("/me")
     public ApiResult<UserResponseDto> getUser(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         log.info("authId = {}", authId);
         return success(userCommandService.getUserById(authId));
     }
@@ -64,7 +63,7 @@ public class UserController {
     public ApiResult<?> changeNickname(HttpServletRequest request,
         @RequestBody String nickname) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         log.info("authId = {}", authId);
         userCommandService.changeNickname(authId, nickname);
         return success("닉네임 변경 성공");
@@ -75,7 +74,7 @@ public class UserController {
     public ApiResult<?> changeAddress(HttpServletRequest request,
         @RequestBody String address) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         log.info("authId = {}", authId);
         userCommandService.changeAddress(authId, address);
         return success("주소 변경 성공");
@@ -86,7 +85,7 @@ public class UserController {
     public ApiResult<?> updateUser(HttpServletRequest request,
         @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         log.info("authId = {}", authId);
         userCommandService.changeUserInfo(authId, userUpdateRequestDto);
         return success("회원 정보 변경 성공");
@@ -106,7 +105,7 @@ public class UserController {
     public ApiResult<?> saveUserScrapList(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestParam Integer recruitId) {
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         userCommandService.saveUserRecruit(authId, recruitId);
 
         return success("스크랩 성공");
@@ -117,7 +116,7 @@ public class UserController {
     public ApiResult<?> deleteUserScrap(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestParam Integer recruitId) {
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         userCommandService.deleteUserRecruit(authId, recruitId);
 
         return success("스크랩 삭제");
@@ -128,7 +127,7 @@ public class UserController {
     public ApiResult<?> clickRecruit(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestParam Integer recruitId) {
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         userCommandService.saveUserClick(authId, recruitId);
         return success("채용 공고 클릭");
     }
@@ -138,7 +137,7 @@ public class UserController {
     public ApiResult<?> addUserKeyword(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestBody KeywordRequestDto keywords) {
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         log.info("keywords = {}", keywords.toString());
         userCommandService.addKeywords(authId, keywords);
         return success("keywords 등록 성공");
@@ -149,7 +148,7 @@ public class UserController {
     public ApiResult<?> updateUserKeyword(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestBody KeywordRequestDto keywords) {
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         log.info("keywords = {}", keywords.toString());
         userCommandService.updateUserKeyword(authId, keywords);
         return success("keywords 수정 성공");
@@ -172,16 +171,11 @@ public class UserController {
         return success(allUserClick);
     }
 
-    @Operation(summary = "스칼라 테스트")
-    @GetMapping("/test")
-    public ApiResult<?> getUserClick() {
-        userCommandService.scala();
-        return success(null);
-    }
-
     @Operation(summary = "회원 추천 채용 공고 조회")
-    @GetMapping("/recommend/{authId}")
-    public ApiResult<?> getUserRecommendRecruits(@PathVariable("authId") Integer authId) {
+    @GetMapping("/recommend/recruit")
+    public ApiResult<?> getUserRecommendRecruits(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         List<UserRecommendDto> userRecommendRecruitList = userRecommendService.getUserRecommendRecruitList(
             authId);
         return success(userRecommendRecruitList);

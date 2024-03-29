@@ -21,6 +21,7 @@ import com.ssafy.pickitup.domain.user.entity.ScrapMongo;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.entity.UserClick;
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
+import com.ssafy.pickitup.domain.user.entity.UserLevel;
 import com.ssafy.pickitup.domain.user.entity.UserMongo;
 import com.ssafy.pickitup.domain.user.entity.UserRecruit;
 import com.ssafy.pickitup.domain.user.exception.DuplicateScrapException;
@@ -100,6 +101,10 @@ public class UserCommandService {
         User updatedUser = userRankService.updateLevel(user);
         log.info("user level after = {}", updatedUser.getLevel());
 
+        //유저 경험치 정보
+        UserLevel expInfo = userRankService.getExpInfo(updatedUser.getLevel());
+        log.info("expInfo = {}", expInfo);
+
         //유저 랭크 업데이트
         if (user.getUserRank() == Rank.NORMAL) {
             if (user.checkMyRank()) {
@@ -110,7 +115,7 @@ public class UserCommandService {
             }
         }
 
-        return UserResponseDto.toDto(updatedUser, scrapCount, badgeCount, closingCount,
+        return UserResponseDto.toDto(updatedUser, expInfo, scrapCount, badgeCount, closingCount,
             solvedInterviewAnswerCount);
     }
 
@@ -167,6 +172,9 @@ public class UserCommandService {
         User user = userCommandJpaRepository.findById(authId)
             .orElseThrow(UserNotFoundException::new);
         user.changeAddress(address);
+        updateUserMongo(user);
+        //스칼라 서버
+        callScalaByAddressChange();
     }
 
     @Transactional
@@ -203,21 +211,26 @@ public class UserCommandService {
             .toList();
         log.info("keywordsNameList = {}", keywordsNameList);
 
+        UserMongo userMongo = updateUserMongo(user);
+
+        userMongo.setKeywords(keywordsNameList);
+
+        // 스칼라 서버에 유저 키워드 변경 사실 알리기
+        callScalaByKeywordChange();
+    }
+
+    @Transactional
+    private UserMongo updateUserMongo(User user) {
         // UserMongo 업데이트
+        Integer userId = user.getId();
         GeoLocation geoLocation = geoLocationService.getGeoLocation(user.getAddress());
-        UserMongo userMongo = userCommandMongoRepository.findById(userId)
+        return userCommandMongoRepository.findById(userId)
             .orElseGet(
                 () -> new UserMongo(userId,
-                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                    new ArrayList<>(),
                     Rank.NORMAL.name(),
                     geoLocation.getLatitude(),
                     geoLocation.getLongitude()));
-        userMongo.setKeywords(keywordsNameList);
-        userCommandMongoRepository.save(userMongo);
-
-        // 스칼라 서버에 유저 키워드 변경 사실 알리기
-//        callScalaByKeywordChange();
-
     }
 
     @Transactional
@@ -285,5 +298,4 @@ public class UserCommandService {
     public void callScalaByAddressChange() {
         userRecommendService.sendSignalToScalaServerByAddressChange();
     }
-
 }

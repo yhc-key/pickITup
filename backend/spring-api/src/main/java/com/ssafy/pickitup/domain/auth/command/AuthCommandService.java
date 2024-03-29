@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AuthCommandService {
 
-
     private final AuthCommandJpaRepository authCommandJpaRepository;
     private final UserCommandService userCommandService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -116,7 +115,7 @@ public class AuthCommandService {
     public LogoutDto logout(String accessToken) {
         String token = jwtTokenProvider.resolveToken(accessToken);
         log.debug("token = {}", token);
-        int authId = Integer.parseInt(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         log.debug("principal = {}", authId);
         redisService.saveJwtBlackList(accessToken);
         redisService.deleteRefreshToken(authId);
@@ -242,7 +241,7 @@ public class AuthCommandService {
 
         } else {
             //마지막 로그인 날짜가 현재 날짜 이전일 경우에만 출석 증가
-            if (lastLoginDate.compareTo(LocalDate.now()) < 0) {
+            if (lastLoginDate.isBefore(LocalDate.now())) {
                 auth.getUser().increaseAttendCount();
             }
         }

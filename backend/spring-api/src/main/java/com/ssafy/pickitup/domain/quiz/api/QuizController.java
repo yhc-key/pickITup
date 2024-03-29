@@ -3,10 +3,10 @@ package com.ssafy.pickitup.domain.quiz.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.domain.quiz.dto.OxQuizResponseDto;
 import com.ssafy.pickitup.domain.quiz.dto.SpeedQuizResponseDto;
 import com.ssafy.pickitup.domain.quiz.query.service.QuizService;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000", "http://localhost:8080",
-    "https://spring.pickitup.online"}, exposedHeaders = "*")
+@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000",
+    "http://localhost:8080", "https://spring.pickitup.online"}, exposedHeaders = "*")
 @RequestMapping("/quizzes")
 public class QuizController {
 
@@ -49,7 +49,7 @@ public class QuizController {
     @Operation(summary = "퀴즈 점수 수정 API")
     @PatchMapping("/win")
     public ApiResult<?> t(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         return success(quizService.increaseScore(authId));
     }
 }

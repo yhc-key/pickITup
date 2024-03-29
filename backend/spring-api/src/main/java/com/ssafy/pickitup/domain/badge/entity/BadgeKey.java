@@ -3,7 +3,6 @@ package com.ssafy.pickitup.domain.badge.entity;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-
 public enum BadgeKey {
 
     ATTEND_COUNT("attendCount"),

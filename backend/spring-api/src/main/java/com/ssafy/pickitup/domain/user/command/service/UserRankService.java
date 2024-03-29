@@ -24,14 +24,39 @@ public class UserRankService {
 
         UserLevel userLevel = userLevelJpaRepository.findFirstByExpGreaterThanOrderByExpAsc(
             exp);
+
+        if (userLevel.getLevel() > 1) {
+            userLevel.setPrevExp(
+                userLevelJpaRepository.findExpByLevel(userLevel.getLevel() - 1).getExp());
+            userLevel.setNextExp(
+                userLevelJpaRepository.findExpByLevel(userLevel.getLevel()).getExp());
+            log.info("userLevel.getPrevExp = {},", userLevel.getPrevExp());
+            log.info("userLevel.getNextExp = {},", userLevel.getNextExp());
+        }
         log.info("user level before = {}", user.getLevel());
+        log.info("user exp before = {}", user.getExp());
+        user.setExp(exp);
+
         if (userLevel == null) {
-            user.setLevel(20);
+            user.setLevel(30);
         } else {
             user.setLevel(userLevel.getLevel());
         }
         log.info("user level after = {}", user.getLevel());
+        log.info("user exp after = {}", user.getExp());
         return user;
+    }
+
+    public UserLevel getExpInfo(Integer level) {
+        int prevExp = 0;
+        int nextExp = 100;
+        if (level > 1) {
+            prevExp = userLevelJpaRepository.findExpByLevel(level - 1).getExp();
+            nextExp = userLevelJpaRepository.findExpByLevel(level).getExp();
+            log.info("userLevel.getPrevExp = {},", prevExp);
+            log.info("userLevel.getNextExp = {},", nextExp);
+        }
+        return UserLevel.builder().prevExp(prevExp).nextExp(nextExp).build();
     }
 //    @Transactional
 //    public void updateLevel(Integer userId, Integer exp) {

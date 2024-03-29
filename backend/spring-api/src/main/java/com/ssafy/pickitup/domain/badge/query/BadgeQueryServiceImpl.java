@@ -31,17 +31,16 @@ public class BadgeQueryServiceImpl implements BadgeQueryService {
         Badge badge = userBadge.getBadge();
         BadgeKey badgeKey = badge.getBadgeKey();
         return switch (badgeKey) {
-            case ATTEND_COUNT -> user.getAttendCount() > badge.getValue();
-            case GAME_WIN_COUNT -> user.getGameWinCount() > badge.getValue();
-            case SELF_ANSWER_COUNT -> user.getSelfAnswerCount() > badge.getValue();
-            case RECRUIT_VIEW_COUNT -> user.getRecruitViewCount() > badge.getValue();
-            case RECRUIT_SCRAP_COUNT -> user.getRecruitScrapCount() > badge.getValue();
+            case ATTEND_COUNT -> user.getAttendCount() >= badge.getValue();
+            case GAME_WIN_COUNT -> user.getGameWinCount() >= badge.getValue();
+            case SELF_ANSWER_COUNT -> user.getSelfAnswerCount() >= badge.getValue();
+            case RECRUIT_VIEW_COUNT -> user.getRecruitViewCount() >= badge.getValue();
+            case RECRUIT_SCRAP_COUNT -> user.getRecruitScrapCount() >= badge.getValue();
         };
     }
 
     @Override
     public int myBadgeCount(Integer userId) {
-//        return 0;
         return userBadgeQueryJpaRepository.countAchievedBadgesByUserId(userId);
     }
 }

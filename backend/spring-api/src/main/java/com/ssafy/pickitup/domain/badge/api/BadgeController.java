@@ -34,7 +34,7 @@ public class BadgeController {
     @Operation(summary = "Badge Test")
     @PostMapping("/test")
     public ApiResult<?> test(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        Integer userId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
+        Integer userId = jwtTokenProvider.extractAuthId(accessToken);
         User user = userQueryJpaRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
         badgeCommandService.initBadge(user);
