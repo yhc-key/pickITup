@@ -1,5 +1,5 @@
 "use client"
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef} from "react";
 import { techMap2,techAllMap } from "@/data/techData";
 class TrieNode {
   children : {[key: string]: TrieNode};
@@ -82,15 +82,15 @@ class Trie {
   }
 }
 
-interface AutocompleteSearchBarProps {
+interface AllSearchBarProps {
   words: string[];
   onSelect: (tech: string) => void;
 }
-function AllSearchBar(props:AutocompleteSearchBarProps) {
+function AllSearchBar(props:AllSearchBarProps) {
   const [inputValue, setInputValue] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
-   
+  const inputRef = useRef<HTMLInputElement>(null);
   const trie = new Trie();
   props.words.forEach((word) => trie.insert(word.toLowerCase())); //소문자
 
@@ -104,7 +104,7 @@ function AllSearchBar(props:AutocompleteSearchBarProps) {
       setSuggestions(suggestions);
     }
   };
-
+  
   const handleSuggestionClick = (suggestion:string) => {
     const origin :string|undefined = techAllMap.get(suggestion);
     if(origin){
@@ -114,7 +114,7 @@ function AllSearchBar(props:AutocompleteSearchBarProps) {
     }
     setSuggestions([]);
   };
-  
+
   return (
     <div className="relative w-64">
       <input

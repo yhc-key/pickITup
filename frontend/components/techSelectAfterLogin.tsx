@@ -26,9 +26,13 @@ export default function TechSelectAfterLogin() {
   
   useEffect(() => {
     const authid = sessionStorage.getItem('authid');
+    const token = sessionStorage.getItem('accesToken');
     if(authid !== null) {
-      fetch(`https://spring.pickitup.online/users/${authid}/keywords`,{
-        method : "GET"
+      fetch(`https://spring.pickitup.online/users/keywords`,{
+        method : "GET",
+        headers:{
+          "Authorization":"Bearer "+token,
+        }
       })
       .then(res=>res.json())
       .then(res=>{
@@ -63,9 +67,13 @@ const deletePickTech = (item : string)=>{
 
   const setMyTech = () :void => {
     const authid = sessionStorage.getItem('authid');
+    const token = sessionStorage.getItem('accessToken');
     if(authid===null)return;
-    fetch(`https://spring.pickitup.online/users/${authid}/keywords`,{
-      method : "GET"
+    fetch(`https://spring.pickitup.online/users/keywords`,{
+      method : "GET",
+      headers:{
+        "Authorization":"Bearer "+token,
+      }
     })
     .then(res=>res.json())
     .then(res=>{
@@ -106,8 +114,8 @@ const deletePickTech = (item : string)=>{
 
           <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-12">
             {pickTech.map((item:string,index:number)=>
-              <button key={index} onClick={()=>deletePickTech(item)} className="relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1">{item}
-              <div className="absolute -top-2 -right-2"><TiDeleteOutline color="red" /> </div></button>
+              <div key={index} className="flex items-center justify-center py-1 pr-2 relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1 min-h-5">{item}
+              <div className="ml-1 cursor-pointer" onClick={()=>deletePickTech(item)}><TiDeleteOutline color="red" size="20" /> </div></div>
             )}
           </div>
           <div className="flex flex-wrap justify-center gap-2 mt-1">
@@ -140,8 +148,8 @@ const deletePickTech = (item : string)=>{
                     <Image
                       src={`/images/techLogo/${tech}.png`}
                       alt={tech}
-                      width={22}
-                      height={22}
+                      width={20}
+                      height={20}
                       className="mx-1"
                     />
                     {tech}
@@ -160,7 +168,7 @@ const deletePickTech = (item : string)=>{
             <div className="w-8"></div>
             <Link href={`/main/myPage/updateMyInfo`} onClick={()=>{setMyTech(),modalCloseHandler()}}>
               <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
-                등록하기
+                저장하기
               </button>
             </Link>
           </div>

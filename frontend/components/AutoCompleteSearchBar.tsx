@@ -89,8 +89,8 @@ interface AutocompleteSearchBarProps {
 function AutocompleteSearchBar(props:AutocompleteSearchBarProps) {
   const [inputValue, setInputValue] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
-   
+  const [selectedTechs, setSelectedTechs] = useState<string[]>([]); 
+  
   const trie = new Trie();
   props.words.forEach((word) => trie.insert(word.toLowerCase())); //소문자
 
