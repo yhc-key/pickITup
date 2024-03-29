@@ -1,4 +1,4 @@
-package com.ssafy.pickitup.security.config;
+package com.ssafy.pickitup.global.config.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

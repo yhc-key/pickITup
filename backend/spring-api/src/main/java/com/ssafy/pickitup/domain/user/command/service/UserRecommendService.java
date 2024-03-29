@@ -7,6 +7,7 @@ import com.ssafy.pickitup.domain.user.query.UserQueryJpaRepository;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -92,7 +93,12 @@ public class UserRecommendService {
 //            .doFinally(signal -> log.info("응답 처리 완료"));
 //    }
 
-    public List<UserRecommendDto> getUserRecommendRecruitList(Integer userId) {
+    @Cacheable(
+        cacheNames = "recommend",
+        key = "#userId",
+        condition = "#isSuperUser == false"
+    )
+    public List<UserRecommendDto> getUserRecommendRecruitList(Integer userId, boolean isSuperUser) {
 
         //user가 기술스택과  address를 입력했을 때만 추천 서비스를 이용할 수 있으므로 validation check
         User user = userQueryJpaRepository.findById(userId).orElseThrow(UserNotFoundException::new);
