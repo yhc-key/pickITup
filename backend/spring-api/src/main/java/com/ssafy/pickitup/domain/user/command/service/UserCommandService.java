@@ -7,7 +7,6 @@ import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
 import com.ssafy.pickitup.domain.keyword.entity.Keyword;
 import com.ssafy.pickitup.domain.keyword.repository.KeywordQueryJpaRepository;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
-import com.ssafy.pickitup.domain.user.command.repository.ClickCommandMongoRepository;
 import com.ssafy.pickitup.domain.user.command.repository.ScrapCommandMongoRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserClickCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepository;
@@ -35,7 +34,6 @@ import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.domain.user.query.service.UserInterviewQueryService;
 import com.ssafy.pickitup.global.entity.GeoLocation;
 import com.ssafy.pickitup.global.service.GeoLocationService;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +65,6 @@ public class UserCommandService {
     private final UserQueryService userQueryService;
     private final UserRankService userRankService;
     private final ScrapCommandMongoRepository scrapCommandMongoRepository;
-    private final ClickCommandMongoRepository clickCommandMongoRepository;
     private final UserRecommendService userRecommendService;
     private final UserInterviewQueryService userInterviewQueryService;
 
@@ -207,32 +204,35 @@ public class UserCommandService {
 
         user.setUserKeywords(userKeywords);
 
-        // 로그 출력
-        List<String> keywordsNameList = userKeywords.stream()
-            .map(userKeyword -> userKeyword.getKeyword().getName())
-            .toList();
-        log.info("keywordsNameList = {}", keywordsNameList);
-
-        UserMongo userMongo = updateUserMongo(user);
-
-        userMongo.setKeywords(keywordsNameList);
+        updateUserMongo(user);
 
         // 스칼라 서버에 유저 키워드 변경 사실 알리기
         callScalaByKeywordChange();
     }
 
     @Transactional
-    private UserMongo updateUserMongo(User user) {
+    public void updateUserMongo(User user) {
         // UserMongo 업데이트
         Integer userId = user.getId();
+        List<UserKeyword> userKeywords = user.getUserKeywords();
+        List<String> keywordsNameList = userKeywords.stream()
+            .map(userKeyword -> userKeyword.getKeyword().getName())
+            .toList();
+        log.info("keywordsNameList = {}", keywordsNameList);
+
         GeoLocation geoLocation = geoLocationService.getGeoLocation(user.getAddress());
-        return userCommandMongoRepository.findById(userId)
-            .orElseGet(
-                () -> new UserMongo(userId,
-                    new ArrayList<>(),
-                    Rank.NORMAL.name(),
-                    geoLocation.getLatitude(),
-                    geoLocation.getLongitude()));
+
+        UserMongo userMongo = userCommandMongoRepository.findById(userId)
+            .orElseGet(() ->
+                UserMongo.builder()
+                    .id(userId)
+                    .rank(Rank.NORMAL.name())
+                    .build());
+        userMongo.setKeywords(keywordsNameList);
+        userMongo.setLatitude(geoLocation.getLatitude());
+        userMongo.setLongitude(geoLocation.getLongitude());
+
+        userCommandMongoRepository.save(userMongo);
     }
 
     @Transactional
