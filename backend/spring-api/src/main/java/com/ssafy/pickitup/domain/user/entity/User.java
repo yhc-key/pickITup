@@ -3,6 +3,7 @@ package com.ssafy.pickitup.domain.user.entity;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.badge.entity.UserBadge;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -40,20 +41,27 @@ public class User extends BaseTimeEntity {
     private String techBlog;
 
     @Builder.Default
+    @Column(columnDefinition = "INT DEFAULT 0")
     private Integer recruitScrapCount = 0;
     @Builder.Default
+    @Column(columnDefinition = "INT DEFAULT 0")
     private Integer recruitViewCount = 0;
     @Builder.Default
+    @Column(columnDefinition = "INT DEFAULT 0")
     private Integer attendCount = 0;
     @Builder.Default
+    @Column(columnDefinition = "INT DEFAULT 0")
     private Integer selfAnswerCount = 0;
     @Builder.Default
+    @Column(columnDefinition = "INT DEFAULT 0")
     private Integer gameWinCount = 0;
     @Builder.Default
+    @Column(columnDefinition = "INT DEFAULT 1")
     private Integer level = 0;
     @Builder.Default
     private Integer exp = 0;
     @Builder.Default
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT ''")
     private String address = "";
 
     @Builder.Default
