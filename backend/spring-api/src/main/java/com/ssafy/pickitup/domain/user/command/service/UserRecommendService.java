@@ -1,8 +1,6 @@
 package com.ssafy.pickitup.domain.user.command.service;
 
 import com.ssafy.pickitup.domain.user.dto.UserRecommendDto;
-import com.ssafy.pickitup.domain.user.entity.User;
-import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
 import com.ssafy.pickitup.domain.user.query.UserQueryJpaRepository;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -42,9 +40,9 @@ public class UserRecommendService {
 
         // Mono를 구독하고 응답을 처리
         responseMono.subscribe(
-            response -> System.out.println("스칼라 서버에서 받은 응답: " + response),
-            error -> System.err.println("에러 발생: " + error),
-            () -> System.out.println("응답 처리 완료")
+            response -> log.debug("스칼라 서버에서 받은 응답 = {} ", response),
+            error -> log.debug("에러 발생 = {} ", error),
+            () -> log.debug("응답 처리 완료")
         );
     }
 
@@ -59,9 +57,9 @@ public class UserRecommendService {
 
         // Mono를 구독하고 응답을 처리
         responseMono.subscribe(
-            response -> System.out.println("스칼라 서버에서 받은 응답: " + response),
-            error -> System.err.println("에러 발생: " + error),
-            () -> System.out.println("응답 처리 완료")
+            response -> log.debug("스칼라 서버에서 받은 응답 = {} ", response),
+            error -> log.debug("에러 발생 = {} ", error),
+            () -> log.debug("응답 처리 완료")
         );
     }
 
@@ -76,22 +74,11 @@ public class UserRecommendService {
 
         // Mono를 구독하고 응답을 처리
         responseMono.subscribe(
-            response -> System.out.println("스칼라 서버에서 받은 응답: " + response),
-            error -> System.err.println("에러 발생: " + error),
-            () -> System.out.println("응답 처리 완료")
+            response -> log.debug("스칼라 서버에서 받은 응답 = {} ", response),
+            error -> log.debug("에러 발생 = {} ", error),
+            () -> log.debug("응답 처리 완료")
         );
     }
-
-//    public Mono<String> getUserRecommendRecruitList(Integer userId) {
-//        // WebClient를 사용하여 비동기 요청 보내기
-//        return webClient.get()
-//            .uri("/api/recommend/normal/{userId}", userId)
-//            .retrieve()
-//            .bodyToMono(String.class)
-//            .doOnSuccess(response -> log.info("스칼라 서버에서 받은 응답 = {}", response))
-//            .doOnError(error -> log.error("에러 발생 = {}", error))
-//            .doFinally(signal -> log.info("응답 처리 완료"));
-//    }
 
     @Cacheable(
         cacheNames = "recommend",
