@@ -36,7 +36,7 @@ export default function Header() {
         const data = await res.json();
         console.log("북마크fetch해옴");
         console.log(data);
-        setBookmarks(data?.response.content);
+        setBookmarks(data?.response);
       } catch (error) {
         console.error(error);
       }

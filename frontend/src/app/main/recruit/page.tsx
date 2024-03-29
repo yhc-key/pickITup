@@ -109,22 +109,22 @@ export default function RecruitPage() {
 
   const bookMarkHandler = (
     event: MouseEvent<HTMLDivElement>,
-    recruitIndex: number
+    recruitId: number
   ) => {
     event.stopPropagation();
     console.log("북마크 이벤트 실행");
-    checkBookmark(recruitIndex)
-      ? deleteBookMark(recruitIndex)
-      : addBookMark(recruitIndex);
+    checkBookmark(recruitId)
+      ? deleteBookMark(recruitId)
+      : addBookMark(recruitId);
   }; // 북마크 추가 혹은 제거
 
-  const addBookMark = async (recruitIndex: number) => {
+  const addBookMark = async (recruitId: number) => {
     if (!isLoggedIn) {
       return;
     }
     try {
       const res = await fetch(
-        `https://spring.pickitup.online/users/scraps/recruit?recruitId=${recruitIndex}`,
+        `https://spring.pickitup.online/users/scraps/recruit?recruitId=${recruitId}`,
         {
           method: "POST",
           headers: {
@@ -144,16 +144,16 @@ export default function RecruitPage() {
         }
       );
       const bookmarkData = await scrapRes.json();
-      setBookmarks(data?.response.content);
+      setBookmarks(bookmarkData?.response);
     } catch (error) {
       console.error(error);
     }
   }; //북마크 추가 함수
 
-  const deleteBookMark = async (recruitIndex: number) => {
+  const deleteBookMark = async (recruitId: number) => {
     try {
       const res = await fetch(
-        `${apiAddress}/users/scraps/recruit?recruitId=${recruitIndex}`,
+        `${apiAddress}/users/scraps/recruit?recruitId=${recruitId}`,
         {
           method: "DELETE",
           headers: {
@@ -165,7 +165,7 @@ export default function RecruitPage() {
       console.log(data);
       if (bookmarks !== undefined) {
         setBookmarks(
-          [...bookmarks].filter((bookmark) => bookmark.id != recruitIndex)
+          [...bookmarks].filter((bookmark) => bookmark.id != recruitId)
         );
       }
     } catch (error) {
@@ -173,13 +173,15 @@ export default function RecruitPage() {
     }
   }; //북마크 삭제 함수
 
-  const checkBookmark = (recruitI: number) => {
+  const checkBookmark = (recruitId: number) => {
+    let toggle = false;
     bookmarks?.some((bookmarkedRecruit) => {
-      if (bookmarkedRecruit.id === recruitI) {
-        return true;
+      if (bookmarkedRecruit.id === recruitId) {
+        toggle = true;
+        return;
       }
     });
-    return false;
+    return toggle;
   };
 
   useEffect(() => {
@@ -209,7 +211,7 @@ export default function RecruitPage() {
                 type="button"
                 onClick={() => recruitClickHandler(recruit.url, recruitI)}
                 key={recruitI}
-                className={`${isMobile ? "w-full" : "w-[30%] mx-4 max-w-72"} my-4 h-[350px] rounded-xl overflow-hidden flex flex-col shadow duration-300 ease-in-out hover:scale-105`}
+                className={`${isMobile ? "w-full" : "w-[30%] mx-4 max-w-72"} my-4 h-[350px] rounded-xl overflow-hidden flex flex-col shadow duration-300 ease-in-out hover:scale-105 relative`}
               >
                 <Image
                   src={wrongSrcs[recruitI] ? baseImg : recruit.thumbnailUrl}
@@ -259,11 +261,11 @@ export default function RecruitPage() {
                   })}
                 </div>
                 <div
-                  onClick={(event) => bookMarkHandler(event, recruitI)}
-                  className={`text-xl fixed bottom-4 right-4 z-10 text-f5green-300 ${isLoggedIn ? "" : "hidden"} duration-300 ease-in-out hover:scale-125`}
+                  onClick={(event) => bookMarkHandler(event, recruit.id)}
+                  className={`text-xl absolute bottom-4 right-4 z-10 text-f5green-300 ${isLoggedIn ? "" : "hidden"} duration-300 ease-in-out hover:scale-125 `}
                 >
-                  {checkBookmark(recruitI) ? (
-                    <FaRegBookmark />
+                  {checkBookmark(recruit.id) ? (
+                    <FaBookmark />
                   ) : (
                     <FaRegBookmark />
                   )}
