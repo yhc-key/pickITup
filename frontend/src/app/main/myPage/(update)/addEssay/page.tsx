@@ -83,7 +83,7 @@ export default function AddEssay() {
             })
         )
       );
-      router.push("/myPage/myEssay");
+      router.push("/main/myPage/myEssay");
     } else {
       setIsEmpty(tmpIsEmptyArr);
     }
