@@ -99,24 +99,14 @@ public class UserRecommendService {
         condition = "#isSuperUser == false"
     )
     public List<UserRecommendDto> getUserRecommendRecruitList(Integer userId, boolean isSuperUser) {
-
-        //user가 기술스택과  address를 입력했을 때만 추천 서비스를 이용할 수 있으므로 validation check
-        User user = userQueryJpaRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-
-        log.info("user = {}", user.toString());
-        if (user.getAddress() == null || user.getAddress().length() == 0) {
-            log.info("user address 가 없습니다.");
-            return null;
-        }
-
-        if (user.getUserKeywords() == null || user.getUserKeywords().size() == 0) {
-            log.info("user keywords 가 없습니다. = {}");
-            return null;
-        }
-
+        log.info("not cached, userId = {}, isSuperUser = {}", userId, isSuperUser);
         // WebClient를 사용하여 동기 요청 보내기
         Flux<UserRecommendDto> response = webClient.get()
-            .uri("/api/recommend/normal/{userId}", userId)
+            .uri(
+                "/api/recommend/" +
+                    (isSuperUser ? "super" : "normal") +
+                    "/{userId}",
+                userId)
             .accept(MediaType.APPLICATION_JSON)
             .retrieve()
             .bodyToFlux(UserRecommendDto.class);
