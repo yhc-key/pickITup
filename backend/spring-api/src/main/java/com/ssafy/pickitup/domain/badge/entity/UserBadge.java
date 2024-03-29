@@ -1,5 +1,6 @@
 package com.ssafy.pickitup.domain.badge.entity;
 
+import com.ssafy.pickitup.domain.badge.query.dto.BadgeQueryResponseDto;
 import com.ssafy.pickitup.domain.user.entity.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,4 +37,11 @@ public class UserBadge {
 
     @Setter
     private boolean isAchieved;
+
+    public BadgeQueryResponseDto toResponse() {
+        return BadgeQueryResponseDto.builder()
+            .badge(badge)
+            .isAchieve(isAchieved)
+            .build();
+    }
 }
