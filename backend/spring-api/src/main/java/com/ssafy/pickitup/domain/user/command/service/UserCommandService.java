@@ -21,6 +21,7 @@ import com.ssafy.pickitup.domain.user.entity.ScrapMongo;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.entity.UserClick;
 import com.ssafy.pickitup.domain.user.entity.UserKeyword;
+import com.ssafy.pickitup.domain.user.entity.UserLevel;
 import com.ssafy.pickitup.domain.user.entity.UserMongo;
 import com.ssafy.pickitup.domain.user.entity.UserRecruit;
 import com.ssafy.pickitup.domain.user.exception.DuplicateScrapException;
@@ -100,6 +101,10 @@ public class UserCommandService {
         User updatedUser = userRankService.updateLevel(user);
         log.info("user level after = {}", updatedUser.getLevel());
 
+        //유저 경험치 정보
+        UserLevel expInfo = userRankService.getExpInfo(updatedUser.getLevel());
+        log.info("expInfo = {}", expInfo);
+
         //유저 랭크 업데이트
         if (user.getUserRank() == Rank.NORMAL) {
             if (user.checkMyRank()) {
@@ -110,7 +115,7 @@ public class UserCommandService {
             }
         }
 
-        return UserResponseDto.toDto(updatedUser, scrapCount, badgeCount, closingCount,
+        return UserResponseDto.toDto(updatedUser, expInfo, scrapCount, badgeCount, closingCount,
             solvedInterviewAnswerCount);
     }
 
