@@ -103,17 +103,13 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
     }
 
     @Override
-    public Page<RecruitQueryResponseDto> searchByIdList(List<Integer> idList, Pageable pageable) {
+    public List<RecruitQueryResponseDto> searchByIdList(List<Integer> idList) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").in(idList));
 
-        long totalCount = mongoTemplate.count(query, RecruitDocumentMongo.class);
-        query.with(pageable);
-
-        List<RecruitDocumentMongo> entities = mongoTemplate.find(query, RecruitDocumentMongo.class);
-        Page<RecruitDocumentMongo> recruitDocumentMongoPages =
-            new PageImpl<>(entities, pageable, totalCount);
-        return recruitDocumentMongoPages.map(RecruitDocumentMongo::toQueryResponse);
+        return mongoTemplate.find(query, RecruitDocumentMongo.class)
+            .stream().map(RecruitDocumentMongo::toQueryResponse)
+            .toList();
     }
 
     @Override
