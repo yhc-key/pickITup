@@ -23,9 +23,4 @@ class RecommendController @Inject()(cc: ControllerComponents) extends AbstractCo
     val list: List[Recommendation] = CollaborativeFilteringService.recommend(userId)
     Ok(Json.toJson(list))
   }
-
-  def userSimilarity(): Action[AnyContent] = Action { implicit request =>
-    val str = SimilarityService.calculateAllUserSimilarities()
-    Ok("Similarity API is working! " + str)
-  }
 }

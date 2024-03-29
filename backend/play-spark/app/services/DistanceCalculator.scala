@@ -2,7 +2,7 @@ package services
 
 object DistanceCalculator {
 
-  private val EARTH_RADIUS = 6371000
+  private val EARTH_RADIUS = 6371 // 지구의 반지름(km)
 
   // Haversine formula로 두 지점(위도/경도) 간의 거리 계산
   def calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double = {
