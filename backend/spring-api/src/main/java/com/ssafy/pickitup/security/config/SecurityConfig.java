@@ -45,7 +45,7 @@ public class SecurityConfig {
         return web -> web.ignoring()
             .requestMatchers("/auth/**", "/recruit/**",
                 "/keywords/**", "/users/test/**", "/quizzes/ox/**",
-                "/quizzes/speed/") // '인증','인가' 서비스 적용x
+                "/quizzes/speed/**") // '인증','인가' 서비스 적용x
             .requestMatchers(swaggerURL)
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // 정적 리소스들
     }

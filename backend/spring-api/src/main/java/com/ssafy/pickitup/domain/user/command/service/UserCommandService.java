@@ -90,19 +90,19 @@ public class UserCommandService {
             기술 면접 대비 문제 풀이 수 카운트
          */
 
-        log.info("scrapCount : {}", scrapCount);
-        log.info("badgeCount : {}", badgeCount);
-        log.info("closingCount : {}", closingCount);
+        log.debug("scrapCount : {}", scrapCount);
+        log.debug("badgeCount : {}", badgeCount);
+        log.debug("closingCount : {}", closingCount);
 
-        log.info("user = {}", user.toString());
-        log.info("user level before = {}", user.getLevel());
+        log.debug("user = {}", user.toString());
+        log.debug("user level before = {}", user.getLevel());
         // 유저 레벨 업데이트
         User updatedUser = userRankService.updateLevel(user);
-        log.info("user level after = {}", updatedUser.getLevel());
+        log.debug("user level after = {}", updatedUser.getLevel());
 
         //유저 경험치 정보
         UserLevel expInfo = userRankService.getExpInfo(updatedUser.getLevel());
-        log.info("expInfo = {}", expInfo);
+        log.debug("expInfo = {}", expInfo);
 
         //유저 랭크 업데이트
         if (user.getUserRank() == Rank.NORMAL) {
@@ -140,7 +140,6 @@ public class UserCommandService {
         badgeCommandService.initBadge(user);
         userCommandJpaRepository.save(user);
         auth.setUser(user);
-//        badgeCommandService.initBadge(user.getId());
         return UserResponseDto.toDto(user, 0, 0, 0, 0);
     }
 
@@ -218,7 +217,7 @@ public class UserCommandService {
         List<String> keywordsNameList = userKeywords.stream()
             .map(userKeyword -> userKeyword.getKeyword().getName())
             .toList();
-        log.info("keywordsNameList = {}", keywordsNameList);
+        log.debug("keywordsNameList = {}", keywordsNameList);
 
         GeoLocation geoLocation = geoLocationService.getGeoLocation(user.getAddress());
 

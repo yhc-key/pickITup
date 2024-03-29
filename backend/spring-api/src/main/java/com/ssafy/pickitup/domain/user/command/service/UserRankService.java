@@ -42,8 +42,8 @@ public class UserRankService {
         } else {
             user.setLevel(userLevel.getLevel());
         }
-        log.info("user level after = {}", user.getLevel());
-        log.info("user exp after = {}", user.getExp());
+        log.debug("user level after = {}", user.getLevel());
+        log.debug("user exp after = {}", user.getExp());
         return user;
     }
 
@@ -53,8 +53,8 @@ public class UserRankService {
         if (level > 1) {
             prevExp = userLevelJpaRepository.findExpByLevel(level - 1).getExp();
             nextExp = userLevelJpaRepository.findExpByLevel(level).getExp();
-            log.info("userLevel.getPrevExp = {},", prevExp);
-            log.info("userLevel.getNextExp = {},", nextExp);
+            log.debug("userLevel.getPrevExp = {},", prevExp);
+            log.debug("userLevel.getNextExp = {},", nextExp);
         }
         return UserLevel.builder().prevExp(prevExp).nextExp(nextExp).build();
     }
