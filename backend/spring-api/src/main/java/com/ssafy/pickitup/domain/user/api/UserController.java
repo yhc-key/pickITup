@@ -3,12 +3,11 @@ package com.ssafy.pickitup.domain.user.api;
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
 import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
-import com.ssafy.pickitup.domain.user.command.service.UserClickService;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserMongoCommandService;
 import com.ssafy.pickitup.domain.user.command.service.UserRecommendFacade;
 import com.ssafy.pickitup.domain.user.dto.UserRecommendDto;
 import com.ssafy.pickitup.domain.user.dto.UserUpdateRequestDto;
-import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.global.annotation.AuthID;
 import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
@@ -32,8 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserCommandService userCommandService;
-    private final UserQueryService userQueryService;
-    private final UserClickService userClickService;
+    private final UserMongoCommandService userMongoCommandService;
     private final UserRecommendFacade userRecommendFacade;
     private final BadgeQueryService badgeQueryService;
 
@@ -69,7 +67,8 @@ public class UserController {
     @GetMapping("/recommend/recruit")
     public ApiResult<?> getUserRecommendRecruits(
         @AuthID Integer authId) {
-        List<UserRecommendDto> userRecommendRecruitList = userRecommendFacade.getUserRecommendList(authId);
+        List<UserRecommendDto> userRecommendRecruitList = userRecommendFacade.getUserRecommendList(
+            authId);
         return success(userRecommendRecruitList);
     }
 
@@ -77,5 +76,11 @@ public class UserController {
     @GetMapping("/badges")
     public ApiResult<?> getBadge(@AuthID Integer userId) {
         return success(badgeQueryService.findMyBadges(userId));
+    }
+
+    @Operation(summary = "User 정보 MongoDB로 마이그레이션")
+    @GetMapping("/mongo")
+    public void toMongo() {
+        userMongoCommandService.migration();
     }
 }
