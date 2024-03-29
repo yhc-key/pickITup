@@ -11,12 +11,12 @@ public class GeoLocationServiceTest {
 
     @Autowired
     private GeoLocationService geoLocationService;
-    
+
     @Test
     public void changeAddressTest() {
 
         GeoLocation geoLocation = geoLocationService.getGeoLocation(
-            "현대캐피탈 본사(서울 중구 세종대로 14 그랜드센트럴 A동)");
+            "세종특별자치시 소담동");
         System.out.println("geoLocation = " + geoLocation);
     }
 }

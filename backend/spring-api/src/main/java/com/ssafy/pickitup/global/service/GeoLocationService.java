@@ -21,7 +21,7 @@ public class GeoLocationService {
     @Value("${kakao.api}")
     private String KAKAO_API_KEY;
     private String[] locations = {"서울", "인천", "경기", "제주", "부산", "울산", "대구", "대전", "광주", "강원", "충청",
-        "전라", "경상"};
+        "전라", "경상", "세종"};
 
     public GeoLocation getGeoLocation(String address) {
         if (address == null) {
