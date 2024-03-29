@@ -65,7 +65,7 @@ export const techDataMap: Map<string, string[]> = new Map([
       "Spring",
       "NodeJS",
       "Django",
-      "NextJS",
+      "NestJS",
       "ExpressJS",
       "FastAPI",
       "Flask",

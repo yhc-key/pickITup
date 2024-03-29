@@ -15,7 +15,6 @@ const techTypes: string[] = [
   "데이터",
   "데브옵스",
   "테스팅툴",
-  "정보보안",
 ];
 
 export default function TechSelectOX() {

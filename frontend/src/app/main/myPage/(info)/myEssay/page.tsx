@@ -19,9 +19,6 @@ const apiAddress = "https://spring.pickITup.online/self/main";
 const dummyTitles: Title[] = [];
 const myEssays: Essay[][] = [[]]; // essay 목록 가져오기
 
-const token: string =
-  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTcxMDkwNTM0Nn0.A-pDxNwD38jJhVGMt-NCbk1ykeZ79DrT57rq946pDE8";
-
 export default function MyEssay(): JSX.Element {
   const [beforeChangeTitle, setBeforeChangeTitle] = useState<Title>(
     dummyTitles[0]
@@ -97,11 +94,12 @@ export default function MyEssay(): JSX.Element {
     }
     setTitleValidate(true);
     try {
+      const accessToken = sessionStorage.getItem("accessToken");
       await fetch(apiAddress, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + accessToken,
         },
         body: JSON.stringify({ title: essayTitleAddRef.current.value.trim() }),
       });
@@ -177,9 +175,10 @@ export default function MyEssay(): JSX.Element {
   useEffect(() => {
     const essayListfetchData = async () => {
       try {
+        const accessToken = sessionStorage.getItem("accessToken");
         const res: Response = await fetch(apiAddress, {
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + accessToken,
           },
         });
         if (!res.ok) {
@@ -226,7 +225,7 @@ export default function MyEssay(): JSX.Element {
   useEffect(() => {
     const tmpEssayActive: boolean[][] = essays.map(
       (subArray: Essay[]): boolean[] =>
-        subArray.map((essay: Essay, index: number): boolean =>
+        subArray && subArray.map((essay: Essay, index: number): boolean =>
           index == 0 ? true : false
         )
     ); // essay 목록에 해당하는 boolean 배열 만들기

@@ -19,11 +19,11 @@ export default function Page2({ activePage }: { activePage: boolean }) {
             </div>
           </div>
           <Image
-            src="/images/companyLogo.png"
+            src="/images/companyLogo2.png"
             alt="companyLogo"
-            width={300}
-            height={202}
-            className={`mt-16 ml-20 ${activePage ? "animate-slide-right" : ""}`}
+            width={410}
+            height={269}
+            className={`mt-16 ml-12 ${activePage ? "animate-slide-right" : ""}`}
           />
         </div>
       </div>

@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 import Realistic from "../../realistic";
 import WrongBox from "./wrongBox";
@@ -25,7 +27,9 @@ export default function QuizResult({ answer }: QuizResultProps) {
     query: "(max-width:480px)",
   });
 
+  const router = useRouter();
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
+  const [winCount, setWinCount] = useState<number>(0);
   const apiURL = "https://spring.pickITup.online/quizzes/win";
   const isLoggedIn: boolean = useAuthStore(
     (state: AuthState) => state.isLoggedIn
@@ -33,20 +37,36 @@ export default function QuizResult({ answer }: QuizResultProps) {
 
   // 7문제 이상 정답 시 뱃지 획득을 위한 승리횟수 1 증가
   const addWinNumber = async () => {
+    let winCount: number = 0;
     if (isLoggedIn) {
       const accessToken = sessionStorage.getItem("accessToken");
+      console.log(accessToken);
       try {
         await fetch(apiURL, {
           method: "PATCH",
           headers: {
             Authorization: "Bearer " + accessToken,
           },
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            winCount = res.response;
+          });
+        Swal.fire({
+          icon: "success",
+          title: "축하합니다 😀🎉",
+          text: `총 승리 횟수는 ${winCount}번 입니다.`,
+          confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+          confirmButtonText: "확인", // confirm 버튼 텍스트 지정
+        }).then((res) => {
+          if (res.isConfirmed) {
+            setShowConfetti(true);
+          }
         });
       } catch (error) {
         console.log(error);
       }
     } else {
-      alert("게임 결과를 저장하기 위해서 로그인이 필요합니다!");
     }
   };
 
@@ -54,7 +74,6 @@ export default function QuizResult({ answer }: QuizResultProps) {
     const correctCount = answer.filter((e: Answer) => e.correct).length;
 
     if (correctCount >= 7) {
-      setShowConfetti(true);
       addWinNumber();
     }
   }, [answer]);
