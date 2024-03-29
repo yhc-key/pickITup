@@ -80,11 +80,20 @@ public class UserCommandService {
         int closingCount = recruitQueryService.countClosingRecruitByIdList(myRecruitIdList);
         int solvedInterviewAnswerCount = userInterviewQueryService.countSolvedInterviewsByUserId(
             userId);
+
+        log.debug("scrapCount : {}", scrapCount);
+        log.debug("badgeCount : {}", badgeCount);
+        log.debug("closingCount : {}", closingCount);
+
+        log.debug("user = {}", user.toString());
+        log.debug("user level before = {}", user.getLevel());
         // 유저 레벨 업데이트
         User updatedUser = userRankService.updateLevel(user);
+        log.debug("user level after = {}", updatedUser.getLevel());
 
         //유저 경험치 정보
         UserLevel expInfo = userRankService.getExpInfo(updatedUser.getLevel());
+        log.debug("expInfo = {}", expInfo);
 
         //유저 랭크 업데이트
         if (user.getUserRank() == Rank.NORMAL) {
@@ -122,7 +131,6 @@ public class UserCommandService {
         badgeCommandService.initBadge(user);
         userCommandJpaRepository.save(user);
         auth.setUser(user);
-//        badgeCommandService.initBadge(user.getId());
         return UserResponseDto.toDto(user, 0, 0, 0, 0);
     }
 
@@ -200,7 +208,7 @@ public class UserCommandService {
         List<String> keywordsNameList = userKeywords.stream()
             .map(userKeyword -> userKeyword.getKeyword().getName())
             .toList();
-        log.info("keywordsNameList = {}", keywordsNameList);
+        log.debug("keywordsNameList = {}", keywordsNameList);
 
         GeoLocation geoLocation = geoLocationService.getGeoLocation(user.getAddress());
 

@@ -6,8 +6,6 @@ import com.ssafy.pickitup.domain.selfdocument.command.MainQuestionCommandService
 import com.ssafy.pickitup.domain.selfdocument.command.SubQuestionCommandService;
 import com.ssafy.pickitup.domain.selfdocument.command.dto.MainQuestionCommandRequestDto;
 import com.ssafy.pickitup.domain.selfdocument.command.dto.SubQuestionCommandRequestDto;
-import com.ssafy.pickitup.domain.user.command.repository.KeywordCommandJpaRepository;
-import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class InitDB {
 
     private final AuthCommandService authCommandService;
-    private final UserCommandService userCommandService;
     private final MainQuestionCommandService mainQuestionCommandService;
     private final SubQuestionCommandService subQuestionCommandService;
-    private final KeywordCommandJpaRepository keywordCommandJpaRepository;
 
     @Transactional
     public void init() {

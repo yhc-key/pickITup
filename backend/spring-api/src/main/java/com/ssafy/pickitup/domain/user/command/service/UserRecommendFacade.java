@@ -15,26 +15,27 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserRecommendFacade {
 
-  private final UserRecommendService userRecommendService;
-  private final UserQueryJpaRepository userQueryJpaRepository;
+    private final UserRecommendService userRecommendService;
+    private final UserQueryJpaRepository userQueryJpaRepository;
 
-  public List<UserRecommendDto> getUserRecommendList(Integer userId) {
+    public List<UserRecommendDto> getUserRecommendList(Integer userId) {
 
-    //user가 기술스택과  address를 입력했을 때만 추천 서비스를 이용할 수 있으므로 validation check
-    User user = userQueryJpaRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        //user가 기술스택과  address를 입력했을 때만 추천 서비스를 이용할 수 있으므로 validation check
+        User user = userQueryJpaRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-    log.info("user = {}", user.toString());
-    if (user.getAddress() == null || user.getAddress().length() == 0) {
-      log.info("user address 가 없습니다.");
-      return null;
+        log.debug("user = {}", user.toString());
+        if (user.getAddress() == null || user.getAddress().length() == 0) {
+            log.debug("user address 가 없습니다.");
+            return null;
+        }
+
+        if (user.getUserKeywords() == null || user.getUserKeywords().size() == 0) {
+            log.debug("user keywords 가 없습니다. = {}");
+            return null;
+        }
+
+        return userRecommendService.getUserRecommendRecruitList(userId,
+            user.getUserRank().equals(Rank.SUPER));
     }
-
-    if (user.getUserKeywords() == null || user.getUserKeywords().size() == 0) {
-      log.info("user keywords 가 없습니다. = {}");
-      return null;
-    }
-
-    return userRecommendService.getUserRecommendRecruitList(userId, user.getUserRank().equals(Rank.SUPER));
-  }
 
 }
