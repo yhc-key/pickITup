@@ -81,7 +81,7 @@ function MyBadge() {
       <div className="flex items-center justify-start flex-wrap w-full">
         {unacq}
       </div>
-      {/* <TechSelectAfterLogin/> */}
+      <TechSelectAfterLogin/>
     </div>
   )
 }
