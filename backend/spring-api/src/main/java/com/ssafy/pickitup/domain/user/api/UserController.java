@@ -2,7 +2,7 @@ package com.ssafy.pickitup.domain.user.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
+import com.ssafy.pickitup.domain.badge.command.BadgeCommandService;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import com.ssafy.pickitup.domain.user.command.service.UserMongoCommandService;
 import com.ssafy.pickitup.domain.user.command.service.UserRecommendFacade;
@@ -33,7 +33,7 @@ public class UserController {
     private final UserCommandService userCommandService;
     private final UserMongoCommandService userMongoCommandService;
     private final UserRecommendFacade userRecommendFacade;
-    private final BadgeQueryService badgeQueryService;
+    private final BadgeCommandService badgeCommandService;
 
     @Operation(summary = "회원 정보 조회 API")
     @GetMapping("/me")
@@ -75,7 +75,7 @@ public class UserController {
     @Operation(summary = "회원 뱃지 조회")
     @GetMapping("/badges")
     public ApiResult<?> getBadge(@AuthID Integer userId) {
-        return success(badgeQueryService.findMyBadges(userId));
+        return success(badgeCommandService.findMyBadges(userId));
     }
 
     @Operation(summary = "User 정보 MongoDB로 마이그레이션")

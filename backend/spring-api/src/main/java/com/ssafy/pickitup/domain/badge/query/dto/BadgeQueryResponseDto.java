@@ -1,6 +1,5 @@
 package com.ssafy.pickitup.domain.badge.query.dto;
 
-import com.ssafy.pickitup.domain.badge.entity.Badge;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,6 +7,6 @@ import lombok.Data;
 @Builder
 public class BadgeQueryResponseDto {
 
-    Badge badge;
+    String badgeName;
     boolean isAchieve;
 }
