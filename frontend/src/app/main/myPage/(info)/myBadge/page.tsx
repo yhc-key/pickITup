@@ -1,20 +1,46 @@
 "use client"
 import { useEffect, useState, ReactElement } from "react";
 import Image from 'next/image';
-import { badgeDataMap } from "@/data/badgeData";
+import { badgeDataMap ,badgeImageMap} from "@/data/badgeData";
 import TechSelectAfterLogin from "@/components/techSelectAfterLogin";
 function MyBadge() {
-  let acquired:string[] = ["attend1","jobRead1","jobRead50","jobScrap1","attend50","attend100"]; //얻은 배지 정보
-  let unacquired:string [] = ["selfDocWrite1","selfDocWrite50","selfDocWrite100",
-  "game10","game30","game50","game150","game300","jobRead100","jobScrap50","jobScrap100"];  //얻지 못한 배지 정보
-  
-  const [acq,setAcq] = useState<ReactElement[]>([]); //react 문 보낼것
-  const [unacq,setUnacq] = useState<ReactElement[]>([]); //react 문 보낼것
-
+  const [acquired,setAcquired]=useState<string[]>([]);
+  const [unAcquired,setUnAcquired]=useState<string[]>([]);
   useEffect(() => {
-    const newElements:ReactElement[] = [];
+    const token = sessionStorage.getItem('accessToken');
+    fetch("https://spring.pickitup.online/users/badges",{
+      method:"GET",
+      headers:{
+        Authorization: "Bearer "+token
+      }
+    })
+    .then(res=>res.json())
+    .then(res=>{
+      const data=res;
+      const tmpAcquired = [];
+      const tmpUnAcquired = [];
+      for(let i = 0 ; i < res.response.length ; i ++){
+        if(data.response[i].achieve===true){
+          const trueBN=badgeImageMap.get(data.response[i].badgeName);
+          if(trueBN!==undefined){
+            tmpAcquired.push(trueBN);
+          }
+        }
+        else{
+          const falseBN=badgeImageMap.get(data.response[i].badgeName);
+          if(falseBN!==undefined)
+            tmpUnAcquired.push(falseBN);
+        }
+      }
+      setUnAcquired(tmpUnAcquired),
+      setAcquired(tmpAcquired);
+    })
+  },[]);
+    useEffect(()=>{
+    const newAcq:ReactElement[] = [];
+    const newUnAcq:ReactElement[] = [];
     for (let i = 0; i < acquired.length; i++) {
-      newElements.push(
+      newAcq.push(
         <div key={i} className="flex flex-col items-center justify-center h-32 w-32 mx-4">
           <div className="flex items-center justify-center">
             <Image src={`/images/badge/${acquired[i]}.png`} width={100} height={100} alt={`${acquired[i]}`}/>
@@ -23,24 +49,23 @@ function MyBadge() {
         </div>
       );
     }
-    setAcq(newElements);
-  }, []);
-
-  useEffect(() => {
-    const newElements:ReactElement[] = [];
-    for (let i = 0; i < unacquired.length; i++) {
-      newElements.push(
+    setAcq(newAcq);
+    for (let i = 0; i < unAcquired.length; i++) {
+      newUnAcq.push(
         <div key={i} className="flex flex-col items-center justify-center h-32 w-32 mx-4">
           <div className="h-[100px] w-[100px] flex items-center justify-center">
             {/* <Image src={`/images/badge/${unacquired[i]}.png`} width={100} height={100} alt="badge"/> */}
             <Image src="/images/badge/locked.png" width={50} height={50} alt="badge"/>
           </div>
-          <div className="flex items-center justify-center text-sm font-bold">{badgeDataMap.get(unacquired[i])}</div>
+          <div className="flex items-center justify-center text-sm font-bold">{badgeDataMap.get(unAcquired[i])}</div>
         </div>
-      );
+      ); 
     }
-    setUnacq(newElements);
-  }, []);
+    setUnacq(newUnAcq);
+  },[acquired,unAcquired])
+  
+  const [acq,setAcq] = useState<ReactElement[]>([]); //react 문 보낼것
+  const [unacq,setUnacq] = useState<ReactElement[]>([]); //react 문 보낼것
 
   return (
     <div>
@@ -56,7 +81,7 @@ function MyBadge() {
       <div className="flex items-center justify-start flex-wrap w-full">
         {unacq}
       </div>
-      <TechSelectAfterLogin/>
+      {/* <TechSelectAfterLogin/> */}
     </div>
   )
 }

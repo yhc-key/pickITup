@@ -26,7 +26,7 @@ export default function TechSelectAfterLogin() {
   
   useEffect(() => {
     const authid = sessionStorage.getItem('authid');
-    const token = sessionStorage.getItem('accesToken');
+    const token = sessionStorage.getItem('accessToken');
     if(authid !== null) {
       fetch(`https://spring.pickitup.online/users/keywords`,{
         method : "GET",
@@ -101,15 +101,24 @@ const deletePickTech = (item : string)=>{
     )
   }
 
+  const [showSuggestions, setShowSuggestions] = useState(true);
+  const handleCloseSuggestions = () => {
+    setShowSuggestions(false);
+  };
+  const handleOpenSuggestions = () => {
+    setShowSuggestions(true);
+  }
+
+
   return (
     <div>
-      <Modal open={isModalOpen} clickSide={clickSide} size="w-7/12">
+      <Modal open={isModalOpen} clickSide={clickSide} size="h-5/6 w-7/12">
         <div className="flex flex-col items-center ">
           <div className="mb-5 text-xl font-medium text-center">
             관심 기술 스택(영어)을 선택해주세요
           </div>
           <div className="z-50 py-2 flex items-center justify-center"> 
-            <AutocompleteSearchBar words={techData2} onSelect={techAddHandler} ></AutocompleteSearchBar>
+            <AutocompleteSearchBar words={techData2} onSelect={techAddHandler} onOpenSuggestions={handleOpenSuggestions} onCloseSuggestions={handleCloseSuggestions} showSuggestions={showSuggestions}></AutocompleteSearchBar>
           </div>
 
           <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-12">
