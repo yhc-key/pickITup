@@ -3,8 +3,8 @@ import Image from "next/image";
 export default function Page4({ activePage }: { activePage: boolean }) {
   return (
     <div className="w-[100%] h-[100%]">
-      <div className="flex flex-wrap justify-start align-middle pt-28 pl-52">
-        <div className="flex flex-col justify-evenly">
+      <div className="flex flex-wrap justify-start align-middle pt-32 pl-40">
+        <div className="flex justify-evenly">
           <div className="flex flex-col justify-start text-4xl font-semibold tracking-widest">
             <div className="flex">
               <div className="my-1 ml-3 text-transparent bg-clip-text bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300">
@@ -15,8 +15,17 @@ export default function Page4({ activePage }: { activePage: boolean }) {
             <div className="my-1 ml-3 text-f5black-400">
               유사 문항을 함께 관리할 수 있는 기능을 제공합니다
             </div>
+        <div>
+        </div>
           </div>
         </div>
+        <Image
+          src="/images/resume.png"
+          alt="resume"
+          width={378}
+          height={328}
+          className="mt-28"
+        />
       </div>
     </div>
   );
