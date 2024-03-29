@@ -66,7 +66,7 @@ public class GeoLocationService {
             }
         }
         if (startIndex == -1) {
-            return "해당 주소에서 위치를 찾을 수 없습니다.";
+            return address;
         }
         return address.substring(startIndex);
     }
