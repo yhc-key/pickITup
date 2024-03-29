@@ -59,10 +59,17 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
      */
     @Override
     public Page<RecruitQueryResponseDto> search(RecruitQueryRequestDto dto, Pageable pageable) {
+
+        if (dto.getKeywords().isEmpty() && dto.getQuery().isEmpty()) {
+            return searchAll(pageable);
+        }
+
         Pageable new_pageable = PageRequest.of(
             pageable.getPageNumber(), pageable.getPageSize(), Sort.by("due_date").ascending()
         );
+
         Page<RecruitDocumentElasticsearch> searchResult;
+
         if (dto.getKeywords().isEmpty()) {
             searchResult = recruitQueryElasticsearchRepository
                 .searchWithQueryOnly(dto.getQuery(), new_pageable);
@@ -71,9 +78,14 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
             for (String str : dto.getKeywords()) {
                 sb.append(str).append(" ");
             }
-            searchResult =
-                recruitQueryElasticsearchRepository
-                    .searchWithFilter(dto.getQuery(), sb.toString(), new_pageable);
+            if (dto.getQuery().isEmpty()) {
+                searchResult = recruitQueryElasticsearchRepository
+                    .searchWithKeywordsOnly(sb.toString(), new_pageable);
+            } else {
+                searchResult =
+                    recruitQueryElasticsearchRepository
+                        .searchWithFilter(dto.getQuery(), sb.toString(), new_pageable);
+            }
         }
 
         // 엘라스틱서치에서 가져온 아이디 목록

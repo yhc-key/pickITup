@@ -29,6 +29,12 @@ public interface RecruitQueryElasticsearchRepository extends
         + "]}}")
     Page<RecruitDocumentElasticsearch> searchWithQueryOnly(String query, Pageable pageable);
 
+    @Query("{\"bool\": {\"must\": [{"
+        + "\"multi_match\": {\"query\": \"?0\", \"fields\": "
+        + "[\"qualification_requirements\", \"preferred_requirements\"]}}"
+        + "]}}")
+    Page<RecruitDocumentElasticsearch> searchWithKeywordsOnly(String keywords, Pageable pageable);
+
     @Query("{\"bool\": {\"must\": ["
         + "{\"bool\": {\"should\": ["
         + "{\"match\": {\"title\": {\"query\": \"?0\", \"operator\": \"and\"}}}, "
