@@ -10,8 +10,8 @@ import com.ssafy.pickitup.domain.auth.query.AuthQueryService;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthProfileDto;
 import com.ssafy.pickitup.domain.auth.query.dto.PasswordDto;
-import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
+import com.ssafy.pickitup.global.annotation.AuthID;
 import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.security.jwt.JwtProperties;
 import com.ssafy.pickitup.security.jwt.JwtTokenDto;
@@ -38,15 +38,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000", "http://localhost:8080",
-    "https://spring.pickitup.online"}, exposedHeaders = "*")
+@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000",
+    "http://localhost:8080", "https://spring.pickitup.online"}, exposedHeaders = "*")
 @RequestMapping("/auth")
 @Tag(name = "AuthController", description = "회원 인증 정보 관련 API")
 public class AuthController {
 
     private final AuthCommandService authCommandService;
     private final AuthQueryService authQueryService;
-    private final UserCommandService userCommandService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "회원 가입 API")
@@ -88,10 +87,7 @@ public class AuthController {
 
     @Operation(summary = "회원 프로필 조회 API")
     @GetMapping("/profile")
-    public ApiResult<AuthProfileDto> profileUser(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
-        log.info("authId = {}", authId);
+    public ApiResult<AuthProfileDto> profileUser(@AuthID Integer authId) {
         AuthDto authDto = authQueryService.getUserById(authId);
         AuthProfileDto authProfileDto = AuthProfileDto.authInfoFromAuthDto(authDto);
         return success(authProfileDto);
@@ -99,40 +95,32 @@ public class AuthController {
 
     @Operation(summary = "회원 비활성화 API")
     @PatchMapping("deactivate")
-    public ApiResult<String> deactivateAuth(HttpServletRequest request,
+    public ApiResult<String> deactivateAuth(@AuthID Integer authId,
         @RequestBody PasswordDto password) {
-        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         authCommandService.deactivateAuth(authId, password.getPassword());
         return success("비활성화 되었습니다.");
     }
 
     @Operation(summary = "회원 활성화 API")
     @PatchMapping("activate")
-    public ApiResult<String> activateAuth(HttpServletRequest request,
+    public ApiResult<String> activateAuth(@AuthID Integer authId,
         @RequestBody PasswordDto password) {
-        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         authCommandService.activateAuth(authId, password.getPassword());
         return success("활성화 되었습니다.");
     }
 
     @Operation(summary = "비밀번호 재확인 API")
     @PostMapping("/password")
-    public ApiResult<?> confirmPassword(HttpServletRequest request,
+    public ApiResult<?> confirmPassword(@AuthID Integer authId,
         @RequestBody PasswordDto password) {
-        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         authCommandService.validatePassword(authId, password.getPassword(), true);
         return success("비밀번호가 일치합니다.");
     }
 
     @Operation(summary = "비밀번호 변경 API")
     @PutMapping("/password")
-    public ApiResult<?> changePassword(HttpServletRequest request,
+    public ApiResult<?> changePassword(@AuthID Integer authId,
         @RequestBody PasswordDto password) {
-        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         authCommandService.changePassword(authId, password.getPassword());
         return success("비밀번호 변경 성공");
     }
