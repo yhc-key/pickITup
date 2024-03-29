@@ -85,12 +85,14 @@ class Trie {
 interface AllSearchBarProps {
   words: string[];
   onSelect: (tech: string) => void;
+  onCloseSuggestions : ()=>void;
+  onOpenSuggestions : () => void;
+  showSuggestions: boolean;
 }
 function AllSearchBar(props:AllSearchBarProps) {
   const [inputValue, setInputValue] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
   const trie = new Trie();
   props.words.forEach((word) => trie.insert(word.toLowerCase())); //소문자
 
@@ -115,13 +117,29 @@ function AllSearchBar(props:AllSearchBarProps) {
     setSuggestions([]);
   };
 
+  //////
+  const searchBarRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event:MouseEvent) {
+      if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
+        props.onCloseSuggestions(); // 검색 목록을 닫는 함수 호출
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [props.onCloseSuggestions]);
+
   return (
-    <div className="relative w-64">
+    <div className="relative w-64" ref={searchBarRef}>
       <input
         type="text"
         value={inputValue}
         onChange={handleInputChange}
         onFocus={() => {
+          props.onOpenSuggestions();
           if (inputValue.trim() !== "") {
             const suggestions = trie.getAllWordsWithPrefix(inputValue.toLowerCase());
             setSuggestions(suggestions);
@@ -130,7 +148,7 @@ function AllSearchBar(props:AllSearchBarProps) {
         placeholder="기술 스택을 검색해보세요!"
         className="w-full h-8 rounded-md border border-f5gray-400 bg-gray-200 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300"
       />
-      {suggestions.length > 0 && (
+      {props.showSuggestions && suggestions.length > 0 && (
         <ul className="absolute z-10 w-64 max-h-32 overflow-y-auto bg-white border border-f5gray-400 rounded-b-md">
           {suggestions.map((suggestion) => (
             <li

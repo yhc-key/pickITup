@@ -108,7 +108,14 @@ const deletePickTech = (item : string)=>{
       }
     )
   }
-
+  const [showSuggestions, setShowSuggestions] = useState(true);
+  const handleCloseSuggestions = () => {
+    setShowSuggestions(false);
+  };
+  const handleOpenSuggestions = () => {
+    setShowSuggestions(true);
+  }
+  
   return (
     <div>
       {/* <button onClick={(): void => setIsModalOpen(true)}>
@@ -120,7 +127,7 @@ const deletePickTech = (item : string)=>{
             관심 기술 스택(영어)을 선택해주세요
           </div>
           <div className="z-50 py-2 flex items-center justify-center"> 
-            <AllSearchBar words={techAll} onSelect={techAddHandler}></AllSearchBar>
+            <AllSearchBar words={techAll} onSelect={techAddHandler} showSuggestions={showSuggestions} onCloseSuggestions={handleCloseSuggestions} onOpenSuggestions={handleOpenSuggestions}></AllSearchBar>
           </div>
           
           <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-12">
