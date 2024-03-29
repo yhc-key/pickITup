@@ -80,29 +80,11 @@ public class UserCommandService {
         int closingCount = recruitQueryService.countClosingRecruitByIdList(myRecruitIdList);
         int solvedInterviewAnswerCount = userInterviewQueryService.countSolvedInterviewsByUserId(
             userId);
-        /*
-            뱃지 갱신 -> ok
-
-            내가 가진 뱃지 개수 카운트 -> ok
-
-            스크랩 한 공고 중 마감 임박 채용 공고 개수 카운트 -> ok
-
-            기술 면접 대비 문제 풀이 수 카운트
-         */
-
-        log.info("scrapCount : {}", scrapCount);
-        log.info("badgeCount : {}", badgeCount);
-        log.info("closingCount : {}", closingCount);
-
-        log.info("user = {}", user.toString());
-        log.info("user level before = {}", user.getLevel());
         // 유저 레벨 업데이트
         User updatedUser = userRankService.updateLevel(user);
-        log.info("user level after = {}", updatedUser.getLevel());
 
         //유저 경험치 정보
         UserLevel expInfo = userRankService.getExpInfo(updatedUser.getLevel());
-        log.info("expInfo = {}", expInfo);
 
         //유저 랭크 업데이트
         if (user.getUserRank() == Rank.NORMAL) {
