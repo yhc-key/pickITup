@@ -30,8 +30,7 @@ public class UserScrapController {
 
     @Operation(summary = "회원 스크랩 채용 공고 조회 API")
     @GetMapping("/recruit")
-    public ApiResult<?> getUserScrapList(
-        @AuthID Integer userId) {
+    public ApiResult<?> getUserScrapList(@AuthID Integer userId) {
         List<RecruitQueryResponseDto> myRecruitByIdList =
             userQueryService.findMyRecruitById(userId);
         return success(myRecruitByIdList);
