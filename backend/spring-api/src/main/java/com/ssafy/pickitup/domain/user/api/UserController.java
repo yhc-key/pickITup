@@ -2,6 +2,7 @@ package com.ssafy.pickitup.domain.user.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
+import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.service.UserClickService;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
@@ -13,6 +14,7 @@ import com.ssafy.pickitup.domain.user.query.dto.KeywordRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserClickResponseDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
+import com.ssafy.pickitup.global.annotation.AuthID;
 import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,6 +50,7 @@ public class UserController {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserClickService userClickService;
     private final UserRecommendService userRecommendService;
+    private final BadgeQueryService badgeQueryService;
 
     @Operation(summary = "회원 정보 조회 API")
     @GetMapping("/me")
@@ -128,7 +131,7 @@ public class UserController {
         @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
         @RequestParam Integer recruitId) {
         Integer authId = jwtTokenProvider.extractAuthId(accessToken);
-        userCommandService.saveUserClick(authId, recruitId);
+        userCommandService.increaseUserClick(authId, recruitId);
         return success("채용 공고 클릭");
     }
 
@@ -154,7 +157,6 @@ public class UserController {
         return success("keywords 수정 성공");
     }
 
-
     @Operation(summary = "회원 키워드 조회 API")
     @GetMapping("{authId}/keywords")
     public ApiResult<KeywordResponseDto> addUserKeyword(
@@ -179,5 +181,11 @@ public class UserController {
         List<UserRecommendDto> userRecommendRecruitList = userRecommendService.getUserRecommendRecruitList(
             authId);
         return success(userRecommendRecruitList);
+    }
+
+    @Operation(summary = "회원 뱃지 조회")
+    @GetMapping("/badges")
+    public ApiResult<?> getBadge(@AuthID Integer userId) {
+        return success(badgeQueryService.findMyBadges(userId));
     }
 }

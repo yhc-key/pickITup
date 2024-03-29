@@ -39,6 +39,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -247,7 +249,7 @@ public class UserCommandService {
     }
 
     @Transactional
-    public void saveUserClick(Integer userId, Integer recruitId) {
+    public void increaseUserClick(Integer userId, Integer recruitId) {
         User user = userCommandJpaRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
         UserClick userClick = userClickCommandJpaRepository
@@ -256,11 +258,16 @@ public class UserCommandService {
         userClick.increaseClickCount();
         userClickCommandJpaRepository.save(userClick);
 
-        ClickMongo clickMongo = clickCommandMongoRepository
-            .findByUserIdAndRecruitId(userId, recruitId)
-            .orElse(new ClickMongo(userId, recruitId, 0));
-        clickMongo.increaseClickCount();
-        clickCommandMongoRepository.save(clickMongo);
+        Query query = new Query(Criteria.where("userId").is(userId).and("recruitId").is(recruitId));
+        ClickMongo clickMongo = mongoTemplate.findOne(query, ClickMongo.class);
+
+        if (clickMongo == null) {
+            clickMongo = ClickMongo.createClick(userId, recruitId);
+        } else {
+            clickMongo.increaseClickCount();
+        }
+
+        mongoTemplate.save(clickMongo);
     }
 
     @Transactional
