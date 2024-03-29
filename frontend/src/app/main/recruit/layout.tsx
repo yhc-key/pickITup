@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import useSearchStore from "@/store/searchStore";
 import { techDataMap } from "@/data/techData";
 import { useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import { FaSearch } from "react-icons/fa";
 import TanstackProvider from "@/providers/TanstackProvider";
 import { techTypes } from "@/data/techData";
 import { useMediaQuery } from "react-responsive";
+import { debounce } from "@/data/functions";
 
 export default function RecruitLayout({
   children,
@@ -16,6 +16,7 @@ export default function RecruitLayout({
   children: React.ReactNode;
 }>) {
   const { setKeywords, setQuery } = useSearchStore();
+
   const [nowType, setNowType] = useState("언어");
   const [pickTechList, setPickTechList] = useState<string[]>([]);
   const [techs, setTechs] = useState<string[]>(techDataMap.get("언어") ?? []);
@@ -33,7 +34,7 @@ export default function RecruitLayout({
       }
     });
     setTechs(techsTmp);
-  };
+  }; // 테크타입 설정
 
   const techClickHandler = (tech: string) => {
     setPickTechList([...pickTechList, tech]);
@@ -41,17 +42,13 @@ export default function RecruitLayout({
     if (index !== -1) {
       techs?.splice(index, 1);
     }
-  };
+  }; //클릭한거 pickTechList에 업데이트 밑 techs에서는 빼기
 
   const techDeleteHandler = (tech: string) => {
     setPickTechList((prevTechList) =>
       prevTechList.filter((item) => item !== tech)
     );
-  };
-
-  const searchChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
+  }; // 골라놓은 내 테크로고 중 클릭한거 없애기
 
   useEffect(() => {
     let techsTmp: string[] = [...(techDataMap.get(nowType) || [])] ?? [];
@@ -63,7 +60,7 @@ export default function RecruitLayout({
     });
     setTechs(techsTmp);
     setKeywords(pickTechList);
-  }, [pickTechList, nowType, setKeywords]);
+  }, [pickTechList, nowType, setKeywords]); // 테크타입 바꾸면 보여지는 거 설정 로직 이미 뽑혀잇는거면 뺀다음에 보여준다.
 
   return (
     <div className={`flex ${isMobile ? "flex-col" : ""}  mx-10 my-5`}>
@@ -73,7 +70,7 @@ export default function RecruitLayout({
             type="text"
             placeholder="검색어를 입력해주세요"
             className="flex-1 outline-none bg-f5gray-300"
-            onChange={searchChangeHandler}
+            onChange={debounce((event) => setQuery(event.target.value), 1000)}
           />
           <span>
             <FaSearch />
