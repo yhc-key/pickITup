@@ -80,15 +80,6 @@ public class UserCommandService {
         int closingCount = recruitQueryService.countClosingRecruitByIdList(myRecruitIdList);
         int solvedInterviewAnswerCount = userInterviewQueryService.countSolvedInterviewsByUserId(
             userId);
-        /*
-            뱃지 갱신 -> ok
-
-            내가 가진 뱃지 개수 카운트 -> ok
-
-            스크랩 한 공고 중 마감 임박 채용 공고 개수 카운트 -> ok
-
-            기술 면접 대비 문제 풀이 수 카운트
-         */
 
         log.debug("scrapCount : {}", scrapCount);
         log.debug("badgeCount : {}", badgeCount);
