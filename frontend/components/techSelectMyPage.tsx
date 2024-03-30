@@ -2,7 +2,7 @@
 import { useState, useEffect} from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { TiDeleteOutline } from "react-icons/ti";
+import { TiTimes } from "react-icons/ti";
 import Modal from "@/components/modal2";;
 import { techDataMap } from "@/data/techData";
 import { techData2,techInfos,techAll } from "@/data/techData";
@@ -150,7 +150,7 @@ const deletePickTech = (item : string)=>{
                 className="inline-block mr-1"
                 />
                 }{item}
-              <div className="ml-1 cursor-pointer"  onClick={()=>deletePickTech(item)}><TiDeleteOutline color="red" size="20"/> </div></div>
+              <div className="ml-1 cursor-pointer"  onClick={()=>deletePickTech(item)}><TiTimes color="red" size="15"/></div></div>
             )}
           </div>
           {/* <div className="flex flex-wrap justify-center gap-2 mt-1">

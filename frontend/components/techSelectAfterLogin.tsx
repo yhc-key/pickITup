@@ -2,7 +2,7 @@
 import { useState, useEffect} from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { TiDeleteOutline } from "react-icons/ti";
+import { TiTimes } from "react-icons/ti";
 import Modal from "@/components/modal2";;
 import { techDataMap } from "@/data/techData";
 import { techData2,techInfos } from "@/data/techData";
@@ -124,7 +124,7 @@ const deletePickTech = (item : string)=>{
           <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-12">
             {pickTech.map((item:string,index:number)=>
               <div key={index} className="flex items-center justify-center py-1 pr-2 relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1 min-h-5">{item}
-              <div className="ml-1 cursor-pointer" onClick={()=>deletePickTech(item)}><TiDeleteOutline color="red" size="20" /> </div></div>
+              <div className="ml-1 cursor-pointer" onClick={()=>deletePickTech(item)}><TiTimes color="red" size="15" /> </div></div>
             )}
           </div>
           <div className="flex flex-wrap justify-center gap-2 mt-1">

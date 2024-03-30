@@ -1,5 +1,7 @@
 "use client";
-
+import { MdEmail } from "react-icons/md";
+import { SiVelog } from "react-icons/si";
+import { FaSquareGithub } from "react-icons/fa6";
 import Image from "next/image";
 import Link from "next/link";
 import useAuthStore, { AuthState } from "@/store/authStore";
@@ -233,21 +235,16 @@ export default function MyPageLayout({
               className="w-auto h-7"
             />
           </div>
-          <div className="mt-4 flex flex-row gap-3 items-center">
-            <Image
-              src="/images/Github.png"
-              alt="velog"
-              width="30"
-              height="30"
-            />{" "}
-            <a href={`https://${github}`}>{github}</a>  
+          <div className="mt-4 flex flex-row gap-3 items-center text-lg">
+            <FaSquareGithub size="35"/>{" "}
+            <a href={`https://github.com/${github}`}>{github}</a>  
           </div>
-          <div className="mt-2 flex flex-row gap-3 items-center">
-            <Image src="/images/velog.png" alt="velog" width="30" height="30" />{" "}
+          <div className="mt-2 flex flex-row gap-3 items-center text-lg">
+            <SiVelog size="31" className="ml-0.5"/>{" "}
             <a href={blog}>{blog}</a>
           </div>
-          <div className="mt-2 flex flex-row gap-3 items-center">
-            <Image src="/images/email.png" alt="velog" width="30" height="30" />{" "}
+          <div className="mt-2 flex flex-row gap-3 items-center text-lg">
+            <MdEmail size="35"/>{" "}
             {email}
           </div>
         </div>
