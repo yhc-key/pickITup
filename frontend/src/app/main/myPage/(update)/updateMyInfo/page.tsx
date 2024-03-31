@@ -46,6 +46,7 @@ export default function MyPage() {
   const [newAddress, setNewAddress] = useState<string>("");
   const [isTechSelectOpen, setIsTechSelectOpen] = useState<boolean>(false);
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+  const [isPasswordOpen, setIsPasswordOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [state, setState] = useState({
     nickname: "yonghwna",
@@ -172,14 +173,23 @@ export default function MyPage() {
       />
       <PiCursorClick size="40" className="absolute bottom-0 right-0"/>
       </div>
-      <h2 className="mb-4 text-xl font-bold ">기본 정보</h2>
-      <div className="flex flex-wrap mt-4 items-center min-h-12 gap-2 max-w-[1000px] my-2">
-        <span className="font-bold"> 기술 스택 </span>
+      <h3 className="ml-8 -top-4">프로필 사진 변경</h3>
+      <div className="flex flex-wrap mt-2 items-center min-h-12 gap-2 max-w-[1000px] my-2">
+        <h2 className="font-bold text-xl"> 보안 정보 </h2>
+        <button type="button" onClick={() => setIsPasswordOpen(true)}
+        className="px-6 py-2 ml-2 text-white rounded-lg bg-f5green-300">
+          비밀번호 변경
+        </button>
+        <h2 className="font-bold text-xl ml-6"> 기술 정보 </h2>
         <button type="button" onClick={() => setIsTechSelectOpen(true)}
-        className="px-6 py-2 ml-6 text-white rounded-lg bg-f5green-300">
-          나의 기술스택 수정하기
+        className="px-6 py-2 ml-2 text-white rounded-lg bg-f5green-300">
+          기술/스택 수정
         </button>
       </div>
+      {/* <div className="flex flex-wrap items-center min-h-12 gap-2 max-w-[1000px] my-2">
+        
+      </div> */}
+      <h2 className="my-3 text-xl font-bold ">기본 정보</h2>
       <div className="relative flex flex-row items-center my-2">
         <div className="absolute">닉네임 </div>
         <input

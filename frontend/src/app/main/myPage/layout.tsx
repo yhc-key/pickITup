@@ -246,7 +246,7 @@ export default function MyPageLayout({
             <a href={blog}>{blog}</a>
           </div>
           <div className="flex flex-row items-center gap-3 mt-2">
-            <MdEmail size="25" className="ml-0.5" />{" "}
+            <MdEmail size="25" />{" "}
             {email}
           </div>
         </div>

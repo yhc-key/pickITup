@@ -25,11 +25,11 @@ export default function SelectProfile({open,onclose}:SelectProfileProps){
               <Image
                 key={index}
                 src={`/images/profile/${item}.png`}
-                width="180"
-                height="180"
+                width="150"
+                height="150"
                 alt={item}
                 style={{clipPath: "circle()"}}
-                className="m-3 cursor"
+                className="m-3 cursor-pointer"
                 onClick={()=>{setProfile(item);setIsOpen(false);onclose();}}
               />
             ))}
