@@ -67,6 +67,7 @@ export default function QuizResult({ answer }: QuizResultProps) {
         console.log(error);
       }
     } else {
+      alert("게임 결과를 저장하기 위해서 로그인이 필요합니다!");
     }
   };
 

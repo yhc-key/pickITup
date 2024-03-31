@@ -19,10 +19,10 @@ export default function Signup() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [address, setAddress] = useState<string>("");
-  const [isOpen, setIsOpen] = useState<boolean>(false); 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const clickSide = () =>{
+  const clickSide = () => {
     setIsModalOpen(false);
     setIsOpen(false);
   }
@@ -44,7 +44,7 @@ export default function Signup() {
     }
   }, [password]);
 
-  const completeHandler = (data:any) =>{
+  const completeHandler = (data: any) => {
     setAddress(data.address);
     setIsOpen(false); //추가
     setIsModalOpen(false);
@@ -85,7 +85,7 @@ export default function Signup() {
       alert("이름을 작성해주세요");
       return;
     }
-    if(address === ""){
+    if (address === "") {
       alert("주소를 검색 후 선택해주세요");
       return;
     }
@@ -111,161 +111,149 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full">
-      <div className="flex items-center justify-center h-20 text-xl font-bold">
-        pick IT up 회원가입
-      </div>
-      
-       <div className="w-5/12 h-3/5 rounded-md ">{/* border border-f5gray-400*/}
-        <div>
-          <div className="flex h-10 justify-center items-center mt-4">
-            <label htmlFor="id" className="w-32 ">
-              아이디
-            </label>
-            <input
-              value={id}
-              onChange={(e) => {setId(e.target.value);setAvailableId("check");}}
-              className="w-48 h-8 rounded-md  border-2 border-f5gray-400
-               placeholder:text-f5gray-400 appearance-none pl-2
-              text-gray-700 leading-tight 
-              focus:outline-none focus:bg-white focus:border-f5green-300 
-              "
-            />
-            <button
-              onClick={(e) => {
-                checkid(), e.preventDefault();
-              }}
-              className="w-20 h-8 ml-3 flex items-center justify-center rounded-md
-               bg-f5green-300 text-xs text-white font-bold"
-            >
-              중복확인
-            </button>
-          </div>
-          <div className="flex h-4 justify-center items-center mb-2">
-            <div className="w-32"></div>
-            {availableId === "true" ? (
-              <div className="w-72 text-xs text-[#5A85C5]">
-                사용 가능한 아이디 입니다!
-              </div>
-            ) : (
-              <></>
-            )}
-            {availableId === "false" ? (
-              <div className="w-72 text-xs text-[#C55A5A]">
-                사용할 수 없는 아이디입니다!
-              </div>
-            ) : (
-              <></>
-            )}
-            {availableId === "check" ? (
-              <div className="w-72 text-xs text-[#C55A5A]">
-                중복확인을 해주시길 바랍니다!
-              </div>
-            ) : (
-              <></>
-            )}
-          </div>
+    <div className="flex flex-col items-center justify-center w-full mt-10">
+      <div className="min-w-[400px] mx-auto mb:min-w-[350px]">
+        <div className="flex items-center justify-center mb-12 text-2xl font-bold text-f5black-400">
+          회원가입
+        </div>
 
-          <div className="flex h-10 justify-center items-center">
-            <label htmlFor="password" className="w-32 ">
-              비밀번호
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              className="w-72 h-8 rounded-md  border-2 border-f5gray-400
-               placeholder:text-f5gray-400 appearance-none pl-2
-              text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
-              "
-            />
-          </div>
-          <div className="flex h-4 justify-center items-center mb-2">
-            <div className="w-32"></div>
-            <div className="w-72 text-xs text-[#C55A5A]">
-              {isValidPassword === "false"
-                ? "영문자, 숫자를 포함하여 8자 이상을 입력해주세요"
-                : ""}
+        <div className="flex flex-col gap-4">{/* border border-f5gray-400*/}
+          <div className="flex flex-col">
+            <div className="flex items-center justify-center mt-4">
+              <label htmlFor="id" className="w-32 ">
+                아이디
+              </label>
+              <input
+                value={id}
+                onChange={(e) => { setId(e.target.value); setAvailableId("check"); }}
+                placeholder="아이디를 입력해주세요."
+                className="px-3 py-2 text-sm border rounded-md appearance-none w-52 min-h-10 border-f5gray-400 placeholder:text-f5gray-400 text-f5black-400 focus:outline-none focus:bg-white focus:border-f5green-300"
+              />
+              <button
+                onClick={(e) => {
+                  checkid(), e.preventDefault();
+                }}
+                
+                className="flex items-center justify-center w-16 h-10 py-3 my-auto ml-4 text-xs text-white rounded-md bg-f5green-300"
+              >
+                중복확인
+              </button>
+            </div>
+            <div className="min-h-5 flex items-center justify-start pt-1 text-xs pl-[8.5rem]">
+              {availableId === "true" ? (
+                <div className="text-[#5A85C5]">
+                  사용 가능한 아이디 입니다!
+                </div>
+              ) : (
+                <></>
+              )}
+              {availableId === "false" ? (
+                <div className="text-[#C55A5A]">
+                  사용할 수 없는 아이디입니다!
+                </div>
+              ) : (
+                <></>
+              )}
+              {availableId === "check" ? (
+                <div className="text-[#C55A5A]">
+                  중복확인을 해주세요!
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
 
-          <div className="flex h-10 justify-center items-center">
-            <label htmlFor="password" className="w-32 ">
-              비밀번호 확인
-            </label>
-            <input
-              type="password"
-              value={samepass}
-              onChange={(e) => setSamepass(e.target.value)}
-              className="w-72 h-8 rounded-md  border-2 border-f5gray-400
-               placeholder:text-f5gray-400 appearance-none pl-2
-              text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
-              "
-            />
-          </div>
-          <div className="flex w-full h-4 justify-center items-center mb-2">
-            <div className="w-32"></div>
-            <div className="w-72 text-xs text-[#C55A5A]">
-              {issame ? "" : "위의 비밀번호와 동일하게 입력해주세요"}
+          <div className="flex flex-col">
+            <div className="flex items-center justify-center">
+              <label htmlFor="password" className="w-32 ">
+                비밀번호
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                placeholder="비밀번호를 입력해주세요."
+                className="px-3 py-2 text-sm border rounded-md appearance-none w-72 min-h-10 border-f5gray-400 placeholder:text-f5gray-400 text-f5black-400 focus:outline-none focus:bg-white focus:border-f5green-300"
+              />
+            </div>
+            <div className="min-h-5 flex items-center justify-start pt-1 text-xs pl-[8.5rem]">
+              <div className="text-[#C55A5A]">
+                {isValidPassword === "false"
+                  ? "영문자, 숫자를 포함하여 8자 이상을 입력해주세요"
+                  : ""}
+              </div>
             </div>
           </div>
 
-          <div className="flex h-10 justify-center items-center">
+          <div className="flex flex-col">
+            <div className="flex items-center justify-center h-10">
+              <label htmlFor="password" className="w-32 ">
+                비밀번호 확인
+              </label>
+              <input
+                type="password"
+                value={samepass}
+                onChange={(e) => setSamepass(e.target.value)}
+                placeholder="비밀번호를 다시 한 번 입력해주세요."
+                className="px-3 py-2 text-sm border rounded-md appearance-none w-72 min-h-10 border-f5gray-400 placeholder:text-f5gray-400 text-f5black-400 focus:outline-none focus:bg-white focus:border-f5green-300"
+              />
+            </div>
+            <div className="min-h-5 flex items-center justify-start pt-1 text-xs pl-[8.5rem]">
+              <div className=" text-[#C55A5A] ">
+                {issame ? "" : "비밀번호가 서로 일치하지 않습니다."}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center mb-5">
             <div className="w-32 ">이름</div>
             <input
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
               }}
-              className="w-72 h-8 rounded-md  border-2 border-f5gray-400
-               placeholder:text-f5gray-400 appearance-none pl-2
-              text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300 
-              "
+              placeholder="이름을 입력해주세요."
+              className="px-3 py-2 text-sm border rounded-md appearance-none w-72 min-h-10 border-f5gray-400 placeholder:text-f5gray-400 text-f5black-400 focus:outline-none focus:bg-white focus:border-f5green-300"
             />
           </div>
-          <div className="flex h-10 my-4 justify-center items-center">
-            <label className="w-32 ">이메일</label>
+          <div className="flex items-center justify-center mb-5">
+            <label className="w-32">이메일</label>
             <input
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              placeholder="example@naver.com"
-              className="w-72 h-8 rounded-md  border-2 border-f5gray-400
-               placeholder:text-f5gray-400 appearance-none pl-2
-              text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-f5green-300"
+              placeholder="이메일을 입력해주세요."
+              className="px-3 py-2 text-sm border rounded-md appearance-none w-72 min-h-10 border-f5gray-400 placeholder:text-f5gray-400 text-f5black-400 focus:outline-none focus:bg-white focus:border-f5green-300"
             />
           </div>
-          <div className="flex h-10 justify-center items-center">
+          <div className="flex items-center justify-center">
             <label className="w-32 ">
               주소
             </label>
             <input
               value={address}
-              onChange={(e)=>{setAddress(e.target.value)}}
-              placeholder="주소를 선택해 주세요."
+              onChange={(e) => { setAddress(e.target.value) }}
+              placeholder="주소를 검색해주세요."
               disabled
-              className="
-              w-60 h-8 rounded-md  border-2 border-f5gray-400
-                appearance-none pl-2 readOnly text-xs
-              text-gray-700 bg-gray-300"
+              className="px-3 py-2 text-sm border rounded-md appearance-none min-h-10 text-f5black-400 w-60 border-f5gray-400 readOnly"
             />
             <button
-              onClick={(e) => {setIsModalOpen(true),setIsOpen(true);}}
-              className="w-9 h-8 ml-3 flex items-center justify-center rounded-md
-               bg-f5green-300 text-xs text-white font-bold"
-            >검색</button>
+              onClick={(e) => { setIsModalOpen(true), setIsOpen(true); }}
+              className="flex items-center justify-center w-12 h-10 ml-1 text-xs text-white rounded-md bg-f5green-300 "
+            >찾기</button>
             {isOpen && <Modal open={isModalOpen} clickSide={clickSide} size="h-4/6 w-1/2" >
-              <DaumPostcode onComplete={completeHandler}/>
+              <DaumPostcode onComplete={completeHandler} />
             </Modal>}
           </div>
-          <div className="flex w-full h-24 justify-center items-center">
+          <div className="flex items-center justify-center w-full mt-10">
             <button
               onClick={signUpRequest}
-              className="w-72 h-12 rounded-md bg-f5green-300 text-white font-bold">
-              회원가입
+              className="w-full h-12 font-semibold text-white rounded-md bg-f5green-300">
+              가입하기
             </button>
           </div>
         </div>

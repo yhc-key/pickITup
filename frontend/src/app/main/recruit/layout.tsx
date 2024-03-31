@@ -20,6 +20,8 @@ export default function RecruitLayout({
   const [nowType, setNowType] = useState("언어");
   const [pickTechList, setPickTechList] = useState<string[]>([]);
   const [techs, setTechs] = useState<string[]>(techDataMap.get("언어") ?? []);
+  const [isHovered, setIsHovered] = useState<string | null>(null);
+
   const isMobile = useMediaQuery({
     query: "(max-width:480px)",
   });
@@ -49,6 +51,16 @@ export default function RecruitLayout({
       prevTechList.filter((item) => item !== tech)
     );
   }; // 골라놓은 내 테크로고 중 클릭한거 없애기
+
+  const handleTechHover = (tech: string) => {
+    setIsHovered(tech);
+  };
+
+  // Function to handle mouse leave
+  const handleMouseLeave = () => {
+    setIsHovered(null);
+  };
+
 
   useEffect(() => {
     let techsTmp: string[] = [...(techDataMap.get(nowType) || [])] ?? [];
@@ -118,6 +130,8 @@ export default function RecruitLayout({
                 type="button"
                 key={index}
                 onClick={() => techClickHandler(tech)}
+                onMouseEnter={() => handleTechHover(tech)}
+                onMouseLeave={handleMouseLeave}
                 className="flex flex-row items-center p-1 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5green-200"
               >
                 <Image
@@ -127,6 +141,13 @@ export default function RecruitLayout({
                   height="28"
                   className="w-auto"
                 />
+                {isHovered === tech && (
+                  <div className="relative">
+                    <div className="absolute top-4 whitespace-nowrap transform -translate-x-1/2 bg-f5black-400 bg-opacity-90 text-white p-2 rounded-md text-xs">
+                      {tech}
+                    </div>
+                  </div>
+                )}
               </button>
             );
           })}
