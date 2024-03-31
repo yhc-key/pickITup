@@ -9,6 +9,7 @@ export interface AuthState {
   blog: string;
   email: string;
   address: string;
+  profile: string;
   bookmarks?: Recruit[];
   login: (nickname: string) => void;
   logout: () => void;
@@ -19,6 +20,7 @@ export interface AuthState {
   setEmail: (newEmail: string) => void;
   setAddress: (newAddress: string) => void;
   setBookmarks: (recruits: Recruit[]) => void;
+  setProfile: (newProfile: string)=>void;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -29,6 +31,7 @@ const useAuthStore = create<AuthState>((set) => ({
   email: "",
   address: "",
   bookmarks: [],
+  profile:"profile1",
   login: (nickname: string) => set({ isLoggedIn: true, nickname }), // 로그인 액션
   logout: () => set({ isLoggedIn: false, nickname: "" }), // 로그아웃 액션
   setLogged: (nickname: string) => set({ isLoggedIn: true, nickname }),
@@ -38,6 +41,7 @@ const useAuthStore = create<AuthState>((set) => ({
   setEmail: (newEmail: string) => set({ email: newEmail }),
   setAddress: (newAddress: string) => set({ address: newAddress }),
   setBookmarks: (recruits: Recruit[]) => set({ bookmarks: recruits }),
+  setProfile: (newProfile: string) => set({ profile: newProfile }),
 }));
 
 export default useAuthStore;

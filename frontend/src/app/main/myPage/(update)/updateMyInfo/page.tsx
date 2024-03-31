@@ -1,4 +1,7 @@
 "use client";
+import { TbHandClick } from "react-icons/tb";
+import { PiCursorClickFill } from "react-icons/pi";
+import { PiCursorClick } from "react-icons/pi";
 import Image from "next/image";
 import DaumPostcode from "react-daum-postcode";
 import { techDataMap } from "@/data/techData";
@@ -6,13 +9,14 @@ import { useEffect, useState } from "react";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import Modal from "@/components/modal2";
 import TechSelectMyPage from "@/components/techSelectMyPage"; 
+import SelectProfile from "@/components/selectProfile";
 
 export default function MyPage() {
-  const nickname: string = useAuthStore((state: AuthState) => state.nickname);
   const github: string = useAuthStore((state: AuthState) => state.github);
   const blog: string = useAuthStore((state: AuthState) => state.blog);
-  const address: string = useAuthStore((state: AuthState) => state.address);
   const email: string = useAuthStore((state: AuthState) => state.email);
+  const address: string = useAuthStore((state: AuthState) => state.address);
+  const profile: string = useAuthStore((state: AuthState) => state.profile);
   const setNickName: (newNickname: string) => void = useAuthStore(
     (state: AuthState) => state.setNickname
   );
@@ -41,6 +45,7 @@ export default function MyPage() {
   const [newBlog, setNewBlog] = useState<string>("");
   const [newAddress, setNewAddress] = useState<string>("");
   const [isTechSelectOpen, setIsTechSelectOpen] = useState<boolean>(false);
+  const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [state, setState] = useState({
     nickname: "yonghwna",
@@ -154,15 +159,20 @@ export default function MyPage() {
   };
   return (
     <div className="relative flex flex-col h-full pt-6 pb-20 pl-20 border border-f5gray-400 rounded-2xl">
+      <div className="relative w-44 flex flex-row">
       <Image
-        src="/images/ITUlogo.png"
+        src={`/images/profile/${profile}.png`}
         alt="logo"
         width={150}
         height={150}
         priority={true}
-        className="m-3"
+        style={{clipPath: "circle()"}}
+        className="m-3 cursor-pointer"
+        onClick={()=>setIsProfileOpen(true)}
       />
-      <h2 className="text-2xl font-bold mb-4">내 정보 수정하기</h2>
+      <PiCursorClick size="40" className="absolute bottom-0 right-0"/>
+      </div>
+      <h2 className="text-2xl font-bold mb-4 ml-1">내 정보 수정하기</h2>
       <div className="flex flex-wrap mt-4 items-center min-h-12 gap-2 max-w-[1000px] my-2">
         <span className="font-bold"> 기술 스택 </span>
         <button type="button" onClick={() => setIsTechSelectOpen(true)}
@@ -186,7 +196,22 @@ export default function MyPage() {
         </p>
       </div>
       <div className="relative flex flex-row items-center my-2">
-        <div className="absolute">주소 </div>
+        <div className="absolute">현재 주소 </div>
+        <input
+          disabled
+          value={address}
+          onChange={(e) => {
+            setAddress(e.target.value);
+          }}
+          className="flex items-center w-1/3 h-9 p-2 ml-24 border border-f5gray-400  rounded-lg 
+            min-w-80 bg-f5gray-400" 
+        />
+        <p className="mt-1 ml-5 text-sm text-f5green-400">
+          {nickMessage}
+        </p>
+      </div>
+      <div className="relative flex flex-row items-center my-2">
+        <div className="absolute">변경 주소 </div>
         <input
           readOnly
           onClick={(e) => setIsOpen(true)}
@@ -258,10 +283,11 @@ export default function MyPage() {
           onClick={submitHandler}
           className="px-6 py-2 mx-4 text-white rounded-lg bg-f5green-300"
         >
-          등록하기
+          수정하기
         </button>
       </div>
       <TechSelectMyPage open={isTechSelectOpen} onclose={closeTech} />
+      <SelectProfile open={isProfileOpen} onclose={()=>setIsProfileOpen(false)} />
     </div>
     
   );

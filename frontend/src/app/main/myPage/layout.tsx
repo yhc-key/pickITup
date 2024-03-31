@@ -1,11 +1,13 @@
 "use client";
 import { MdEmail } from "react-icons/md";
 import { SiVelog } from "react-icons/si";
+import { FaUserEdit } from "react-icons/fa";
 import { FaSquareGithub } from "react-icons/fa6";
 import Image from "next/image";
 import Link from "next/link";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import { useEffect, useState } from "react";
+import ExperienceBar from "@/components/experienceBar";
 const dummyMyData: string[][] = [
   ["내가 찜한 채용공고", "3 개", "/images/starOutline.png"],
   ["마감 임박 채용공고", "1 개", "/images/history.png"],
@@ -22,18 +24,21 @@ export default function MyPageLayout({
   const github: string = useAuthStore((state:AuthState)=>state.github);
   const blog: string = useAuthStore((state:AuthState)=>state.blog);
   const email: string = useAuthStore((state:AuthState)=>state.email);
-  const address: string = useAuthStore((state:AuthState)=>state.address);
+  const profile: string = useAuthStore((state:AuthState)=>state.profile);
+
   const setGithub: (newGithub:string)=> void=useAuthStore((state:AuthState)=>state.setGithub);
   const setBlog: (newGithub:string)=> void=useAuthStore((state:AuthState)=>state.setBlog);
   const setEmail: (newGithub:string)=> void=useAuthStore((state:AuthState)=>state.setEmail);
   const setAddress: (newAddress:string)=> void=useAuthStore((state:AuthState)=>state.setAddress);
-
 
   const [scrapCount, setScrapCount] = useState<number>(0);
   const [closeCount,setCloseCount] = useState<number>(0);
   const [solvedCount,setSolvedCount] = useState<number>(0);
   const [attendCount,setAttendCount] = useState<number>(0);
   const [badgeCount,setBadgeCount] = useState<number>(0);
+  const [prev,setPrev]=useState<number>(0);
+  const [next,setNext]=useState<number>(0);
+  const [exp,setExp]=useState<number>(0);
   const [level,setLevel] = useState<number>(0);
   useEffect(()=>{
     const token = sessionStorage.getItem('accessToken');
@@ -55,6 +60,9 @@ export default function MyPageLayout({
           setBadgeCount(res.response.totalMyBadge);
           setEmail(res.response.email);
           setLevel(res.response.level);
+          setPrev(res.response.prevExp);
+          setNext(res.response.nextExp);
+          setExp(res.response.exp);
           if(res.response.github===null) setGithub("정보 없음");
           else setGithub(res.response.github);
           if(res.response.techBlog===null) setBlog("정보 없음");
@@ -68,41 +76,35 @@ export default function MyPageLayout({
   return (
     <div className="flex mx-10 my-5">
       <div className="min-w-[330px] max-w-[330px]">
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-center gap-10">
           <Image
-            src="/images/pickITup.svg"
-            alt="dummyPerson"
+            src={`/images/profile/${profile}.png`}
+            alt="profile1"
             width="100"
             height="100"
-            className="w-auto"
+            className="rounded-full"
+            style={{clipPath:'circle()'}}
           />
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-5">
             <p>{nickname}</p>
-            <Link href="/main/myPage/updateMyInfo" className="flex flex-row">
-              <Image
-                src="/images/personEdit.png"
-                alt="profileUpdate"
-                width="100"
-                height="100"
-                className="w-auto mr-1"
-              />
+            <Link href="/main/myPage/updateMyInfo" className="flex flex-row justify-center items-center gap-2">
+            <FaUserEdit size="25" color="#00ce7c"/>
               내 정보 수정
             </Link>
           </div>
         </div>
-        <div className="flex flex-row gap-4 my-4">
-          <p>Level {level}</p>
-          <p>경험치 바~~</p>
+        <div className="flex flex-row gap-4 my-4 items-center justify-center">
+          <p className="mr-4">Level {level}</p>
+          <ExperienceBar prev={prev} next={next} exp={exp} />
         </div>
         <div className="border rounded-lg bg-f5green-200 px-4 py-2 my-4">
-          <div className="flex justify-between mt-3">
+          <div className="flex justify-between">
             <div className="flex flex-row items-center gap-1">
               <Image
                 src="/images/starOutline.png"
-                width="20"
-                height="20"
+                width="15"
+                height="15"
                 alt="icon"
-                className="w-auto"
               />
               <p className="text-sm">내가 찜한 채용공고</p>
             </div>
@@ -112,10 +114,9 @@ export default function MyPageLayout({
             <div className="flex flex-row items-center gap-1">
               <Image
                 src="/images/history.png"
-                width="20"
-                height="20"
+                width="15"
+                height="15"
                 alt="icon"
-                className="w-auto"
               />
               <p className="text-sm">마감 임박 채용공고</p>
             </div>
@@ -125,10 +126,9 @@ export default function MyPageLayout({
             <div className="flex flex-row items-center gap-1">
               <Image
                 src="/images/iconLibraryBooks.png"
-                width="20"
-                height="20"
+                width="15"
+                height="15"
                 alt="icon"
-                className="w-auto"
               />
               <p className="text-sm">문제 풀이 수</p>
             </div>
@@ -138,10 +138,9 @@ export default function MyPageLayout({
             <div className="flex flex-row items-center gap-1">
               <Image
                 src="/images/iconShield.png"
-                width="20"
-                height="20"
+                width="15"
+                height="15"
                 alt="icon"
-                className="w-auto"
               />
               <p className="text-sm">내 뱃지</p>
             </div>

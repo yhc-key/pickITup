@@ -19,7 +19,9 @@ const techTypes: string[] = [
   "정보보안",
 ];
 
+
 export default function TechSelectAfterLogin() {
+  const message:string="아직 기술을 선택하지 않으셨네요!\n관심 기술 스택을 선택해주세요!";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pickType, setPickType] = useState("언어");
   const [pickTech, setPickTech] = useState<string[]>([]);
@@ -113,9 +115,9 @@ const deletePickTech = (item : string)=>{
   return (
     <div>
       <Modal open={isModalOpen} clickSide={clickSide} size="h-5/6 w-7/12">
-        <div className="flex flex-col items-center ">
-          <div className="mb-5 text-xl font-medium text-center">
-            관심 기술 스택(영어)을 선택해주세요
+        <div className="flex flex-col items-center  ">
+          <div className="mb-5 text-xl font-medium text-center whitespace-pre-line">
+            {message}
           </div>
           <div className="z-50 py-2 flex items-center justify-center"> 
             <AutocompleteSearchBar words={techData2} onSelect={techAddHandler} onOpenSuggestions={handleOpenSuggestions} onCloseSuggestions={handleCloseSuggestions} showSuggestions={showSuggestions}></AutocompleteSearchBar>
@@ -177,7 +179,7 @@ const deletePickTech = (item : string)=>{
             <div className="w-8"></div>
             <Link href={`/main/myPage/updateMyInfo`} onClick={()=>{setMyTech(),modalCloseHandler()}}>
               <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
-                저장하기
+                선택완료
               </button>
             </Link>
           </div>
