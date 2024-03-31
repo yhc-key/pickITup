@@ -66,7 +66,7 @@ export default function MyPageLayout({
     }
   },[])
   return (
-    <div className="flex mx-10 my-5">
+    <div className="flex mx-32 my-5">
       <div className="min-w-[330px] max-w-[330px]">
         <div className="flex flex-row justify-between">
           <Image
@@ -148,10 +148,10 @@ export default function MyPageLayout({
             <p className="text-sm">{badgeCount} 개</p>
           </div>
         </div>
-        <div className="border border-f5gray-500 rounded-lg p-3">
+        <div className="border border-f5gray-400 rounded-lg p-3">
           <p className="font-bold mb-2">내 기술 스택</p>
           <div className="flex flex-row flex-wrap gap-2">
-            <div className="border border-f5gray-500 rounded-lg p-auto text-center min-w-16 h-7 flex items-center justify-center">
+            <div className="border border-f5gray-400 rounded-lg p-auto text-center min-w-16 h-7 flex items-center justify-center">
               프론트
             </div>
             <Image
@@ -184,7 +184,7 @@ export default function MyPageLayout({
             />
           </div>
           <div className="flex flex-row flex-wrap mt-4 gap-2">
-            <div className="border border-f5gray-500 rounded-lg p-auto text-center min-w-16 h-7 flex items-center justify-center">
+            <div className="border border-f5gray-400  rounded-lg p-auto text-center min-w-16 h-7 flex items-center justify-center">
               백앤드
             </div>
             <Image
@@ -210,7 +210,7 @@ export default function MyPageLayout({
             />
           </div>
           <div className="flex flex-row flex-wrap mt-4 gap-2">
-            <div className="border border-f5gray-500 rounded-lg p-auto text-center w-20 h-7 flex items-center justify-center">
+            <div className="border border-f5gray-400  rounded-lg p-auto text-center w-20 h-7 flex items-center justify-center">
               DevOps
             </div>
             <Image
@@ -235,21 +235,23 @@ export default function MyPageLayout({
               className="w-auto h-7"
             />
           </div>
-          <div className="mt-4 flex flex-row gap-3 items-center text-lg">
-            <FaSquareGithub size="35"/>{" "}
+          <div className="flex flex-col text-sm">
+          <div className="mt-4 flex flex-row gap-3 items-center">
+            <FaSquareGithub size="25"/>{" "}
             <a href={`https://github.com/${github}`}>{github}</a>  
           </div>
-          <div className="mt-2 flex flex-row gap-3 items-center text-lg">
-            <SiVelog size="31" className="ml-0.5"/>{" "}
+          <div className="mt-2 flex flex-row gap-3 items-center">
+            <SiVelog size="22" className="ml-0.5"/>{" "}
             <a href={blog}>{blog}</a>
           </div>
-          <div className="mt-2 flex flex-row gap-3 items-center text-lg">
-            <MdEmail size="35"/>{" "}
+          <div className="mt-2 flex flex-row gap-3 items-center">
+            <MdEmail size="25" className="ml-0.5"/>{" "}
             {email}
+          </div>
           </div>
         </div>
       </div>
-      <div className="flex-grow ml-7">{children}</div>
+      <div className="flex-grow ml-16">{children}</div>
     </div>
   );
 }
