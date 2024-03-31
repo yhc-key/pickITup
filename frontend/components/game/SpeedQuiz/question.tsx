@@ -50,6 +50,10 @@ export default function Question({
       if (inputValue.length === 1) {
         inputHTML.current[idx + 1]?.focus();
       }
+    } else {
+      if (inputValue.length === 1) {
+        inputHTML.current[idx + 1]?.focus();
+      }
     }
   }, []);
 
@@ -91,7 +95,7 @@ export default function Question({
       input.push(
         <input
           type="text"
-          className="w-20 h-20 text-center shadow-md question-input rounded-xl bg-f5gray-200 mx-3 my-3 mb:mx-2"
+          className="w-20 h-20 mx-3 my-3 text-center shadow-md question-input rounded-xl bg-f5gray-200 mb:mx-2"
           maxLength={1}
           key={i}
           onChange={(e) => onInputChange(e, i)}
@@ -112,7 +116,7 @@ export default function Question({
     <div>
       <div className="flex justify-center my-5">
         <div className="flex justify-start min-h-24 w-[60%] bg-f5green-100 rounded-lg p-5 shadow-md mb:w-[82%]">
-          <div className="flex items-center justify-center mr-3 text-lg font-semibold rounded-full p-2 w-7 h-7 bg-f5green-300 text-neutral-50 mb:text-sm">
+          <div className="flex items-center justify-center p-2 mr-3 text-lg font-semibold rounded-full w-7 h-7 bg-f5green-300 text-neutral-50 mb:text-sm">
             {index}
           </div>
           <div className="flex flex-wrap text-sm text-f5black-400">

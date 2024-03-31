@@ -203,7 +203,7 @@ export default function RecruitPage() {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center ">
+      <div className="flex flex-wrap justify-center">
         {data?.pages.map((page, i: number) =>
           page.response?.content.map((recruit: Recruit, recruitI: number) => {
             return (
@@ -211,7 +211,7 @@ export default function RecruitPage() {
                 type="button"
                 onClick={() => recruitClickHandler(recruit.url, recruitI)}
                 key={recruitI}
-                className={`${isMobile ? "w-full" : "w-[30%] mx-4 max-w-72"} my-4 h-[350px] rounded-xl overflow-hidden flex flex-col shadow duration-300 ease-in-out hover:scale-105 relative`}
+                className={`${isMobile ? "w-full" : "w-[30%] mx-4 max-w-72"} my-4 h-[350px] rounded-xl overflow-hidden flex flex-col shadow duration-300 ease-in hover:scale-105 relative`}
               >
                 <Image
                   src={wrongSrcs[recruitI] ? baseImg : recruit.thumbnailUrl}
@@ -221,54 +221,56 @@ export default function RecruitPage() {
                   className={`shadow-inner shadow-black object-cover h-[50%] w-full`}
                   onError={() => imageErrorHandler(recruitI)}
                 />
-                <div className="flex flex-row justify-between w-full">
-                  <div className="m-1 text-sm text-f5gray-500 ">
-                    {recruit.company}
+                <div className="flex flex-col w-full gap-3 px-4 py-5">
+                  <div className="flex flex-row justify-between">
+                    <div className="text-sm font-semibold text-f5gray-500">
+                      {recruit.company}
+                    </div>
+                    <div className="text-sm font-semibold text-f5gray-500">
+                      {"📆" +
+                        recruit.dueDate[0] +
+                        "-" +
+                        recruit.dueDate[1] +
+                        "-" +
+                        recruit.dueDate[2]}
+                    </div>
                   </div>
-                  <div className="m-1 text-sm text-f5gray-500">
-                    {"~" +
-                      recruit.dueDate[0] +
-                      "-" +
-                      recruit.dueDate[1] +
-                      "-" +
-                      recruit.dueDate[2]}
-                  </div>
-                </div>
-                <p className="text-f5black-300 font-bold min-h-12 text-left px-2">
-                  {recruit.title}
-                </p>
-                <div className="ml-2 gap-2 flex flex-wrap">
-                  {recruit.qualificationRequirements.map((tech, i) => {
-                    let techTmp = tech.replace(/\s/g, "");
-                    techTmp = techTmp.replace(/#/g, "Sharp");
+                  <p className="mt-1 text-base font-bold text-left text-f5black-300 min-h-12">
+                    {recruit.title}
+                  </p>
+                  <div className="flex flex-wrap gap-2 ml-2">
+                    {recruit.qualificationRequirements.map((tech, i) => {
+                      let techTmp = tech.replace(/\s/g, "");
+                      techTmp = techTmp.replace(/#/g, "Sharp");
 
-                    if (
-                      techDataValues.some((techDataValueArr) =>
-                        techDataValueArr.includes(techTmp)
+                      if (
+                        techDataValues.some((techDataValueArr) =>
+                          techDataValueArr.includes(techTmp)
+                        )
                       )
-                    )
-                      return (
-                        <div key={i}>
-                          <Image
-                            src={`/images/techLogo/${techTmp}.png`}
-                            alt={tech}
-                            width="100"
-                            height="100"
-                            className="h-8 w-auto"
-                          />
-                        </div>
-                      );
-                  })}
-                </div>
-                <div
-                  onClick={(event) => bookMarkHandler(event, recruit.id)}
-                  className={`text-xl absolute bottom-4 right-4 z-10 text-f5green-300 ${isLoggedIn ? "" : "hidden"} duration-300 ease-in-out hover:scale-125 `}
-                >
-                  {checkBookmark(recruit.id) ? (
-                    <FaBookmark />
-                  ) : (
-                    <FaRegBookmark />
-                  )}
+                        return (
+                          <div key={i}>
+                            <Image
+                              src={`/images/techLogo/${techTmp}.png`}
+                              alt={tech}
+                              width="100"
+                              height="100"
+                              className="w-auto h-8"
+                            />
+                          </div>
+                        );
+                    })}
+                  </div>
+                  <div
+                    onClick={(event) => bookMarkHandler(event, recruit.id)}
+                    className={`text-xl absolute bottom-4 right-4 z-10 text-f5green-300 ${isLoggedIn ? "" : "hidden"} duration-300 ease-in-out hover:scale-125 `}
+                  >
+                    {checkBookmark(recruit.id) ? (
+                      <FaBookmark />
+                    ) : (
+                      <FaRegBookmark />
+                    )}
+                  </div>
                 </div>
               </button>
             );

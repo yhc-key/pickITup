@@ -153,16 +153,16 @@ export default function MyPage() {
       });
   };
   return (
-    <div className="relative flex flex-col h-full pt-6 pb-20 pl-20 border border-f5gray-400 rounded-2xl">
-      <Image
+    <div className="relative flex flex-col h-full pt-6 pb-20 pl-20 border border-f5gray-400 rounded-xl">
+      {/* <Image
         src="/images/ITUlogo.png"
         alt="logo"
         width={150}
         height={150}
         priority={true}
         className="m-3"
-      />
-      <h2 className="text-2xl font-bold mb-4">내 정보 수정하기</h2>
+      /> */}
+      <div className="mb-4 text-xl font-bold">기본 정보</div>
       <div className="flex flex-wrap mt-4 items-center min-h-12 gap-2 max-w-[1000px] my-2">
         <span className="font-bold"> 기술 스택 </span>
         <button type="button" onClick={() => setIsTechSelectOpen(true)}
@@ -178,8 +178,7 @@ export default function MyPage() {
             setNewNickname(e.target.value);
           }}
           placeholder="변경할 닉네임을 입력해주세요."
-          className="flex items-center w-1/3 h-9 p-2 ml-24 border border-f5gray-400  rounded-lg 
-            min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
+          className="flex items-center w-1/3 p-2 ml-24 border rounded-lg h-9 border-f5gray-400 min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
         />
         <p className="mt-1 ml-5 text-sm text-f5green-400">
           {nickMessage}
@@ -193,8 +192,7 @@ export default function MyPage() {
           value={newAddress}
           onChange={(e) => setNewAddress(e.target.value)}
           placeholder="주소를 선택해주세요."
-          className="flex items-center w-1/3 h-9 p-2 ml-24 border border-f5gray-400 rounded-lg 
-            min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
+          className="flex items-center w-1/3 p-2 ml-24 border rounded-lg h-9 border-f5gray-400 min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
         />
         
           <Modal open={isOpen} clickSide={clickSide} size="w-1/2 h-4/6">
@@ -212,8 +210,7 @@ export default function MyPage() {
           value={newGithub}
           onChange={(e) => setNewGithub(e.target.value)}
           placeholder="Github 아이디를 입력해주세요."
-          className="flex items-center w-1/3 h-9 p-2 ml-24 border border-f5gray-400 rounded-lg 
-            min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
+          className="flex items-center w-1/3 p-2 ml-24 border rounded-lg h-9 border-f5gray-400 min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
         />
         <p className="mt-1 ml-5 text-sm text-f5green-400">
           {gitMessage}
@@ -225,8 +222,7 @@ export default function MyPage() {
           value={newBlog}
           onChange={(e) => setNewBlog(e.target.value)}
           placeholder="blog URL을 입력해주세요."
-          className="flex items-center w-1/3 h-9 p-2 ml-24 border border-f5gray-400 rounded-lg 
-            min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
+          className="flex items-center w-1/3 p-2 ml-24 border rounded-lg h-9 border-f5gray-400 min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
         />
         <p className="mt-1 ml-5 text-sm text-f5green-400">
           {blogMessage}
@@ -238,8 +234,7 @@ export default function MyPage() {
           value={newEmail}
           onChange={(e) => setNewEmail(e.target.value)}
           placeholder="Email을 입력해주세요."
-          className="flex items-center w-1/3 h-9 p-2 ml-24 border border-f5gray-400 rounded-lg 
-            min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
+          className="flex items-center w-1/3 p-2 ml-24 border rounded-lg h-9 border-f5gray-400 min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
         />
         <p className="mt-1 ml-5 text-sm text-f5green-400">
           {emailMessage}

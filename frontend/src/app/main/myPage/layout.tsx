@@ -19,52 +19,52 @@ export default function MyPageLayout({
   children: React.ReactNode;
 }>) {
   const nickname: string = useAuthStore((state: AuthState) => state.nickname);
-  const github: string = useAuthStore((state:AuthState)=>state.github);
-  const blog: string = useAuthStore((state:AuthState)=>state.blog);
-  const email: string = useAuthStore((state:AuthState)=>state.email);
-  const address: string = useAuthStore((state:AuthState)=>state.address);
-  const setGithub: (newGithub:string)=> void=useAuthStore((state:AuthState)=>state.setGithub);
-  const setBlog: (newGithub:string)=> void=useAuthStore((state:AuthState)=>state.setBlog);
-  const setEmail: (newGithub:string)=> void=useAuthStore((state:AuthState)=>state.setEmail);
-  const setAddress: (newAddress:string)=> void=useAuthStore((state:AuthState)=>state.setAddress);
+  const github: string = useAuthStore((state: AuthState) => state.github);
+  const blog: string = useAuthStore((state: AuthState) => state.blog);
+  const email: string = useAuthStore((state: AuthState) => state.email);
+  const address: string = useAuthStore((state: AuthState) => state.address);
+  const setGithub: (newGithub: string) => void = useAuthStore((state: AuthState) => state.setGithub);
+  const setBlog: (newGithub: string) => void = useAuthStore((state: AuthState) => state.setBlog);
+  const setEmail: (newGithub: string) => void = useAuthStore((state: AuthState) => state.setEmail);
+  const setAddress: (newAddress: string) => void = useAuthStore((state: AuthState) => state.setAddress);
 
 
   const [scrapCount, setScrapCount] = useState<number>(0);
-  const [closeCount,setCloseCount] = useState<number>(0);
-  const [solvedCount,setSolvedCount] = useState<number>(0);
-  const [attendCount,setAttendCount] = useState<number>(0);
-  const [badgeCount,setBadgeCount] = useState<number>(0);
-  const [level,setLevel] = useState<number>(0);
-  useEffect(()=>{
+  const [closeCount, setCloseCount] = useState<number>(0);
+  const [solvedCount, setSolvedCount] = useState<number>(0);
+  const [attendCount, setAttendCount] = useState<number>(0);
+  const [badgeCount, setBadgeCount] = useState<number>(0);
+  const [level, setLevel] = useState<number>(0);
+  useEffect(() => {
     const token = sessionStorage.getItem('accessToken');
-    if(token!==null){
-      fetch("https://spring.pickitup.online/users/me",{
-        method:"GET",
-        headers:{
-          "Authorization":"Bearer "+token
+    if (token !== null) {
+      fetch("https://spring.pickitup.online/users/me", {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + token
         }
       })
-      .then(res=>res.json())
-      .then(res=>{
-        console.log(res);
-        if(res.success===true){
-          setScrapCount(res.response.totalMyScrap);
-          setCloseCount(res.response.closingScrap);
-          setSolvedCount(res.response.solvedInterviewCount);
-          setAttendCount(res.response.attendCount);
-          setBadgeCount(res.response.totalMyBadge);
-          setEmail(res.response.email);
-          setLevel(res.response.level);
-          if(res.response.github===null) setGithub("정보 없음");
-          else setGithub(res.response.github);
-          if(res.response.techBlog===null) setBlog("정보 없음");
-          else setBlog(res.response.techBlog);
-          if(res.response.address===null) setAddress("정보 없음");
-          else setAddress(res.response.address);
-        }
-      })
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+          if (res.success === true) {
+            setScrapCount(res.response.totalMyScrap);
+            setCloseCount(res.response.closingScrap);
+            setSolvedCount(res.response.solvedInterviewCount);
+            setAttendCount(res.response.attendCount);
+            setBadgeCount(res.response.totalMyBadge);
+            setEmail(res.response.email);
+            setLevel(res.response.level);
+            if (res.response.github === null) setGithub("정보 없음");
+            else setGithub(res.response.github);
+            if (res.response.techBlog === null) setBlog("정보 없음");
+            else setBlog(res.response.techBlog);
+            if (res.response.address === null) setAddress("정보 없음");
+            else setAddress(res.response.address);
+          }
+        })
     }
-  },[])
+  }, [])
   return (
     <div className="flex mx-32 my-5">
       <div className="min-w-[330px] max-w-[330px]">
@@ -94,8 +94,8 @@ export default function MyPageLayout({
           <p>Level {level}</p>
           <p>경험치 바~~</p>
         </div>
-        <div className="border rounded-lg bg-f5green-200 px-4 py-2 my-4">
-          <div className="flex justify-between mt-3">
+        <div className="p-4 my-4 border rounded-lg border-f5gray-400">
+          <div className="flex justify-between">
             <div className="flex flex-row items-center gap-1">
               <Image
                 src="/images/starOutline.png"
@@ -148,10 +148,10 @@ export default function MyPageLayout({
             <p className="text-sm">{badgeCount} 개</p>
           </div>
         </div>
-        <div className="border border-f5gray-400 rounded-lg p-3">
-          <p className="font-bold mb-2">내 기술 스택</p>
+        <div className="p-3 border rounded-lg border-f5gray-400">
+          <p className="mb-2 font-bold">내 기술 스택</p>
           <div className="flex flex-row flex-wrap gap-2">
-            <div className="border border-f5gray-400 rounded-lg p-auto text-center min-w-16 h-7 flex items-center justify-center">
+            <div className="flex items-center justify-center text-center border rounded-lg border-f5gray-400 p-auto min-w-16 h-7">
               프론트
             </div>
             <Image
@@ -183,8 +183,8 @@ export default function MyPageLayout({
               className="w-auto h-7"
             />
           </div>
-          <div className="flex flex-row flex-wrap mt-4 gap-2">
-            <div className="border border-f5gray-400  rounded-lg p-auto text-center min-w-16 h-7 flex items-center justify-center">
+          <div className="flex flex-row flex-wrap gap-2 mt-4">
+            <div className="flex items-center justify-center text-center border rounded-lg border-f5gray-400 p-auto min-w-16 h-7">
               백앤드
             </div>
             <Image
@@ -209,8 +209,8 @@ export default function MyPageLayout({
               className="w-auto h-7"
             />
           </div>
-          <div className="flex flex-row flex-wrap mt-4 gap-2">
-            <div className="border border-f5gray-400  rounded-lg p-auto text-center w-20 h-7 flex items-center justify-center">
+          <div className="flex flex-row flex-wrap gap-2 mt-4">
+            <div className="flex items-center justify-center w-20 text-center border rounded-lg border-f5gray-400 p-auto h-7">
               DevOps
             </div>
             <Image
@@ -235,19 +235,19 @@ export default function MyPageLayout({
               className="w-auto h-7"
             />
           </div>
-          <div className="flex flex-col text-sm">
-          <div className="mt-4 flex flex-row gap-3 items-center">
-            <FaSquareGithub size="25"/>{" "}
-            <a href={`https://github.com/${github}`}>{github}</a>  
+        </div>
+        <div className="p-3 mt-4 text-sm border rounded-lg border-f5gray-400">
+          <div className="flex flex-row items-center gap-3">
+            <FaSquareGithub size="25" />{" "}
+            <a href={`https://github.com/${github}`}>{github}</a>
           </div>
-          <div className="mt-2 flex flex-row gap-3 items-center">
-            <SiVelog size="22" className="ml-0.5"/>{" "}
+          <div className="flex flex-row items-center gap-3 mt-2">
+            <SiVelog size="22" className="ml-0.5" />{" "}
             <a href={blog}>{blog}</a>
           </div>
-          <div className="mt-2 flex flex-row gap-3 items-center">
-            <MdEmail size="25" className="ml-0.5"/>{" "}
+          <div className="flex flex-row items-center gap-3 mt-2">
+            <MdEmail size="25" className="ml-0.5" />{" "}
             {email}
-          </div>
           </div>
         </div>
       </div>

@@ -45,18 +45,18 @@ export default function MyFavoriteRecruit() {
       <table className="w-full">
         <thead>
           <tr className="text-left h-20 border-b-[1px]">
-            <th className="pl-2 w-2/12">회사명</th>
-            <th className="pl-2 w-4/12">포지션명</th>
-            <th className="pl-2 w-4/12">요구기술스택</th>
-            <th className="pl-2 w-1/12">종료일</th>
-            <th className="pl-2 w-1/12"></th>
+            <th className="w-2/12 pl-2">회사명</th>
+            <th className="w-4/12 pl-2">포지션명</th>
+            <th className="w-4/12 pl-2">요구기술스택</th>
+            <th className="w-1/12 pl-2">종료일</th>
+            <th className="w-1/12 pl-2"></th>
           </tr>
         </thead>
         <tbody>
           {bookmarks?.map((recruit: Recruit, index: number) => (
             <tr
               key={index}
-              className="h-20 text-left text-sm transition-all ease-in duration-200"
+              className="h-20 text-sm text-left transition-all duration-200 ease-in"
             >
               <td>{recruit.company}</td>
               <td>
@@ -85,7 +85,7 @@ export default function MyFavoriteRecruit() {
                             alt={tech}
                             width="100"
                             height="100"
-                            className="h-8 w-auto"
+                            className="w-auto h-8"
                           />
                         </div>
                       );
