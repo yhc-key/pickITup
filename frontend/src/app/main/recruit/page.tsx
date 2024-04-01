@@ -240,7 +240,7 @@ export default function RecruitPage() {
                     {recruit.title}
                   </p>
                   <div className="flex flex-wrap gap-2 ml-1 mr-4">
-                    {/* {[
+                     {[
                       ...new Set([
                         ...recruit.qualificationRequirements,
                         ...recruit.preferredRequirements,
@@ -265,7 +265,7 @@ export default function RecruitPage() {
                             />
                           </div>
                         );
-                    })} */}
+                    })} 
                   </div>
                   <div
                     onClick={(event) => bookMarkHandler(event, recruit.id)}
