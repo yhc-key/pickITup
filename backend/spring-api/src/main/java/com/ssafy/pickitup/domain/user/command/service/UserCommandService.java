@@ -157,7 +157,7 @@ public class UserCommandService {
         user.changeNickname(nickname);
     }
 
-    @CacheEvict(cacheNames = "recommend", key = "#authId")
+
     @Transactional
     public void changeProfile(Integer userId, Integer profile) {
         User user = userCommandJpaRepository.findById(userId)
@@ -165,6 +165,7 @@ public class UserCommandService {
         user.changeProfile(profile);
     }
 
+    @CacheEvict(cacheNames = "recommend", key = "#authId")
     @Transactional
     public void changeAddress(Integer authId, String address) {
         User user = userCommandJpaRepository.findById(authId)
