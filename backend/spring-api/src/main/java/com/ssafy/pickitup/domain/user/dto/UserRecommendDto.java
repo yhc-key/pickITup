@@ -9,6 +9,7 @@ public class UserRecommendDto {
 
     private Integer recruitId;
     private String company;
+    private String url;
     private List<String> intersection;
     private double distance;
     private List<String> qualificationRequirements;
