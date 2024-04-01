@@ -68,7 +68,7 @@ export default function RecruitPage() {
   const fetchRecruits = useCallback(
     async (pageParam: number) => {
       const res = await fetch(
-        `${apiAddress}/recruit/search?page=${pageParam}&size=9`,
+        `${apiAddress}/recruit/search?page=${pageParam}&size=12`,
         {
           method: "POST",
           headers: {
@@ -183,7 +183,7 @@ export default function RecruitPage() {
       }
     });
     return toggle;
-  };
+  }; // 북마크 여부 확인 함수
 
   useEffect(() => {
     let observer: IntersectionObserver;
@@ -241,7 +241,10 @@ export default function RecruitPage() {
                     {recruit.title}
                   </p>
                   {recruit.qualificationRequirements.length === 0 ? (
-                    <div className="text-start text-xs text-f5black-400"> * 관련 기술스택이 없습니다 🙄 </div>
+                    <div className="text-start text-xs text-f5black-400">
+                      {" "}
+                      * 관련 기술스택이 없습니다 🙄{" "}
+                    </div>
                   ) : (
                     <div className="flex flex-wrap gap-2 ml-2">
                       {recruit.qualificationRequirements.map((tech, i) => {

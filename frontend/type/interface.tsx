@@ -43,6 +43,18 @@ export interface Recruit {
   url: string;
 }
 
+export interface RecommendRecruit {
+  recruitId: number;
+  company: string;
+  distance: number;
+  url: string;
+  dueDate: [number, number, number];
+  intersection: string[];
+  preferredRequirements: string[];
+  qualificationRequirements: string[];
+  title: string;
+}
+
 export interface Interview {
   interviewId: number;
   mainCategory: string;
