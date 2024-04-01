@@ -103,6 +103,16 @@ const config: Config = {
           "0%": { transform: "translateX(-100%)" },
           "100%": { transform: "translateX(0)" },
         },
+        bounce: {
+          "0%, 100%": {
+            transform: "translateY(-15%)", // 바운스 높이 조정
+            "animation-timing-function": "cubic-bezier(0.8,0,1,1)",
+          },
+          "50%": {
+            transform: "none",
+            "animation-timing-function": "cubic-bezier(0,0,0.2,1)",
+          },
+        },
       },
       animation: {
         startGauge: "startGauge 10s forwards linear",
