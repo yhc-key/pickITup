@@ -239,53 +239,34 @@ export default function RecruitPage() {
                   <p className="mt-1 text-base font-bold text-left text-f5black-300">
                     {recruit.title}
                   </p>
-                  {
-                    <div className="flex flex-wrap gap-2 ml-1 mr-4">
-                      {recruit.qualificationRequirements.map((tech, i) => {
-                        let techTmp = tech.replace(/\s/g, "");
-                        techTmp = techTmp.replace(/#/g, "Sharp");
+                  <div className="flex flex-wrap gap-2 ml-1 mr-4">
+                    {[
+                      ...new Set([
+                        ...recruit.qualificationRequirements,
+                        ...recruit.preferredRequirements,
+                      ]),
+                    ].map((tech, i) => {
+                      let techTmp = tech.replace(/\s/g, "");
+                      techTmp = techTmp.replace(/#/g, "Sharp");
 
-                        if (
-                          techDataValues.some((techDataValueArr) =>
-                            techDataValueArr.includes(techTmp)
-                          )
+                      if (
+                        techDataValues.some((techDataValueArr) =>
+                          techDataValueArr.includes(techTmp)
                         )
-                          return (
-                            <div key={i}>
-                              <Image
-                                src={`/images/techLogo/${techTmp}.png`}
-                                alt={tech}
-                                width="100"
-                                height="100"
-                                className="w-auto h-8"
-                              />
-                            </div>
-                          );
-                      })}
-                      |
-                      {recruit.preferredRequirements.map((tech, i) => {
-                        let techTmp = tech.replace(/\s/g, "");
-                        techTmp = techTmp.replace(/#/g, "Sharp");
-
-                        if (
-                          techDataValues.some((techDataValueArr) =>
-                            techDataValueArr.includes(techTmp)
-                          )
-                        )
-                          return (
-                            <div key={i}>
-                              <Image
-                                src={`/images/techLogo/${techTmp}.png`}
-                                alt={tech}
-                                width="100"
-                                height="100"
-                                className="w-auto h-8"
-                              />
-                            </div>
-                          );
-                      })}
-                    </div>
-                  }
+                      )
+                        return (
+                          <div key={i}>
+                            <Image
+                              src={`/images/techLogo/${techTmp}.png`}
+                              alt={tech}
+                              width="100"
+                              height="100"
+                              className="w-auto h-8"
+                            />
+                          </div>
+                        );
+                    })}
+                  </div>
                   <div
                     onClick={(event) => bookMarkHandler(event, recruit.id)}
                     className={`text-xl absolute bottom-4 right-4 z-10 text-f5green-300 ${isLoggedIn ? "" : "hidden"} duration-300 ease-in-out hover:scale-125 `}
