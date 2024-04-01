@@ -222,7 +222,7 @@ export default function RecruitPage() {
                   className={`shadow-inner shadow-black object-cover h-[50%] w-full`}
                   onError={() => imageErrorHandler(recruitI)}
                 />
-                <div className="flex flex-col w-full gap-3 px-4 py-5">
+                <div className="flex flex-col w-full gap-1 px-4 pt-3 pb-1">
                   <div className="flex flex-row justify-between">
                     <div className="text-sm font-semibold text-f5gray-500">
                       {recruit.company}
@@ -236,39 +236,37 @@ export default function RecruitPage() {
                         recruit.dueDate[2]}
                     </div>
                   </div>
-                  <p className="mt-1 text-base font-bold text-left text-f5black-300 min-h-12">
+                  <p className="mt-1 text-base font-bold text-left text-f5black-300">
                     {recruit.title}
                   </p>
-                  {recruit.qualificationRequirements.length === 0 ? (
-                    <div className="text-start text-xs text-f5black-400">
-                      {" "}
-                      * 관련 기술스택이 없습니다 🙄{" "}
-                    </div>
-                  ) : (
-                    <div className="flex flex-wrap gap-2 ml-2">
-                      {recruit.qualificationRequirements.map((tech, i) => {
-                        let techTmp = tech.replace(/\s/g, "");
-                        techTmp = techTmp.replace(/#/g, "Sharp");
+                  <div className="flex flex-wrap gap-2 ml-1 mr-4">
+                    {/* {[
+                      ...new Set([
+                        ...recruit.qualificationRequirements,
+                        ...recruit.preferredRequirements,
+                      ]),
+                    ].map((tech, i) => {
+                      let techTmp = tech.replace(/\s/g, "");
+                      techTmp = techTmp.replace(/#/g, "Sharp");
 
-                        if (
-                          techDataValues.some((techDataValueArr) =>
-                            techDataValueArr.includes(techTmp)
-                          )
+                      if (
+                        techDataValues.some((techDataValueArr) =>
+                          techDataValueArr.includes(techTmp)
                         )
-                          return (
-                            <div key={i}>
-                              <Image
-                                src={`/images/techLogo/${techTmp}.png`}
-                                alt={tech}
-                                width="100"
-                                height="100"
-                                className="w-auto h-8"
-                              />
-                            </div>
-                          );
-                      })}
-                    </div>
-                  )}
+                      )
+                        return (
+                          <div key={i}>
+                            <Image
+                              src={`/images/techLogo/${techTmp}.png`}
+                              alt={tech}
+                              width="100"
+                              height="100"
+                              className="w-auto h-8"
+                            />
+                          </div>
+                        );
+                    })} */}
+                  </div>
                   <div
                     onClick={(event) => bookMarkHandler(event, recruit.id)}
                     className={`text-xl absolute bottom-4 right-4 z-10 text-f5green-300 ${isLoggedIn ? "" : "hidden"} duration-300 ease-in-out hover:scale-125 `}
