@@ -11,5 +11,6 @@ case class Recommendation(recruitId: Int,
                           qualificationRequirements: Seq[String],
                           preferredRequirements: Seq[String],
                           dueDate: Timestamp,
-                          title: String
+                          title: String,
+                          url: String
                          )

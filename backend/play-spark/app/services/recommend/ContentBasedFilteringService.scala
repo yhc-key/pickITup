@@ -92,7 +92,7 @@ object ContentBasedFilteringService {
       .option("database", MONGO_DATABASE)
       .option("collection", "recruit")
       .load()
-      .select("_id", "qualificationRequirements", "preferredRequirements", "companyId", "title", "dueDate")
+      .select("_id", "qualificationRequirements", "preferredRequirements", "companyId", "title", "dueDate", "url")
       .withColumnRenamed("_id", "recruitId")
 
     val recruits = recruitDF
@@ -152,7 +152,7 @@ object ContentBasedFilteringService {
       .withColumn("intersection", intersectionBetweenUserAndRecruit($"techStack", $"qualificationRequirements", $"preferredRequirements"))
       .withColumnRenamed("companyName", "company")
       .join(broadcast(userCompanyDistances), "companyId")
-      .select("recruitId", "company", "intersection", "distance", "totalScore", "dueDate", "title", "qualificationRequirements", "preferredRequirements")
+      .select("recruitId", "url", "company", "intersection", "distance", "totalScore", "dueDate", "title", "qualificationRequirements", "preferredRequirements")
       .sort($"totalScore".desc)
       .cache()
 
