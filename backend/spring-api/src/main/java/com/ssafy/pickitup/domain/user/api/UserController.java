@@ -48,6 +48,14 @@ public class UserController {
         return success("닉네임 변경 성공");
     }
 
+    @Operation(summary = "프로필 사진 변경 PI")
+    @PatchMapping("/profile/image")
+    public ApiResult<?> changeProfileImage(@AuthID Integer userId, @RequestBody Integer profile) {
+        userCommandService.changeProfile(userId, profile);
+        return success("프로필 사진 변경 성공");
+    }
+
+
     @Operation(summary = "회원 주소 변경 API")
     @PatchMapping("/address")
     public ApiResult<?> changeAddress(@AuthID Integer userId, @RequestBody String address) {

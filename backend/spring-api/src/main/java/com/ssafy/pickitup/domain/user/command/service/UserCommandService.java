@@ -157,6 +157,13 @@ public class UserCommandService {
     }
 
     @Transactional
+    public void changeProfile(Integer userId, Integer profile) {
+        User user = userCommandJpaRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
+        user.changeProfile(profile);
+    }
+
+    @Transactional
     public void changeAddress(Integer authId, String address) {
         User user = userCommandJpaRepository.findById(authId)
             .orElseThrow(UserNotFoundException::new);
