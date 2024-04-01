@@ -13,7 +13,7 @@ export const techTypes: string[] = [
 export const navLinks: LinkType[] = [
   { name: "채용 공고", href: "/main/recruit", icon: "📆" },
   // { name: "기술블로그", href: "/main/techBlog" },
-  { name: "추천 공고", href: "/main/recommend", icon: "👍" },
+  { name: "추천 공고", href: "/main/recommend", icon: "🏅" },
   { name: "미니 게임", href: "/main/game", icon: "🎮" },
   { name: "면접 대비", href: "/main/interview", icon: "📝" },
   { name: "마이 페이지", href: "/main/myPage/myBadge", icon: "💻" },

@@ -118,18 +118,17 @@ export default function Header() {
           </div>
           <div className="flex">
             {navLinks.map((link: LinkType) => {
-              if (link.name === "마이 페이지") {
+              if (link.name === "마이 페이지" || link.name === "로그인") {
                 return;
               }
               return (
                 <div key={link.name} className="m-auto">
                   <Link
                     href={link.href}
-                    className={`mr-4  hover:text-f5green-300 transition-all ease-in duration-300 ${
-                      !isActive(link.href)
+                    className={`mr-4  hover:text-f5green-300 transition-all ease-in duration-300 ${!isActive(link.href)
                         ? "text-f5black-400"
                         : "text-f5green-300 font-semibold"
-                    }`}
+                      }`}
                   >
                     {link.name}
                   </Link>
@@ -152,13 +151,13 @@ export default function Header() {
                   className={`z-10 bg-white absolute h-24 w-36 top-16 right-16 rounded-lg shadow-md flex flex-col px-4 justify-center text-sm text-f5black-400 transition-colors duration-100 ease-in ${isSubMenuOpen ? "transition-opacity opacity-100 " : "transition-opacity opacity-0 hidden"}`}
                 >
                   <div onClick={() => setIsSubMenuOpen(false)}>
-                  <Link
-                    href="/main/myPage/myBadge"
-                    className="h-1/2 flex items-center justify-start  hover:text-f5green-300 hover:font-semibold transition duration-200"
-                  >
-                    <FiUsers className="mr-2" />
-                    마이페이지
-                  </Link>
+                    <Link
+                      href="/main/myPage/myBadge"
+                      className="h-1/2 flex items-center justify-start  hover:text-f5green-300 hover:font-semibold transition duration-200"
+                    >
+                      <FiUsers className="mr-2" />
+                      마이페이지
+                    </Link>
                   </div>
                   <div className="flex h-1/2 items-center justify-start ">
                     <button
@@ -188,15 +187,47 @@ export default function Header() {
         {isMobile && (
           <div className="fixed flex w-[100%] bottom-0 left-0 pt-2 z-20 shadow-inner bg-white">
             {navLinks.map((link: LinkType) => {
+              if (link.name === "마이 페이지") {
+                if (isLoggedIn) {
+                  return (
+                    <div key={link.name} className="mx-auto ">
+                      <Link
+                        href={link.href}
+                        className={` hover:text-f5green-300 transition-all ease-in duration-300 ${!isActive(link.href)
+                            ? "text-f5black-400"
+                            : "text-f5green-400 font-bold transition-all ease-in duration-300"
+                          }`}
+                      >
+                        <div className="text-lg text-center"> {link.icon}</div>
+                        <div className="text-sm text-center"> {link.name}</div>
+                      </Link>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div className="mx-auto ">
+                      <Link
+                        href="/main/social"
+                        className={` hover:text-f5green-300 transition-all ease-in duration-300 ${!isActive(link.href)
+                            ? "text-f5black-400"
+                            : "text-f5green-400 font-bold transition-all ease-in duration-300"
+                          }`}
+                      >
+                        <div className="text-lg text-center">👋🏻</div>
+                        <div className="text-sm text-center">로그인</div>
+                      </Link>
+                    </div>
+                  );
+                }
+              }
               return (
                 <div key={link.name} className="mx-auto ">
                   <Link
                     href={link.href}
-                    className={` hover:text-f5green-300 transition-all ease-in duration-300 ${
-                      !isActive(link.href)
+                    className={` hover:text-f5green-300 transition-all ease-in duration-300 ${!isActive(link.href)
                         ? "text-f5black-400"
                         : "text-f5green-400 font-bold transition-all ease-in duration-300"
-                    }`}
+                      }`}
                   >
                     <div className="text-lg text-center"> {link.icon}</div>
                     <div className="text-sm text-center"> {link.name}</div>

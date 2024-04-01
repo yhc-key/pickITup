@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
 
 interface trueBtnProps {
@@ -7,15 +8,35 @@ interface trueBtnProps {
 }
 
 export default function FalseBtn({ onNextClick }: trueBtnProps) {
+  const isMobile = useMediaQuery({
+    query: "(max-width:480px)",
+  });
+
   const [hovered, setHovered] = useState(false);
 
-  // 마우스 올리면 hover 유무 true
+  // 모바일이면 터치 이벤트 사용, 아니면 마우스 이벤트 사용
   const handleMouseEnter = (): void => {
-    setHovered(true);
+    if (!isMobile) {
+      setHovered(true);
+    }
   };
-  // 마우스 떠나면 hover 유무 false
+
   const handleMouseLeave = (): void => {
-    setHovered(false);
+    if (!isMobile) {
+      setHovered(false);
+    }
+  };
+
+  const handleTouchStart = (): void => {
+    if (isMobile) {
+      setHovered(true);
+    }
+  };
+
+  const handleTouchEnd = (): void => {
+    if (isMobile) {
+      setHovered(false);
+    }
   };
 
   return (
@@ -24,6 +45,8 @@ export default function FalseBtn({ onNextClick }: trueBtnProps) {
         className={`flex items-center justify-center cursor-pointer w-80 h-40  rounded-3xl drop-shadow-md transition-all ease-in-out duration-300 ${hovered ? "bg-f5blue-100 scale-105" : "bg-f5gray-200"}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         onClick={onNextClick}
       >
         <Image
