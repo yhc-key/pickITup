@@ -32,6 +32,7 @@ object ContentBasedFilteringService {
           row.getInt(0),
           row.getSeq[String](1))
       ).toDF("userId", "techStack")
+      .persist()
 
     val userCompanyDistances = spark.read
       .format("mongo")
@@ -41,6 +42,7 @@ object ContentBasedFilteringService {
       .select("userId", "companyId", "distance")
       .filter($"userId" === userId)
       .withColumn("distance", when($"distance".isNull, lit(Double.MaxValue)).otherwise($"distance"))
+      .persist()
 
     // distance 컬럼을 벡터 컬럼으로 변환 (MinMaxScaler는 벡터 컬럼을 사용)
     val distanceAssembler = new VectorAssembler()
@@ -94,6 +96,7 @@ object ContentBasedFilteringService {
       .load()
       .select("_id", "qualificationRequirements", "preferredRequirements", "companyId", "title", "dueDate", "url")
       .withColumnRenamed("_id", "recruitId")
+      .persist()
 
     val recruits = recruitDF
       .map(
@@ -103,6 +106,7 @@ object ContentBasedFilteringService {
           row.getInt(3)
         )
       ).toDF("recruitId", "techStack", "companyId")
+      .persist()
 
     // CountVectorizer를 사용하여 기술 스택 벡터화
     val cvModel = new CountVectorizer()
@@ -116,7 +120,7 @@ object ContentBasedFilteringService {
       .withColumnRenamed("features", "features_user")
     val recruitFeatures = cvModel.transform(recruits)
       .withColumnRenamed("features", "features_recruit")
-      .cache()
+      .persist()
 
     // 유사도 계산
     val similarityScores = userFeatures.crossJoin(recruitFeatures).map { row =>
@@ -125,15 +129,14 @@ object ContentBasedFilteringService {
       val similarity = SparkUtil.cosineSimilarity(userVec, jobVec)
       (row.getAs[Int]("recruitId"), row.getAs[Int]("companyId"), similarity)
     }.toDF("recruitId", "companyId", "similarityScore")
+      .filter($"similarityScore" > 0.3)
+      .persist()
 
 
     val totalDF = similarityScores
       .join(companyWithScaledSalary, "companyId")
       .join(broadcast(scaledDistance), Seq("companyId"), "left_outer")
-
-    val calculateTotalScore = udf((similarityScore: Double, scaledSalary: Double, scaledDistance: Double) => {
-      8 * similarityScore + scaledSalary + (1 - scaledDistance)
-    })
+      .persist()
 
     val intersectionBetweenUserAndRecruit = udf((userTechStack: Seq[String],
                                                  qualificationRequirement: Seq[String],
@@ -144,7 +147,7 @@ object ContentBasedFilteringService {
 
     val recommendationDF = totalDF
       .select("recruitId", "companyName", "similarityScore", "scaledSalary", "scaledDistance")
-      .withColumn("totalScore", calculateTotalScore($"similarityScore", $"scaledSalary", $"scaledDistance"))
+      .withColumn("totalScore", $"similarityScore".*(8) + $"scaledSalary" - $"scaledDistance")
       .sort($"totalScore".desc)
       .limit(20)
       .join(recruitDF, "recruitId")
@@ -154,13 +157,17 @@ object ContentBasedFilteringService {
       .join(broadcast(userCompanyDistances), "companyId")
       .select("recruitId", "url", "company", "intersection", "distance", "totalScore", "dueDate", "title", "qualificationRequirements", "preferredRequirements")
       .sort($"totalScore".desc)
-      .cache()
 
     val recommendationList: List[Recommendation] = recommendationDF
-      .limit(20)
       .as[Recommendation]
       .collect()
       .toList
+
+    recruitDF.unpersist()
+    recruits.unpersist()
+    userProfiles.unpersist()
+    userCompanyDistances.unpersist()
+    totalDF.unpersist()
 
     recommendationList
   }
