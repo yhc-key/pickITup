@@ -95,8 +95,7 @@ public class UserRecommendService {
 
     @Cacheable(
         cacheNames = "recommend",
-        key = "#userId",
-        condition = "#isSuperUser == false"
+        key = "#userId"
     )
     public List<UserRecommendDto> getUserRecommendRecruitList(Integer userId, boolean isSuperUser) {
         log.info("not cached, userId = {}, isSuperUser = {}", userId, isSuperUser);
@@ -104,8 +103,8 @@ public class UserRecommendService {
         Flux<UserRecommendDto> response = webClient.get()
             .uri(
                 "/api/recommend/" +
-//                    (isSuperUser ? "super" : "normal") +
-                    "normal" +
+                    (isSuperUser ? "super" : "normal") +
+//                    "normal" +
                     "/{userId}",
                 userId)
             .accept(MediaType.APPLICATION_JSON)

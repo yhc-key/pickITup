@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -169,6 +170,7 @@ public class UserCommandService {
         user.changeNickname(nickname);
     }
 
+    @CacheEvict(cacheNames = "recommend", key = "#authId")
     @Transactional
     public void changeAddress(Integer authId, String address) {
         User user = userCommandJpaRepository.findById(authId)
@@ -235,6 +237,7 @@ public class UserCommandService {
                     geoLocation.getLongitude()));
     }
 
+    @CacheEvict(cacheNames = "recommend", key = "#authId")
     @Transactional
     public void updateUserKeyword(Integer authId, KeywordRequestDto keywordRequestDto) {
         userKeywordCommandJpaRepository.deleteAllByUserId(authId);
