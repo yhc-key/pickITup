@@ -34,8 +34,8 @@ export default function Header() {
           },
         });
         const data = await res.json();
-        console.log("북마크fetch해옴");
-        console.log(data);
+        // console.log("북마크fetch해옴");
+        // console.log(data);
         setBookmarks(data?.response);
       } catch (error) {
         console.error(error);
@@ -87,7 +87,7 @@ export default function Header() {
       <div>
         <div className="py-1 flex justify-between border-b border-f5gray-400 mb:hidden">
           <div>
-            <Link href="/" className="flex items-center">
+            <Link href="/main/recruit" className="flex items-center">
               <Image
                 src="/images/ITUlogo.png"
                 alt="logo"

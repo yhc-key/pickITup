@@ -8,7 +8,7 @@ import { techDataMap } from "@/data/techData";
 import { useEffect, useState } from "react";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import Modal from "@/components/modal2";
-import TechSelectMyPage from "@/components/techSelectMyPage"; 
+import TechSelectMyPage from "@/components/techSelectMyPage";
 import SelectProfile from "@/components/selectProfile";
 
 export default function MyPage() {
@@ -94,8 +94,7 @@ export default function MyPage() {
           setNewNickname("");
           console.log(res);
         });
-    }
-    else{
+    } else {
       setNickMessage("");
     }
     if (newAddress !== "") {
@@ -113,8 +112,7 @@ export default function MyPage() {
           setNewAddress("");
           setAddressMessage("주소 변경이 완료되었습니다.");
         });
-    }
-    else{
+    } else {
       setAddressMessage("");
     }
     // 주소변경
@@ -124,18 +122,15 @@ export default function MyPage() {
     if (newGithub === "") {
       githubValue = github;
       setGitMessage("");
-    }
-    else setGitMessage("깃허브 주소가 변경되었습니다.");
+    } else setGitMessage("깃허브 주소가 변경되었습니다.");
     if (newBlog === "") {
       blogValue = blog;
       setBlogMessage("");
-    }
-    else setBlogMessage("블로그 주소가 변경되었습니다.")
+    } else setBlogMessage("블로그 주소가 변경되었습니다.");
     if (newEmail === "") {
       emailValue = email;
       setEmailMessage("");
-    }
-    else setEmailMessage("이메일 주소가 변경되었습니다.");
+    } else setEmailMessage("이메일 주소가 변경되었습니다.");
     fetch("https://spring.pickitup.online/users/me", {
       method: "PATCH",
       headers: {
@@ -161,28 +156,34 @@ export default function MyPage() {
   return (
     <div className="relative flex flex-col h-full pt-6 pb-20 pl-20 border border-f5gray-400 rounded-2xl">
       <div className="relative w-44 flex flex-row">
-      <Image
-        src={`/images/profile/${profile}.png`}
-        alt="logo"
-        width={150}
-        height={150}
-        priority={true}
-        style={{clipPath: "circle()"}}
-        className="m-3 cursor-pointer"
-        onClick={()=>setIsProfileOpen(true)}
-      />
-      <PiCursorClick size="40" className="absolute bottom-0 right-0"/>
+        <Image
+          src={`/images/profile/${profile}.png`}
+          alt="logo"
+          width={150}
+          height={150}
+          priority={true}
+          style={{ clipPath: "circle()" }}
+          className="m-3 cursor-pointer"
+          onClick={() => setIsProfileOpen(true)}
+        />
+        <PiCursorClick size="40" className="absolute bottom-0 right-0" />
       </div>
       <h3 className="ml-8 -top-4">프로필 사진 변경</h3>
       <div className="flex flex-wrap mt-2 items-center min-h-12 gap-2 max-w-[1000px] my-2">
         <h2 className="font-bold text-xl"> 보안 정보 </h2>
-        <button type="button" onClick={() => setIsPasswordOpen(true)}
-        className="px-6 py-2 ml-2 text-white rounded-lg bg-f5green-300">
+        <button
+          type="button"
+          onClick={() => setIsPasswordOpen(true)}
+          className="px-6 py-2 ml-2 text-white rounded-lg bg-f5green-300"
+        >
           비밀번호 변경
         </button>
         <h2 className="font-bold text-xl ml-6"> 기술 정보 </h2>
-        <button type="button" onClick={() => setIsTechSelectOpen(true)}
-        className="px-6 py-2 ml-2 text-white rounded-lg bg-f5green-300">
+        <button
+          type="button"
+          onClick={() => setIsTechSelectOpen(true)}
+          className="px-6 py-2 ml-2 text-white rounded-lg bg-f5green-300"
+        >
           기술/스택 수정
         </button>
       </div>
@@ -200,9 +201,7 @@ export default function MyPage() {
           placeholder="변경할 닉네임을 입력해주세요."
           className="flex items-center w-1/3 p-2 ml-24 border rounded-lg h-9 border-f5gray-400 min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
         />
-        <p className="mt-1 ml-5 text-sm text-f5green-400">
-          {nickMessage}
-        </p>
+        <p className="mt-1 ml-5 text-sm text-f5green-400">{nickMessage}</p>
       </div>
       <div className="relative flex flex-row items-center my-2">
         <div className="absolute">현재 주소 </div>
@@ -213,11 +212,9 @@ export default function MyPage() {
             setAddress(e.target.value);
           }}
           className="flex items-center w-1/3 h-9 p-2 ml-24 border border-f5gray-400  rounded-lg 
-            min-w-80 bg-f5gray-400" 
+            min-w-80 bg-f5gray-400"
         />
-        <p className="mt-1 ml-5 text-sm text-f5green-400">
-          {nickMessage}
-        </p>
+        <p className="mt-1 ml-5 text-sm text-f5green-400">{nickMessage}</p>
       </div>
       <div className="relative flex flex-row items-center my-2">
         <div className="absolute">변경 주소 </div>
@@ -229,14 +226,12 @@ export default function MyPage() {
           placeholder="주소를 선택해주세요."
           className="flex items-center w-1/3 p-2 ml-24 border rounded-lg h-9 border-f5gray-400 min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
         />
-        
-          <Modal open={isOpen} clickSide={clickSide} size="w-1/2 h-4/6">
-            <DaumPostcode onComplete={completeHandler} />
-          </Modal>
-        
-        <p className="mt-1 ml-5 text-sm text-f5green-400">
-          {addressMessage}
-        </p>
+
+        <Modal open={isOpen} clickSide={clickSide} size="w-1/2 h-4/6">
+          <DaumPostcode onComplete={completeHandler} />
+        </Modal>
+
+        <p className="mt-1 ml-5 text-sm text-f5green-400">{addressMessage}</p>
       </div>
 
       <div className="relative flex flex-row items-center my-2">
@@ -247,9 +242,7 @@ export default function MyPage() {
           placeholder="Github 아이디를 입력해주세요."
           className="flex items-center w-1/3 p-2 ml-24 border rounded-lg h-9 border-f5gray-400 min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
         />
-        <p className="mt-1 ml-5 text-sm text-f5green-400">
-          {gitMessage}
-        </p>
+        <p className="mt-1 ml-5 text-sm text-f5green-400">{gitMessage}</p>
       </div>
       <div className="relative flex flex-row items-center my-2">
         <div className="absolute">tech blog </div>
@@ -259,9 +252,7 @@ export default function MyPage() {
           placeholder="blog URL을 입력해주세요."
           className="flex items-center w-1/3 p-2 ml-24 border rounded-lg h-9 border-f5gray-400 min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
         />
-        <p className="mt-1 ml-5 text-sm text-f5green-400">
-          {blogMessage}
-        </p>
+        <p className="mt-1 ml-5 text-sm text-f5green-400">{blogMessage}</p>
       </div>
       <div className="relative flex flex-row items-center my-2">
         <div className="absolute">Email </div>
@@ -271,9 +262,7 @@ export default function MyPage() {
           placeholder="Email을 입력해주세요."
           className="flex items-center w-1/3 p-2 ml-24 border rounded-lg h-9 border-f5gray-400 min-w-80 focus:outline-none focus:bg-white focus:border-f5green-300 "
         />
-        <p className="mt-1 ml-5 text-sm text-f5green-400">
-          {emailMessage}
-        </p>
+        <p className="mt-1 ml-5 text-sm text-f5green-400">{emailMessage}</p>
       </div>
 
       <div className="absolute bottom-0 right-0 mb-6 mr-6">
@@ -292,8 +281,10 @@ export default function MyPage() {
         </button>
       </div>
       <TechSelectMyPage open={isTechSelectOpen} onclose={closeTech} />
-      <SelectProfile open={isProfileOpen} onclose={()=>setIsProfileOpen(false)} />
+      <SelectProfile
+        open={isProfileOpen}
+        onclose={() => setIsProfileOpen(false)}
+      />
     </div>
-    
   );
 }
