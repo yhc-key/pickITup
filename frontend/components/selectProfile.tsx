@@ -24,8 +24,10 @@ export default function SelectProfile({open,onclose}:SelectProfileProps){
           Authorization: "Bearer "+token,
           "Content-Type": "text/plain",
         },
-        // body:item
+        body: String(item)
       })
+      .then(res=>res.json())
+      .then(res=>console.log(res))
     }
     setProfile(item);
     setIsOpen(false);
