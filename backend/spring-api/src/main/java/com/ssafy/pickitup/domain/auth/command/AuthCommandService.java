@@ -5,6 +5,7 @@ import com.ssafy.pickitup.domain.auth.command.dto.LogoutDto;
 import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.entity.Role;
+import com.ssafy.pickitup.domain.auth.query.AuthQueryJpaRepository;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
@@ -34,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthCommandService {
 
     private final AuthCommandJpaRepository authCommandJpaRepository;
+    private final AuthQueryJpaRepository authQueryJpaRepository;
     private final UserCommandService userCommandService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RedisService redisService;
@@ -147,6 +149,7 @@ public class AuthCommandService {
         }
     }
 
+    @Transactional(readOnly = true)
     public boolean validatePassword(int authId, String password, boolean flag) {
         Auth auth;
         if (flag) {
