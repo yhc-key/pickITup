@@ -126,8 +126,8 @@ export default function Header() {
                   <Link
                     href={link.href}
                     className={`mr-4  hover:text-f5green-300 transition-all ease-in duration-300 ${!isActive(link.href)
-                        ? "text-f5black-400"
-                        : "text-f5green-300 font-semibold"
+                      ? "text-f5black-400"
+                      : "text-f5green-300 font-semibold"
                       }`}
                   >
                     {link.name}
@@ -194,8 +194,8 @@ export default function Header() {
                       <Link
                         href={link.href}
                         className={` hover:text-f5green-300 transition-all ease-in duration-300 ${!isActive(link.href)
-                            ? "text-f5black-400"
-                            : "text-f5green-400 font-bold transition-all ease-in duration-300"
+                          ? "text-f5black-400"
+                          : "text-f5green-400 font-bold transition-all ease-in duration-300"
                           }`}
                       >
                         <div className="text-lg text-center"> {link.icon}</div>
@@ -205,12 +205,12 @@ export default function Header() {
                   );
                 } else {
                   return (
-                    <div className="mx-auto ">
+                    <div key={link.name} className="mx-auto ">
                       <Link
                         href="/main/social"
                         className={` hover:text-f5green-300 transition-all ease-in duration-300 ${!isActive(link.href)
-                            ? "text-f5black-400"
-                            : "text-f5green-400 font-bold transition-all ease-in duration-300"
+                          ? "text-f5black-400"
+                          : "text-f5green-400 font-bold transition-all ease-in duration-300"
                           }`}
                       >
                         <div className="text-lg text-center">👋🏻</div>
@@ -225,8 +225,8 @@ export default function Header() {
                   <Link
                     href={link.href}
                     className={` hover:text-f5green-300 transition-all ease-in duration-300 ${!isActive(link.href)
-                        ? "text-f5black-400"
-                        : "text-f5green-400 font-bold transition-all ease-in duration-300"
+                      ? "text-f5black-400"
+                      : "text-f5green-400 font-bold transition-all ease-in duration-300"
                       }`}
                   >
                     <div className="text-lg text-center"> {link.icon}</div>
