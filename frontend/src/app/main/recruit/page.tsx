@@ -237,7 +237,6 @@ export default function RecruitPage() {
                     </div>
                   </div>
                   <p className="mt-1 text-base font-bold text-left text-f5black-300 min-h-12">
-                    {recruit.id}
                     {recruit.title}
                   </p>
                   {recruit.qualificationRequirements.length === 0 ? (

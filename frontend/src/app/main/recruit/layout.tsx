@@ -61,7 +61,6 @@ export default function RecruitLayout({
     setIsHovered(null);
   };
 
-
   useEffect(() => {
     let techsTmp: string[] = [...(techDataMap.get(nowType) || [])] ?? [];
     pickTechList.forEach((s) => {
@@ -90,6 +89,7 @@ export default function RecruitLayout({
         </div>
         <div className="flex flex-wrap gap-x-2 gap-y-1 min-h-8">
           {pickTechList.map((pickTech: string, index: number) => {
+            const techWithoutSpaces = pickTech.replace(/\s/g, ""); // 공백 제거
             return (
               <button
                 type="button"
@@ -98,7 +98,7 @@ export default function RecruitLayout({
                 className="p-1 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5red-200 "
               >
                 <Image
-                  src={`/images/techLogo/${pickTech}.png`}
+                  src={`/images/techLogo/${techWithoutSpaces}.png`}
                   alt={pickTech}
                   width="20"
                   height="20"
@@ -108,7 +108,7 @@ export default function RecruitLayout({
             );
           })}
         </div>
-        <div className="flex flex-wrap gap-x-4 gap-2 mt-3">
+        <div className="flex flex-wrap justify-center gap-x-4 gap-2 mt-3">
           {techTypes.map((techType: string, index: number) => {
             const isActive: boolean = nowType == techType;
             return (
@@ -123,8 +123,10 @@ export default function RecruitLayout({
             );
           })}
         </div>
-        <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 max-w-[1000px]">
+        <div className="border my-3 border-f5gray-300"></div>
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-3 max-w-[1000px]">
           {techs?.map((tech: string, index: number) => {
+            const techWithoutSpaces = tech.replace(/\s/g, ""); // 공백 제거
             return (
               <button
                 type="button"
@@ -135,7 +137,7 @@ export default function RecruitLayout({
                 className="flex flex-row items-center p-1 text-sm border border-f5gray-300 rounded-2xl hover:bg-f5green-200"
               >
                 <Image
-                  src={`/images/techLogo/${tech}.png`}
+                  src={`/images/techLogo/${techWithoutSpaces}.png`}
                   alt={tech}
                   width="28"
                   height="28"
