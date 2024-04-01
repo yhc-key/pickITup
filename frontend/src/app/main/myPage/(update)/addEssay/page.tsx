@@ -2,7 +2,7 @@
 
 import useEssayStore, { EssayState } from "@/store/essayStore";
 import { useRouter } from "next/navigation";
-import { Fragment, useRef, useState, FormEvent } from "react";
+import { Fragment, useRef, useState, FormEvent, useEffect } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 interface Title {
@@ -16,7 +16,6 @@ interface Essay {
 }
 
 const apiAddress = "https://spring.pickITup.online/self/main";
-const accessToken = sessionStorage.getItem("accessToken");
 
 export default function AddEssay() {
   const companyRef = useRef<HTMLInputElement | null>();
@@ -30,6 +29,7 @@ export default function AddEssay() {
 
   const [titleActive, setTitleActive] = useState<boolean[]>([]);
   const [isEmpty, setIsEmpty] = useState<boolean[]>([]);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
@@ -109,6 +109,10 @@ export default function AddEssay() {
     (index: number) => (ref: HTMLTextAreaElement | null) => {
       textAreaContentRefs.current[index] = ref;
     };
+
+  useEffect(() => {
+    setAccessToken(sessionStorage.getItem("accessToken"));
+  }, []);
 
   return (
     <Fragment>
