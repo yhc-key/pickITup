@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useState } from "react";
+import { Fragment, useState, MouseEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaBookmark } from "react-icons/fa";
@@ -15,7 +15,11 @@ export default function MyFavoriteRecruit() {
   const setBookmarks = useAuthStore((state: AuthState) => state.setBookmarks);
   const techDataValues = Array.from(techDataMap.values());
 
-  const deleteBookMark = async (recruitId: number) => {
+  const deleteBookMark = async (
+    event: MouseEvent<HTMLDivElement>,
+    recruitId: number
+  ) => {
+    event.stopPropagation();
     const apiAddress = "https://spring.pickITup.online";
     try {
       const accessToken = sessionStorage.getItem("accessToken");
@@ -46,27 +50,27 @@ export default function MyFavoriteRecruit() {
 
   return (
     <div>
-      <table className="w-full">
-        <thead>
-          <tr className="text-left h-20 border-b-[1px]">
-            <th className="w-2/12 px-2">회사명</th>
-            <th className="w-4/12 px-2">포지션명</th>
-            <th className="w-4/12 px-2">요구기술스택</th>
-            <th className="w-1/12 px-2">종료일</th>
-            <th className="w-1/12 px-2"></th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className="w-full">
+        <div>
+          <div className="flex text-left font-semibold items-center h-20 border-b-[1px]">
+            <div className="w-2/12 px-3">회사명</div>
+            <div className="w-4/12 px-3">포지션명</div>
+            <div className="w-4/12 px-3">요구기술스택</div>
+            <div className="w-1/12 px-3">종료일</div>
+            <div className="w-1/12 px-3"></div>
+          </div>
+        </div>
+        <div className="w-full">
           {bookmarks?.map((recruit: Recruit, index: number) => (
-            <tr
+            <div
               key={index}
-              className="h-20 p-4 text-sm text-left transition-all duration-300 ease-in rounded-md hover:bg-zinc-100 hover:scale-105 cursor-pointer"
+              className="w-full my-3 py-3 flex items-center h-28 text-sm text-left transition-all duration-300 ease-in rounded-md hover:bg-zinc-100 cursor-pointer"
               onClick={() => navigateToRecruitmentUrl(recruit.url)}
             >
-              <td className="px-2">{recruit.company}</td>
-              <td>{recruit.title}</td>
-              <td>
-                <div className="flex">
+              <div className="w-2/12 px-2">{recruit.company}</div>
+              <div className="w-4/12 font-semibold">{recruit.title}</div>
+              <div className="w-4/12">
+                <div className="flex flex-wrap ">
                   {recruit.qualificationRequirements.map((tech, i) => {
                     let techTmp = tech.replace(/\s/g, "");
                     techTmp = techTmp.replace(/#/g, "Sharp");
@@ -78,30 +82,37 @@ export default function MyFavoriteRecruit() {
                     )
                       return (
                         <div key={i}>
-                          <Image
-                            src={`/images/techLogoEx/${techTmp}.png`}
-                            alt={tech}
-                            width="100"
-                            height="100"
-                            className="w-auto h-8"
-                          />
+                          <button
+                            type="button"
+                            key={index}
+                            className={`m-1 flex flex-wrap border-f5gray-300 border py-1 pr-2 mb:pr-1 mb:py-0.5 rounded-2xl text-f5black-400 text-xs items-center`}
+                          >
+                            <Image
+                              src={`/images/techLogo/${techTmp}.png`}
+                              alt={techTmp}
+                              width={22}
+                              height={22}
+                              className="mx-1"
+                            />
+                            {tech}
+                          </button>
                         </div>
                       );
                   })}
                 </div>
-              </td>
-              <td>
+              </div>
+              <div className="w-1/12">
                 {recruit.dueDate[0]}-{recruit.dueDate[1]}-{recruit.dueDate[2]}
-              </td>
-              <td className="text-lg text-f5green-300 text-center">
-                <button onClick={() => deleteBookMark(recruit.id)}>
+              </div>
+              <div className=" w-1/12 text-lg text-f5green-300 text-center z-20 px-6 hover:scale-110 transition-all ease-in duration-300">
+                <div onClick={(event) => deleteBookMark(event, recruit.id)}>
                   <FaBookmark />
-                </button>
-              </td>
-            </tr>
+                </div>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 }

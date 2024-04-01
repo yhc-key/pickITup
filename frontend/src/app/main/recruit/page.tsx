@@ -21,6 +21,7 @@ import { MoonLoader } from "react-spinners";
 import { useMediaQuery } from "react-responsive";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import useAuthStore, { AuthState } from "@/store/authStore";
+import { Recursive } from "next/font/google";
 
 const apiAddress = "https://spring.pickITup.online";
 const baseImg = "/Images/baseCompany.jpg";
@@ -236,6 +237,7 @@ export default function RecruitPage() {
                     </div>
                   </div>
                   <p className="mt-1 text-base font-bold text-left text-f5black-300 min-h-12">
+                    {recruit.id}
                     {recruit.title}
                   </p>
                   {recruit.qualificationRequirements.length === 0 ? (
