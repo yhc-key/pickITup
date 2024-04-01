@@ -112,56 +112,68 @@ export default function OXQuiz(props: any) {
   return (
     <div className="flex flex-col">
       {/* <div>{props.params.pickTech}</div> */}
-      {questionList && questionList[index] ? (
-        <div>
-          <div className="mx-10 mt-4 mb:mx-5 mb:mt-5">
-            <BackBtn />
-          </div>
-          <div className="flex flex-wrap items-center justify-center mb:mt-12">
-            <div className="flex flex-col mx-1 ml-20">
-              <div className="flex flex-wrap justify-center my-3 text-4xl font-semibold tracking-widest">
-                <div className="mr-3 text-f5green-300">OX</div>
-                <div className="text-f5black-400">퀴즈</div>
+      {questionList && questionList.length > 0  ? (
+        questionList[index] ? (
+          <div>
+            <div className="mx-10 mt-4 mb:mx-5 mb:mt-5">
+              <BackBtn />
+            </div>
+            <div className="flex flex-wrap items-center justify-center mb:mt-12">
+              <div className="flex flex-col mx-1 ml-20">
+                <div className="flex flex-wrap justify-center my-3 text-4xl font-semibold tracking-widest">
+                  <div className="mr-3 text-f5green-300">OX</div>
+                  <div className="text-f5black-400">퀴즈</div>
+                </div>
+                <div className="text-xs text-f5black-400">
+                  문제를 읽고 알맞은 정답을 선택해주세요!
+                </div>
               </div>
-            <div className="text-xs text-f5black-400">
-              문제를 읽고 알맞은 정답을 선택해주세요!
+              {isMobile ? (
+                <Image
+                  src="/images/oxIntro.png"
+                  alt="oxQuizIntro"
+                  width={95}
+                  height={65}
+                  priority={true}
+                />
+              ) : (
+                <Image
+                  src="/images/oxIntro.png"
+                  alt="oxQuizIntro"
+                  width={190}
+                  height={130}
+                  priority={true}
+                />
+              )}
             </div>
+            <Question question={questionList[index]} index={index + 1} />
+            <div className="flex flex-wrap justify-center mt-10">
+              <TrueBtn onNextClick={TrueClickHandler} />
+              <FalseBtn onNextClick={FalseClickHandler} />
             </div>
-            {isMobile ? (
-              <Image
-                src="/images/oxIntro.png"
-                alt="oxQuizIntro"
-                width={95}
-                height={65}
-                priority={true}
-              />
-            ) : (
-              <Image
-                src="/images/oxIntro.png"
-                alt="oxQuizIntro"
-                width={190}
-                height={130}
-                priority={true}
-              />
-            )}
-       
           </div>
-          <Question question={questionList[index]} index={index + 1} />
-          <div className="flex flex-wrap justify-center mt-10">
-            <TrueBtn onNextClick={TrueClickHandler} />
-            <FalseBtn onNextClick={FalseClickHandler} />
-          </div>
-        </div>
-      ) : (
-        <div className="my-4 mb:mt-12">
-          <QuizResult answer={answer} />
+        ) : (
+          <div className="my-4 mb:mt-12">
+            <QuizResult answer={answer} />
             <div className="flex justify-end mt-8 mr-28 mb:absolute mb:top-1 mb:right-1 mb:mr-6">
-            <button
-              onClick={listCilckHandler}
-              className="px-5 py-2 text-sm font-semibold bg-opacity-80 rounded-2xl  text-f5black-400 bg-f5gray-300 hover:bg-f5gray-400 ring-1 ring-inset ring-f5gray-400/10"
-            >
-              {"게임 목록 >>"}
-            </button>
+              <button
+                onClick={listCilckHandler}
+                className="px-5 py-2 text-sm font-semibold bg-opacity-80 rounded-2xl  text-f5black-400 bg-f5gray-300 hover:bg-f5gray-400 ring-1 ring-inset ring-f5gray-400/10"
+              >
+                {"게임 목록 >>"}
+              </button>
+            </div>
+          </div>
+        )
+      ) : (
+        <div className="w-full min-h-[400px] flex items-center justify-center">
+          <div className="flex justify-start mr-20">
+          <Image src="/images/ghost.png" alt="ghost" width={220} height={220} className=" animate-[bounce_2s_ease-in-out_infinite] mt-20"></Image>
+          </div>
+          <div className="flex flex-col justify-start items-start">
+         <div className="text-3xl font-semibold mb-10">현재 <b className="text-f5green-300">서비스 준비중</b>입니다.</div>
+         <div className="text-lg">이용에 불편을 드려 죄송합니다.</div>
+         <div className="text-lg">빠른 시일 내에 이용하실 수 있도록 노력하겠습니다.</div>
           </div>
         </div>
       )}
