@@ -8,8 +8,8 @@ import { techDataMap } from "@/data/techData";
 
 const techTypes: string[] = [
   "언어",
-  "프론트앤드",
-  "백앤드",
+  "프론트엔드",
+  "백엔드",
   "모바일",
   "데이터",
   "데브옵스",
