@@ -14,7 +14,6 @@ import com.ssafy.pickitup.domain.selfdocument.query.dto.MainQuestionQueryRespons
 import com.ssafy.pickitup.domain.selfdocument.query.dto.SubQuestionQueryResponseDto;
 import com.ssafy.pickitup.global.annotation.AuthID;
 import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
-import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -41,7 +40,6 @@ public class SelfDocumentController {
     private final MainQuestionCommandService mainCommandService;
     private final SubQuestionQueryService subQueryService;
     private final SubQuestionCommandService subCommandService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "메인 질문 조회")
     @GetMapping("/main")
@@ -62,7 +60,7 @@ public class SelfDocumentController {
 
     @Operation(summary = "메인 질문 삭제")
     @DeleteMapping("/main/{mainId}")
-    public ApiResult<?> deleteMain(@PathVariable Integer mainId) {
+    public ApiResult<?> deleteMain(@PathVariable Integer mainId, @AuthID Integer userId) {
         boolean result = mainCommandService.deleteMainQuestion(mainId);
         return success(result);
     }
@@ -70,7 +68,7 @@ public class SelfDocumentController {
     @Operation(summary = "메인 질문 수정")
     @PatchMapping("/main/{mainId}")
     public ApiResult<?> patchMain(@PathVariable Integer mainId,
-        @RequestBody MainQuestionCommandRequestDto dto) {
+        @RequestBody MainQuestionCommandRequestDto dto, @AuthID Integer userId) {
         MainQuestionCommandResponseDto mainQuestionCommandResponseDto =
             mainCommandService.modifyMainQuestion(mainId, dto);
         return success(mainQuestionCommandResponseDto);
@@ -78,7 +76,7 @@ public class SelfDocumentController {
 
     @Operation(summary = "서브 질문 조회")
     @GetMapping("/main/{mainId}/sub")
-    public ApiResult<?> searchSub(@PathVariable Integer mainId) {
+    public ApiResult<?> searchSub(@PathVariable Integer mainId, @AuthID Integer userId) {
         List<SubQuestionQueryResponseDto> subQuestionQueryResponseDtoList =
             subQueryService.searchSubQuestions(mainId);
         return success(subQuestionQueryResponseDtoList);
@@ -87,7 +85,7 @@ public class SelfDocumentController {
     @Operation(summary = "서브 질문 등록")
     @PostMapping("/main/{mainId}/sub")
     public ApiResult<?> registerSub(@PathVariable Integer mainId,
-        @RequestBody SubQuestionCommandRequestDto dto) {
+        @RequestBody SubQuestionCommandRequestDto dto, @AuthID Integer userId) {
         SubQuestionCommandResponseDto subQuestionCommandResponseDto =
             subCommandService.registerSubQuestion(mainId, dto);
         return success(subQuestionCommandResponseDto);
@@ -95,7 +93,7 @@ public class SelfDocumentController {
 
     @Operation(summary = "서브 질문 삭제")
     @DeleteMapping("/main/{mainId}/sub/{subId}")
-    public ApiResult<?> deleteSub(@PathVariable Integer subId) {
+    public ApiResult<?> deleteSub(@PathVariable Integer subId, @AuthID Integer userId) {
         boolean result = subCommandService.deleteSubQuestion(subId);
         return success(result);
     }
@@ -103,7 +101,7 @@ public class SelfDocumentController {
     @Operation(summary = "서브 질문 수정")
     @PatchMapping("/main/{mainId}/sub/{subId}")
     public ApiResult<?> patchSub(@PathVariable Integer subId,
-        @RequestBody SubQuestionCommandRequestDto dto) {
+        @RequestBody SubQuestionCommandRequestDto dto, @AuthID Integer userId) {
         SubQuestionCommandResponseDto subQuestionCommandResponseDto =
             subCommandService.modifySubQuestion(subId, dto);
         return success(subQuestionCommandResponseDto);
