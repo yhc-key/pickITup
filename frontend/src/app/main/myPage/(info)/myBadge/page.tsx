@@ -2,7 +2,6 @@
 import { useEffect, useState, ReactElement } from "react";
 import Image from 'next/image';
 import { badgeDataMap ,badgeImageMap} from "@/data/badgeData";
-import TechSelectAfterLogin from "@/components/techSelectAfterLogin";
 function MyBadge() {
   const [acquired,setAcquired]=useState<string[]>([]);
   const [unAcquired,setUnAcquired]=useState<string[]>([]);
@@ -81,7 +80,6 @@ function MyBadge() {
       <div className="flex items-center justify-start flex-wrap w-full">
         {unacq}
       </div>
-      <TechSelectAfterLogin/>
     </div>
   )
 }

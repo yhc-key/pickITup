@@ -164,13 +164,15 @@ export default function MyPageLayout({
           <div className="flex justify-between">
             <div className="font-bold">내 기술 스택</div>
             <div onClick={() => setIsTechSelectOpen(true)}
-              className="px-6 h-7 w-20 text-black rounded-lg bg-slate-300 cursor-pointer">
+              className="px-3 h-7 w-15 text-black rounded-lg bg-slate-300 cursor-pointer">
               수정
             </div>
           </div>
           <div className="flex flex-row flex-wrap gap-2 mt-2">
             
-            {keywords.slice(0,20).map((item:string,index:number)=>(
+            {keywords.slice(0,20).map((item: string,index: number) => {
+              const skillImage = item.replace(/\s/g, '');
+              return(
               <div
               key={index}
               className={`flex flex-row border-f5gray-300 border py-1 pr-2 rounded-2xl text-f5black-400 text-xs items-center  hover:transition-all hover:scale-105 hover:ease-in `}
@@ -184,7 +186,7 @@ export default function MyPageLayout({
                 className="inline-block mx-1 "/>
                 :
                 <Image
-                src={`/images/techLogo/${item}.png`}
+                src={`/images/techLogo/${skillImage}.png`}
                 alt={item}
                 width={20}
                 height={20}
@@ -193,13 +195,14 @@ export default function MyPageLayout({
               }
               {item}
               </div>
-            ))}
+            )}
+            )}
           </div>
         </div>
         <div className="p-3 mt-4 text-sm border rounded-lg border-f5gray-400">
           <div className="flex flex-row items-center gap-3">
             <FaSquareGithub size="25" />{" "}
-            <a href={`https://github.com/${github}`}>{github}</a>
+            <a href={`https://github.com/${github}`}>https://github.com/{github}</a>
           </div>
           <div className="flex flex-row items-center gap-3 mt-2">
             <SiVelog size="22" className="ml-0.5" />{" "}

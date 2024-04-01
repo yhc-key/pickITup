@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import useAuthStore, { AuthState } from "@/store/authStore";
-import TechSelectAfterLogin from "@/components/techSelectAfterLogin";
 function Login() {
   const router = useRouter();
   const [id, setId] = useState<string>("");
@@ -62,7 +61,7 @@ function Login() {
               sessionStorage.setItem("authid", res.response.id);
               sessionStorage.setItem("nickname", res.response.nickname);
               login(res.response.nickname);
-              router.push("/main/myPage/myBadge");
+              router.push("/main/recruit");
             })
             .catch((error) => {
               alert(error);

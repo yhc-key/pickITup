@@ -49,8 +49,6 @@ export default function TechSelectMyPage({onclose,open}:TechSelectMyPageProps) {
             setIsModalOpen(true);
           }
           else{setIsModalOpen(false);}
-
-
         }
       )
     }
@@ -92,27 +90,17 @@ const deletePickTech = (item : string)=>{
     .then(res=>{
 
       const techIds:number[] = [];
-      fetch("https://spring.pickitup.online/keywords",{
+      fetch("https://spring.pickitup.online/keywords/map",{
         method: "GET",
       })
       .then(res => res.json())
-      // .then(res => {
-      //     res.response.map((techMap:{},index:number) => (
-      //       pickTech.map((item:string,index:number) => (
-      //         if(techMap[index].name===item){
-                
-      //         }
-      //       ))
-      //   ))}
-      // )
-      // })
+      .then(res => {
         for (const tech of pickTech) {
-          const techId = techInfos.get(tech);
+          const techId = res.response[tech];
           if (techId !== undefined) {
               techIds.push(techId);
           }
         }
-        
         fetch(`https://spring.pickitup.online/users/keywords`,{
           method : "PATCH",
           headers: {
@@ -129,6 +117,8 @@ const deletePickTech = (item : string)=>{
           setKeywords(pickTech);
           sessionStorage.setItem('keywords',JSON.stringify(pickTech));
         });
+
+      })
       }
     )
   }
@@ -155,7 +145,9 @@ const deletePickTech = (item : string)=>{
           </div>
           
           <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-12">
-            {pickTech.map((item:string,index:number)=>
+            {pickTech.map((item: string,index: number) => {
+              const skillImage = item.replace(/\s/g, '');
+              return (
               <div key={index}  
               className="flex items-center justify-center py-1 pr-2 relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1 min-h-6 hover:transition-all hover:scale-105 hover:ease-in">
                 {techData2.includes(item)?
@@ -167,7 +159,7 @@ const deletePickTech = (item : string)=>{
                 className="inline-block mr-1 "/>
                 :
                 <Image
-                src={`/images/techLogo/${item}.png`}
+                src={`/images/techLogo/${skillImage}.png`}
                 alt={item}
                 width={20}
                 height={20}
@@ -175,6 +167,7 @@ const deletePickTech = (item : string)=>{
                 />
                 }{item}
               <div className="ml-1 cursor-pointer"  onClick={()=>deletePickTech(item)}><TiTimes color="red" size="15"/></div></div>
+              )}
             )}
           </div>
           {/* <div className="flex flex-wrap justify-center gap-2 mt-1">
@@ -187,11 +180,11 @@ const deletePickTech = (item : string)=>{
               나중에 하기
             </button>
             <div className="w-8"></div>
-            <Link href={`/main/myPage/updateMyInfo`} onClick={()=>{setMyTech(),modalCloseHandler()}}>
+            <div onClick={()=>{setMyTech(),modalCloseHandler()}}>
               <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
                 저장하기
               </button>
-            </Link>
+            </div>
           </div>
         </div>
       </Modal>

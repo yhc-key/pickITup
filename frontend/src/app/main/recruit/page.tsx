@@ -22,6 +22,7 @@ import { useMediaQuery } from "react-responsive";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import { Recursive } from "next/font/google";
+import TechSelectAfterLogin from "@/components/techSelectAfterLogin";
 
 const apiAddress = "https://spring.pickITup.online";
 const baseImg = "/Images/baseCompany.jpg";
@@ -205,6 +206,7 @@ export default function RecruitPage() {
   return (
     <>
       <div className="flex flex-wrap justify-center">
+      <TechSelectAfterLogin/>
         {data?.pages.map((page, i: number) =>
           page.response?.content.map((recruit: Recruit, recruitI: number) => {
             return (
