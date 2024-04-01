@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function LoginNeed() {
 
   return (
-    <div className="max-w-[400px] min-h-[450px] mx-auto mt-24 px-5">
+    <div className="max-w-[430px] min-h-[450px] mx-auto mt-24 px-5">
 
       <div className="flex flex-col justify-center items-center">
         <Image
