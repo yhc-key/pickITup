@@ -16,7 +16,6 @@ const techTypes: string[] = [
   "테스팅툴",
 ];
 
-
 export default function InterViewPage() {
   const isMobile = useMediaQuery({
     query: "(max-width:480px)",
