@@ -118,10 +118,12 @@ export default function MyEssay(): JSX.Element {
     }
     setTitleValidate(true);
     try {
+      const accessToken = sessionStorage.getItem("accessToken");
       await fetch(`${apiAddress}/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
         },
         body: JSON.stringify({ title: essayTitleAddRef.current.value.trim() }),
       });
@@ -225,7 +227,8 @@ export default function MyEssay(): JSX.Element {
   useEffect(() => {
     const tmpEssayActive: boolean[][] = essays.map(
       (subArray: Essay[]): boolean[] =>
-        subArray && subArray.map((essay: Essay, index: number): boolean =>
+        subArray &&
+        subArray.map((essay: Essay, index: number): boolean =>
           index == 0 ? true : false
         )
     ); // essay 목록에 해당하는 boolean 배열 만들기

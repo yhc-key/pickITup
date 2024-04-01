@@ -4,6 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { IoChevronDownSharp } from "react-icons/io5";
+import { IoChevronUpSharp } from "react-icons/io5";
+import { FiLogOut } from "react-icons/fi";
+import { FiUsers } from "react-icons/fi";
+
 import useAuthStore, { AuthState } from "../store/authStore";
 import { useMediaQuery } from "react-responsive";
 import { LinkType } from "@/type/interface";
@@ -21,6 +26,8 @@ export default function Header() {
     (state: AuthState) => state.isLoggedIn
   );
   const logout: () => void = useAuthStore((state: AuthState) => state.logout);
+  const profile: string = useAuthStore((state: AuthState) => state.profile);
+  const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const accessToken: string | null = sessionStorage.getItem("accessToken");
@@ -86,7 +93,7 @@ export default function Header() {
     <header>
       <div>
         <div className="py-1 flex justify-between border-b border-f5gray-400 mb:hidden">
-          <div>
+          <div className="ml-20">
             <Link href="/" className="flex items-center">
               <Image
                 src="/images/ITUlogo.png"
@@ -126,22 +133,45 @@ export default function Header() {
             })}
           </div>
           {isLoggedIn ? (
-            <div className="flex items-center">
-              <div className="mr-2">{nickname}님</div>
-              <div className="p-3 my-auto mr-10 bg-f5gray-300 rounded-2xl">
-                <button
-                  className="text-f5black-400 hover:text-f5green-300"
-                  onClick={logoutRequest}
-                >
-                  로그아웃
-                </button>
+            <div className="flex items-center my-auto mr-20">
+              <div className="mr-2 text-sm text-f5black-400">{nickname}님</div>
+              <div className="transion ease-in duration-300 text-f5black-400 hover:text-f5green-300 cursor-pointer">
+                {isSubMenuOpen ? (
+                  <IoChevronUpSharp onClick={() => setIsSubMenuOpen(false)} />
+                ) : (
+                  <IoChevronDownSharp onClick={() => setIsSubMenuOpen(true)} />
+                )}
               </div>
+              {isSubMenuOpen ? (
+                <div
+                  className={`z-10 bg-white absolute h-24 w-36 top-16 right-16 rounded-lg shadow-md flex flex-col px-4 justify-center text-sm text-f5black-400 transition-colors duration-100 ease-in ${isSubMenuOpen ? "transition-opacity opacity-100 " : "transition-opacity opacity-0 hidden"}`}
+                >
+                  <Link
+                    href="/main/myPage/myBadge"
+                    className="h-1/2 flex items-center justify-start  hover:text-f5green-300 hover:font-semibold transition duration-200"
+                  >
+                    <FiUsers className="mr-2" />
+                    마이페이지
+                  </Link>
+                  <div className="flex h-1/2 items-center justify-start ">
+                    <button
+                      className="flex items-center justify-start  hover:text-f5green-300 hover:font-semibold"
+                      onClick={logoutRequest}
+                    >
+                      <FiLogOut className="mr-2" />
+                      로그아웃
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div></div>
+              )}
             </div>
           ) : (
             <div className="p-3 my-auto mr-10 text-sm bg-f5gray-300 rounded-2xl">
               <Link
                 href="/main/social"
-                className="transition-all duration-200 ease-in text-f5black-400 hover:text-f5green-300"
+                className="transition duration-200 ease-in text-f5black-400 hover:text-f5green-300"
               >
                 로그인 | 회원가입
               </Link>

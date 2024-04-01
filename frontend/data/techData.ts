@@ -42,7 +42,7 @@ export const techDataMap: Map<string, string[]> = new Map([
     ],
   ],
   [
-    "프론트앤드",
+    "프론트엔드",
     [
       "ReactJS",
       "VueJs",
@@ -70,7 +70,7 @@ export const techDataMap: Map<string, string[]> = new Map([
     ],
   ],
   [
-    "백앤드",
+    "백엔드",
     [
       "Spring",
       "NodeJS",
