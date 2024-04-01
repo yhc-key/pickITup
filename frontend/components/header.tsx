@@ -59,6 +59,7 @@ export default function Header() {
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
   const logoutRequest = () => {
+    setIsSubMenuOpen(false)
     if (isLoggedIn === true) {
       const token = sessionStorage.getItem("accessToken");
       fetch("https://spring.pickitup.online/auth/logout", {
@@ -149,6 +150,7 @@ export default function Header() {
                 <div
                   className={`z-10 bg-white absolute h-24 w-36 top-16 right-16 rounded-lg shadow-md flex flex-col px-4 justify-center text-sm text-f5black-400 transition-colors duration-100 ease-in ${isSubMenuOpen ? "transition-opacity opacity-100 " : "transition-opacity opacity-0 hidden"}`}
                 >
+                  <div onClick={() => setIsSubMenuOpen(false)}>
                   <Link
                     href="/main/myPage/myBadge"
                     className="h-1/2 flex items-center justify-start  hover:text-f5green-300 hover:font-semibold transition duration-200"
@@ -156,6 +158,7 @@ export default function Header() {
                     <FiUsers className="mr-2" />
                     마이페이지
                   </Link>
+                  </div>
                   <div className="flex h-1/2 items-center justify-start ">
                     <button
                       className="flex items-center justify-start  hover:text-f5green-300 hover:font-semibold"
