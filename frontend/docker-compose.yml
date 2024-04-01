@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      no-cache: true
     container_name: next-app
     # ports:
     #   - 3000:3000
