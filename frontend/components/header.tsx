@@ -26,7 +26,7 @@ export default function Header() {
     (state: AuthState) => state.isLoggedIn
   );
   const logout: () => void = useAuthStore((state: AuthState) => state.logout);
-  const profile: string = useAuthStore((state: AuthState) => state.profile);
+  const profile: number = useAuthStore((state: AuthState) => state.profile);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
