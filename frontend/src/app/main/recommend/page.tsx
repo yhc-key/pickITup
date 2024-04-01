@@ -194,7 +194,7 @@ export default function MyFavoriteRecruit() {
                               />
                               :
                               <Image
-                                src={`/images/techLogo/ITULogo.png`}
+                                src={`/images/ITUlogo.png`}
                                 alt={tech}
                                 width={22}
                                 height={22}
@@ -221,7 +221,7 @@ export default function MyFavoriteRecruit() {
                               />
                               :
                               <Image
-                                src={`/images/techLogo/ITULogo.png`}
+                                src={`/images/ITUlogo.png`}
                                 alt={tech}
                                 width={22}
                                 height={22}
