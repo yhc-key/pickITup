@@ -14,6 +14,7 @@ export default function ModalCustom({
   name,
   buttonString = { cancel: "취소하기", add: "등록하기" },
   design = "",
+  changeButton = false,
   open,
   onClose,
   onClickEvent,
@@ -87,7 +88,7 @@ export default function ModalCustom({
           <button
             id={`${name}CancelButton`}
             onClick={onClose}
-            className="px-12 py-2 mr-6 text-sm font-semibold rounded-md text-neutral-100 bg-f5red-350 hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10"
+            className={`px-12 py-2 mr-6 text-sm font-semibold rounded-md text-neutral-100  ring-1 ring-inset ring-f5red-700/10 ${changeButton ? "bg-f5green-350 hover:bg-f5green-300" : "bg-f5red-350 hover:bg-f5red-300"}`}
           >
             {buttonString.cancel}
           </button>
@@ -98,7 +99,7 @@ export default function ModalCustom({
               onClose();
             }}
             type="button"
-            className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10"
+            className={`px-12 py-2 text-sm font-semibold rounded-md text-neutral-100  ring-1 ring-inset ring-f5green-700/10 ${changeButton ? "bg-f5red-350 hover:bg-f5red-300" : "bg-f5green-350 hover:bg-f5green-300"}`}
           >
             {buttonString.add}
           </button>

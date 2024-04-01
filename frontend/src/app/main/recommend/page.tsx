@@ -12,6 +12,7 @@ import { FaRegBookmark } from "react-icons/fa6";
 import { useMediaQuery } from "react-responsive";
 import { ClimbingBoxLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
+import { access } from "fs";
 
 const apiAddress = "https://spring.pickITup.online";
 export default function MyFavoriteRecruit() {
@@ -105,19 +106,18 @@ export default function MyFavoriteRecruit() {
   }; //북마크 여부 확인 함수
   useEffect(() => {
     setAccessToken(sessionStorage.getItem("accessToken"));
-  }, []);
+  }, []); //토큰 저장
 
   useEffect(() => {
     const fetchRecommends = async () => {
       try {
         const res = await fetch(`${apiAddress}/users/recommend/recruit`, {
-          method: "GET",
           headers: {
             Authorization: "Bearer " + accessToken,
           },
         });
         const data = await res.json();
-        console.log(data.response);
+        // console.log(data.response);
         setMyRecommendList(data.response);
         setRecommendLoading(false);
       } catch (error) {
@@ -127,7 +127,7 @@ export default function MyFavoriteRecruit() {
     if (accessToken) {
       fetchRecommends();
     }
-  }, [accessToken]);
+  }, [accessToken]); //토큰 저장되면 그걸로 불러오기
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -142,15 +142,19 @@ export default function MyFavoriteRecruit() {
   return (
     <Fragment>
       {!recommendLoading && (
-        <div className="flex justify-center mx-40">
+        <div className={`flex justify-center ${isMobile ? "" : "mx-40"}`}>
           <table className="w-full">
             <thead>
-              <tr className="text-left h-20 border-b-[1px]">
-                <th className="w-2/12 px-2">회사명</th>
-                <th className="w-3/12 px-2">포지션명</th>
-                <th className="w-4/12 px-2">요구기술스택</th>
-                <th className="w-1/12 px-2  text-center">거리(km)</th>
-                <th className="w-1/12 px-2 text-center">종료일</th>
+              <tr
+                className={`text-left h-20 border-b-[1px] ${isMobile ? "text-sm" : ""}`}
+              >
+                <th className="w-2/12 px-1">{isMobile ? "회사" : "회사명"} </th>
+                <th className="w-4/12 px-1">포지션명</th>
+                <th className="w-3/12 px-1">요구기술스택</th>
+                <th className="w-1/12 px-1  text-center">거리(km)</th>
+                <th className="w-1/12 px-1 text-center">
+                  {isMobile ? "종료" : "종료일"}
+                </th>
                 <th className="w-1/12 px-2"></th>
               </tr>
             </thead>
@@ -159,10 +163,12 @@ export default function MyFavoriteRecruit() {
                 (recruit: RecommendRecruit, index: number) => (
                   <tr
                     key={index}
-                    className="h-20 p-4 text-sm text-left transition-all duration-300 ease-in rounded-md hover:bg-zinc-100 hover:scale-105 cursor-pointer"
+                    className={`h-20 p-4 text-sm text-left transition-all duration-300 ease-in rounded-md hover:bg-zinc-100 hover:scale-105 cursor-pointer `}
                     onClick={() => navigateToRecruitmentUrl(recruit.url)}
                   >
-                    <td className="px-2">{recruit.company}</td>
+                    <td className={`${isMobile ? "px-1" : "px-2"}`}>
+                      {recruit.company}
+                    </td>
                     <td>{recruit.title}</td>
                     <td>
                       <div className="flex flex-wrap gap-1">
@@ -170,6 +176,19 @@ export default function MyFavoriteRecruit() {
                           let techTmp = tech.replace(/\s/g, "");
                           let haveTech = recruit.intersection.includes(tech);
                           techTmp = techTmp.replace(/#/g, "Sharp");
+                          if (isMobile) {
+                            return (
+                              <Image
+                                src={`/images/techLogo/${techTmp}.png`}
+                                alt={tech}
+                                width={22}
+                                height={22}
+                                priority={true}
+                                key={i}
+                                className={`border-f5gray-300 border rounded-full ${haveTech ? "border-f5green-300 border-1 scale-105" : ""}`}
+                              />
+                            );
+                          }
                           return (
                             <div
                               key={i}
@@ -190,10 +209,13 @@ export default function MyFavoriteRecruit() {
                       </div>
                     </td>
                     <td className="text-center">
-                      {Math.round((recruit.distance + Number.EPSILON) * 1000) /
-                        1000}
+                      {isMobile
+                        ? Math.ceil(recruit.distance)
+                        : Math.round(
+                            (recruit.distance + Number.EPSILON) * 1000
+                          ) / 1000}
                     </td>
-                    <td className="text-center">
+                    <td className={`text-center ${isMobile ? "text-xs" : ""}`}>
                       {recruit.dueDate[0] == 2100
                         ? "상시채용"
                         : recruit.dueDate[0] +
@@ -207,7 +229,7 @@ export default function MyFavoriteRecruit() {
                         onClick={(event) =>
                           bookMarkHandler(event, recruit.recruitId)
                         }
-                        className={`text-xl flex justify-center text-f5green-300 duration-300 ease-in-out hover:scale-105 `}
+                        className={`${isMobile ? "" : "text-xl"} flex justify-center text-f5green-300 duration-300 ease-in-out hover:scale-105 `}
                       >
                         {checkBookmark(recruit.recruitId) ? (
                           <FaBookmark />
