@@ -5,7 +5,6 @@ import models.Recommendation
 import org.apache.spark.ml.feature.{CountVectorizer, MinMaxScaler, VectorAssembler}
 import org.apache.spark.ml.linalg.{SparseVector, Vector}
 import org.apache.spark.sql.functions.{broadcast, lit, udf, when}
-import org.apache.spark.sql.types.TimestampType
 import utils.SparkUtil
 
 object ContentBasedFilteringService {

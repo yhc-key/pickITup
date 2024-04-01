@@ -1,10 +1,10 @@
 package controllers
 
 import models.Recommendation
-import serializers.RecommendationSerializer._
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import services.recommend.{CollaborativeFilteringService, ContentBasedFilteringService, SimilarityService}
+import serializers.RecommendationSerializer._
+import services.recommend.{CollaborativeFilteringService, ContentBasedFilteringService}
 
 import javax.inject.Inject
 
