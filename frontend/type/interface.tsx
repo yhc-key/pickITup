@@ -12,6 +12,7 @@ export interface ModalCustomProps {
     cancel: string;
     add: string;
   };
+  changeButton?: boolean;
   design?: string;
   open: boolean;
   onClose: () => void;

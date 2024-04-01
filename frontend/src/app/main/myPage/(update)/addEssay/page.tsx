@@ -16,6 +16,7 @@ interface Essay {
 }
 
 const apiAddress = "https://spring.pickITup.online/self/main";
+const accessToken = sessionStorage.getItem("accessToken");
 
 export default function AddEssay() {
   const companyRef = useRef<HTMLInputElement | null>();
@@ -78,6 +79,7 @@ export default function AddEssay() {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: "Bearer " + accessToken,
               },
               body: JSON.stringify(sendEssays[index]),
             })
