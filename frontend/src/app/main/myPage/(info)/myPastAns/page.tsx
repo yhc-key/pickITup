@@ -71,8 +71,8 @@ export default function MyPastAns() {
                     >
                       {isPastAnsHovered === index ? (
                         <div className="relative">
-                          <div className="absolute right-0 top-2 px-5 py-4 w-[30rem] bg-f5gray-300 text-f5black-400 rounded-md text-sm">
-                            <div className="absolute w-4 h-4 right-20 -top-1 origin-center rotate-45 border-t-[1rem]  border-t-f5gray-300"></div>
+                          <div className="absolute right-0 top-2 px-5 py-4 w-[30rem] bg-f5black-400 text-white rounded-md text-sm">
+                            <div className="absolute w-4 h-4 right-16 -top-1 origin-center rotate-45 border-t-[1rem]  border-t-f5black-400 "></div>
                             {interview.answer}
                           </div>
                         </div>
@@ -93,8 +93,8 @@ export default function MyPastAns() {
                     >
                       {isExAnsHovered === index ? (
                         <div className="relative">
-                          <div className="absolute right-0 top-2 px-5 py-4 w-[30rem] bg-f5gray-300 text-f5black-400 rounded-md text-sm">
-                            <div className="absolute w-4 h-4 right-20 -top-1 origin-center rotate-45 border-t-[1rem]  border-t-f5gray-300"></div>
+                          <div className="absolute right-0 top-2 px-5 py-4 w-[30rem] bg-f5black-400 text-white rounded-lg text-sm">
+                            <div className="absolute w-4 h-4 right-16 -top-1 origin-center rotate-45 border-t-[1rem]  border-t-f5black-400"></div>
                             {interview.example}
                           </div>
                         </div>
