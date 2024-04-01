@@ -117,7 +117,7 @@ export default function MyFavoriteRecruit() {
           },
         });
         const data = await res.json();
-        // console.log(data.response);
+        console.log(data.response);
         setMyRecommendList(data.response);
         setRecommendLoading(false);
       } catch (error) {
@@ -149,12 +149,14 @@ export default function MyFavoriteRecruit() {
                 className={`text-left h-20 border-b-[1px] ${isMobile ? "text-sm" : ""}`}
               >
                 <th className="w-2/12 px-1">{isMobile ? "회사" : "회사명"} </th>
-                <th className="w-4/12 px-1">포지션명</th>
-                <th className="w-3/12 px-1">요구기술스택</th>
-                <th className="w-1/12 px-1  text-center">거리(km)</th>
-                <th className="w-1/12 px-1 text-center">
-                  {isMobile ? "종료" : "종료일"}
+                <th className="w-4/12 px-1">
+                  {isMobile ? "포지션" : "포지션명"}
                 </th>
+                <th className="w-3/12 px-1">
+                  {isMobile ? "기술스택" : "요구기술스택"}
+                </th>
+                <th className="w-1/12 text-center">거리</th>
+                <th className="w-1/12 text-center">기한</th>
                 <th className="w-1/12 px-2"></th>
               </tr>
             </thead>
@@ -210,19 +212,19 @@ export default function MyFavoriteRecruit() {
                     </td>
                     <td className="text-center">
                       {isMobile
-                        ? Math.ceil(recruit.distance)
-                        : Math.round(
-                            (recruit.distance + Number.EPSILON) * 1000
-                          ) / 1000}
+                        ? Math.ceil(recruit.distance) + "km"
+                        : "약 " + Math.ceil(recruit.distance) + "km"}
                     </td>
                     <td className={`text-center ${isMobile ? "text-xs" : ""}`}>
                       {recruit.dueDate[0] == 2100
                         ? "상시채용"
-                        : recruit.dueDate[0] +
-                          "-" +
-                          recruit.dueDate[1] +
-                          "-" +
-                          recruit.dueDate[2]}
+                        : isMobile
+                          ? recruit.dueDate[1] + "-" + recruit.dueDate[2]
+                          : recruit.dueDate[0] +
+                            "-" +
+                            recruit.dueDate[1] +
+                            "-" +
+                            recruit.dueDate[2]}
                     </td>
                     <td className="justify-center text-lg text-f5green-300 duration-300 ease-in-out hover:scale-125">
                       <div
