@@ -35,7 +35,7 @@ public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue
     private Integer id;
-    
+
     @Builder.Default
     @Column(columnDefinition = "INT DEFAULT 1")
     private Integer profile = 1;
@@ -93,6 +93,10 @@ public class User extends BaseTimeEntity {
 
     public void changeNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void changeProfile(Integer profile) {
+        this.profile = profile;
     }
 
     public void changeAddress(String address) {
