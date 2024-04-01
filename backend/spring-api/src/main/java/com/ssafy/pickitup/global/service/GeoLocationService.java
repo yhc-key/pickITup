@@ -39,7 +39,6 @@ public class GeoLocationService {
 
         try {
             Response response = client.newCall(request).execute();
-            System.out.println("response = " + response);
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
                 ObjectMapper mapper = new ObjectMapper();

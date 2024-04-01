@@ -43,10 +43,9 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-            .requestMatchers("/auth/**", "/recruit/**", "/self/**",
-                "/quizzes/**", "/users/*/scraps/recruit", "users/*/keywords",
-                "/keywords/**", "/badge/**", "/users/*/click/recruit",
-                "/users/test/**") // '인증','인가' 서비스 적용x
+            .requestMatchers("/auth/signup", "/auth/login", "auth/logout", "/recruit/**",
+                "/keywords/**", "/users/test/**", "/quizzes/ox/**",
+                "/quizzes/speed/**", "/users/mongo") // '인증','인가' 서비스 적용x
             .requestMatchers(swaggerURL)
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // 정적 리소스들
     }

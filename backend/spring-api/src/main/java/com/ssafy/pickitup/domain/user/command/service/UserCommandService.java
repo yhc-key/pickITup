@@ -7,7 +7,6 @@ import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
 import com.ssafy.pickitup.domain.keyword.entity.Keyword;
 import com.ssafy.pickitup.domain.keyword.repository.KeywordQueryJpaRepository;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
-import com.ssafy.pickitup.domain.user.command.repository.ClickCommandMongoRepository;
 import com.ssafy.pickitup.domain.user.command.repository.ScrapCommandMongoRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserClickCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepository;
@@ -35,7 +34,6 @@ import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.domain.user.query.service.UserInterviewQueryService;
 import com.ssafy.pickitup.global.entity.GeoLocation;
 import com.ssafy.pickitup.global.service.GeoLocationService;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +66,6 @@ public class UserCommandService {
     private final UserQueryService userQueryService;
     private final UserRankService userRankService;
     private final ScrapCommandMongoRepository scrapCommandMongoRepository;
-    private final ClickCommandMongoRepository clickCommandMongoRepository;
     private final UserRecommendService userRecommendService;
     private final UserInterviewQueryService userInterviewQueryService;
 
@@ -84,29 +81,20 @@ public class UserCommandService {
         int closingCount = recruitQueryService.countClosingRecruitByIdList(myRecruitIdList);
         int solvedInterviewAnswerCount = userInterviewQueryService.countSolvedInterviewsByUserId(
             userId);
-        /*
-            뱃지 갱신 -> ok
 
-            내가 가진 뱃지 개수 카운트 -> ok
+        log.debug("scrapCount : {}", scrapCount);
+        log.debug("badgeCount : {}", badgeCount);
+        log.debug("closingCount : {}", closingCount);
 
-            스크랩 한 공고 중 마감 임박 채용 공고 개수 카운트 -> ok
-
-            기술 면접 대비 문제 풀이 수 카운트
-         */
-
-        log.info("scrapCount : {}", scrapCount);
-        log.info("badgeCount : {}", badgeCount);
-        log.info("closingCount : {}", closingCount);
-
-        log.info("user = {}", user.toString());
-        log.info("user level before = {}", user.getLevel());
+        log.debug("user = {}", user.toString());
+        log.debug("user level before = {}", user.getLevel());
         // 유저 레벨 업데이트
         User updatedUser = userRankService.updateLevel(user);
-        log.info("user level after = {}", updatedUser.getLevel());
+        log.debug("user level after = {}", updatedUser.getLevel());
 
         //유저 경험치 정보
         UserLevel expInfo = userRankService.getExpInfo(updatedUser.getLevel());
-        log.info("expInfo = {}", expInfo);
+        log.debug("expInfo = {}", expInfo);
 
         //유저 랭크 업데이트
         if (user.getUserRank() == Rank.NORMAL) {
@@ -144,7 +132,6 @@ public class UserCommandService {
         badgeCommandService.initBadge(user);
         userCommandJpaRepository.save(user);
         auth.setUser(user);
-//        badgeCommandService.initBadge(user.getId());
         return UserResponseDto.toDto(user, 0, 0, 0, 0);
     }
 
@@ -171,6 +158,13 @@ public class UserCommandService {
     }
 
     @CacheEvict(cacheNames = "recommend", key = "#authId")
+    @Transactional
+    public void changeProfile(Integer userId, Integer profile) {
+        User user = userCommandJpaRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
+        user.changeProfile(profile);
+    }
+
     @Transactional
     public void changeAddress(Integer authId, String address) {
         User user = userCommandJpaRepository.findById(authId)
@@ -209,32 +203,35 @@ public class UserCommandService {
 
         user.setUserKeywords(userKeywords);
 
-        // 로그 출력
-        List<String> keywordsNameList = userKeywords.stream()
-            .map(userKeyword -> userKeyword.getKeyword().getName())
-            .toList();
-        log.info("keywordsNameList = {}", keywordsNameList);
-
-        UserMongo userMongo = updateUserMongo(user);
-
-        userMongo.setKeywords(keywordsNameList);
+        updateUserMongo(user);
 
         // 스칼라 서버에 유저 키워드 변경 사실 알리기
         callScalaByKeywordChange();
     }
 
     @Transactional
-    private UserMongo updateUserMongo(User user) {
+    public void updateUserMongo(User user) {
         // UserMongo 업데이트
         Integer userId = user.getId();
+        List<UserKeyword> userKeywords = user.getUserKeywords();
+        List<String> keywordsNameList = userKeywords.stream()
+            .map(userKeyword -> userKeyword.getKeyword().getName())
+            .toList();
+        log.debug("keywordsNameList = {}", keywordsNameList);
+
         GeoLocation geoLocation = geoLocationService.getGeoLocation(user.getAddress());
-        return userCommandMongoRepository.findById(userId)
-            .orElseGet(
-                () -> new UserMongo(userId,
-                    new ArrayList<>(),
-                    Rank.NORMAL.name(),
-                    geoLocation.getLatitude(),
-                    geoLocation.getLongitude()));
+
+        UserMongo userMongo = userCommandMongoRepository.findById(userId)
+            .orElseGet(() ->
+                UserMongo.builder()
+                    .id(userId)
+                    .rank(Rank.NORMAL.name())
+                    .build());
+        userMongo.setKeywords(keywordsNameList);
+        userMongo.setLatitude(geoLocation.getLatitude());
+        userMongo.setLongitude(geoLocation.getLongitude());
+
+        userCommandMongoRepository.save(userMongo);
     }
 
     @CacheEvict(cacheNames = "recommend", key = "#authId")
@@ -252,7 +249,7 @@ public class UserCommandService {
         if (scrapCommandMongoRepository.existsByUserIdAndRecruitId(userId, recruitId)) {
             throw new DuplicateScrapException();
         }
-        scrapCommandMongoRepository.save(new ScrapMongo(userId, recruitId));
+        scrapCommandMongoRepository.save(ScrapMongo.createScrap(userId, recruitId));
         userRecruitCommandJpaRepository.save(userRecruit);
     }
 

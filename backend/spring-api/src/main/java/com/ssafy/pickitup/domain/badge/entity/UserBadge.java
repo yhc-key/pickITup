@@ -40,7 +40,7 @@ public class UserBadge {
 
     public BadgeQueryResponseDto toResponse() {
         return BadgeQueryResponseDto.builder()
-            .badge(badge)
+            .badgeName(badge.getName())
             .isAchieve(isAchieved)
             .build();
     }

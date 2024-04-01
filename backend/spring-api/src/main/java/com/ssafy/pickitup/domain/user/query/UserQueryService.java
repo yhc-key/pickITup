@@ -10,11 +10,11 @@ import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserQueryService {
@@ -25,9 +25,9 @@ public class UserQueryService {
     private final UserKeywordQueryJpaRepository userKeywordQueryJpaRepository;
 
     @Transactional(readOnly = true)
-    public Page<RecruitQueryResponseDto> findMyRecruitById(Integer authId, Pageable pageable) {
+    public List<RecruitQueryResponseDto> findMyRecruitById(Integer authId) {
 
-        return recruitQueryService.searchByIdList(findRecruitIdByUserId(authId), pageable);
+        return recruitQueryService.searchByIdList(findRecruitIdByUserId(authId));
     }
 
     @Transactional(readOnly = true)
@@ -35,7 +35,7 @@ public class UserQueryService {
         List<UserRecruit> userRecruitList = userRecruitJpaRepository.findAllByUserId(userId);
         List<Integer> recruitIdList = new ArrayList<>();
         for (UserRecruit userRecruit : userRecruitList) {
-            recruitIdList.add(userRecruit.getId());
+            recruitIdList.add(userRecruit.getRecruitId());
         }
         return recruitIdList;
     }

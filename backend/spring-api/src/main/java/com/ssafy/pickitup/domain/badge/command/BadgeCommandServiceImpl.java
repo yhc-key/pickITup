@@ -6,6 +6,7 @@ import com.ssafy.pickitup.domain.badge.entity.UserBadge;
 import com.ssafy.pickitup.domain.badge.query.BadgeQueryJpaRepository;
 import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
 import com.ssafy.pickitup.domain.badge.query.UserBadgeQueryJpaRepository;
+import com.ssafy.pickitup.domain.badge.query.dto.BadgeQueryResponseDto;
 import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
@@ -30,7 +31,7 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
     @Transactional
     @Override
     public BadgeCommandResponseDto renewBadge(Integer userId) {
-        log.info("뱃지 갱신하려는 userId : {}", userId);
+        log.debug("뱃지 갱신하려는 userId : {}", userId);
         User user = userCommandJpaRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
         List<String> result = new ArrayList<>();
@@ -38,42 +39,35 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
         List<UserBadge> notAchievedBadges = badgeQueryService.findNotAchievedBadges(userBadges);
 
         for (UserBadge userBadge : notAchievedBadges) {
-            log.info("갱신 안된 뱃지 개수 : {}", notAchievedBadges.size());
+            log.debug("갱신 안된 뱃지 개수 : {}", notAchievedBadges.size());
             if (badgeQueryService.isBadgeAchieved(user, userBadge)) {
                 userBadge.setAchieved(true);
                 result.add(userBadge.getBadge().getName());
-                log.info("{} 갱신 성공 ! ", userBadge.getBadge().getName());
+                log.debug("{} 갱신 성공 ! ", userBadge.getBadge().getName());
             }
         }
         return new BadgeCommandResponseDto(result);
     }
 
-//    @Transactional
-//    @Override
-//    public void initBadge(Integer userId) {
-//        log.info("init 시작");
-//        User user = userCommandJpaRepository.findById(userId).get();
-//        List<Badge> badges = badgeQueryJpaRepository.findAll();
-//        for (Badge badge : badges) {
-//            UserBadge userBadge = UserBadge.builder()
-//                .badge(badge)
-//                .user(user)
-//                .isAchieved(false)
-//                .build();
-//            userBadgeCommandJpaRepository.save(userBadge);
-//        }
-//        log.info("init 끝");
-//    }
-
     @Transactional
     public void initBadge(User user) {
-        log.info("init 시작");
+        log.debug("init 시작");
         List<Badge> badges = badgeQueryJpaRepository.findAll();
         List<UserBadge> userBadgeList = badges.stream()
             .map(badge -> UserBadge.builder().user(user).badge(badge).isAchieved(false).build())
             .toList();
         user.setUserBadges(userBadgeList);
-        log.info("user badges = {}", user.getUserBadges());
-        log.info("init 끝");
+        log.debug("user badges = {}", user.getUserBadges());
+        log.debug("init 끝");
+    }
+
+
+    @Override
+    public List<BadgeQueryResponseDto> findMyBadges(Integer userId) {
+        renewBadge(userId);
+        return userBadgeQueryJpaRepository.findByUserId(userId)
+            .stream()
+            .map(UserBadge::toResponse)
+            .toList();
     }
 }

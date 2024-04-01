@@ -2,13 +2,12 @@ package com.ssafy.pickitup.domain.user.api;
 
 import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.badge.query.BadgeQueryService;
-import com.ssafy.pickitup.domain.user.command.service.UserClickService;
+import com.ssafy.pickitup.domain.badge.command.BadgeCommandService;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserMongoCommandService;
 import com.ssafy.pickitup.domain.user.command.service.UserRecommendFacade;
 import com.ssafy.pickitup.domain.user.dto.UserRecommendDto;
 import com.ssafy.pickitup.domain.user.dto.UserUpdateRequestDto;
-import com.ssafy.pickitup.domain.user.query.UserQueryService;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
 import com.ssafy.pickitup.global.annotation.AuthID;
 import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
@@ -32,10 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserCommandService userCommandService;
-    private final UserQueryService userQueryService;
-    private final UserClickService userClickService;
+    private final UserMongoCommandService userMongoCommandService;
     private final UserRecommendFacade userRecommendFacade;
-    private final BadgeQueryService badgeQueryService;
+    private final BadgeCommandService badgeCommandService;
 
     @Operation(summary = "회원 정보 조회 API")
     @GetMapping("/me")
@@ -49,6 +47,14 @@ public class UserController {
         userCommandService.changeNickname(userId, nickname);
         return success("닉네임 변경 성공");
     }
+
+    @Operation(summary = "프로필 사진 변경 PI")
+    @PatchMapping("/profile/image")
+    public ApiResult<?> changeProfileImage(@AuthID Integer userId, @RequestBody Integer profile) {
+        userCommandService.changeProfile(userId, profile);
+        return success("프로필 사진 변경 성공");
+    }
+
 
     @Operation(summary = "회원 주소 변경 API")
     @PatchMapping("/address")
@@ -69,13 +75,20 @@ public class UserController {
     @GetMapping("/recommend/recruit")
     public ApiResult<?> getUserRecommendRecruits(
         @AuthID Integer authId) {
-        List<UserRecommendDto> userRecommendRecruitList = userRecommendFacade.getUserRecommendList(authId);
+        List<UserRecommendDto> userRecommendRecruitList = userRecommendFacade.getUserRecommendList(
+            authId);
         return success(userRecommendRecruitList);
     }
 
     @Operation(summary = "회원 뱃지 조회")
     @GetMapping("/badges")
     public ApiResult<?> getBadge(@AuthID Integer userId) {
-        return success(badgeQueryService.findMyBadges(userId));
+        return success(badgeCommandService.findMyBadges(userId));
+    }
+
+    @Operation(summary = "User 정보 MongoDB로 마이그레이션")
+    @GetMapping("/mongo")
+    public void toMongo() {
+        userMongoCommandService.migration();
     }
 }
