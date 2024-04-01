@@ -134,6 +134,8 @@ export default function MyFavoriteRecruit() {
       setTimeout(() => {
         router.push("/main/recruit");
       }, 3000);
+    } else {
+      clearTimeout;
     }
   }, [isLoggedIn, router]);
 
@@ -221,7 +223,9 @@ export default function MyFavoriteRecruit() {
           </table>
         </div>
       )}
-      <div className="flex flex-col justify-center h-[60vh] items-center">
+      <div
+        className={`flex flex-col justify-center h-[60vh] items-center ${isLoggedIn ? "hidden" : ""}`}
+      >
         {isLoggedIn ? (
           recommendLoading && (
             <Fragment>

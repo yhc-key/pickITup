@@ -108,7 +108,7 @@ const config: Config = {
         startGauge: "startGauge 10s forwards linear",
         startGauge4: "startGauge 40s forwards linear",
         "fade-in": "fadeIn 0.7s ease-in",
-       "fade-in-delayed": "fadeIn 0.7s ease-in forwards 0.3s",
+        "fade-in-delayed": "fadeIn 0.7s ease-in forwards 0.3s",
         "scale-in": "scaleIn 0.7s ease-in",
         "slide-up": "slideUp 0.7s ease-in",
         "slide-right": "slideRight 0.7s ease-in",
