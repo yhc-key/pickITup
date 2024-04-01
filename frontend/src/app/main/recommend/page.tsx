@@ -224,7 +224,7 @@ export default function MyFavoriteRecruit() {
         </div>
       )}
       <div
-        className={`flex flex-col justify-center h-[60vh] items-center ${isLoggedIn ? "hidden" : ""}`}
+        className={`flex flex-col justify-center h-[60vh] items-center ${isLoggedIn && !recommendLoading ? "hidden" : ""}`}
       >
         {isLoggedIn ? (
           recommendLoading && (

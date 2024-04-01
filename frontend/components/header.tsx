@@ -116,6 +116,9 @@ export default function Header() {
           </div>
           <div className="flex">
             {navLinks.map((link: LinkType) => {
+              if (link.name === "마이 페이지") {
+                return;
+              }
               return (
                 <div key={link.name} className="m-auto">
                   <Link
