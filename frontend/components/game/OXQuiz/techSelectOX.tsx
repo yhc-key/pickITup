@@ -73,6 +73,7 @@ export default function TechSelectOX() {
           <div className="min-h-[250px] mb:min-w-[260px]">
             <div className="flex flex-wrap justify-center gap-4 mb:gap-2">
               {techs?.map((tech: string, index: number) => {
+                const techWithoutSpaces = tech.replace(/\s/g, ""); // 공백 제거
                 const isActive: boolean = pickTech == tech;
                 return (
                   <button
@@ -82,7 +83,7 @@ export default function TechSelectOX() {
                     className={`flex flex-row border-f5gray-300 border py-1 pr-2 mb:pr-1 mb:py-0.5 rounded-2xl text-f5black-400 text-xs items-center transition-all ease-in duration-150 hover:scale-105 ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
                   >
                     <Image
-                      src={`/images/techLogo/${tech}.png`}
+                      src={`/images/techLogo/${techWithoutSpaces}.png`}
                       alt={tech}
                       width={22}
                       height={22}
@@ -102,7 +103,10 @@ export default function TechSelectOX() {
               취소하기
             </button>
             <Link href={`/main/game/OXQuiz/${pickTech}`}>
-              <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10 ">
+              <button
+                className={`px-12 py-2 text-sm font-semibold rounded-md text-neutral-100  ring-1 ring-inset ring-f5green-700/10 ${pickTech ? "bg-f5green-350 cursor-pointer hover:bg-f5green-300 " : "bg-f5gray-500 cursor-not-allowed opacity-50"}`}
+                disabled={!pickTech}
+              >
                 시작하기
               </button>
             </Link>
