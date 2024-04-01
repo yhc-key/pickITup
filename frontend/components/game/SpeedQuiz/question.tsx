@@ -24,6 +24,12 @@ function isEnglish(char: string): boolean {
   return (unicode >= 65 && unicode <= 90) || (unicode >= 97 && unicode <= 122);
 }
 
+//  입력한 문자열이 특수문자인지 확인하는 함수
+const isSpecialCharacters = (value: string) => {
+  const regex = /[~!@#$%^&*()_+={}\[\]:;<>,.?\\/]/g;
+  return regex.test(value);
+};
+
 export default function Question({
   question,
   index,
@@ -50,7 +56,7 @@ export default function Question({
       if (inputValue.length === 1) {
         inputHTML.current[idx + 1]?.focus();
       }
-    } else {
+    } else if(isSpecialCharacters(inputValue)) {
       if (inputValue.length === 1) {
         inputHTML.current[idx + 1]?.focus();
       }

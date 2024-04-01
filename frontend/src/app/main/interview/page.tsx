@@ -8,13 +8,12 @@ import { techDataMap } from "@/data/techData";
 
 const techTypes: string[] = [
   "언어",
-  "프론트앤드",
-  "백앤드",
+  "프론트엔드",
+  "백엔드",
   "모바일",
   "데이터",
   "데브옵스",
   "테스팅툴",
-  "정보보안",
 ];
 
 export default function InterViewPage() {
@@ -40,17 +39,17 @@ export default function InterViewPage() {
             <div className="my-2 mr-1 text-f5green-300">면접 대비 </div>
             <div className="my-2 ml-2 text-f5black-400">QUIZ</div>
             {isMobile ? (
-            <Image
-              src="/images/pencil.png"
-              alt="pencil"
-              width={80}
-              height={80}
-              priority={true}
-            />
+              <Image
+                src="/images/pencil.png"
+                alt="pencil"
+                width={80}
+                height={80}
+                priority={true}
+              />
             ) : (
               <Image
-              src="/images/pencil.png"
-              alt="pencil"
+                src="/images/pencil.png"
+                alt="pencil"
                 width={120}
                 height={120}
                 priority={true}
@@ -69,7 +68,6 @@ export default function InterViewPage() {
         </div>
       </div>
       <div className="flex flex-col flex-wrap justify-center mb:mt-12">
-   
         <div className="flex flex-wrap justify-center gap-2 mt-3 mb:px-10">
           {techTypes.map((techType: string, index: number) => {
             const isActive: boolean = pickType == techType;
@@ -86,9 +84,10 @@ export default function InterViewPage() {
           })}
         </div>
         <div className="w-1/2 mb:w-2/3 mx-auto my-4 border-t-2"></div>
-        <div className= "min-h-[200px] mb:min-w-[260px]">
+        <div className="min-h-[200px] mb:min-w-[260px]">
           <div className="flex flex-wrap justify-center w-1/2 mb:w-2/3 gap-4 mb:gap-2 mx-auto">
             {techs?.map((tech: string, index: number) => {
+              const techWithoutSpaces = tech.replace(/\s/g, ""); // 공백 제거
               const isActive: boolean = pickTech == tech;
               return (
                 <button
@@ -98,7 +97,7 @@ export default function InterViewPage() {
                   className={`flex flex-row border-f5gray-300 border py-1 pr-2 rounded-2xl text-f5black-400 text-xs items-center  hover:transition-all hover:scale-105 hover:ease-in-out  ${isActive ? "border-f5green-300 border-2 scale-105" : ""}`}
                 >
                   <Image
-                    src={`/images/techLogo/${tech}.png`}
+                    src={`/images/techLogo/${techWithoutSpaces}.png`}
                     alt={tech}
                     width={22}
                     height={22}
@@ -112,12 +111,12 @@ export default function InterViewPage() {
         </div>
       </div>
       <div className="flex justify-center my-5">
-          <Link href={`/main/interview/${pickTech}`}>
-            <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
-              시작하기
-            </button>
-          </Link>
-        </div>
+        <Link href={`/main/interview/${pickTech}`}>
+          <button className="px-12 py-2 text-sm font-semibold rounded-md text-neutral-100 bg-f5green-350 hover:bg-f5green-300 ring-1 ring-inset ring-f5green-700/10">
+            시작하기
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }

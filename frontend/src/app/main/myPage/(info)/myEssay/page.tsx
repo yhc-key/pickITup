@@ -32,20 +32,23 @@ export default function MyEssay(): JSX.Element {
   const [isChangeModalOpen, setIsChangeModalOpen] = useState<boolean>(false);
   const [isEssayChangeModalOpen, setIsEssayChangeModalOpen] =
     useState<boolean>(false);
+  const [isMainTitleDeleteModalOpen, setIsMainTitleDeleteModalOpen] =
+    useState<boolean>(false);
   const [myEssayActive, setMyEssayActive] = useState<boolean[][]>([]); //서브 타이틀 나오면서 뜨는 회사 명중 클릭된 것
   const [titleActive, setTitleActive] = useState<boolean[]>([]); //타이틀 액티브 되었다는 것은 드롭다운이 내려간다는 뜻
   const [titles, setTitles] = useState(dummyTitles);
   const [essays, setEssays] = useState<Essay[][]>(myEssays);
   const [titleValidate, setTitleValidate] = useState<boolean>(true);
-
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const essayTitleAddRef = useRef<HTMLInputElement>(null);
   const essayTitleChangeRef = useRef<HTMLInputElement>(null);
   const essayChangeRef = useRef<HTMLTextAreaElement>(null);
+  const mainIdRef = useRef<number>(0);
 
   const makeCanEditHandler = (index: number) => {
     setBeforeChangeTitle(titles[index]);
     setIsChangeModalOpen(true);
-  };
+  }; // 서브 에세이 바꾸기 로직
 
   const dropDownClickHandler: (index: number) => void = (
     index: number
@@ -63,7 +66,7 @@ export default function MyEssay(): JSX.Element {
     );
     tmpEssays[essayIndex][companyIndex] = true;
     setMyEssayActive(tmpEssays);
-  };
+  }; // 클릭기록용 로직
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -77,14 +80,16 @@ export default function MyEssay(): JSX.Element {
     try {
       await fetch(`${apiAddress}/${titleId}/sub/${essayId}`, {
         method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
       });
-      // window.location.reload();
+      window.location.reload();
       // 혹시 전역 객체가 window가 아니어서 문제생길수있음 nodejs 환경에서는 서버 띄우고 글로벌 검토 요망
     } catch (error) {
       console.error(error);
     }
-    // redirect("/main/myPage/myEssay");
-  };
+  }; // 삭제 로직
 
   const addSubmitHandler = async () => {
     if (!essayTitleAddRef.current) return;
@@ -94,7 +99,6 @@ export default function MyEssay(): JSX.Element {
     }
     setTitleValidate(true);
     try {
-      const accessToken = sessionStorage.getItem("accessToken");
       await fetch(apiAddress, {
         method: "POST",
         headers: {
@@ -108,7 +112,7 @@ export default function MyEssay(): JSX.Element {
     } catch (error) {
       console.error(error);
     }
-  };
+  }; // 메인 자소서 항목 추가 로직
 
   const changeTitleHandler = async (id: number) => {
     if (!essayTitleAddRef.current) return;
@@ -122,6 +126,7 @@ export default function MyEssay(): JSX.Element {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
         },
         body: JSON.stringify({ title: essayTitleAddRef.current.value.trim() }),
       });
@@ -130,12 +135,12 @@ export default function MyEssay(): JSX.Element {
     } catch (error) {
       console.error(error);
     }
-  };
+  }; // 메인 타이틀 바꾸기 로직
 
   const changeEssaySubmitHandler = (titleId: number, essayId: number) => {
     setIsEssayChangeModalOpen(true);
     nowClickEssay.current = { titleId, essayId };
-  };
+  }; //바꿀수 있게 모달 띄우기
 
   const changeEssay = async () => {
     let changeE = {};
@@ -162,6 +167,7 @@ export default function MyEssay(): JSX.Element {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + accessToken,
           },
           body: JSON.stringify(changeE),
         }
@@ -170,12 +176,38 @@ export default function MyEssay(): JSX.Element {
     } catch (error) {
       console.error(error);
     }
+  }; // essay 바꾸기 로직
+
+  const deleteMainTitleHandler = (mainId: number) => {
+    setIsMainTitleDeleteModalOpen(true);
+    mainIdRef.current = mainId;
   };
+
+  const deleteTitle = async (mainId: number) => {
+    try {
+      const res: Response = await fetch(`${apiAddress}/${mainId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const jsonData = await res.json();
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    setAccessToken(sessionStorage.getItem("accessToken"));
+  }, []); // 토큰 저장
 
   useEffect(() => {
     const essayListfetchData = async () => {
       try {
-        const accessToken = sessionStorage.getItem("accessToken");
         const res: Response = await fetch(apiAddress, {
           headers: {
             Authorization: "Bearer " + accessToken,
@@ -191,8 +223,11 @@ export default function MyEssay(): JSX.Element {
         console.log(error);
       }
     };
-    essayListfetchData();
-  }, []); // 메인 타이틀 받아오기
+    if (accessToken) {
+      console.log(accessToken);
+      essayListfetchData();
+    }
+  }, [accessToken]); // 메인 타이틀 받아오기
 
   useEffect(() => {
     const fetchEssaysdata = async () => {
@@ -203,7 +238,14 @@ export default function MyEssay(): JSX.Element {
         }); // Promise.all 을 만들기 위해 url들을 urls에 보관
 
         const res: Response[] = await Promise.all(
-          urls.map((url: string): Promise<Response> => fetch(url))
+          urls.map(
+            (url: string): Promise<Response> =>
+              fetch(url, {
+                headers: {
+                  Authorization: "Bearer " + accessToken,
+                },
+              })
+          )
         );
         const data: Essay[][] = await Promise.all(
           res.map(async (res) => {
@@ -219,13 +261,16 @@ export default function MyEssay(): JSX.Element {
         console.error(error);
       }
     };
-    fetchEssaysdata();
-  }, [titles]);
+    if (accessToken) {
+      fetchEssaysdata();
+    }
+  }, [titles, accessToken]);
 
   useEffect(() => {
     const tmpEssayActive: boolean[][] = essays.map(
       (subArray: Essay[]): boolean[] =>
-        subArray && subArray.map((essay: Essay, index: number): boolean =>
+        subArray &&
+        subArray.map((essay: Essay, index: number): boolean =>
           index == 0 ? true : false
         )
     ); // essay 목록에 해당하는 boolean 배열 만들기
@@ -257,10 +302,22 @@ export default function MyEssay(): JSX.Element {
                   className="w-full mr-10 outline-none bg-white"
                 />
                 <div className="flex flex-row gap-6 mr-4 text-lg">
-                  <button onClick={() => makeCanEditHandler(index)}>
+                  <button
+                    onClick={() => deleteMainTitleHandler(title.id)}
+                    className="hover:text-f5red-300"
+                  >
+                    <FaTrash />
+                  </button>
+                  <button
+                    onClick={() => makeCanEditHandler(index)}
+                    className="hover:text-f5green-300"
+                  >
                     <FaPen />
                   </button>
-                  <button onClick={() => dropDownClickHandler(index)}>
+                  <button
+                    onClick={() => dropDownClickHandler(index)}
+                    className="hover:text-f5green-300"
+                  >
                     {titleActive[index] ? <FaChevronUp /> : <FaChevronDown />}
                   </button>
                 </div>
@@ -424,6 +481,16 @@ export default function MyEssay(): JSX.Element {
             onKeyDown={(e) => handleKeyDown(e)}
           />
         </div>
+      </ModalCustom>
+      <ModalCustom
+        open={isMainTitleDeleteModalOpen}
+        name="deleteTitle"
+        onClose={() => setIsMainTitleDeleteModalOpen(false)}
+        changeButton={true}
+        onClickEvent={() => deleteTitle(mainIdRef.current)}
+        buttonString={{ cancel: "취소하기", add: "삭제하기" }}
+      >
+        <div className="text-center">정말 삭제하시겠습니까?</div>
       </ModalCustom>
     </div>
   );
