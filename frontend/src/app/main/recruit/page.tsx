@@ -227,7 +227,7 @@ export default function RecruitPage() {
                       {recruit.company}
                     </div>
                     <div className="text-sm font-semibold text-f5gray-500">
-                      {"📆" +
+                      {"📆 " +
                         recruit.dueDate[0] +
                         "-" +
                         recruit.dueDate[1] +
