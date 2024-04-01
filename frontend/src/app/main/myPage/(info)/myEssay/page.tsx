@@ -43,7 +43,7 @@ export default function MyEssay(): JSX.Element {
   const essayTitleAddRef = useRef<HTMLInputElement>(null);
   const essayTitleChangeRef = useRef<HTMLInputElement>(null);
   const essayChangeRef = useRef<HTMLTextAreaElement>(null);
-  const mainIdRef = useRef<number | null>(null);
+  const mainIdRef = useRef<number>(0);
 
   const makeCanEditHandler = (index: number) => {
     setBeforeChangeTitle(titles[index]);
