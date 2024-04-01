@@ -43,7 +43,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-            .requestMatchers("/auth/**", "/recruit/**",
+            .requestMatchers("/auth/signup", "/auth/login", "auth/logout", "/recruit/**",
                 "/keywords/**", "/users/test/**", "/quizzes/ox/**",
                 "/quizzes/speed/**", "/users/mongo") // '인증','인가' 서비스 적용x
             .requestMatchers(swaggerURL)

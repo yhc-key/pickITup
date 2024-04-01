@@ -94,7 +94,7 @@ public class AuthController {
     }
 
     @Operation(summary = "회원 비활성화 API")
-    @PatchMapping("deactivate")
+    @PatchMapping("/deactivate")
     public ApiResult<String> deactivateAuth(@AuthID Integer authId,
         @RequestBody PasswordDto password) {
         authCommandService.deactivateAuth(authId, password.getPassword());
@@ -102,7 +102,7 @@ public class AuthController {
     }
 
     @Operation(summary = "회원 활성화 API")
-    @PatchMapping("activate")
+    @PatchMapping("/activate")
     public ApiResult<String> activateAuth(@AuthID Integer authId,
         @RequestBody PasswordDto password) {
         authCommandService.activateAuth(authId, password.getPassword());
