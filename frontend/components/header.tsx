@@ -94,7 +94,7 @@ export default function Header() {
   return (
     <header>
       <div>
-        <div className="py-1 flex justify-between border-b border-f5gray-400 mb:hidden">
+        <div className="flex justify-between py-1 border-b border-f5gray-400 mb:hidden">
           <div>
             <Link href="/main/recruit" className="flex items-center">
               <Image
@@ -139,7 +139,7 @@ export default function Header() {
           {isLoggedIn ? (
             <div className="flex items-center my-auto mr-20">
               <div className="mr-2 text-sm text-f5black-400">{nickname}님</div>
-              <div className="transion ease-in duration-300 text-f5black-400 hover:text-f5green-300 cursor-pointer">
+              <div className="duration-300 ease-in cursor-pointer transion text-f5black-400 hover:text-f5green-300">
                 {isSubMenuOpen ? (
                   <IoChevronUpSharp onClick={() => setIsSubMenuOpen(false)} />
                 ) : (
@@ -148,20 +148,21 @@ export default function Header() {
               </div>
               {isSubMenuOpen ? (
                 <div
-                  className={`z-10 bg-white absolute h-24 w-36 top-16 right-16 rounded-lg shadow-md flex flex-col px-4 justify-center text-sm text-f5black-400 transition-colors duration-100 ease-in ${isSubMenuOpen ? "transition-opacity opacity-100 " : "transition-opacity opacity-0 hidden"}`}
+                  className={`z-10 bg-white absolute h-24 w-36 top-16 right-16 rounded-lg shadow-md flex flex-col px-5 justify-center text-sm text-f5black-400 transition-colors duration-100 ease-in ${isSubMenuOpen ? "transition-opacity opacity-100 " : "transition-opacity opacity-0 hidden"}`}
                 >
-                  <div onClick={() => setIsSubMenuOpen(false)}>
+                  <div onClick={() => setIsSubMenuOpen(false)} className="flex items-center justify-start h-1/2">
                     <Link
                       href="/main/myPage/myBadge"
-                      className="h-1/2 flex items-center justify-start  hover:text-f5green-300 hover:font-semibold transition duration-200"
+                      className="flex items-center justify-start transition duration-200 hover:text-f5green-300 hover:font-semibold"
                     >
                       <FiUsers className="mr-2" />
                       마이페이지
                     </Link>
+
                   </div>
-                  <div className="flex h-1/2 items-center justify-start ">
+                  <div onClick={() => setIsSubMenuOpen(false)} className="flex items-center justify-start h-1/2">
                     <button
-                      className="flex items-center justify-start  hover:text-f5green-300 hover:font-semibold"
+                      className="flex items-center justify-start hover:text-f5green-300 hover:font-semibold"
                       onClick={logoutRequest}
                     >
                       <FiLogOut className="mr-2" />
