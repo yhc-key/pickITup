@@ -7,6 +7,8 @@ import com.ssafy.pickitup.domain.keyword.dto.KeywordResponseDto;
 import com.ssafy.pickitup.domain.keyword.service.KeywordQueryService;
 import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import java.util.List;
+import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,5 +30,10 @@ public class KeywordController {
     public ApiResult<?> getAllKeywords() {
         List<KeywordResponseDto> allKeyword = keywordQueryService.findAllKeyword();
         return success(allKeyword);
+    }
+    @GetMapping("/map")
+    public ApiResult<?> getKeywordMap() {
+        Map<String, Integer> keywordMap = keywordQueryService.findKeywordMap();
+        return success(keywordMap);
     }
 }
