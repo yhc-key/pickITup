@@ -12,8 +12,13 @@ function Login() {
   const login: (nickname: string) => void = useAuthStore(
     (state: AuthState) => state.login
   );
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const setKeywords: (newKeywords: string[]) => void = useAuthStore(
+    (state: AuthState) => state.setKeywords
+  );
+  const keywords: string[] = useAuthStore((state: AuthState) => state.keywords);
 
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  
   useEffect(() => {
     setAccessToken(sessionStorage.getItem("accessToken"));
   }, []);
@@ -43,6 +48,7 @@ function Login() {
           }
           if (res.success === true) {
             sessionStorage.setItem("accessToken", res.response.accessToken);
+            const token=res.response.accessToken;
             sessionStorage.setItem("refreshToken", res.response.refreshToken);
             sessionStorage.setItem("expiresIn", "3600000");
             fetch("https://spring.pickitup.online/users/me", {
@@ -51,16 +57,28 @@ function Login() {
                 Authorization: "Bearer " + res.response.accessToken,
               },
             })
-              .then((res) => res.json())
-              .then((res) => {
-                sessionStorage.setItem("authid", res.response.id);
-                sessionStorage.setItem("nickname", res.response.nickname);
-                login(res.response.nickname);
-                router.push("/main/myPage/myBadge");
-              })
-              .catch((error) => {
-                alert(error);
-              });
+            .then((res) => res.json())
+            .then((res) => {
+              sessionStorage.setItem("authid", res.response.id);
+              sessionStorage.setItem("nickname", res.response.nickname);
+              login(res.response.nickname);
+              router.push("/main/myPage/myBadge");
+            })
+            .catch((error) => {
+              alert(error);
+            });
+            fetch(`https://spring.pickitup.online/users/keywords`,{
+              method : "GET",
+              headers:{
+                "Authorization":"Bearer "+token,
+              }
+            })
+            .then(res=>res.json())
+            .then(res=>{
+              setKeywords(res.response.keywords);
+              sessionStorage.setItem('keywords',JSON.stringify(res.response.keywords));
+              console.log(keywords);
+            })
           }
         })
         .catch((error) => {

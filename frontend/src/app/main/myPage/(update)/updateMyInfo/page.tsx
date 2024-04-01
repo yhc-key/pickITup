@@ -8,15 +8,15 @@ import { techDataMap } from "@/data/techData";
 import { useEffect, useState } from "react";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import Modal from "@/components/modal2";
-import TechSelectMyPage from "@/components/techSelectMyPage"; 
 import SelectProfile from "@/components/selectProfile";
+import ChangePassword from "@/components/changePassword";
 
 export default function MyPage() {
   const github: string = useAuthStore((state: AuthState) => state.github);
   const blog: string = useAuthStore((state: AuthState) => state.blog);
   const email: string = useAuthStore((state: AuthState) => state.email);
   const address: string = useAuthStore((state: AuthState) => state.address);
-  const profile: string = useAuthStore((state: AuthState) => state.profile);
+  const profile: number = useAuthStore((state: AuthState) => state.profile);
   const setNickName: (newNickname: string) => void = useAuthStore(
     (state: AuthState) => state.setNickname
   );
@@ -44,7 +44,6 @@ export default function MyPage() {
   const [newGithub, setNewGithub] = useState<string>("");
   const [newBlog, setNewBlog] = useState<string>("");
   const [newAddress, setNewAddress] = useState<string>("");
-  const [isTechSelectOpen, setIsTechSelectOpen] = useState<boolean>(false);
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [isPasswordOpen, setIsPasswordOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -64,10 +63,7 @@ export default function MyPage() {
     setNewBlog("");
     setNewEmail("");
   };
-  const closeTech = () => {
-    //기술 스택 모달 닫기
-    setIsTechSelectOpen(false);
-  };
+  
   const clickSide = () => {
     //바깥 선택 모달 닫기
     setIsOpen(false);
@@ -162,8 +158,8 @@ export default function MyPage() {
     <div className="relative flex flex-col h-full pt-6 pb-20 pl-20 border border-f5gray-400 rounded-2xl">
       <div className="relative w-44 flex flex-row">
       <Image
-        src={`/images/profile/${profile}.png`}
-        alt="logo"
+        src={`/images/profile/profile${profile}.png`}
+        alt={`${profile}`}
         width={150}
         height={150}
         priority={true}
@@ -179,11 +175,6 @@ export default function MyPage() {
         <button type="button" onClick={() => setIsPasswordOpen(true)}
         className="px-6 py-2 ml-2 text-white rounded-lg bg-f5green-300">
           비밀번호 변경
-        </button>
-        <h2 className="font-bold text-xl ml-6"> 기술 정보 </h2>
-        <button type="button" onClick={() => setIsTechSelectOpen(true)}
-        className="px-6 py-2 ml-2 text-white rounded-lg bg-f5green-300">
-          기술/스택 수정
         </button>
       </div>
       {/* <div className="flex flex-wrap items-center min-h-12 gap-2 max-w-[1000px] my-2">
@@ -291,8 +282,8 @@ export default function MyPage() {
           수정하기
         </button>
       </div>
-      <TechSelectMyPage open={isTechSelectOpen} onclose={closeTech} />
       <SelectProfile open={isProfileOpen} onclose={()=>setIsProfileOpen(false)} />
+      <ChangePassword open={isPasswordOpen} onclose={()=>setIsPasswordOpen(false)} />
     </div>
     
   );

@@ -72,6 +72,7 @@ export default function Header() {
             sessionStorage.removeItem("expiresIn");
             sessionStorage.removeItem("authid");
             sessionStorage.removeItem("nickname");
+            sessionStorage.removeItem("keywords");
           }
         })
         .catch((e) => {

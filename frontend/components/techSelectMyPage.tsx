@@ -7,6 +7,8 @@ import Modal from "@/components/modal2";;
 import { techDataMap } from "@/data/techData";
 import { techData2,techInfos,techAll } from "@/data/techData";
 import AllSearchBar from "@/components/AllSearchBar"
+import useAuthStore,{AuthState} from "@/store/authStore";
+
 interface TechSelectMyPageProps{
   onclose: ()=>void;
   open : boolean;
@@ -14,6 +16,9 @@ interface TechSelectMyPageProps{
 export default function TechSelectMyPage({onclose,open}:TechSelectMyPageProps) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [pickTech, setPickTech] = useState<string[]>([]);
+  const setKeywords: (newKeywords: string[]) => void = useAuthStore(
+    (state: AuthState) => state.setKeywords
+  );
   useEffect(()=>{
     if(open){
       setIsModalOpen(true);
@@ -73,7 +78,7 @@ const deletePickTech = (item : string)=>{
     onclose();
   };
 
-  const setMyTech = () :void => {
+  const setMyTech = (): void => {
     const authid = sessionStorage.getItem('authid');
     const token = sessionStorage.getItem('accessToken');
     if(authid===null)return;
@@ -85,7 +90,22 @@ const deletePickTech = (item : string)=>{
     })
     .then(res=>res.json())
     .then(res=>{
+
       const techIds:number[] = [];
+      fetch("https://spring.pickitup.online/keywords",{
+        method: "GET",
+      })
+      .then(res => res.json())
+      // .then(res => {
+      //     res.response.map((techMap:{},index:number) => (
+      //       pickTech.map((item:string,index:number) => (
+      //         if(techMap[index].name===item){
+                
+      //         }
+      //       ))
+      //   ))}
+      // )
+      // })
         for (const tech of pickTech) {
           const techId = techInfos.get(tech);
           if (techId !== undefined) {
@@ -104,7 +124,11 @@ const deletePickTech = (item : string)=>{
           })
         })
         .then(res=>res.json())
-        .then(res=>console.log(res));
+        .then(res=>{
+          console.log(res);
+          setKeywords(pickTech);
+          sessionStorage.setItem('keywords',JSON.stringify(pickTech));
+        });
       }
     )
   }
@@ -133,13 +157,13 @@ const deletePickTech = (item : string)=>{
           <div className="flex flex-wrap items-center justify-center mb-1 text-sm text-center z-40 min-h-12">
             {pickTech.map((item:string,index:number)=>
               <div key={index}  
-              className="flex items-center justify-center py-1 pr-2 relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1 min-h-5">
+              className="flex items-center justify-center py-1 pr-2 relative border-2 border-f5green-300 rounded-2xl text-xs p-2 mx-2 my-1 min-h-6 hover:transition-all hover:scale-105 hover:ease-in">
                 {techData2.includes(item)?
                 <Image
                 src={`/images/ITUlogo.png`}
                 alt={item}
-                width={18}
-                height={18}
+                width={20}
+                height={20}
                 className="inline-block mr-1 "/>
                 :
                 <Image

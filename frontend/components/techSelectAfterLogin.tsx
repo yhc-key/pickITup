@@ -7,6 +7,7 @@ import Modal from "@/components/modal2";;
 import { techDataMap } from "@/data/techData";
 import { techData2,techInfos } from "@/data/techData";
 import AutocompleteSearchBar from "@/components/AutoCompleteSearchBar";
+import useAuthStore,{AuthState} from "@/store/authStore";
 
 const techTypes: string[] = [
   "언어",
@@ -25,7 +26,11 @@ export default function TechSelectAfterLogin() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pickType, setPickType] = useState("언어");
   const [pickTech, setPickTech] = useState<string[]>([]);
-  
+  const keywords: string[] = useAuthStore((state: AuthState) => state.keywords);
+  const setKeywords: (newKeywords: string[]) => void = useAuthStore(
+    (state: AuthState) => state.setKeywords
+  );
+
   useEffect(() => {
     const authid = sessionStorage.getItem('authid');
     const token = sessionStorage.getItem('accessToken');
@@ -98,7 +103,11 @@ const deletePickTech = (item : string)=>{
           })
         })
         .then(res=>res.json())
-        .then(res=>console.log(res));
+        .then(res=>{
+          console.log(res);
+          setKeywords(pickTech);
+          sessionStorage.setItem('keywords',JSON.stringify(pickTech));
+        });
       }
     )
   }
