@@ -24,7 +24,7 @@ public class RedisCacheConfig {
   public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule()); // Java 8 날짜/시간 모듈 등록
-    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // 날짜를 타임스탬프가 아닌 ISO 형식으로 표현
+//    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // 날짜를 타임스탬프가 아닌 ISO 형식으로 표현
 
     RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
         .entryTtl(Duration.ofMinutes(5L))
