@@ -50,7 +50,8 @@ public class UserController {
 
     @Operation(summary = "프로필 사진 변경 PI")
     @PatchMapping("/profile/image")
-    public ApiResult<?> changeProfileImage(@AuthID Integer userId, @RequestBody Integer profile) {
+    public ApiResult<?> changeProfileImage(@AuthID Integer userId, @RequestBody String profileNum) {
+        Integer profile = Integer.valueOf(profileNum);
         userCommandService.changeProfile(userId, profile);
         return success("프로필 사진 변경 성공");
     }

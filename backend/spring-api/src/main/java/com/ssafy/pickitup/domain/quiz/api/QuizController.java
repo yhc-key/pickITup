@@ -46,4 +46,3 @@ public class QuizController {
         return success(quizService.increaseScore(userId));
     }
 }
-
