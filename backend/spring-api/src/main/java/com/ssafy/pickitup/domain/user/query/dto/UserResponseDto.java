@@ -13,6 +13,7 @@ public class UserResponseDto {
 
     private Integer id;
     private String nickname;
+    private Integer profile;
     private String github;
     private String techBlog;
     private String address;
@@ -32,6 +33,7 @@ public class UserResponseDto {
         return UserResponseDto.builder()
             .id(user.getId())
             .nickname(user.getNickname())
+            .profile(user.getProfile())
             .github(user.getGithub())
             .techBlog(user.getTechBlog())
             .address(user.getAddress())
@@ -52,6 +54,7 @@ public class UserResponseDto {
         return UserResponseDto.builder()
             .id(user.getId())
             .nickname(user.getNickname())
+            .profile(user.getProfile())
             .github(user.getGithub())
             .techBlog(user.getTechBlog())
             .address(user.getAddress())
