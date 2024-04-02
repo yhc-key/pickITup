@@ -10,7 +10,7 @@ export default function Page4({ activePage }: { activePage: boolean }) {
   return (
     <Fragment>
       {isMobile ? (
-        <div className="max-w-[400px] h-screen pt-40 mx-auto">
+        <div className="max-w-[400px] min-h-[844px] pt-20 mx-auto">
           <div className="flex flex-wrap justify-center align-middle">
             <div className="flex justify-evenly">
               <div className={`flex flex-col justify-start text-xl font-semibold tracking-widest ${activePage ? "animate-slide-up" : ""}`}>

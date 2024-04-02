@@ -10,7 +10,7 @@ export default function Page2({ activePage }: { activePage: boolean }) {
   return (
     <Fragment>
       {isMobile ? (
-         <div className="max-w-[400px] h-screen mx-auto pt-40">
+         <div className="max-w-[400px] h-screen mx-auto pt-20">
           <div className="flex flex-wrap justify-center align-middle">
             <div className="flex flex-col justify-evenly">
               <div
