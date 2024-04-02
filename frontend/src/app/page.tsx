@@ -168,9 +168,9 @@ export default function Home() {
         if (deltaY > 0) {
           if (scrollIdx < 5) {
             setScrollIdx((prevIdx) => prevIdx + 1);
-            const { scrollTop } = mainWrapperRef.current!;
+
             mainWrapperRef.current!.scrollTo({
-              top: scrollTop + pageHeight + DIVIDER_HEIGHT,
+              top: pageHeight * scrollIdx + DIVIDER_HEIGHT * scrollIdx,
               left: 0,
               behavior: "smooth",
             });
@@ -187,13 +187,12 @@ export default function Home() {
               }
             }
           }
-
         } else {
           if (scrollIdx > 1) {
             setScrollIdx((prevIdx) => prevIdx - 1);
-            const { scrollTop } = mainWrapperRef.current!;
             mainWrapperRef.current!.scrollTo({
-              top: scrollTop - pageHeight - DIVIDER_HEIGHT,
+
+              top: pageHeight * (scrollIdx - 2) + DIVIDER_HEIGHT * (scrollIdx - 2),
               left: 0,
               behavior: "smooth",
             });
@@ -218,14 +217,14 @@ export default function Home() {
 
 
     const wrapperRefCurrent = mainWrapperRef.current!;
-    if(!isMobile) {
-    wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
-      passive: false,
-    });
+    if (!isMobile) {
+      wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
+        passive: false,
+      });
     } else {
-    wrapperRefCurrent.addEventListener("touchstart", handleTouchStart);
-    wrapperRefCurrent.addEventListener("touchmove", handleTouchMove);
-    wrapperRefCurrent.addEventListener("touchend", handleTouchEnd);
+      wrapperRefCurrent.addEventListener("touchstart", handleTouchStart);
+      wrapperRefCurrent.addEventListener("touchmove", handleTouchMove);
+      wrapperRefCurrent.addEventListener("touchend", handleTouchEnd);
     }
 
     return () => {
