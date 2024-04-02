@@ -4,7 +4,7 @@ import DaumPostcode from "react-daum-postcode";
 import Modal from "@/components/modal2";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import Swal from "sweetalert2";
 export default function Signup() {
   const router = useRouter();
   const [availableId, setAvailableId] = useState<string>("");
@@ -70,23 +70,63 @@ export default function Signup() {
 
   const signUpRequest = () => {
     if (availableId !== "true") {
-      alert("중복확인 후 올바른 아이디를 다시 입력해주세요");
+      Swal.fire({
+        title: 'ID Check Error!',
+        text: "중복확인 후 올바른 아이디를 다시 입력해주세요",
+        icon: 'warning',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#00ce7c'
+      })
       return;
     }
-    if (!isValidPassword) {
-      alert("올바른 비밀번호를 다시 입력해주세요");
+    if (isValidPassword!=="true") {
+      Swal.fire({
+        title: 'Password Error!',
+        text: "영문, 숫자 포함 8자 이상 비밀번호를 입력해주세요",
+        icon: 'warning',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#00ce7c'
+      })
       return;
     }
     if (!issame) {
-      alert("동일한 비밀번호를 다시 입력해주세요");
+      Swal.fire({
+        title: 'Password Check Error!',
+        text: "동일한 비밀번호를 다시 입력해주세요",
+        icon: 'warning',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#00ce7c'
+      })
       return;
     }
     if (name === "") {
-      alert("이름을 작성해주세요");
+      Swal.fire({
+        title: 'No Name Error!',
+        text: "이름을 작성해주세요",
+        icon: 'warning',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#00ce7c'
+      })
+      return;
+    }
+    if (email === "") {
+      Swal.fire({
+        title: 'No Email Error!',
+        text: "이메일을 작성해주세요",
+        icon: 'warning',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#00ce7c'
+      })
       return;
     }
     if (address === "") {
-      alert("주소를 검색 후 선택해주세요");
+      Swal.fire({
+        title: 'No Address Error!',
+        text: "주소를 검색 후 선택해주세요.",
+        icon: 'warning',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#00ce7c'
+      })
       return;
     }
     fetch("https://spring.pickitup.online/auth/signup", {
@@ -106,6 +146,14 @@ export default function Signup() {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
+        Swal.fire({
+          title: 'Sign up Success!',
+          text: "회원가입이 완료되었습니다!",
+          icon: 'success',
+          timer: 2000,
+          confirmButtonText: '확인',
+          confirmButtonColor: '#00ce7c'
+        })
         router.push("/main/login");
       });
   };

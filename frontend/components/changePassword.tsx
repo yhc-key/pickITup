@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import Modal from "./modal2";
 import { useState,useEffect} from "react";
 interface ChangePasswordProps{
@@ -5,6 +6,7 @@ interface ChangePasswordProps{
   open: boolean;
 }
 export default function ChangePassword({onclose,open}:ChangePasswordProps){
+  const Swal = require('sweetalert2');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [lastPassword, setLastPassword] = useState<string>("");
@@ -34,14 +36,7 @@ export default function ChangePassword({onclose,open}:ChangePasswordProps){
 
   const changePassRequest = () => {
     // e.preventDefault();
-    if(!isValidPassword){
-      alert("영문,숫자를 포함한 8자 이상 비밀번호를 입력해주세요.");
-      return;
-    }
-    if(!isSame){
-      alert("동일한 비밀번호를 다시 입력해주세요.");
-      return;
-    }
+    
     const token = sessionStorage.getItem('accessToken');
     fetch("https://spring.pickitup.online/auth/password",{
       method: "POST",
@@ -57,11 +52,36 @@ export default function ChangePassword({onclose,open}:ChangePasswordProps){
     .then(res=>{
       console.log(res);
       if(res.success===false){
-        alert(res.error.message);
-        // setNotclose(true);
+        Swal.fire({
+          title: 'Password Error!',
+          text: '기존 비밀번호를 올바르게 입력해주세요.',
+          icon: 'warning',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#00ce7c'
+        })
         return;
       }
       else if(res.success===true){
+        if(!isValidPassword){
+          Swal.fire({
+            title: 'New Password Error!',
+            text: '조건에 맞게 새로운 비밀번호를 입력해주세요.',
+            icon: 'warning',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#00ce7c'
+          })
+          return;
+        }
+        if(!isSame){
+          Swal.fire({
+            title: 'Password Check Error!',
+            text: '동일한 비밀번호를 다시 입력해주세요.',
+            icon: 'warning',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#00ce7c'
+          })
+          return;
+        }
         fetch("https://spring.pickitup.online/auth/password",{
           method: "PUT",
           headers: {
@@ -73,7 +93,14 @@ export default function ChangePassword({onclose,open}:ChangePasswordProps){
           })
         })
         .then(() => {
-          alert("비밀번호 변경완료!");
+          Swal.fire({
+            title: 'Success!',
+            text: '비밀번호 변경이 완료 되었습니다!',
+            icon: 'success',
+            timer: 700,
+            confirmButtonText: '확인',
+            confirmButtonColor: '#00ce7c'
+          })
           setIsOpen(false);
           onclose();
           setIsSame(false);

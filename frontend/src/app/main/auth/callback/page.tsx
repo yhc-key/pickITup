@@ -2,7 +2,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { Fragment, Suspense, useEffect } from "react";
 import useAuthStore, { AuthState } from "@/store/authStore";
-
+import Swal from "sweetalert2";
 function Search() {
   const login: (nickname: string) => void = useAuthStore(
     (state: AuthState) => state.login
@@ -29,7 +29,13 @@ function Search() {
         login(sessionStorage.getItem("nickname") ?? "");
       })
       .catch((e) => {
-        alert(e);
+        Swal.fire({
+          title: 'Error!',
+          text: e,
+          icon: 'warning',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#00ce7c'
+        })
       });
     router.push("/main/recruit");
   }

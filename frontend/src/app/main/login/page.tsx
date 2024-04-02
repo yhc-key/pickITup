@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import useAuthStore, { AuthState } from "@/store/authStore";
+import Swal from "sweetalert2";
 function Login() {
   const router = useRouter();
   const [id, setId] = useState<string>("");
@@ -24,7 +25,13 @@ function Login() {
 
   const requestLogin = () => {
     if (id.length === 0 || password.length === 0) {
-      alert("아이디와 비밀번호를 입력해주세요!");
+      Swal.fire({
+        title: 'Input Error!',
+        text: '아이디와 비밀번호를 입력해주세요!',
+        icon: 'warning',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#00ce7c'
+      })
       return;
     } else {
       fetch("https://spring.pickitup.online/auth/login", {
@@ -42,7 +49,13 @@ function Login() {
           console.log(res);
 
           if (res.success === false) {
-            alert(res.error.message);
+            Swal.fire({
+              title: 'Login Error!',
+              text: res.error.message,
+              icon: 'warning',
+              confirmButtonText: '확인',
+              confirmButtonColor: '#00ce7c'
+            })
             return;
           }
           if (res.success === true) {
@@ -64,7 +77,13 @@ function Login() {
               router.push("/main/recruit");
             })
             .catch((error) => {
-              alert(error);
+              Swal.fire({
+                title: 'Error!',
+                text: error,
+                icon: 'warning',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#00ce7c'
+              })
             });
             fetch(`https://spring.pickitup.online/users/keywords`,{
               method : "GET",
@@ -81,7 +100,13 @@ function Login() {
           }
         })
         .catch((error) => {
-          alert("아이디 혹은 비밀번호가 일치하지 않습니다." + error);
+          Swal.fire({
+            title: 'Login Error!',
+            text: error,
+            icon: 'warning',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#00ce7c'
+          })
           return;
         });
     }
