@@ -10,7 +10,7 @@ export default function Page3({ activePage }: { activePage: boolean }) {
   return (
     <Fragment>
       {isMobile ? (
-        <div className="max-w-[400px] h-screen pt-20 mx-auto">
+        <div className="max-w-[400px] h-screen pt-20 mx-auto overflow-hidden">
           <div className="flex flex-wrap justify-center align-middle">
             <div className="flex flex-col justify-evenly items-center">
               <div
