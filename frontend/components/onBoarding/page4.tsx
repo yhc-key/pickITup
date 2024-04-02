@@ -10,32 +10,35 @@ export default function Page4({ activePage }: { activePage: boolean }) {
   return (
     <Fragment>
       {isMobile ? (
-        <div className="max-w-[400px] h-[750px] pt-20 mx-auto">
-          <div className="flex flex-wrap justify-center align-middle">
-            <div className="flex justify-evenly">
-              <div className={`flex flex-col justify-start text-xl font-semibold tracking-widest ${activePage ? "animate-slide-up" : ""}`}>
-                <div className="flex justify-center">
-                  <div className="my-1 text-transparent bg-clip-text bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300">
-                    간편한 이력 관리
+        <div className="max-w-[400px] h-screen pt-20 mx-auto">
+          <div className="h-[80%] my-auto">
+            <div className="flex flex-wrap justify-center align-middle">
+              <div className="flex justify-evenly">
+                <div className={`flex flex-col justify-start text-xl font-semibold tracking-widest ${activePage ? "animate-slide-up" : ""}`}>
+                  <div className="flex justify-center">
+                    <div className="my-1 text-transparent bg-clip-text bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300">
+                      간편한 이력 관리
+                    </div>
+                    <div className="my-1 text-f5black-400">를 위하여</div>
                   </div>
-                  <div className="my-1 text-f5black-400">를 위하여</div>
+                  <div className="my-1 text-f5black-400 flex justify-center">
+                    유사 문항을 함께 관리할 수 있는
+                  </div>
+                  <div className="my-1 text-f5black-400 flex justify-center">
+                    기능을 제공합니다
+                  </div>
+                  <div></div>
                 </div>
-                <div className="my-1 text-f5black-400 flex justify-center">
-                  유사 문항을 함께 관리할 수 있는
-                </div>
-                <div className="my-1 text-f5black-400 flex justify-center">
-                  기능을 제공합니다
-                </div>
-                <div></div>
+
               </div>
+              <Image
+                src="/images/resume.png"
+                alt="resume"
+                width={278}
+                height={228}
+                className="flex justify-center mt-20 ml-6"
+              />
             </div>
-            <Image
-              src="/images/resume.png"
-              alt="resume"
-              width={278}
-              height={228}
-              className="flex justify-center mt-20 ml-6"
-            />
           </div>
         </div>
       ) : (
