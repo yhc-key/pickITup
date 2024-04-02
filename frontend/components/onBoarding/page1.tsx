@@ -10,7 +10,7 @@ export default function Page1({ activePage }: { activePage: boolean }) {
   return (
     <Fragment>
       {isMobile ? (
-        <div className="max-w-[400px] h-screen pt-20 mx-auto overflow-hidden">
+        <div className="max-w-[400px] h-[750px] pt-20 mx-auto overflow-hidden">
           <div className="flex flex-wrap justify-center items-center">
             <Image
               src="/images/onBoarding.png"

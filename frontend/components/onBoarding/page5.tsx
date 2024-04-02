@@ -10,8 +10,8 @@ export default function Page5({ activePage }: { activePage: boolean }) {
   return (
     <Fragment>
       {isMobile ? (
-        <div className="max-w-[400px] min-h-[600px] pt-20 mx-auto  overflow-hidden">
-          <div className="flex flex-wrap justify-center align-middle pt-16">
+        <div className="max-w-[400px] h-[750px] pt-20 mx-auto">
+          <div className="flex flex-wrap justify-center align-middle">
             <div className="flex flex-col justify-evenly">
               <div
                 className={`flex justify-center  ${activePage ? "animate-slide-up" : ""}`}
