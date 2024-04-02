@@ -17,6 +17,7 @@ export default function CheckExpire(): void{
         if(res.success === true){
           sessionStorage.removeItem("accessToken");
           sessionStorage.removeItem("refreshToken");
+          sessionStorage.removeItem("expiresAt");
           sessionStorage.setItem("accessToken", res.response['access-token']);
           sessionStorage.setItem("refreshToken", res.response['refresh-token']);
           const expiresAt = Date.now() + 3000000;
