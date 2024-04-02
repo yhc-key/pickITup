@@ -11,7 +11,7 @@ import TrueBtn from "@/components/game/OXQuiz/trueBtn";
 import FalseBtn from "@/components/game/OXQuiz/falseBtn";
 import QuizResult from "@/components/game/OXQuiz/quizReulst";
 import GameLoading
- from "@/components/gameLoading";
+  from "@/components/gameLoading";
 interface Quiz {
   question: string;
   answer: boolean;
@@ -36,6 +36,7 @@ export default function OXQuiz(props: any) {
   const [index, setIndex] = useState(0);
   const [questionList, setQuestionList] = useState<Quiz[]>([]);
   const [answer, setAnswer] = useState<Answer[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // 선택한 주제
   const pickTech: string = props.params.pickTech;
@@ -45,14 +46,17 @@ export default function OXQuiz(props: any) {
   useEffect(() => {
     const fetchOXQuizData = async () => {
       try {
+        setLoading(true);
         // api로부터 데이터 받아오기
         const resp: Response = await fetch(`${apiUrl}/${pickTech}`);
         // HTTP 응답을 JSON객체로 변환
         const data: any = await resp.json();
 
         setQuestionList(data.response);
+        setLoading(false);
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     };
     fetchOXQuizData();
@@ -112,8 +116,9 @@ export default function OXQuiz(props: any) {
 
   return (
     <div className="flex flex-col">
-      {/* <div>{props.params.pickTech}</div> */}
-      {questionList && questionList.length > 0  ? (
+      {loading ? (
+        <div></div>
+      ) : (questionList && questionList.length > 0 ? (
         questionList[index] ? (
           <div>
             <div className="mx-10 mt-4 mb:mx-5 mb:mt-5">
@@ -168,6 +173,7 @@ export default function OXQuiz(props: any) {
         )
       ) : (
         <GameLoading />
+      )
       )}
     </div>
   );

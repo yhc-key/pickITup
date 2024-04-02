@@ -243,11 +243,11 @@ export default function Home() {
       >
         <Link href="/main/recruit">
           {isMobile ? (
-            <button className="fixed h-12 text-sm transition-all duration-300 ease-in w-[100%] bottom-0 left-0 z-20 shadow-inner text-f5black-400 hover:bg-f5gray-400">
+            <button className="fixed h-12 text-sm transition-all duration-300 ease-in w-[100%] bottom-0 left-0 z-20 shadow-inner bg-white text-f5black-400 hover:bg-f5gray-400">
               {"건너뛰기 >>"}
             </button>
           ) : (
-            <button className="fixed p-3 text-sm transition-all duration-300 ease-in top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">
+            <button className="fixed p-3 transition-all duration-300 ease-in top-5 right-20 text-f5black-400 hover:text-f5green-300 hover:font-semibold">
               {"건너뛰기 >>"}
             </button>
           )}

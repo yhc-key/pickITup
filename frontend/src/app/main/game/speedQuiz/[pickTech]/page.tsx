@@ -35,6 +35,7 @@ export default function SpeedQuiz(props: any) {
   const [index, setIndex] = useState(0);
   const [questionList, setQuestionList] = useState<Quiz[]>([]);
   const [answer, setAnswer] = useState<Answer[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // 선택한 주제
   const pickTech: string = props.params.pickTech;
@@ -44,14 +45,20 @@ export default function SpeedQuiz(props: any) {
   useEffect(() => {
     const fetchSpeedQuizData = async () => {
       try {
+        // 데이터를 받아오기 전에 로딩 상태를 true로 설정
+        setLoading(true);
         // api로부터 데이터 받아오기
         const resp: Response = await fetch(`${apiUrl}/${pickTech}`);
         // HTTP 응답을 JSON객체로 변환
         const data: any = await resp.json();
 
         setQuestionList(data.response);
+        // 데이터를 받아온 후에 로딩 상태를 false로 설정
+        setLoading(false);
       } catch (error) {
         console.error(error);
+        // 에러가 발생한 경우에도 로딩 상태를 false로 설정
+        setLoading(false);
       }
     };
     fetchSpeedQuizData();
@@ -111,64 +118,67 @@ export default function SpeedQuiz(props: any) {
 
   return (
     <div className="flex flex-col">
-      {/* <div>{props.params.pickTech}</div> */}
-      {questionList && questionList.length > 0 ? (
-        questionList[index] ? (
-          <div>
-            <div className="mx-10 mt-4 mb:mx-5 mb:mt-5">
-              <BackBtn />
-            </div>
-            <div className="flex flex-wrap items-center justify-center mb:mt-12">
-              <div className="flex flex-col mx-1 ml-10">
-                <div className="flex flex-wrap justify-center my-3 text-4xl font-semibold tracking-widest ">
-                  <div className="mr-3 text-f5green-300">스피드</div>
-                  <div className="text-f5black-400">퀴즈</div>
-                </div>
-                <div className="text-xs text-f5black-400">
-                  문제를 읽고 알맞은 정답을 입력해주세요!
-                </div>
-              </div>
-              {isMobile ? (
-                <Image
-                  src="/images/hourglass2.png"
-                  alt="gameMachine"
-                  width={80}
-                  height={0}
-                  priority={true}
-                />
-              ) : (
-                <Image
-                  src="/images/hourglass2.png"
-                  alt="gameMachine"
-                  width={130}
-                  height={130}
-                  priority={true}
-                />
-              )}
-            </div>
-            <Question
-              question={questionList[index]}
-              index={index + 1}
-              onNextClick={onNextClick}
-            />
-            <TimeBar onNextClick={onNextClick} index={index} />
-            <NextBtn onNextClick={onNextClick} />
-          </div>
-        ) : (
-          <div className="my-4 mb:mt-12">
-            <QuizResult answer={answer} />
-            <div className="flex justify-end mt-8 mr-28 mb:absolute mb:top-1 mb:right-1 mb:mr-6">
-              <button
-                onClick={listCilckHandler}
-                className="px-5 py-2 text-sm font-semibold bg-opacity-80 rounded-2xl  text-f5black-400 bg-f5gray-300 hover:bg-f5gray-400 ring-1 ring-inset ring-f5gray-400/10"
-              >
-                {"게임 목록 >>"}
-              </button>
-            </div>
-          </div>
-        )
+      {loading ? (
+        <div></div>
       ) : (
-     <GameLoading />
+        questionList && questionList.length > 0 ? (
+          questionList[index] ? (
+            <div>
+              <div className="mx-10 mt-4 mb:mx-5 mb:mt-5">
+                <BackBtn />
+              </div>
+              <div className="flex flex-wrap items-center justify-center mb:mt-12">
+                <div className="flex flex-col mx-1 ml-10">
+                  <div className="flex flex-wrap justify-center my-3 text-4xl font-semibold tracking-widest ">
+                    <div className="mr-3 text-f5green-300">스피드</div>
+                    <div className="text-f5black-400">퀴즈</div>
+                  </div>
+                  <div className="text-xs text-f5black-400">
+                    문제를 읽고 알맞은 정답을 입력해주세요!
+                  </div>
+                </div>
+                {isMobile ? (
+                  <Image
+                    src="/images/hourglass2.png"
+                    alt="gameMachine"
+                    width={80}
+                    height={0}
+                    priority={true}
+                  />
+                ) : (
+                  <Image
+                    src="/images/hourglass2.png"
+                    alt="gameMachine"
+                    width={130}
+                    height={130}
+                    priority={true}
+                  />
+                )}
+              </div>
+              <Question
+                question={questionList[index]}
+                index={index + 1}
+                onNextClick={onNextClick}
+              />
+              <TimeBar onNextClick={onNextClick} index={index} />
+              <NextBtn onNextClick={onNextClick} />
+            </div>
+          ) : (
+            <div className="my-4 mb:mt-12">
+              <QuizResult answer={answer} />
+              <div className="flex justify-end mt-8 mr-28 mb:absolute mb:top-1 mb:right-1 mb:mr-6">
+                <button
+                  onClick={listCilckHandler}
+                  className="px-5 py-2 text-sm font-semibold bg-opacity-80 rounded-2xl  text-f5black-400 bg-f5gray-300 hover:bg-f5gray-400 ring-1 ring-inset ring-f5gray-400/10"
+                >
+                  {"게임 목록 >>"}
+                </button>
+              </div>
+            </div>
+          )
+        ) : (
+          <GameLoading />
+        )
       )}
     </div>
   );

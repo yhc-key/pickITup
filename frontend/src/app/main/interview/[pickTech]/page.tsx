@@ -36,6 +36,7 @@ export default function InterView(props: any) {
   const [questionList, setQuestionList] = useState<Quiz[]>([]);
   const [answer, setAnswer] = useState<Answer[]>([]);
   const [questionLength, setQuestrionLength] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   // 선택한 주제
   const pickTech: string = props.params.pickTech;
@@ -51,6 +52,7 @@ export default function InterView(props: any) {
       CheckExpire();
       const accessToken = sessionStorage.getItem("accessToken");
       try {
+        setLoading(true);
         // api로부터 데이터 받아오기
         const resp: Response = await fetch(
           `${apiUrlGet}?subCategory=${pickTech}`,
@@ -65,8 +67,10 @@ export default function InterView(props: any) {
 
         setQuestionList(data.response);
         setQuestrionLength(data.response.length);
+        setLoading(false);
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     };
     fetchInterviewData();
@@ -140,7 +144,9 @@ export default function InterView(props: any) {
 
   return (
     <div className="flex flex-col">
-      {questionList && questionList.length > 0 ? (
+      {loading ? (
+        <div></div>
+      ) : (questionList && questionList.length > 0 ? (
         questionList[index] ? (
           <div>
             <div className="mx-10 mt-3 mb:mx-5 mb:mt-5">
@@ -184,12 +190,27 @@ export default function InterView(props: any) {
             <NextBtn onNextClick={() => onNextClick(questionList[index].id)} />
           </div>
         ) : (
-          <div className="my-4 mb:mt-12">
-            퀴즈 끝!
+          <div className="flex mb:flex-col min-h-[450px] mx-auto w-full mb:w-[350px] items-center justify-center">
+            <div className="flex justify-cenetr mr-20 mb:mr-0">
+              <Image
+                src="/images/ghost.png"
+                alt="ghost"
+                width={240}
+                height={240}
+                className=" animate-[bounce_2s_ease-in-out_infinite] mt-28"
+              ></Image>
+            </div>
+            <div className="flex flex-col justify-start items-start mb:justify-center mb:items-center">
+              <div className="mb:text-2xl text-3xl font-semibold mb-10">
+                <b className="text-f5green-300">준비된 퀴즈가 끝났습니다!</b>
+              </div>
+              <div className="text-lg mb:text-base"><Link href="/main/myPage/myPastAns" className="animate-[pulse_2s_ease-in_infinite] hover:font-semibold">마이페이지</Link>에서 예시답변을 확인해주세요.</div>
+            </div>
           </div>
         )
       ) : (
         <GameLoading />
+      )
       )}
     </div>
   );
