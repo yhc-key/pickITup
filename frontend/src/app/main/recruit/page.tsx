@@ -48,6 +48,8 @@ export default function RecruitPage() {
     accessToken = sessionStorage.getItem("accessToken");
   }
   const recruitClickHandler = async (url: string, recruitIndex: number) => {
+    window.open(url, "_blank");
+
     if (!isLoggedIn) {
       return;
     }
@@ -62,7 +64,6 @@ export default function RecruitPage() {
         }
       );
       const data = await res.json();
-      window.open(url, "_blank");
     } catch (error) {
       console.log(error);
     }
