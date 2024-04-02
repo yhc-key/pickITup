@@ -24,17 +24,18 @@ object CollaborativeFilteringService {
       .load()
       .select("userId1", "userId2", "similarity")
 
-    val top20SimilarUsers = similarities.filter($"userId1" === userId)
+    val top50SimilarUsers = similarities.filter($"userId1" === userId)
       .select("userId2", "similarity")
       .withColumnRenamed("userId2", "userId")
       .union(similarities.filter($"userId2" === userId)
         .select("userId1", "similarity")
         .withColumnRenamed("userId1", "userId")
       )
+      .filter($"similarity" > 0.4)
       .sort($"similarity".desc)
-      .limit(20)
+      .limit(50)
 
-    val top20SimilarUsersList: Seq[Int] = top20SimilarUsers
+    val top50SimilarUsersList: Seq[Int] = top50SimilarUsers
       .map(_.getAs[Int]("userId"))
       .collect()
       .toSeq
@@ -44,7 +45,7 @@ object CollaborativeFilteringService {
       .option("database", MONGO_DATABASE)
       .option("collection", "click")
       .load()
-      .filter($"userId".isin(top20SimilarUsersList: _*))
+      .filter($"userId".isin(top50SimilarUsersList: _*))
       .persist()
 
     val userClickMax = userClicks
@@ -62,7 +63,7 @@ object CollaborativeFilteringService {
       .option("database", MONGO_DATABASE)
       .option("collection", "scrap")
       .load()
-      .filter($"userId".isin(top20SimilarUsersList: _*))
+      .filter($"userId".isin(top50SimilarUsersList: _*))
       .withColumn("scrap", lit(1))
 
     val userInteractions = userScaledClicks
