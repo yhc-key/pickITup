@@ -1,9 +1,8 @@
 "use client";
-import { useState, useRef, useEffect, useCallback } from "react";
-import { useMediaQuery } from "react-responsive";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Noto_Sans_KR } from "next/font/google";
+import { Noto_Sans_KR } from 'next/font/google';
 
 import Dots from "@/components/onBoarding/dots";
 import Page1 from "@/components/onBoarding/page1";
@@ -13,14 +12,10 @@ import Page4 from "@/components/onBoarding/page4";
 import Page5 from "@/components/onBoarding/page5";
 
 const noto = Noto_Sans_KR({
-  subsets: ["latin"], // 또는 preload: false
+  subsets: ['latin'], // 또는 preload: false
 });
 
 export default function Home() {
-  const isMobile = useMediaQuery({
-    query: "(max-width:480px)",
-  });
-
   const [scrollIdx, setScrollIdx] = useState<number>(1);
   const mainWrapperRef = useRef<HTMLDivElement>(null);
   const laptopImageRef = useRef<HTMLImageElement>(null);
@@ -148,39 +143,15 @@ export default function Home() {
       }, 1000);
     };
 
-    const touchStartHandler = (e: TouchEvent) => {
-      touchStartX.current = e.touches[0].clientX;
-    };
-
-    const touchMoveHandler = (e: TouchEvent) => {
-      const touchEndX = e.touches[0].clientX;
-      const deltaX = touchStartX.current - touchEndX;
-
-      if (deltaX > 50) { // Swipe to the right
-        if (scrollIdx < 5) {
-          setScrollIdx((prevScrollIdx) => prevScrollIdx + 1);
-        }
-      } else if (deltaX < -50) { // Swipe to the left
-        if (scrollIdx > 1) {
-          setScrollIdx((prevScrollIdx) => prevScrollIdx - 1);
-        }
-      }
-    };
-
-
     const wrapperRefCurrent = mainWrapperRef.current!;
-    !isMobile && wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
+    wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
       passive: false,
     });
-
-   
-    isMobile && wrapperRefCurrent.addEventListener("touchstart", touchStartHandler);
-    isMobile && wrapperRefCurrent.addEventListener("touchmove", touchMoveHandler);
 
     return () => {
       wrapperRefCurrent.removeEventListener("wheel", wheelHandler);
     };
-  }, [scrollIdx, isMobile]);
+  }, [scrollIdx]);
 
   return (
     <body className={`${noto.className} min-h-screen flex flex-col`}>
@@ -189,15 +160,9 @@ export default function Home() {
         className="h-screen overflow-hidden scroll-snap-y"
       >
         <Link href="/main/recruit">
-          {isMobile ? (
-            <button className="absolute h-12 text-sm w-full transition-all duration-300 ease-in bottom-0 shadow-inner text-f5black-400 hover:bg-f5gray-400">
-              {"건너뛰기 >>"}
-            </button>
-          ) : (
-            <button className="fixed p-3 text-sm transition-all duration-300 ease-in top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">
-              {"건너뛰기 >>"}
-            </button>
-          )}
+          <button className="fixed p-3 text-sm transition-all duration-300 ease-in top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">
+            {"건너뛰기 >>"}
+          </button>
         </Link>
         <Dots scrollIdx={scrollIdx} />
         <div className="h-screen">
@@ -219,9 +184,6 @@ export default function Home() {
           <div className="w-[100%] h-1"></div>
           <Page5 activePage={scrollIdx === 5 ? true : false} />
         </div>
-        {isMobile }
-       
-        
       </div>
     </body>
   );
