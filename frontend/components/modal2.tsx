@@ -5,11 +5,11 @@ import ReactDOM from "react-dom";
 interface ModalProps {
   open: boolean;
   children: ReactNode;
-  clickSide:() => void;
-  size : string;
+  clickSide: () => void;
+  size: string;
 }
 
-export default function Modal({ open, children, clickSide, size}: ModalProps) {
+export default function Modal({ open, children, clickSide, size }: ModalProps) {
   const [prevScrollY, setPrevScrollY] = useState<number | undefined>(undefined);
   const [hasScrollbar, setHasScrollbar] = useState<boolean>(false);
 
@@ -65,8 +65,13 @@ export default function Modal({ open, children, clickSide, size}: ModalProps) {
 
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 bottom-0 left-0 right-0 z-40 bg-black bg-opacity-40"  onClick={clickSide}/>
-      <div className={`fixed ${size} z-50 px-20 py-12 transform -translate-x-1/2 -translate-y-1/2 bg-white top-1/2 left-1/2 rounded-xl`}>
+      <div
+        className="fixed top-0 bottom-0 left-0 right-0 z-40 bg-black bg-opacity-40"
+        onClick={clickSide}
+      />
+      <div
+        className={`fixed z-50 transform -translate-x-1/2 -translate-y-1/2 bg-white top-1/2 left-1/2 rounded-xl ${size}`}
+      >
         {children}
       </div>
     </>,
