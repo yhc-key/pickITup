@@ -11,6 +11,7 @@ import TimeBar from "@/components/interview/timebar";
 import NextBtn from "@/components/interview/nextBtn";
 import BackBtn from "@/components/interview/backBtn";
 import useAuthStore, { AuthState } from "@/store/authStore";
+import GameLoading from "@/components/gameLoading";
 
 interface Quiz {
   id: number;
@@ -135,35 +136,58 @@ export default function InterView(props: any) {
   );
 
   return (
-    <div className="flex flex-col my-4">
-      <div className="mx-10">
-        <BackBtn />
-      </div>
-      <div className="flex flex-wrap justify-center mx-auto mb-1">
-        <div className="flex flex-col justify-evenly">
-          <div className="flex items-center justify-center text-5xl font-semibold tracking-wider">
-            <Image
-              src="/images/pencil.png"
-              alt="pencil"
-              width={120}
-              height={120}
-              priority={true}
+    <div className="flex flex-col">
+      {questionList && questionList.length > 0 ? (
+        questionList[index] ? (
+          <div>
+            <div className="mx-10 mt-4 mb:mx-5 mb:mt-5">
+              <BackBtn />
+            </div>
+            <div className="flex flex-wrap justify-center mx-auto mb-1">
+              <div className="flex flex-col justify-evenly">
+                <div className="flex flex-wrap items-center justify-center text-5xl font-semibold tracking-wider mb:text-3xl">
+                  {isMobile ? (
+                    <Image
+                      src="/images/pencil.png"
+                      alt="pencil"
+                      width={80}
+                      height={80}
+                      priority={true}
+                    />
+                  ) : (
+                    <Image
+                      src="/images/pencil.png"
+                      alt="pencil"
+                      width={120}
+                      height={120}
+                      priority={true}
+                    />
+                  )}
+
+                  <div className="my-2 mr-1 text-f5green-300">면접 대비</div>
+                  <div className="my-2 ml-2 text-f5black-400">QUIZ</div>
+                </div>
+              </div>
+            </div>
+            <Question
+              question={questionList[index]}
+              index={index + 1}
+              onNextClick={() => onNextClick(questionList[index].id)}
             />
-            <div className="my-2 mr-1 text-f5green-300">면접 대비</div>
-            <div className="my-2 ml-2 text-f5black-400">QUIZ</div>
+            <TimeBar
+              onNextClick={() => onNextClick(questionList[index].id)}
+              index={index}
+            />
+            <NextBtn onNextClick={() => onNextClick(questionList[index].id)} />
           </div>
-        </div>
-      </div>
-      <Question
-        question={questionList[index]}
-        index={index + 1}
-        onNextClick={() => onNextClick(questionList[index].id)}
-      />
-      <TimeBar
-        onNextClick={() => onNextClick(questionList[index].id)}
-        index={index}
-      />
-      <NextBtn onNextClick={() => onNextClick(questionList[index].id)} />
+        ) : (
+          <div className="my-4 mb:mt-12">
+            퀴즈 끝!
+          </div>
+        )
+      ) : (
+        <GameLoading />
+      )}
     </div>
   );
 }
