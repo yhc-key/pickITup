@@ -130,16 +130,6 @@ export default function MyFavoriteRecruit() {
     }
   }, [accessToken]); //토큰 저장되면 그걸로 불러오기
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      setTimeout(() => {
-        router.push("/main/recruit");
-      }, 3000);
-    } else {
-      clearTimeout;
-    }
-  }, [isLoggedIn, router]);
-
   return (
     <Fragment>
       {!recommendLoading && (
@@ -182,27 +172,28 @@ export default function MyFavoriteRecruit() {
                           if (isMobile) {
                             return (
                               <>
-                              {!techData2.includes(tech)?
-                              <Image
-                                src={`/images/techLogo/${techTmp}.png`}
-                                alt={tech}
-                                width={22}
-                                height={22}
-                                priority={true}
-                                key={i}
-                                className={`border-f5gray-300 border rounded-full ${haveTech ? "border-f5green-300 border-1 scale-105" : ""}`}
-                              />
-                              :
-                              <Image
-                                src={`/images/ITUlogo.png`}
-                                alt={tech}
-                                width={22}
-                                height={22}
-                                priority={true}
-                                key={i}
-                                className={`border-f5gray-300 border rounded-full ${haveTech ? "border-f5green-300 border-1 scale-105" : ""}`}
-                              />
-                              }</>
+                                {!techData2.includes(tech) ? (
+                                  <Image
+                                    src={`/images/techLogo/${techTmp}.png`}
+                                    alt={tech}
+                                    width={22}
+                                    height={22}
+                                    priority={true}
+                                    key={i}
+                                    className={`border-f5gray-300 border rounded-full ${haveTech ? "border-f5green-300 border-1 scale-105" : ""}`}
+                                  />
+                                ) : (
+                                  <Image
+                                    src={`/images/ITUlogo.png`}
+                                    alt={tech}
+                                    width={22}
+                                    height={22}
+                                    priority={true}
+                                    key={i}
+                                    className={`border-f5gray-300 border rounded-full ${haveTech ? "border-f5green-300 border-1 scale-105" : ""}`}
+                                  />
+                                )}
+                              </>
                             );
                           }
                           return (
@@ -210,25 +201,25 @@ export default function MyFavoriteRecruit() {
                               key={i}
                               className={`flex flex-row border-f5gray-300 border py-1 pr-2 mb:pr-1 mb:py-0.5 rounded-2xl text-f5black-400 text-xs items-center ${haveTech ? "border-f5green-300 border-1 scale-105" : ""}`}
                             >
-                              {!techData2.includes(tech)?
-                              <Image
-                                src={`/images/techLogo/${techTmp}.png`}
-                                alt={tech}
-                                width={22}
-                                height={22}
-                                priority={true}
-                                className="mx-1"
-                              />
-                              :
-                              <Image
-                                src={`/images/ITUlogo.png`}
-                                alt={tech}
-                                width={22}
-                                height={22}
-                                priority={true}
-                                className="mx-1"
-                              />
-                              }
+                              {!techData2.includes(tech) ? (
+                                <Image
+                                  src={`/images/techLogo/${techTmp}.png`}
+                                  alt={tech}
+                                  width={22}
+                                  height={22}
+                                  priority={true}
+                                  className="mx-1"
+                                />
+                              ) : (
+                                <Image
+                                  src={`/images/ITUlogo.png`}
+                                  alt={tech}
+                                  width={22}
+                                  height={22}
+                                  priority={true}
+                                  className="mx-1"
+                                />
+                              )}
                               {tech}
                             </div>
                           );
