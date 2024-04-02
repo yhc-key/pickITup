@@ -74,7 +74,7 @@ export default function MyPageLayout({
       setKeywords(JSON.parse(myKeywords));
     }
     CheckExpire();
-    const token = sessionStorage.getItem('accessToken');
+    const token = sessionStorage.getItem("accessToken");
     if (token !== null) {
       fetch("https://spring.pickitup.online/users/me", {
         method: "GET",
@@ -112,9 +112,9 @@ export default function MyPageLayout({
     setHiddenLayout(pathname === "/main/myPage/addEssay");
   }, [pathname]);
   return (
-    <div className={`flex my-5 ${isMobile ? "flex-col" : "mx-32"}`}>
+    <div className={`flex my-5 ${isMobile ? "flex-col" : "mx-20"}`}>
       <div
-        className={`min-w-[330px] max-w-[330px]  mx-auto ${hiddenLayout ? "hidden" : ""}`}
+        className={`min-w-[330px] max-w-[330px] mx-auto ${hiddenLayout ? "hidden" : ""}`}
       >
         <div className="flex flex-row justify-center gap-10">
           <Image

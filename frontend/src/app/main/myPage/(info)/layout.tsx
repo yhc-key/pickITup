@@ -50,7 +50,7 @@ export default function InfoLayout({
           </Link>
         </div>
       </div>
-      <div className="flex-grow">{children}</div>
+      <div className={`flex-grow ${isMobile ? "" : "ml-16"}`}>{children}</div>
     </Fragment>
   );
 }
