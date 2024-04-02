@@ -25,10 +25,13 @@ export default function Home() {
   const [scrollIdx, setScrollIdx] = useState<number>(1);
   const mainWrapperRef = useRef<HTMLDivElement>(null);
   const laptopImageRef = useRef<HTMLImageElement>(null);
+  const touchStartY = useRef<number | null>(null);
+  const touchEndY = useRef<number | null>(null);
   const DIVIDER_HEIGHT = 4;
 
   useEffect(() => {
     let isScrolling = false;
+
     const wheelHandler = (e: WheelEvent) => {
       e.preventDefault();
       if (isScrolling) return;
@@ -50,18 +53,10 @@ export default function Home() {
           });
           setScrollIdx(2);
 
-          if (laptopImageRef.current) {
-            if (isMobile) {
-              laptopImageRef.current.style.left = "50%";
-              laptopImageRef.current.style.transform =
-                "translate(-50%, 18%) scale(0.7)";
-              laptopImageRef.current.style.bottom = "40%";
-            } else {
-              laptopImageRef.current.style.left = "70%";
-              laptopImageRef.current.style.transform =
-                "translate(-50%, 18%) scale(0.4)";
-              laptopImageRef.current.style.bottom = "10%";
-            }
+          if (!isMobile && laptopImageRef.current) {
+            laptopImageRef.current.style.left = "70%";
+            laptopImageRef.current.style.transform = "translate(-50%, 18%) scale(0.4)";
+            laptopImageRef.current.style.bottom = "10%";
           }
         } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
           // 현재 2페이지
@@ -74,6 +69,7 @@ export default function Home() {
           if (laptopImageRef.current) {
             laptopImageRef.current.style.opacity = "0";
           }
+
           setScrollIdx(3);
         } else if (scrollTop >= pageHeight * 2 && scrollTop < pageHeight * 3) {
           // 현재 3페이지
@@ -115,11 +111,11 @@ export default function Home() {
             left: 0,
             behavior: "smooth",
           });
-          if (laptopImageRef.current) {
+
+          if (!isMobile && laptopImageRef.current) {
             laptopImageRef.current.style.bottom = "-80vh";
             laptopImageRef.current.style.left = "50%";
-            laptopImageRef.current.style.transform =
-              "translate(-50%, 0) scale(1.05)";
+            laptopImageRef.current.style.transform = "translate(-50%, 0) scale(1.05)";
           }
           setScrollIdx(1);
         } else if (scrollTop >= pageHeight * 2 && scrollTop < pageHeight * 3) {
@@ -156,36 +152,87 @@ export default function Home() {
       }, 1000);
     };
 
-    // 스와이프 이벤트 핸들러 함수
-    const handleSwipe = (direction: string) => {
-      const pageHeight = window.innerHeight;
-
-      // 현재 스크롤 위치와 스와이프 방향에 따라 페이지 이동 처리
-      if (direction === "left" && scrollIdx < 5) {
-        mainWrapperRef.current?.scrollTo({
-          top: mainWrapperRef.current.scrollTop + pageHeight + DIVIDER_HEIGHT,
-          left: 0,
-          behavior: "smooth",
-        });
-        setScrollIdx((prevIdx) => prevIdx + 1); // scrollIdx 증가
-      } else if (direction === "right" && scrollIdx > 1) {
-        mainWrapperRef.current?.scrollTo({
-          top: mainWrapperRef.current.scrollTop - pageHeight - DIVIDER_HEIGHT,
-          left: 0,
-          behavior: "smooth",
-        });
-        setScrollIdx((prevIdx) => prevIdx - 1); // scrollIdx 감소
-      }
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY;
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      touchEndY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = () => {
+      if (touchStartY.current && touchEndY.current) {
+        const deltaY = touchEndY.current - touchStartY.current;
+        const pageHeight = window.innerHeight;
+
+        if (deltaY > 0) {
+          if (scrollIdx < 5) {
+            setScrollIdx((prevIdx) => prevIdx + 1);
+            const { scrollTop } = mainWrapperRef.current!;
+            mainWrapperRef.current!.scrollTo({
+              top: scrollTop + pageHeight + DIVIDER_HEIGHT,
+              left: 0,
+              behavior: "smooth",
+            });
+
+            if (laptopImageRef.current) {
+              if (scrollIdx === 1) {
+                laptopImageRef.current.style.opacity = "1";
+                laptopImageRef.current.style.left = "50%";
+                laptopImageRef.current.style.transform = "translate(-50%, 18%) scale(0.7)";
+                laptopImageRef.current.style.bottom = "40%";
+              }
+              else {
+                laptopImageRef.current.style.opacity = "0";
+              }
+            }
+          }
+
+        } else {
+          if (scrollIdx > 1) {
+            setScrollIdx((prevIdx) => prevIdx - 1);
+            const { scrollTop } = mainWrapperRef.current!;
+            mainWrapperRef.current!.scrollTo({
+              top: scrollTop - pageHeight - DIVIDER_HEIGHT,
+              left: 0,
+              behavior: "smooth",
+            });
+
+            if (laptopImageRef.current) {
+              if (scrollIdx === 3) {
+                laptopImageRef.current.style.opacity = "1";
+                laptopImageRef.current.style.bottom = "40%";
+                laptopImageRef.current.style.left = "50%";
+                laptopImageRef.current.style.transform = "translate(-50%, 18%) scale(0.7)";
+              }
+              else {
+                laptopImageRef.current.style.opacity = "0";
+              }
+            }
+          }
+        }
+      }
+      touchStartY.current = null;
+      touchEndY.current = null;
+    };
+
+
     const wrapperRefCurrent = mainWrapperRef.current!;
-    // !isMobile &&
+    if(!isMobile) {
     wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
       passive: false,
     });
+    } else {
+    wrapperRefCurrent.addEventListener("touchstart", handleTouchStart);
+    wrapperRefCurrent.addEventListener("touchmove", handleTouchMove);
+    wrapperRefCurrent.addEventListener("touchend", handleTouchEnd);
+    }
 
     return () => {
       wrapperRefCurrent.removeEventListener("wheel", wheelHandler);
+      wrapperRefCurrent.removeEventListener("touchstart", handleTouchStart);
+      wrapperRefCurrent.removeEventListener("touchmove", handleTouchMove);
+      wrapperRefCurrent.removeEventListener("touchend", handleTouchEnd);
     };
   }, [scrollIdx, isMobile]);
 
