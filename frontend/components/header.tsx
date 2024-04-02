@@ -81,7 +81,7 @@ export default function Header() {
           } else if (res.success === true) {
             sessionStorage.removeItem("accessToken");
             sessionStorage.removeItem("refreshToken");
-            sessionStorage.removeItem("expiresIn");
+            sessionStorage.removeItem("expiresAt");
             sessionStorage.removeItem("authid");
             sessionStorage.removeItem("nickname");
             sessionStorage.removeItem("keywords");
