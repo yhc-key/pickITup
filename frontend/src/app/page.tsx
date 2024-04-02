@@ -51,10 +51,17 @@ export default function Home() {
           setScrollIdx(2);
 
           if (laptopImageRef.current) {
-            laptopImageRef.current.style.left = "70%";
-            laptopImageRef.current.style.transform =
-              "translate(-50%, 18%) scale(0.4)";
-            laptopImageRef.current.style.bottom = "10%";
+            if (isMobile) {
+              laptopImageRef.current.style.left = "50%";
+              laptopImageRef.current.style.transform =
+                "translate(-50%, 18%) scale(0.7)";
+              laptopImageRef.current.style.bottom = "40%";
+            } else {
+              laptopImageRef.current.style.left = "70%";
+              laptopImageRef.current.style.transform =
+                "translate(-50%, 18%) scale(0.4)";
+              laptopImageRef.current.style.bottom = "10%";
+            }
           }
         } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
           // 현재 2페이지
@@ -171,17 +178,16 @@ export default function Home() {
       }
     };
 
-
     const wrapperRefCurrent = mainWrapperRef.current!;
     // !isMobile &&
-      wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
-        passive: false,
-      });
+    wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
+      passive: false,
+    });
 
     return () => {
       wrapperRefCurrent.removeEventListener("wheel", wheelHandler);
     };
-  }, [scrollIdx]);
+  }, [scrollIdx, isMobile]);
 
   return (
     <body className={`${noto.className} min-h-screen flex flex-col`}>

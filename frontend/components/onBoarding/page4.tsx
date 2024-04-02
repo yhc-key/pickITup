@@ -13,7 +13,7 @@ export default function Page4({ activePage }: { activePage: boolean }) {
         <div className="max-w-[400px] h-screen pt-40 mx-auto">
           <div className="flex flex-wrap justify-center align-middle">
             <div className="flex justify-evenly">
-              <div className="flex flex-col justify-start text-xl font-semibold tracking-widest">
+              <div className={`flex flex-col justify-start text-xl font-semibold tracking-widest ${activePage ? "animate-slide-up" : ""}`}>
                 <div className="flex justify-center">
                   <div className="my-1 text-transparent bg-clip-text bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300">
                     간편한 이력 관리
