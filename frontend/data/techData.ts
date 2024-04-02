@@ -27,7 +27,7 @@ export const techDataMap: Map<string, string[]> = new Map([
       "Python",
       "Javascript",
       "Typescript",
-      "Kotiln",
+      "Kotlin",
       "C Sharp",
       "Go",
       "Swift",
