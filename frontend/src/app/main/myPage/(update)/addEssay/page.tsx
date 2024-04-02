@@ -4,6 +4,7 @@ import useEssayStore, { EssayState } from "@/store/essayStore";
 import { useRouter } from "next/navigation";
 import { Fragment, useRef, useState, FormEvent, useEffect } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import { useMediaQuery } from "react-responsive";
 
 interface Title {
   id: number;
@@ -30,6 +31,10 @@ export default function AddEssay() {
   const [titleActive, setTitleActive] = useState<boolean[]>([]);
   const [isEmpty, setIsEmpty] = useState<boolean[]>([]);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  const isMobile = useMediaQuery({
+    query: "(max-width:480px)",
+  });
 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
@@ -124,7 +129,7 @@ export default function AddEssay() {
       {essayTitles.length !== 0 && (
         <form
           onSubmit={submitHandler}
-          className="border border-f5gray-500 rounded-2xl h-full pt-6 pb-20 px-16 flex flex-col relative"
+          className={`border border-f5gray-500 rounded-2xl h-full pt-6 pb-20 px-16 flex flex-col relative ${isMobile ? "mx-1 px-2" : ""}`}
         >
           <div className="flex flex-row items-center ml-4">
             <span>지원한 회사 :</span>
@@ -174,17 +179,19 @@ export default function AddEssay() {
               </div>
             </Fragment>
           ))}
-          <div className="absolute bottom-0 right-0 mb-6 mr-6">
+          <div
+            className={`absolute bottom-0 right-0 ${isMobile ? "mr-2 mb-4" : "mr-6 mb-6"}`}
+          >
             <button
               type="button"
               onClick={() => router.push("/main/myPage/myEssay")}
-              className="px-6 py-2 mx-4 text-white rounded-lg bg-f5red-300"
+              className={`px-6 py-2 text-white rounded-lg bg-f5red-300 ${isMobile ? "mr-4" : "mr-6"}`}
             >
               취소하기
             </button>
             <button
               type="submit"
-              className="px-6 py-2 mx-4 text-white rounded-lg bg-f5green-300"
+              className={`px-6 py-2 text-white rounded-lg bg-f5green-300 ${isMobile ? "" : "mr-10"}`}
             >
               등록하기
             </button>
