@@ -202,7 +202,6 @@ export default function MyPage() {
           className="flex items-center w-1/3 h-9 p-2 ml-24 border border-f5gray-400  rounded-lg 
             min-w-80 bg-f5gray-400"
         />
-        <p className="mt-1 ml-5 text-sm text-f5green-400">{nickMessage}</p>
       </div>
       <div className="relative flex flex-row items-center my-2">
         <div className="absolute">변경 주소 </div>
