@@ -38,10 +38,12 @@ export default function Page3({ activePage }: { activePage: boolean }) {
         </div>
       ) : (
         <div className="w-[100%] h-[100%]">
-          <div className="flex flex-wrap justify-start align-middle pt-28 pl-52">
+          <div
+            className={`flex flex-wrap justify-start align-middle pt-28 pl-52  ${activePage ? "animate-slide-up" : ""}`}
+          >
             <div className="flex flex-col justify-evenly">
               <div
-                className={`flex flex-col ml-12 mb-2 justify-start text-4xl font-semibold tracking-widest ${activePage ? "animate-slide-up" : ""}`}
+                className={`flex flex-col ml-12 mb-2 justify-start text-4xl font-semibold tracking-widest`}
               >
                 <div className="flex">
                   <div className="my-1 text-transparent bg-clip-text bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300">

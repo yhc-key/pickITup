@@ -46,7 +46,9 @@ export default function Page1({ activePage }: { activePage: boolean }) {
         </div>
       ) : (
         <div className="w-[100%] h-[100%] overflow-hidden">
-          <div className="flex flex-wrap justify-start pt-20 pl-60">
+          <div
+            className={`flex flex-wrap justify-start pt-20 pl-60`}
+          >
             <Image
               src="/images/onBoarding.png"
               alt="온보딩이미지"

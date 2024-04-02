@@ -185,10 +185,10 @@ export default function Header() {
               )}
             </div>
           ) : (
-            <div className="p-3 my-auto mr-10 text-sm bg-f5gray-300 rounded-2xl">
+            <div className="p-3 my-auto mr-10">
               <Link
                 href="/main/social"
-                className="transition duration-200 ease-in text-f5black-400 hover:text-f5green-300"
+                className="transition duration-200 ease-in-out text-f5black-400 hover:text-f5green-300 hover:font-semibold"
               >
                 로그인 | 회원가입
               </Link>

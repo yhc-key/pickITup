@@ -31,10 +31,10 @@ export default function Page2({ activePage }: { activePage: boolean }) {
         </div>
       ) : (
         <div className="w-[100%] h-[100%]">
-          <div className="flex flex-wrap justify-start align-middle pt-28 pl-60">
+          <div className={`flex flex-wrap justify-start align-middle pt-28 pl-60  ${activePage ? "animate-slide-up" : ""}`}>
             <div className="flex flex-col justify-evenly">
               <div
-                className={`flex flex-col justify-start text-4xl font-semibold tracking-widest ${activePage ? "animate-slide-right" : ""}`}
+                className={`flex flex-col justify-start text-4xl font-semibold tracking-widest`}
               >
                 <div className="flex">
                   <div className="my-1 ml-3 text-transparent bg-clip-text bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300">
@@ -51,7 +51,7 @@ export default function Page2({ activePage }: { activePage: boolean }) {
                 alt="companyLogo"
                 width={410}
                 height={269}
-                className={`mt-16 ml-12 ${activePage ? "animate-slide-right" : ""}`}
+                className={`mt-16 ml-12`}
               />
             </div>
           </div>

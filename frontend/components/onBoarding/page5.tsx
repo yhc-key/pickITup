@@ -13,7 +13,9 @@ export default function Page5({ activePage }: { activePage: boolean }) {
         <div className="max-w-[400px] h-screen pt-20 mx-auto">
           <div className="flex flex-wrap justify-center align-middle pt-16">
             <div className="flex flex-col justify-evenly">
-              <div className={`flex justify-center  ${activePage ? "animate-slide-up" : ""}`}>
+              <div
+                className={`flex justify-center  ${activePage ? "animate-slide-up" : ""}`}
+              >
                 <div
                   className={`flex flex-col justify-center items-center text-xl font-semibold tracking-widest`}
                 >
@@ -55,10 +57,12 @@ export default function Page5({ activePage }: { activePage: boolean }) {
         </div>
       ) : (
         <div className="w-[100%] h-[100%]">
-          <div className="flex flex-wrap justify-center align-middle pt-16">
+          <div className={`flex flex-wrap justify-center align-middle pt-16 ${activePage ? "animate-slide-up" : ""}`}>
             <div className="flex flex-col justify-evenly">
               <div className="flex justify-center ml-10">
-                <div className="flex flex-col justify-center items-center text-4xl font-semibold tracking-widest">
+                <div
+                  className={`flex flex-col justify-center items-center text-4xl font-semibold tracking-widest`}
+                >
                   <div className="my-2 ml-3 text-f5black-400">
                     스피드 퀴즈, OX게임을 즐기며
                   </div>
