@@ -13,6 +13,7 @@ import { FaRegBookmark } from "react-icons/fa6";
 import { useMediaQuery } from "react-responsive";
 import { ClimbingBoxLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
+import LoginNeed from "@/components/loginNeed";
 import { access } from "fs";
 
 const apiAddress = "https://spring.pickITup.online";
@@ -270,11 +271,11 @@ export default function MyFavoriteRecruit() {
           recommendLoading && (
             <Fragment>
               <ClimbingBoxLoader size={20} />
-              <div className="text-lg ml-5 mt-3"> 추천 중입니다...</div>
+              <div className="text-lg ml-5 mt-3">추천 중입니다!!</div>
             </Fragment>
           )
         ) : (
-          <div className="text-lg">로그인 먼저 해주세요</div>
+          <LoginNeed />
         )}
       </div>
     </Fragment>
