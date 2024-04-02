@@ -10,7 +10,8 @@ import Question from "@/components/game/OXQuiz/question";
 import TrueBtn from "@/components/game/OXQuiz/trueBtn";
 import FalseBtn from "@/components/game/OXQuiz/falseBtn";
 import QuizResult from "@/components/game/OXQuiz/quizReulst";
-
+import GameLoading
+ from "@/components/gameLoading";
 interface Quiz {
   question: string;
   answer: boolean;
@@ -166,16 +167,7 @@ export default function OXQuiz(props: any) {
           </div>
         )
       ) : (
-        <div className="w-full min-h-[400px] flex items-center justify-center">
-          <div className="flex justify-start mr-20">
-          <Image src="/images/ghost.png" alt="ghost" width={220} height={220} className=" animate-[bounce_2s_ease-in-out_infinite] mt-20"></Image>
-          </div>
-          <div className="flex flex-col justify-start items-start">
-         <div className="text-3xl font-semibold mb-10">현재 <b className="text-f5green-300">서비스 준비중</b>입니다.</div>
-         <div className="text-lg">이용에 불편을 드려 죄송합니다.</div>
-         <div className="text-lg">빠른 시일 내에 이용하실 수 있도록 노력하겠습니다.</div>
-          </div>
-        </div>
+        <GameLoading />
       )}
     </div>
   );
