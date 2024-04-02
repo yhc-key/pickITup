@@ -3,6 +3,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Fragment, Suspense, useEffect } from "react";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import Swal from "sweetalert2";
+import CheckExpire from "@/data/checkExpire";
 function Search() {
   const login: (nickname: string) => void = useAuthStore(
     (state: AuthState) => state.login
@@ -15,7 +16,8 @@ function Search() {
   if (accessToken !== "") {
     sessionStorage.setItem("accessToken", accessToken);
     sessionStorage.setItem("refreshToken", refreshToken);
-    sessionStorage.setItem("expiresIn", expiresIn);
+    const expiresAt = Date.now() + 3000000;
+    sessionStorage.setItem("expiresAt",expiresAt.toString());
     fetch("https://spring.pickitup.online/users/me", {
       method: "GET",
       headers: {

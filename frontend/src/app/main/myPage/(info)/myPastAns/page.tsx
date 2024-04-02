@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Interview } from "@/type/interface";
+import CheckExpire from "@/data/checkExpire";
 
 export default function MyPastAns() {
   const [myFavList, setMyFavList] = useState<Interview[]>([]);
@@ -12,6 +13,7 @@ export default function MyPastAns() {
 
   useEffect(() => {
     const fetchMyInterviewData = async () => {
+      CheckExpire();
       const accessToken = sessionStorage.getItem("accessToken");
       try {
         const resp: Response = await fetch(apiUrl, {

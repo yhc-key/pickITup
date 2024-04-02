@@ -10,6 +10,7 @@ import useAuthStore, { AuthState } from "@/store/authStore";
 import Modal from "@/components/modal2";
 import SelectProfile from "@/components/selectProfile";
 import ChangePassword from "@/components/changePassword";
+import CheckExpire from "@/data/checkExpire";
 
 export default function MyPage() {
   const github: string = useAuthStore((state: AuthState) => state.github);
@@ -70,7 +71,7 @@ export default function MyPage() {
   };
   const submitHandler = () => {
     //등록하기 버튼클릭
-
+    CheckExpire();
     const token = sessionStorage.getItem("accessToken");
     if (newNickname !== "") {
       const token = sessionStorage.getItem("accessToken");

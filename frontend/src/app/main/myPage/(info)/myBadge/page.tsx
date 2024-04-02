@@ -2,10 +2,12 @@
 import { useEffect, useState, ReactElement } from "react";
 import Image from 'next/image';
 import { badgeDataMap ,badgeImageMap} from "@/data/badgeData";
+import CheckExpire from "@/data/checkExpire";
 function MyBadge() {
   const [acquired,setAcquired]=useState<string[]>([]);
   const [unAcquired,setUnAcquired]=useState<string[]>([]);
   useEffect(() => {
+    CheckExpire();
     const token = sessionStorage.getItem('accessToken');
     fetch("https://spring.pickitup.online/users/badges",{
       method:"GET",

@@ -12,6 +12,7 @@ import NextBtn from "@/components/interview/nextBtn";
 import BackBtn from "@/components/interview/backBtn";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import GameLoading from "@/components/gameLoading";
+import CheckExpire from "@/data/checkExpire";
 
 interface Quiz {
   id: number;
@@ -47,6 +48,7 @@ export default function InterView(props: any) {
 
   useEffect(() => {
     const fetchInterviewData = async () => {
+      CheckExpire();
       const accessToken = sessionStorage.getItem("accessToken");
       try {
         // api로부터 데이터 받아오기
@@ -90,6 +92,7 @@ export default function InterView(props: any) {
           });
 
         try {
+          CheckExpire();
           const accessToken = sessionStorage.getItem("accessToken");
           await fetch(`${apiUrlPost}/${questionId}`, {
             method: "POST",

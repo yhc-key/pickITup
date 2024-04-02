@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import Modal from "./modal2";
 import { useState,useEffect} from "react";
+import CheckExpire from "@/data/checkExpire";
 interface ChangePasswordProps{
   onclose:() => void;
   open: boolean;
@@ -36,7 +37,7 @@ export default function ChangePassword({onclose,open}:ChangePasswordProps){
 
   const changePassRequest = () => {
     // e.preventDefault();
-    
+    CheckExpire();
     const token = sessionStorage.getItem('accessToken');
     fetch("https://spring.pickitup.online/auth/password",{
       method: "POST",

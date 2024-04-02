@@ -8,6 +8,7 @@ import { techDataMap } from "@/data/techData";
 import { techData2,techInfos,techAll } from "@/data/techData";
 import AllSearchBar from "@/components/AllSearchBar"
 import useAuthStore,{AuthState} from "@/store/authStore";
+import CheckExpire from "@/data/checkExpire";
 
 interface TechSelectMyPageProps{
   onclose: ()=>void;
@@ -32,6 +33,7 @@ export default function TechSelectMyPage({onclose,open}:TechSelectMyPageProps) {
     else setIsModalOpen(false);
   },[open])
   useEffect(() => {
+    CheckExpire();
     const authid = sessionStorage.getItem('authid');
     const token = sessionStorage.getItem('accessToken');
     if(authid !== null) {
@@ -77,6 +79,7 @@ const deletePickTech = (item : string)=>{
   };
 
   const setMyTech = (): void => {
+    CheckExpire();
     const authid = sessionStorage.getItem('authid');
     const token = sessionStorage.getItem('accessToken');
     if(authid===null)return;

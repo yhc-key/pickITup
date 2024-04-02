@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "./modal2";
 import Image from "next/image";
 import useAuthStore,{AuthState} from "@/store/authStore";
+import CheckExpire from "@/data/checkExpire";
 const profiles:number[] = [1,2,3,4];
 interface SelectProfileProps{
   open:boolean;
@@ -17,6 +18,7 @@ export default function SelectProfile({open,onclose}:SelectProfileProps){
   },[open])
   const changeProfileHandler = (item:number) => {
     if(item!==null){
+      CheckExpire();
       const token = sessionStorage.getItem('accessToken');
       fetch("https://spring.pickitup.online/users/profile/image",{
         method: "PATCH",

@@ -13,6 +13,7 @@ import useEssayStore from "@/store/essayStore";
 import { redirect } from "next/navigation";
 import ModalCustom from "@/components/modalCustom";
 import { Essay, Title } from "@/type/interface";
+import CheckExpire from "@/data/checkExpire";
 
 const apiAddress = "https://spring.pickITup.online/self/main";
 
@@ -202,6 +203,7 @@ export default function MyEssay(): JSX.Element {
   };
 
   useEffect(() => {
+    CheckExpire();
     setAccessToken(sessionStorage.getItem("accessToken"));
   }, []); // 토큰 저장
 

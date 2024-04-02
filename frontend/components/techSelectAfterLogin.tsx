@@ -8,6 +8,7 @@ import { techDataMap } from "@/data/techData";
 import { techData2,techInfos } from "@/data/techData";
 import AutocompleteSearchBar from "@/components/AutoCompleteSearchBar";
 import useAuthStore,{AuthState} from "@/store/authStore";
+import CheckExpire from "@/data/checkExpire";
 
 const techTypes: string[] = [
   "언어",
@@ -31,6 +32,7 @@ export default function TechSelectAfterLogin() {
   );
 
   useEffect(() => {
+    CheckExpire();
     const authid = sessionStorage.getItem('authid');
     const token = sessionStorage.getItem('accessToken');
     if(authid !== null) {
@@ -72,6 +74,7 @@ const deletePickTech = (item : string)=>{
   const techs: string[] | undefined = techDataMap.get(pickType);
 
   const setMyTech = () :void => {
+    CheckExpire();
     const authid = sessionStorage.getItem('authid');
     const token = sessionStorage.getItem('accessToken');
     if(authid===null)return;
@@ -95,7 +98,6 @@ const deletePickTech = (item : string)=>{
             techIds.push(techId);
           }
         }
-        const token = sessionStorage.getItem('accessToken');
         fetch(`https://spring.pickitup.online/users/keywords`,{
           method : "POST",
           headers: {

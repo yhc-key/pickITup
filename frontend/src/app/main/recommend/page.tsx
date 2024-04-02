@@ -14,6 +14,7 @@ import { useMediaQuery } from "react-responsive";
 import { ClimbingBoxLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
 import { access } from "fs";
+import CheckExpire from "@/data/checkExpire";
 
 const apiAddress = "https://spring.pickITup.online";
 export default function MyFavoriteRecruit() {
@@ -106,6 +107,7 @@ export default function MyFavoriteRecruit() {
     return toggle;
   }; //북마크 여부 확인 함수
   useEffect(() => {
+    CheckExpire();
     setAccessToken(sessionStorage.getItem("accessToken"));
   }, []); //토큰 저장
 

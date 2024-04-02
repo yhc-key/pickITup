@@ -13,6 +13,7 @@ import useAuthStore, { AuthState } from "../store/authStore";
 import { useMediaQuery } from "react-responsive";
 import { LinkType } from "@/type/interface";
 import { navLinks } from "@/data/techData";
+import CheckExpire from "@/data/checkExpire";
 
 const apiAddress = "https://spring.pickITup.online/users/scraps/recruit";
 
@@ -31,6 +32,7 @@ export default function Header() {
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
+    CheckExpire();
     const accessToken: string | null = sessionStorage.getItem("accessToken");
     const nickname: string | null = sessionStorage.getItem("nickname");
 
@@ -60,6 +62,7 @@ export default function Header() {
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
   const logoutRequest = () => {
+    CheckExpire();
     setIsSubMenuOpen(false);
     if (isLoggedIn === true) {
       const token = sessionStorage.getItem("accessToken");

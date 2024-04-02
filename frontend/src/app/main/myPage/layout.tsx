@@ -10,6 +10,7 @@ import Link from "next/link";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import { useEffect, useState } from "react";
 import ExperienceBar from "@/components/experienceBar";
+import CheckExpire from "@/data/checkExpire";
 const dummyMyData: string[][] = [
   ["내가 찜한 채용공고", "3 개", "/images/starOutline.png"],
   ["마감 임박 채용공고", "1 개", "/images/history.png"],
@@ -53,6 +54,7 @@ export default function MyPageLayout({
     if(myKeywords!==null){
       setKeywords(JSON.parse(myKeywords));
     }
+    CheckExpire();
     const token = sessionStorage.getItem('accessToken');
     if (token !== null) {
       fetch("https://spring.pickitup.online/users/me", {

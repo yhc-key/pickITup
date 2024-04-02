@@ -60,13 +60,14 @@ function Login() {
           }
           if (res.success === true) {
             sessionStorage.setItem("accessToken", res.response.accessToken);
-            const token=res.response.accessToken;
             sessionStorage.setItem("refreshToken", res.response.refreshToken);
-            sessionStorage.setItem("expiresIn", "3600000");
+            const expiresAt = Date.now() + 3000000;
+            sessionStorage.setItem("expiresAt",expiresAt.toString());
+            const token=res.response.accessToken;
             fetch("https://spring.pickitup.online/users/me", {
               method: "GET",
               headers: {
-                Authorization: "Bearer " + res.response.accessToken,
+                Authorization: "Bearer " + token,
               },
             })
             .then((res) => res.json())

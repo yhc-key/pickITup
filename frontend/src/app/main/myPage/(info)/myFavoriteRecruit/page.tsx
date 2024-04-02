@@ -8,6 +8,7 @@ import { Recruit } from "@/type/interface";
 
 import { techDataMap } from "@/data/techData";
 import useAuthStore, { AuthState } from "@/store/authStore";
+import CheckExpire from "@/data/checkExpire";
 
 export default function MyFavoriteRecruit() {
   const [myFavList, setMyFavList] = useState<string[]>([]);
@@ -22,6 +23,7 @@ export default function MyFavoriteRecruit() {
     event.stopPropagation();
     const apiAddress = "https://spring.pickITup.online";
     try {
+      CheckExpire();
       const accessToken = sessionStorage.getItem("accessToken");
       const res = await fetch(
         `${apiAddress}/users/scraps/recruit?recruitId=${recruitId}`,

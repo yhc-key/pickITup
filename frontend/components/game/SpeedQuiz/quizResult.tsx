@@ -8,6 +8,7 @@ import Realistic from "../../realistic";
 import WrongBox from "./wrongBox";
 import RightBox from "./rightBox";
 import useAuthStore, { AuthState } from "@/store/authStore";
+import CheckExpire from "@/data/checkExpire";
 
 interface Answer {
   question: string;
@@ -49,7 +50,7 @@ export default function QuizResult({ answer }: QuizResultProps) {
             winCount = res.response;
           });
         Swal.fire({
-          icon: "success",
+          icon: "success",  
           title: "축하합니다 😀🎉",
           text: `총 승리 횟수는 ${winCount}번 입니다.`,
           confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
@@ -68,6 +69,7 @@ export default function QuizResult({ answer }: QuizResultProps) {
   };
 
   useEffect(() => {
+    CheckExpire();
     const correctCount = answer.filter((e: Answer) => e.correct).length;
 
     if (correctCount >= 7) {

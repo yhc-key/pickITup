@@ -23,6 +23,7 @@ import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import { Recursive } from "next/font/google";
 import TechSelectAfterLogin from "@/components/techSelectAfterLogin";
+import CheckExpire from "@/data/checkExpire";
 
 const apiAddress = "https://spring.pickITup.online";
 const baseImg = "/Images/baseCompany.jpg";
@@ -43,6 +44,7 @@ export default function RecruitPage() {
   });
   let accessToken: string | null = "";
   if (isLoggedIn) {
+    CheckExpire();
     accessToken = sessionStorage.getItem("accessToken");
   }
   const recruitClickHandler = async (url: string, recruitIndex: number) => {

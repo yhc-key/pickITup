@@ -1,5 +1,6 @@
 "use client";
 
+import CheckExpire from "@/data/checkExpire";
 import useEssayStore, { EssayState } from "@/store/essayStore";
 import { useRouter } from "next/navigation";
 import { Fragment, useRef, useState, FormEvent, useEffect } from "react";
@@ -111,6 +112,7 @@ export default function AddEssay() {
     };
 
   useEffect(() => {
+    CheckExpire();
     setAccessToken(sessionStorage.getItem("accessToken"));
   }, []);
 
