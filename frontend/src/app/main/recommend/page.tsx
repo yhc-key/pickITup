@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import LoginNeed from "@/components/loginNeed";
 import { access } from "fs";
 import CheckExpire from "@/data/checkExpire";
+import ChooseFirst from "@/components/chooseFirst";
 
 const apiAddress = "https://spring.pickITup.online";
 export default function MyFavoriteRecruit() {
@@ -137,7 +138,7 @@ export default function MyFavoriteRecruit() {
     <Fragment>
       {isLoggedIn ? (
         <div>
-          {!recommendLoading ? (
+          {!recommendLoading && myRecommendList ? (
             <div className={`flex justify-center ${isMobile ? "" : "mx-40"}`}>
               <table className="w-full">
                 <thead>
@@ -274,7 +275,7 @@ export default function MyFavoriteRecruit() {
                 </tbody>
               </table>
             </div>
-          ) : (
+          ) : !myRecommendList ? <ChooseFirst /> : (
             <div
               className={`flex flex-col justify-center h-[60vh] items-center ${isLoggedIn && !recommendLoading ? "hidden" : ""}`}
             >
