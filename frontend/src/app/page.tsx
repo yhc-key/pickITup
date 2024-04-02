@@ -1,8 +1,11 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
+import { Swipeable } from "react-swipeable";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Noto_Sans_KR } from 'next/font/google';
+import { Noto_Sans_KR } from "next/font/google";
 
 import Dots from "@/components/onBoarding/dots";
 import Page1 from "@/components/onBoarding/page1";
@@ -12,10 +15,14 @@ import Page4 from "@/components/onBoarding/page4";
 import Page5 from "@/components/onBoarding/page5";
 
 const noto = Noto_Sans_KR({
-  subsets: ['latin'], // 또는 preload: false
+  subsets: ["latin"], // 또는 preload: false
 });
 
 export default function Home() {
+  const isMobile = useMediaQuery({
+    query: "(max-width:480px)",
+  });
+
   const [scrollIdx, setScrollIdx] = useState<number>(1);
   const mainWrapperRef = useRef<HTMLDivElement>(null);
   const laptopImageRef = useRef<HTMLImageElement>(null);
@@ -143,15 +150,52 @@ export default function Home() {
       }, 1000);
     };
 
+    // 스와이프 이벤트 핸들러 함수
+    const handleSwipe = (direction: string) => {
+      const pageHeight = window.innerHeight;
+
+      // 현재 스크롤 위치와 스와이프 방향에 따라 페이지 이동 처리
+      if (direction === "left" && scrollIdx < 5) {
+        mainWrapperRef.current?.scrollTo({
+          top: mainWrapperRef.current.scrollTop + pageHeight + DIVIDER_HEIGHT,
+          left: 0,
+          behavior: "smooth",
+        });
+        setScrollIdx((prevIdx) => prevIdx + 1); // scrollIdx 증가
+      } else if (direction === "right" && scrollIdx > 1) {
+        mainWrapperRef.current?.scrollTo({
+          top: mainWrapperRef.current.scrollTop - pageHeight - DIVIDER_HEIGHT,
+          left: 0,
+          behavior: "smooth",
+        });
+        setScrollIdx((prevIdx) => prevIdx - 1); // scrollIdx 감소
+      }
+    };
+
+    // 모바일에서만 스와이프 이벤트 핸들러를 등록
+    if (isMobile) {
+      const swipeableRef = mainWrapperRef.current!;
+      swipeableRef.addEventListener("swiped", (e: any) => {
+        handleSwipe(e.dir);
+      });
+    }
+
     const wrapperRefCurrent = mainWrapperRef.current!;
-    wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
-      passive: false,
-    });
+    !isMobile &&
+      wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
+        passive: false,
+      });
 
     return () => {
+      if (isMobile) {
+        const swipeableRef = mainWrapperRef.current!;
+        swipeableRef.removeEventListener("swiped", (e: any) => {
+          handleSwipe(e.dir);
+        });
+      }
       wrapperRefCurrent.removeEventListener("wheel", wheelHandler);
     };
-  }, [scrollIdx]);
+  }, [scrollIdx, isMobile]);
 
   return (
     <body className={`${noto.className} min-h-screen flex flex-col`}>
@@ -160,9 +204,15 @@ export default function Home() {
         className="h-screen overflow-hidden scroll-snap-y"
       >
         <Link href="/main/recruit">
-          <button className="fixed p-3 text-sm transition-all duration-300 ease-in top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">
-            {"건너뛰기 >>"}
-          </button>
+          {isMobile ? (
+            <button className="fixed h-12 text-sm transition-all duration-300 ease-in w-[100%] bottom-0 left-0 z-20 shadow-inner text-f5black-400 hover:bg-f5gray-400">
+              {"건너뛰기 >>"}
+            </button>
+          ) : (
+            <button className="fixed p-3 text-sm transition-all duration-300 ease-in top-5 right-10 rounded-2xl bg-f5gray-300 text-f5black-400 hover:bg-f5gray-400">
+              {"건너뛰기 >>"}
+            </button>
+          )}
         </Link>
         <Dots scrollIdx={scrollIdx} />
         <div className="h-screen">

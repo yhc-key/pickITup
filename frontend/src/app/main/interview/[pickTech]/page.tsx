@@ -140,7 +140,7 @@ export default function InterView(props: any) {
       {questionList && questionList.length > 0 ? (
         questionList[index] ? (
           <div>
-            <div className="mx-10 mt-4 mb:mx-5 mb:mt-5">
+            <div className="mx-10 mt-3 mb:mx-5 mb:mt-5">
               <BackBtn />
             </div>
             <div className="flex flex-wrap justify-center mx-auto mb-1">

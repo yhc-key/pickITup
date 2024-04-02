@@ -37,14 +37,14 @@ export default function Question({
             <div className="flex items-center justify-center mr-3 text-lg font-semibold rounded-full w-7 h-7 bg-f5green-300 text-neutral-50 mb:text-sm">
               {index}
             </div>
-            <div className="flex flex-wrap text-sm text-f5black-400">
+            <div className="flex flex-wrap mb:text-sm text-f5black-400">
               {question?.question}
             </div>
           </div>
         </div>
         <div className="flex justify-center my-4">
           <textarea
-            className="question-textarea p-6 w-[60%] h-44 text-strat shadow-md question-input rounded-xl text-sm bg-f5gray-200 resize-none mb:w-[80%]"
+            className="question-textarea p-6 w-[60%] h-36 text-strat shadow-md question-input rounded-xl text-sm bg-f5gray-200 resize-none mb:w-[80%]"
             onChange={onTextAreaChange}
             ref={textAreaHTML}
           ></textarea>

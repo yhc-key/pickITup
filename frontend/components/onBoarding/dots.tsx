@@ -8,7 +8,7 @@ const Dot = ({ num, scrollIdx }: { num: number; scrollIdx: number }) => {
 
 export default function Dots({ scrollIdx }: { scrollIdx: number }) {
   return (
-    <div className="fixed top-[35%] right-12 mb:bottom-5 mb:left-1/2 mb:right-auto mb:top-auto mb: transform-none mb:-rotate-90">
+    <div className="fixed top-[35%] right-12 mb:bottom-5 mb:left-1/2 mb:right-auto mb:top-auto mb:-rotate-90">
       <div className="flex flex-col justify-around h-44">
         <Dot num={1} scrollIdx={scrollIdx}></Dot>
         <Dot num={2} scrollIdx={scrollIdx}></Dot>
