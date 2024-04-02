@@ -11,6 +11,10 @@ export default function MyPastAns() {
 
   const apiUrl = "https://spring.pickitup.online/my/interviews";
 
+  const isMobile = useMediaQuery({
+    query: "(max-width:480px)",
+  });
+
   useEffect(() => {
     const fetchMyInterviewData = async () => {
       CheckExpire();
@@ -40,12 +44,20 @@ export default function MyPastAns() {
         <table className="w-[96%]">
           <thead className="border-b">
             <tr className="text-center text-base h-16 m-2">
-              <th className="pl-2 w-1/12">번호</th>
-              <th className="pl-2 w-1/12 text-center">대분류</th>
-              <th className="w-1/12 text-center">소분류</th>
+              <th className="pl-2 w-1/12">{isMobile ? "Num" : "번호"}</th>
+              <th className="pl-2 w-1/12 text-center">
+                {isMobile ? "Major" : "대분류"}
+              </th>
+              <th className="w-1/12 text-center">
+                {isMobile ? "Major" : "소분류"}
+              </th>
               <th className="pl-2 w-5/12">문제</th>
-              <th className="w-2/12 text-center">과거 제출 내역</th>
-              <th className="w-2/12 text-center">예시 답변</th>
+              <th className="w-2/12 text-center">
+                {isMobile ? "제출" : "과거 제출 내역"}
+              </th>
+              <th className="w-2/12 text-center">
+                {isMobile ? "예시" : "예시 답변"}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -58,7 +70,11 @@ export default function MyPastAns() {
                   <td>{interview.interviewId}</td>
                   <td className="font-bold">{interview.mainCategory}</td>
                   <td className="font-bold">{interview.subCategory}</td>
-                  <td>{interview.question}</td>
+                  <td>
+                    {isMobile
+                      ? interview.question.slice(0, 10) + "..."
+                      : interview.question}
+                  </td>
                   <td className="text-center">
                     <button
                       type="button"
@@ -66,7 +82,7 @@ export default function MyPastAns() {
                       onMouseLeave={() => setIsPastAnsHovered(null)}
                       className="rounded-lg py-2 px-4 bg-f5greenn-100 text-f5greenn-200 font-bold transition-all ease-in hover:scale-105 "
                     >
-                      더보기
+                      {isMobile ? "More" : "더보기"}
                     </button>
                     <div
                       className={`transition-opacity ease-in duration-200 ${isPastAnsHovered === index ? "opacity-100" : "opacity-0"}`}
@@ -88,7 +104,7 @@ export default function MyPastAns() {
                       onMouseLeave={() => setIsExAnsHovered(null)}
                       className="rounded-lg py-2 px-4 bg-f5redd-100 text-f5redd-200 font-bold transition-all ease-in hover:scale-105 "
                     >
-                      예시 답변
+                      {isMobile ? "ex" : "예시 답변"}
                     </button>
                     <div
                       className={`transition-opacity ease-in duration-200 ${isExAnsHovered === index ? "opacity-100" : "opacity-0"}`}

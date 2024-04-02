@@ -10,13 +10,12 @@ import {
 import { cloneDeep } from "lodash";
 import Link from "next/link";
 import useEssayStore from "@/store/essayStore";
-import { redirect } from "next/navigation";
 import ModalCustom from "@/components/modalCustom";
 import { Essay, Title } from "@/type/interface";
 import CheckExpire from "@/data/checkExpire";
+import { useMediaQuery } from "react-responsive";
 
 const apiAddress = "https://spring.pickITup.online/self/main";
-
 const dummyTitles: Title[] = [];
 const myEssays: Essay[][] = [[]]; // essay 목록 가져오기
 
@@ -45,6 +44,10 @@ export default function MyEssay(): JSX.Element {
   const essayTitleChangeRef = useRef<HTMLInputElement>(null);
   const essayChangeRef = useRef<HTMLTextAreaElement>(null);
   const mainIdRef = useRef<number>(0);
+
+  const isMobile = useMediaQuery({
+    query: "(max-width:480px)",
+  });
 
   const makeCanEditHandler = (index: number) => {
     setBeforeChangeTitle(titles[index]);
@@ -226,7 +229,6 @@ export default function MyEssay(): JSX.Element {
       }
     };
     if (accessToken) {
-      console.log(accessToken);
       essayListfetchData();
     }
   }, [accessToken]); // 메인 타이틀 받아오기
@@ -281,7 +283,7 @@ export default function MyEssay(): JSX.Element {
   //메인 타이틀 받아오면 그 안의 essays 받아오기
 
   return (
-    <div className="relative w-full pt-3 pr-3">
+    <div className={`relative w-full pt-3 pr-3 ${isMobile ? "ml-2" : ""}`}>
       <Link
         href="/main/myPage/addEssay"
         className="absolute flex flex-row items-center gap-2 px-4 py-2 border border-black rounded-lg right-3"

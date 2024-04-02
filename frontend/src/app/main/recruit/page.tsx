@@ -208,7 +208,7 @@ export default function RecruitPage() {
   return (
     <>
       <div className="flex flex-wrap justify-center">
-      <TechSelectAfterLogin/>
+        <TechSelectAfterLogin />
         {data?.pages.map((page, i: number) =>
           page.response?.content.map((recruit: Recruit, recruitI: number) => {
             return (
@@ -232,19 +232,23 @@ export default function RecruitPage() {
                       {recruit.company}
                     </div>
                     <div className="text-sm font-semibold text-f5gray-500">
-                      {"📆 " +
-                        recruit.dueDate[0] +
-                        "-" +
-                        recruit.dueDate[1] +
-                        "-" +
-                        recruit.dueDate[2]}
+                      {recruit.dueDate[0] == 2100
+                        ? "상시 채용"
+                        : isMobile
+                          ? recruit.dueDate[1] + "-" + recruit.dueDate[2]
+                          : "📆 " +
+                            recruit.dueDate[0] +
+                            "-" +
+                            recruit.dueDate[1] +
+                            "-" +
+                            recruit.dueDate[2]}
                     </div>
                   </div>
                   <p className="mt-1 text-base font-bold text-left text-f5black-300">
                     {recruit.title}
                   </p>
                   <div className="flex flex-wrap gap-2 ml-1 mr-4">
-                     {[
+                    {[
                       ...new Set([
                         ...recruit.qualificationRequirements,
                         ...recruit.preferredRequirements,
@@ -269,7 +273,7 @@ export default function RecruitPage() {
                             />
                           </div>
                         );
-                    })} 
+                    })}
                   </div>
                   <div
                     onClick={(event) => bookMarkHandler(event, recruit.id)}
