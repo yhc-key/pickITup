@@ -8,12 +8,17 @@ import { Recruit } from "@/type/interface";
 
 import { techDataMap } from "@/data/techData";
 import useAuthStore, { AuthState } from "@/store/authStore";
+import { useMediaQuery } from "react-responsive";
 
 export default function MyFavoriteRecruit() {
   const [myFavList, setMyFavList] = useState<string[]>([]);
   const bookmarks = useAuthStore((state: AuthState) => state.bookmarks);
   const setBookmarks = useAuthStore((state: AuthState) => state.setBookmarks);
   const techDataValues = Array.from(techDataMap.values());
+
+  const isMobile = useMediaQuery({
+    query: "(max-width:480px)",
+  });
 
   const deleteBookMark = async (
     event: MouseEvent<HTMLDivElement>,
@@ -55,8 +60,8 @@ export default function MyFavoriteRecruit() {
           <div className="flex text-left font-semibold items-center h-20 border-b-[1px]">
             <div className="w-2/12 px-3">회사명</div>
             <div className="w-4/12 px-3">포지션명</div>
-            <div className="w-4/12 px-3">요구기술스택</div>
-            <div className="w-1/12 px-3">종료일</div>
+            <div className="w-4/12 px-3">기술스택</div>
+            <div className="w-1/12 px-3">기한</div>
             <div className="w-1/12 px-3"></div>
           </div>
         </div>
@@ -71,7 +76,12 @@ export default function MyFavoriteRecruit() {
               <div className="w-4/12 font-semibold">{recruit.title}</div>
               <div className="w-4/12">
                 <div className="flex flex-wrap ">
-                  {recruit.qualificationRequirements.map((tech, i) => {
+                  {[
+                    ...new Set([
+                      ...recruit.qualificationRequirements,
+                      ...recruit.preferredRequirements,
+                    ]),
+                  ].map((tech, i) => {
                     let techTmp = tech.replace(/\s/g, "");
                     techTmp = techTmp.replace(/#/g, "Sharp");
 
@@ -85,16 +95,16 @@ export default function MyFavoriteRecruit() {
                           <button
                             type="button"
                             key={index}
-                            className={`m-1 flex flex-wrap border-f5gray-300 border py-1 pr-2 mb:pr-1 mb:py-0.5 rounded-2xl text-f5black-400 text-xs items-center`}
+                            className={`m-1 flex flex-wrap border-f5gray-300 border rounded-2xl text-f5black-400 text-xs items-center ${isMobile ? "" : "py-1 pr-2"}`}
                           >
                             <Image
                               src={`/images/techLogo/${techTmp}.png`}
                               alt={techTmp}
                               width={22}
                               height={22}
-                              className="mx-1"
+                              className={`${isMobile ? "" : "mx-1"}`}
                             />
-                            {tech}
+                            {isMobile ? "" : tech}
                           </button>
                         </div>
                       );
@@ -102,7 +112,16 @@ export default function MyFavoriteRecruit() {
                 </div>
               </div>
               <div className="w-1/12">
-                {recruit.dueDate[0]}-{recruit.dueDate[1]}-{recruit.dueDate[2]}
+                {recruit.dueDate[0] == 2100
+                  ? "상시 채용"
+                  : isMobile
+                    ? recruit.dueDate[1] + "-" + recruit.dueDate[2]
+                    : "📆 " +
+                      recruit.dueDate[0] +
+                      "-" +
+                      recruit.dueDate[1] +
+                      "-" +
+                      recruit.dueDate[2]}
               </div>
               <div className=" w-1/12 text-lg text-f5green-300 text-center z-20 px-6 hover:scale-110 transition-all ease-in duration-300">
                 <div onClick={(event) => deleteBookMark(event, recruit.id)}>

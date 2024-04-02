@@ -165,7 +165,12 @@ export default function MyFavoriteRecruit() {
                     <td>{recruit.title}</td>
                     <td>
                       <div className="flex flex-wrap gap-1">
-                        {recruit.qualificationRequirements.map((tech, i) => {
+                        {[
+                          ...new Set([
+                            ...recruit.qualificationRequirements,
+                            ...recruit.preferredRequirements,
+                          ]),
+                        ].map((tech, i) => {
                           let techTmp = tech.replace(/\s/g, "");
                           let haveTech = recruit.intersection.includes(tech);
                           techTmp = techTmp.replace(/#/g, "Sharp");
@@ -233,7 +238,7 @@ export default function MyFavoriteRecruit() {
                     </td>
                     <td className={`text-center ${isMobile ? "text-xs" : ""}`}>
                       {recruit.dueDate[0] == 2100
-                        ? "상시채용"
+                        ? "상시 채용"
                         : isMobile
                           ? recruit.dueDate[1] + "-" + recruit.dueDate[2]
                           : recruit.dueDate[0] +
