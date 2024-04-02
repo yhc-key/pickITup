@@ -2,8 +2,7 @@ package services.recommend
 
 import config.MongoConfig.MONGO_DATABASE
 import org.apache.spark.sql.functions.udf
-import services.DistanceCalculator
-import utils.SparkUtil
+import utils.{DistanceCalculator, SparkUtil}
 
 object UserCompanyDistanceService {
 
