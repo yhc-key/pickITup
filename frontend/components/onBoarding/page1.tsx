@@ -17,7 +17,6 @@ export default function Page1({ activePage }: { activePage: boolean }) {
               alt="온보딩이미지"
               width={80}
               height={80}
-              className=""
             />
             <div className="flex justify-start font-semibold tracking-widest text-3xl">
               <div className="mx-2 my-1 text-f5black-400">pick</div>
@@ -36,11 +35,20 @@ export default function Page1({ activePage }: { activePage: boolean }) {
                 취업을 준비할 수 있는 서비스 입니다.
               </div>
             </div>
+            <Image
+              src="/images/techStack.png"
+              alt="온보딩이미지"
+              width={310}
+              height={180}
+              className="mt-10"
+            ></Image>
           </div>
         </div>
       ) : (
         <div className="w-[100%] h-[100%] overflow-hidden">
-          <div className="flex flex-wrap justify-start pt-20 pl-60">
+          <div
+            className={`flex flex-wrap justify-start pt-20 pl-60`}
+          >
             <Image
               src="/images/onBoarding.png"
               alt="온보딩이미지"

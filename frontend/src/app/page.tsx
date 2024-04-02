@@ -51,10 +51,17 @@ export default function Home() {
           setScrollIdx(2);
 
           if (laptopImageRef.current) {
-            laptopImageRef.current.style.left = "70%";
-            laptopImageRef.current.style.transform =
-              "translate(-50%, 18%) scale(0.4)";
-            laptopImageRef.current.style.bottom = "10%";
+            if (isMobile) {
+              laptopImageRef.current.style.left = "50%";
+              laptopImageRef.current.style.transform =
+                "translate(-50%, 18%) scale(0.7)";
+              laptopImageRef.current.style.bottom = "40%";
+            } else {
+              laptopImageRef.current.style.left = "70%";
+              laptopImageRef.current.style.transform =
+                "translate(-50%, 18%) scale(0.4)";
+              laptopImageRef.current.style.bottom = "10%";
+            }
           }
         } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
           // 현재 2페이지
@@ -171,27 +178,13 @@ export default function Home() {
       }
     };
 
-    // 모바일에서만 스와이프 이벤트 핸들러를 등록
-    if (isMobile) {
-      const swipeableRef = mainWrapperRef.current!;
-      swipeableRef.addEventListener("swiped", (e: any) => {
-        handleSwipe(e.dir);
-      });
-    }
-
     const wrapperRefCurrent = mainWrapperRef.current!;
-    !isMobile &&
-      wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
-        passive: false,
-      });
+    // !isMobile &&
+    wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
+      passive: false,
+    });
 
     return () => {
-      if (isMobile) {
-        const swipeableRef = mainWrapperRef.current!;
-        swipeableRef.removeEventListener("swiped", (e: any) => {
-          handleSwipe(e.dir);
-        });
-      }
       wrapperRefCurrent.removeEventListener("wheel", wheelHandler);
     };
   }, [scrollIdx, isMobile]);

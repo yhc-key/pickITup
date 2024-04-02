@@ -124,7 +124,7 @@ export default function RecruitLayout({
           })}
         </div>
         <div className="border my-3 border-f5gray-300"></div>
-        <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-3 max-w-[1000px]">
+        <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 max-w-[1000px] mx-6">
           {techs?.map((tech: string, index: number) => {
             const techWithoutSpaces = tech.replace(/\s/g, ""); // 공백 제거
             return (
