@@ -1,7 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Swipeable } from "react-swipeable";
 
 import Image from "next/image";
 import Link from "next/link";
