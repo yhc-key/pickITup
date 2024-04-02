@@ -5,7 +5,7 @@ import Link from "next/link";
 import { TiTimes } from "react-icons/ti";
 import Modal from "@/components/modal2";
 import { techDataMap } from "@/data/techData";
-import { techData2, techInfos } from "@/data/techData";
+import { techData2 } from "@/data/techData";
 import AutocompleteSearchBar from "@/components/AutoCompleteSearchBar";
 import useAuthStore, { AuthState } from "@/store/authStore";
 import CheckExpire from "@/data/checkExpire";
