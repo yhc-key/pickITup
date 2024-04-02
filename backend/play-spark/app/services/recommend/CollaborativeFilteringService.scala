@@ -68,10 +68,11 @@ object CollaborativeFilteringService {
 
     val userInteractions = userScaledClicks
       .join(userScraps, Seq("userId", "recruitId"), "outer")
-      .select("userId", "recruitId", "click", "scrap")
+      .join(top50SimilarUsers, Seq("userId"), "inner")
+      .select("userId", "recruitId", "click", "scrap", "similarity")
       .na.fill(0, Seq("click"))
       .na.fill(0, Seq("scrap"))
-      .withColumn("score", $"click" +  $"scrap")
+      .withColumn("score", $"similarity" * ($"click" + $"scrap"))
 
     val recruitInteractionScores = userInteractions
       .groupBy("recruitId")
