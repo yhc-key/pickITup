@@ -112,7 +112,7 @@ export default function MyPageLayout({
     setHiddenLayout(pathname === "/main/myPage/addEssay");
   }, [pathname]);
   return (
-    <div className={`flex my-5 ${isMobile ? "flex-col" : "mx-32 "}`}>
+    <div className={`flex my-5 ${isMobile ? "flex-col" : "mx-32"}`}>
       <div
         className={`min-w-[330px] max-w-[330px]  mx-auto ${hiddenLayout ? "hidden" : ""}`}
       >
@@ -253,7 +253,7 @@ export default function MyPageLayout({
         open={isTechSelectOpen}
         onclose={() => setIsTechSelectOpen(false)}
       />
-      <div className="flex-grow ">{children}</div>
+      <div className="flex-grow">{children}</div>
     </div>
   );
 }

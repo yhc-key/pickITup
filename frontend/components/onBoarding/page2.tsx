@@ -10,19 +10,19 @@ export default function Page2({ activePage }: { activePage: boolean }) {
   return (
     <Fragment>
       {isMobile ? (
-         <div className="max-w-[400px] h-screen mx-auto">
-          <div className="flex flex-wrap justify-start align-middle">
+         <div className="max-w-[400px] h-screen mx-auto pt-40">
+          <div className="flex flex-wrap justify-center align-middle">
             <div className="flex flex-col justify-evenly">
               <div
-                className={`flex flex-col justify-start text-3xl font-semibold tracking-widest ${activePage ? "animate-slide-right" : ""}`}
+                className={`flex flex-col justify-center text-3xl font-semibold tracking-widest ${activePage ? "animate-slide-right" : ""}`}
               >
-                <div className="flex">
-                  <div className="my-1 ml-3 text-transparent bg-clip-text bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300">
+                <div className="flex justify-center">
+                  <div className="my-1 text-transparent bg-clip-text bg-gradient-to-r from-f5yellowgreen-200 to-f5green-300">
                     여러 기업의 채용 공고
                   </div>
                   <div className="my-1 text-f5black-400">를</div>
                 </div>
-                <div className="my-1 ml-3 text-f5black-400">
+                <div className="my-1 text-f5black-400 flex justify-center">
                   한 번에 볼 수 있습니다
                 </div>
               </div>

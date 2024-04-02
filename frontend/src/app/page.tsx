@@ -171,30 +171,17 @@ export default function Home() {
       }
     };
 
-    // 모바일에서만 스와이프 이벤트 핸들러를 등록
-    if (isMobile) {
-      const swipeableRef = mainWrapperRef.current!;
-      swipeableRef.addEventListener("swiped", (e: any) => {
-        handleSwipe(e.dir);
-      });
-    }
 
     const wrapperRefCurrent = mainWrapperRef.current!;
-    !isMobile &&
+    // !isMobile &&
       wrapperRefCurrent.addEventListener("wheel", wheelHandler, {
         passive: false,
       });
 
     return () => {
-      if (isMobile) {
-        const swipeableRef = mainWrapperRef.current!;
-        swipeableRef.removeEventListener("swiped", (e: any) => {
-          handleSwipe(e.dir);
-        });
-      }
       wrapperRefCurrent.removeEventListener("wheel", wheelHandler);
     };
-  }, [scrollIdx, isMobile]);
+  }, [scrollIdx]);
 
   return (
     <body className={`${noto.className} min-h-screen flex flex-col`}>
