@@ -29,7 +29,8 @@ import org.hibernate.annotations.SQLRestriction;
 @ToString(of = {"id", "username", "password", "refreshToken", "user", "lastLoginDate"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Auth extends BaseTimeEntity {
+public class
+Auth extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
