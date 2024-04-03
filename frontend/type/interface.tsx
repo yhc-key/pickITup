@@ -16,7 +16,7 @@ export interface ModalCustomProps {
   design?: string;
   open: boolean;
   onClose: () => void;
-  onClickEvent: () => void;
+  onClickEvent: () => boolean;
   children: React.ReactNode;
 }
 

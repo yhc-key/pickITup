@@ -99,7 +99,7 @@ export default function MyEssay(): JSX.Element {
     if (!essayTitleAddRef.current) return;
     if (essayTitleAddRef.current.value.trim() == "") {
       setTitleValidate(false);
-      return;
+      return false;
     }
     setTitleValidate(true);
     try {
@@ -111,8 +111,8 @@ export default function MyEssay(): JSX.Element {
         },
         body: JSON.stringify({ title: essayTitleAddRef.current.value.trim() }),
       });
-
       window.location.reload();
+      return true;
     } catch (error) {
       console.error(error);
     }
@@ -411,7 +411,7 @@ export default function MyEssay(): JSX.Element {
               <span
                 className={`text-f5red-300  ${titleValidate ? "hidden" : ""}`}
               >
-                올바른 값을 입력해주세요
+                항목을 작성해주세요
               </span>
             </div>
           </div>
