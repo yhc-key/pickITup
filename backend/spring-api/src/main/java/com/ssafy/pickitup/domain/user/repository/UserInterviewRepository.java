@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface UserInterviewRepository extends JpaRepository<UserInterview, Integer> {
 
   @EntityGraph(attributePaths = {"interview"})
-  @Query("SELECT ui FROM UserInterview ui WHERE ui.user.id = :userId")
+  @Query("SELECT ui FROM UserInterview ui WHERE ui.user.id = :userId ORDER BY ui.lastModifiedDate DESC")
   Stream<UserInterview> findByUserIdOrderByLastModifiedDateDesc(Integer userId);
 
   int countByUserId(Integer userId);
