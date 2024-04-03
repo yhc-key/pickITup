@@ -275,6 +275,14 @@ public class UserCommandService {
         userRecruitCommandJpaRepository.deleteAllByUserIdAndRecruitId(authId, recruitId);
     }
 
+    @Transactional
+    public void increaseUserAttendCount(Integer authId) {
+        User user = userCommandJpaRepository.findById(authId)
+            .orElseThrow(UserNotFoundException::new);
+        //출석 횟수 증가
+        user.increaseAttendCount();
+    }
+
     private void callScalaByKeywordChange() {
         userRecommendService.sendSignalToScalaServerByKeywordChange();
     }
