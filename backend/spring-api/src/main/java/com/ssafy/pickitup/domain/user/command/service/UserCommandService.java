@@ -163,8 +163,6 @@ public class UserCommandService {
             .orElseThrow(UserNotFoundException::new);
         user.changeAddress(address);
         updateUserMongo(user);
-        //스칼라 서버에 사용자 주소 변경 사실 알리기
-        callScalaByAddressChange();
     }
 
     @Transactional
@@ -223,6 +221,8 @@ public class UserCommandService {
         userMongo.setLongitude(geoLocation.getLongitude());
 
         userCommandMongoRepository.save(userMongo);
+        //스칼라 서버에 사용자 주소 변경 사실 알리기
+        callScalaByAddressChange();
     }
 
     @CacheEvict(cacheNames = "recommend", key = "#authId")
