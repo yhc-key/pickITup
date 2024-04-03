@@ -29,7 +29,6 @@ export default function Page4({ activePage }: { activePage: boolean }) {
                   </div>
                   <div></div>
                 </div>
-
               </div>
               <Image
                 src="/images/resume.png"
@@ -55,16 +54,23 @@ export default function Page4({ activePage }: { activePage: boolean }) {
                 <div className="my-1 ml-3 text-f5black-400">
                   유사 문항을 함께 관리할 수 있는 기능을 제공합니다
                 </div>
-                <div></div>
+                <Image
+                src="/images/assay.png"
+                alt="assay"
+                width={610}
+                height={349}
+                className="rounded-xl shadow-lg mt-8 ml-16"
+              />
               </div>
             </div>
+            <div className="flex align-middle pb-28 mt-10">
             <Image
               src="/images/resume.png"
               alt="resume"
-              width={378}
-              height={328}
-              className="mt-28"
+              width={358}
+              height={308}
             />
+            </div>
           </div>
         </div>
       )}

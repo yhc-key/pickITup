@@ -255,9 +255,9 @@ export default function Home() {
         <Dots scrollIdx={scrollIdx} />
         <div className="h-screen">
           <Image
-            src="/images/laptop.png"
+            src="/images/laptop2.png"
             ref={laptopImageRef} // 랩탑 이미지에 ref 추가
-            alt="lattop"
+            alt="laptop"
             width={1588}
             height={1053}
             className="laptop fixed bottom-[-80vh] translate-x-[-50%] scale-105 transform transition-all duration-700 ease-in-out left-1/2"
