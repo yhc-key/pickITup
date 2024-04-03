@@ -297,7 +297,7 @@ export default function Signup() {
               <DaumPostcode onComplete={completeHandler} />
             </Modal>}
           </div>
-          <div className="flex items-center justify-center w-full mt-10">
+          <div className="flex items-center justify-center w-full mt-10 mb-5">
             <button
               onClick={signUpRequest}
               className="w-full h-12 font-semibold text-white rounded-md bg-f5green-300">
