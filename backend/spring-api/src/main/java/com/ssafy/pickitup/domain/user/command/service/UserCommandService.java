@@ -293,11 +293,6 @@ public class UserCommandService {
         user.increaseAttendCount();
     }
 
-    @Transactional
-    public void scala() {
-        userRecommendService.sendRequestToScalaServer();
-    }
-
     private void callScalaByKeywordChange() {
         userRecommendService.sendSignalToScalaServerByKeywordChange();
     }
