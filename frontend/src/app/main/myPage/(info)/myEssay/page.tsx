@@ -96,14 +96,14 @@ export default function MyEssay(): JSX.Element {
   }; // 삭제 로직
 
   const addSubmitHandler = async () => {
-    if (!essayTitleAddRef.current) return;
+    if (!essayTitleAddRef.current) return false;
     if (essayTitleAddRef.current.value.trim() == "") {
       setTitleValidate(false);
       return false;
     }
     setTitleValidate(true);
     try {
-      await fetch(apiAddress, {
+    await fetch(apiAddress, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,10 +112,10 @@ export default function MyEssay(): JSX.Element {
         body: JSON.stringify({ title: essayTitleAddRef.current.value.trim() }),
       });
       window.location.reload();
-      return true;
     } catch (error) {
       console.error(error);
     }
+    return true;
   }; // 메인 자소서 항목 추가 로직
 
   const changeTitleHandler = async (id: number) => {

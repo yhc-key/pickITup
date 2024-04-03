@@ -94,8 +94,8 @@ export default function ModalCustom({
           </button>
           <button
             id={`${name}AddButton`}
-            onClick={() => {
-              if (onClickEvent()) {
+            onClick={async () => {
+              if (await onClickEvent()) {
                 onClose();
               }
             }}
