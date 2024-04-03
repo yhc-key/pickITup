@@ -15,7 +15,7 @@ public interface RecruitQueryElasticsearchRepository extends
         "\"bool\": {" +
         "\"must\": [" +
         "{\"match_phrase\": {\"qualification_requirements\": \"?0\"}}," +
-        "{\"range\": {\"dueDate\": {\"gt\": \"now\"}}}" +
+        "{\"range\": {\"due_date\": {\"gte\": \"now/d\"}}}" +
         "]" +
         "}" +
         "}")
@@ -26,7 +26,7 @@ public interface RecruitQueryElasticsearchRepository extends
         "\"bool\": {" +
         "\"must\": [" +
         "{\"match_phrase\": {\"preferred_requirements\": \"?0\"}}," +
-        "{\"range\": {\"dueDate\": {\"gt\": \"now\"}}}" +
+        "{\"range\": {\"due_date\": {\"gte\": \"now/d\"}}}" +
         "]" +
         "}" +
         "}")
@@ -42,7 +42,7 @@ public interface RecruitQueryElasticsearchRepository extends
         "{\"match\": {\"qualification_requirements\": {\"query\": \"?0\", \"operator\": \"and\"}}}," +
         "{\"match\": {\"preferred_requirements\": {\"query\": \"?0\", \"operator\": \"and\"}}}" +
         "], \"minimum_should_match\": 1}}," +
-        "{\"range\": {\"dueDate\": {\"gt\": \"now\"}}}" +
+        "{\"range\": {\"due_date\": {\"gte\": \"now/d\"}}}" +
         "]" +
         "}" +
         "}")
@@ -52,7 +52,7 @@ public interface RecruitQueryElasticsearchRepository extends
         "\"bool\": {" +
         "\"must\": [" +
         "{\"multi_match\": {\"query\": \"?0\", \"fields\": [\"qualification_requirements\", \"preferred_requirements\"]}}," +
-        "{\"range\": {\"dueDate\": {\"gt\": \"now\"}}}" +
+        "{\"range\": {\"due_date\": {\"gte\": \"now/d\"}}}" +
         "]" +
         "}" +
         "}")
@@ -68,7 +68,7 @@ public interface RecruitQueryElasticsearchRepository extends
         "{\"match\": {\"preferred_requirements\": {\"query\": \"?0\", \"operator\": \"and\"}}}" +
         "], \"minimum_should_match\": 1}}," +
         "{\"multi_match\": {\"query\": \"?1\", \"fields\": [\"qualification_requirements\", \"preferred_requirements\"]}}," +
-        "{\"range\": {\"dueDate\": {\"gt\": \"now\"}}}" +
+        "{\"range\": {\"due_date\": {\"gte\": \"now/d\"}}}" +
         "]" +
         "}" +
         "}")
