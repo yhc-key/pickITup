@@ -145,8 +145,8 @@ def find_click_close_button(driver):
     time.sleep(3)
 
 def run():    
-    USR = "thd4525@koreatech.ac.kr"
-    PWD = "thddbswo1!"
+    USR = ""
+    PWD = ""
     driver = initialize_driver()
     close_advertisement(driver)
     login(driver, USR, PWD)
