@@ -18,11 +18,6 @@ function isHangulCompleted(char: string): boolean {
   return unicode >= 44032 && unicode <= 55203;
 }
 
-// // 'ㄱ'부터 'ㅎ'까지의 유니코드 범위
-function isHangulConsonant(char: string): boolean {
-  const unicode = char.charCodeAt(0);
-  return unicode >= 12593 && unicode <= 12622;
-}
 // 입력한 문자열이 영어인지 확인하는 함수
 function isEnglish(char: string): boolean {
   const unicode = char.charCodeAt(0);
@@ -40,37 +35,34 @@ export default function Question({
   index,
   onNextClick,
 }: questionProps) {
-  const inputHTML = useRef<HTMLInputElement[]>([]);;
+  const inputHTML = useRef<HTMLInputElement[]>([]);
 
   const onInputChange = useCallback((e: any, idx: number) => {
     // console.log(inputHTML.current.length);
     const inputValue = e.target.value;
     if (isHangulCompleted(inputValue)) {
       // 입력값이 한글 완성형이면 엔터눌렀을 때 다음 input으로 포커스를 이동
-      // if (e.key === "Enter") {
-      //   if (
-      //     inputHTML.current.length > 0 &&
-      //     idx < inputHTML.current.length - 1 &&
-      //     inputHTML.current[idx + 1]
-      //   ) {
-      //     inputHTML.current[idx + 1].focus();
-      //   }
-      // }
-
-
-      // 두 글자 이상 입력되면
-      if (inputValue.length === 2 && isHangulCompleted(inputValue[1])) {
-        // 두 번째 칸에 입력된 문자가 한글 완성형 문자일 때 두 번째 칸에 자동으로 입력
-        inputHTML.current[idx + 1]?.focus();
-        inputHTML.current[idx + 1]?.setAttribute('value', inputValue[1]);
+      if (e.key === "Enter") {
+        if (
+          inputHTML.current.length > 0 &&
+          idx < inputHTML.current.length - 1 &&
+          inputHTML.current[idx + 1]
+        ) {
+          inputHTML.current[idx + 1].focus();
+        }
       }
+
+      // // 두 글자 이상 입력되면
+      // if (inputValue.length > 1) {
+      //   // 두 번째 칸에 입력된 글자를 자동으로 입력
+      //   inputHTML.current[idx + 1]?.focus();
+      //   inputHTML.current[idx + 1]?.setAttribute('value', inputValue[1]);
+      // }
     } else if (isEnglish(inputValue) || isSpecialCharacters(inputValue)) {
       // 영어나 특수 문자는 다음 칸으로 이동
       inputHTML.current[idx + 1]?.focus();
     }
   }, []);
-
-
 
 
   const inputKeyDown = useCallback(
@@ -135,7 +127,7 @@ export default function Question({
           <div className="flex items-center justify-center p-2 mr-3 text-lg font-semibold rounded-full w-7 h-7 bg-f5green-300 text-neutral-50 mb:text-sm">
             {index}
           </div>
-          <div className="flex flex-wrap mb:text-sm text-f5black-400">
+          <div className="flex flex-wrap text-sm text-f5black-400">
             {question.question}
           </div>
         </div>

@@ -1,16 +1,20 @@
+# pick IT up (사용자 맞춤형 채용 공고 추천 서비스✨)
+
 ### 💙 SSAFY 10기 특화 프로젝트 서울 4반 🐥F5 세희고침🐥 (2024.2.17 ~ 2024.04.04)
 
-### ✅ 기획배경
+<img src="./assets/pickitup.png">
 
-##### 1️⃣ [서비스 소개](#Ⅰ-서비스-소개-)
+# 📚 목차
 
-##### 2️⃣ [기획 배경](#Ⅱ-기획-배경-)
+##### 1️⃣ [서비스 소개](#Ⅰ.-서비스-소개-🎈)
 
-##### 3️⃣ [팀원 소개 및 역할](#Ⅲ-팀원-소개-및-역할)
+##### 2️⃣ [기획 배경](#Ⅱ-기획-배경-☁️)
 
-##### 4️⃣ [서비스 화면](#Ⅳ-서비스-화면)
+##### 3️⃣ [팀원 및 일정](#Ⅲ-팀원-및-일정-소개-🐥)
 
-##### 5️⃣ [개발 환경](#Ⅴ-개발-환경-)
+##### 4️⃣ [서비스 화면](#Ⅳ-서비스-화면-💻)
+
+##### 5️⃣ [개발 환경](#Ⅴ-개발-환경-🖥)
 
 ##### 6️⃣ [활용 기술](#Ⅵ-활용-기술-)
 
@@ -22,13 +26,16 @@
 
 # Ⅰ. 서비스 소개 🎈
 
-- 사용자 데이터 기반 IT 채용 공고를 추천해주고, 더 나아가서 해당 직군에 필요한 기술 블로그 추천
-
 ### 📌 Overview
+
+- 사용자 데이터 기반 IT 채용 공고를 추천해주고, 더 나아가서 해당 직군에 필요한 기술 블로그 추천
 
 ### 🎯 타겟
 
-- IT 취준생, 이직생 대상 서비스
+- 기술 스택 기반으로 IT 채용 공고를 보고 싶은 취준생들
+- 너무 많은 정보량으로 힘들어하는 추천이 필요한 취준생들
+- 기술 면접 대비를 하고 싶은 사람들
+- 자기소개서를 관리하고 싶은 취준생, 이직생들
 
 ### 📌 프로젝트 기능
 
@@ -54,7 +61,7 @@
 
 - 사용자 데이터 기반 IT 채용 공고를 추천해주고, 더 나아가서 해당 직군에 필요한 기술 블로그 추천
 
-# Ⅳ. 팀원 및 일정 소개 🐥
+# Ⅲ. 팀원 및 일정 소개 🐥
 
 ## 📆 프로젝트 기간
 
@@ -93,6 +100,90 @@
     </tr>
 </table>
 
+# Ⅳ. 서비스 화면🎬
+
+## 기능 소개 🎬
+
+#### 로그인 및 회원가입
+
+<div style="display: flex;">
+<img src="./assets/로그인.png" alt="로그인" width="50%" height="70%" style="margin-right: 0.5rem">
+<img src="./assets/회원가입.png" alt="회원가입" width="50%" height="70%">
+</div>
+
+#### 채용공고
+
+<div align="start">
+<img src="./assets/채용공고.png" alt="채용공고" width="70%" height="70%">
+</div>
+
+#### 추천공고
+
+<div align="start">
+<img src="./assets/추천공고.png" alt="추천공고" width="70%" height="70%">
+</div>
+
+#### 미니게임
+
+<div align="start">
+<img src="./assets/미니게임_intro.png" alt="미니게임_intro" width="70%" height="70%">
+</div>
+
+##### speedQuiz
+
+<div style="display: flex;">
+<img src="./assets/미니게임_speed.png" alt="미니게임_speed" width="50%" height="70%" style="margin-right: 0.5rem">
+<img src="./assets/미니게임_speed_Result.png" alt="미니게임_speed_Result" width="50%" height="70%">
+</div>
+
+##### OXQuiz
+
+<div style="display: flex;">
+<img src="./assets/미니게임_ox.png" alt="미니게임_ox" width="50%" height="70%" style="margin-right: 0.5rem">
+<img src="./assets/미니게임_ox_Result.png" alt="미니게임_ox_Result" width="50%" height="70%">
+</div>
+
+#### 면접대비
+
+<div style="display: flex;">
+<img src="./assets/면접대비_intro.png" alt="면접대비_intro" width="50%" height="70%" style="margin-right: 0.5rem">
+<img src="./assets/면접대비.png" alt="면접대비" width="50%" height="70%">
+</div>
+
+#### 마이페이지
+
+##### 내가 찜한 채용 공고
+
+<div align="start">
+<img src="./assets/마이페이지_myFavoriteRecruit.png" alt="마이페이지_myFavoriteRecruit" width="70%" height="70%">
+</div>
+
+##### 나의 뱃지
+
+<div align="start">
+<img src="./assets/마이페이지_myBadge.png" alt="마이페이지_myBadge" width="70%" height="70%">
+</div>
+
+##### 과거 답변 내역
+
+<div align="start">
+<img src="./assets/마이페이지_myPastAns.png" alt="마이페이지_myPastAns" width="70%" height="70%">
+</div>
+
+##### 자소서 관리
+
+<div align="start">
+<img src="./assets/마이페이지_myAssay.png" alt="마이페이지_myAssay" width="70%" height="70%">
+</div>
+
+##### 개인 정보 수정
+
+<div align="start">
+<img src="./assets/마이페이지_updateInfo.png" alt="마이페이지_updateInfo" width="70%" height="70%">
+</div>
+
+## 시연 영상 🎬
+
 # Ⅴ. 개발 환경 🖥
 
 ## 🖱 Frontend
@@ -110,8 +201,20 @@
     Version: 1.86.2 (user setup)
     Node.js: 18.17.1
     V8: 11.8.172.18-electron.0
+    TypeScript : ^5
     Nextjs : 14.1.1
     react: ^18
+    tailwindcss: ^3.3.0
+    @tanstack/react-query: ^5.28.6
+    tailwindcss: ^3.3.0
+
+#### 기술 스택 선택 이유
+
+- Nextjs: 이미지 최적화, SEO를 고려한 SSR 제작, 편리한 routing, 데이터 캐싱
+- TypeScript : 타입 에러를 잡아내 디버깅 시간을 줄이기 위해 사용
+- Tanstack query : 검색 기능 속 Infinite scroll 구현 때 간편하게 검색어별 데이터를 쿼리키로 캐싱 및 Infnnite scroll 구현을 도와주기 때문에 사용
+- Tailwind CSS: 간편한 CSS 문법 제공 및 코드 길이를 짧게 해줌
+- Zustand: Redux, redux-toolkit보다 러닝 커브가 낮고, 전역 상태관리가 필요한 영역이 적고, 1.2kb 로 패키지가 가벼워서 사용
 
 ## 🖱 Backend
 
@@ -178,7 +281,7 @@
 
 # Ⅵ. 활용 기술 🧰
 
-프론트앤드
+## 🖱 Frontend
 
 - NextJS 활용 SEO를 고려한 SSR방식 웹사이트 제작
 - NextJS 활용 데이터 캐싱으로 UX 향상
@@ -186,17 +289,45 @@
 - React-query를 활용해 검색 기능 Infinite Scroll 구현
 - refreshToken과 accessToken으로 로그인 로직 구현
 
+## 🖱 Backend
+
+## 1.MySQL Master-Slave
+
+MySQL을 Master DB와 Slave DB로 나누어서 분산 환경을 구축했습니다.
+
+DB 분산 환경을 통해 Master DB에 장애가 발생하더라도 Slave DB를 활용해서 복구할 수 있도록 했습니다.
+
+또한, 읽기 작업을 Slave DB로 분산시켜서 서비스의 응답을 향상시키고 대규모 트래픽에 대응할 수 있도록 했습니다. 사용자 상호작용 데이터가 쌓이는 쓰기 작업이 DB에 부하를 줄 수 있기 때문에, 읽기 작업을 Slave DB에서 전담하도록 했습니다.
+
+그리고 읽기와 쓰기 작업을 분리하였기 때문에 스프링 프로젝트에서도 CQRS 패턴을 통해 Command 작업과 Query 작업을 구분해서 작업하였습니다.
+
+시스템의 가용성과 성능을 향상 시킬 수 있으며 CQRS 패턴과 결합을 통해 시스템의 확장성을 높일 수 있어서 개발 및 운영 측면에서 많은 이점을 누릴 수 있는 기술이라고 생각합니다.
+
 # Ⅶ. 프로젝트 산출물 📁
 
 ### 🏛 서비스 아키택처
 
+<div align="start">
+<img src="./assets/architecture.png" alt="architecture" width="70%" height="70%">
+</div>
+
 ### 🛢︎ ERD
 
-### 📄 요구사항 정의서
+<div align="start">
+<img src="./assets/erd.png" alt="erd" width="70%" height="70%">
+</div>
+
+![요구사항정의서](assets/요구사항정의서.png)
 
 ### 📄 API 명세서
 
+![API명세서](assets/API명세서.png)
+
 ### 🎨 화면 설계서
+
+<div align="start">
+<img src="./assets/화면설계서.png" alt="화면설계서" width="70%" height="70%">
+</div>
 
 # Ⅷ. 개발 회고 🔎
 
@@ -206,13 +337,9 @@
 
 https://www.notion.so/Front-End-59a0c5e4788245a985c65521dc8dff8a
 
-feat. Google Javascript convention
-
 ### Back-end
 
 https://www.notion.so/Back_End-2e25f8e764d84d929aaf5dfc0a23ba27
-
-feat. Google Java convention
 
 ## 📌커밋 RULE
 
