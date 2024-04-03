@@ -44,7 +44,6 @@ public class JwtTokenProvider {
             .collect(Collectors.joining(","));
         long now = (new Date()).getTime();
         Date accessTokenExpirationTime = new Date(now + JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME);
-        log.debug("authentication = {}", authentication);
         String accessToken = Jwts.builder()
             .setSubject(String.valueOf(auth.getId())) // authId 담기
             .claim(AUTHORITIES_KEY, authorities)
@@ -78,9 +77,6 @@ public class JwtTokenProvider {
             .setExpiration(new Date(now + JwtProperties.REFRESH_TOKEN_EXPIRATION_TIME))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
-
-        log.debug("Access Token = {}", accessToken);
-        log.debug("Refresh Token = {}", refreshToken);
 
         return JwtTokenDto.builder()
             .accessToken(accessToken)

@@ -36,32 +36,26 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     private final RedisService redisService;
     private final UserQueryJpaRepository userQueryJpaRepository;
     private final AuthCommandJpaRepository authCommandJpaRepository;
-    //    private final String CALLBACK_URL = "http://localhost:3000/auth/callback";
     private final String CALLBACK_URL = "https://pickitup.online/main/auth/callback";
 
     @Override
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-        Authentication authentication) throws IOException, ServletException {
+        Authentication authentication) throws IOException {
 
         JwtTokenDto tokenSet = jwtTokenProvider.generateToken(authentication);
-        log.debug("request in onAthenticataionSuceess = {}", request.toString());
 
         // DB에 Refreshtoken 저장
         AuthDto authDto = authQueryService.getUserByUsername(authentication.getName());
         Auth updatedAuth = Auth.toDto(authDto);
-        log.debug("updatedAuth before = {}", updatedAuth);
-        log.debug("refreshToken = {}", tokenSet.getRefreshToken());
         updatedAuth.setRefreshToken(tokenSet.getRefreshToken());
         User user = userQueryJpaRepository.findById(updatedAuth.getId()).orElseThrow(
             () -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
-        log.debug("user = {}", user);
         updatedAuth.setUser(user);
         authCommandService.increaseAttendCount(updatedAuth);
         updatedAuth.setLastLoginDate();
         authCommandJpaRepository.save(updatedAuth);
 
-        log.debug("updatedAuth after = {}", updatedAuth);
         // Redis에 Refreshtoken 저장
         RefreshToken refreshToken = RefreshToken.builder()
             .authId(updatedAuth.getId())
@@ -70,7 +64,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         redisService.saveRefreshToken(refreshToken.getAuthId(), refreshToken.getRefreshToken());
         // token 쿼리스트링
         String targetUrl = UriComponentsBuilder.fromUriString(CALLBACK_URL)
-//            .queryParam(JwtProperties.TOKEN_TYPE, JwtProperties.TOKEN_PREFIX.substring(0, 6))
             .queryParam(JwtProperties.ACCESS_TOKEN, tokenSet.getAccessToken())
             .queryParam(JwtProperties.EXPRIES_IN, JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME)
             .queryParam(JwtProperties.REFRESH_TOKEN, tokenSet.getRefreshToken())
