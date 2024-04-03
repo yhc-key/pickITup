@@ -1,6 +1,10 @@
+# pick IT up (사용자 맞춤형 채용 공고 추천 서비스✨)
+
 ### 💙 SSAFY 10기 특화 프로젝트 서울 4반 🐥F5 세희고침🐥 (2024.2.17 ~ 2024.04.04)
 
-### ✅ 기획배경
+<img src="./assets/pickitup.png">
+
+# 📚 목차
 
 ##### 1️⃣ [서비스 소개](#Ⅰ.-서비스-소개-🎈)
 
@@ -96,7 +100,89 @@
     </tr>
 </table>
 
-# Ⅳ. 서비스 화면 💻
+# Ⅳ. 서비스 화면🎬
+
+## 기능 소개 🎬
+
+#### 로그인 및 회원가입
+
+<div style="display: flex;">
+<img src="./assets/로그인.png" alt="로그인" width="50%" height="70%" style="margin-right: 0.5rem">
+<img src="./assets/회원가입.png" alt="회원가입" width="50%" height="70%">
+</div>
+
+#### 채용공고
+
+<div align="start">
+<img src="./assets/채용공고.png" alt="채용공고" width="70%" height="70%">
+</div>
+
+#### 추천공고
+
+<div align="start">
+<img src="./assets/추천공고.png" alt="추천공고" width="70%" height="70%">
+</div>
+
+#### 미니게임
+
+<div align="start">
+<img src="./assets/미니게임_intro.png" alt="미니게임_intro" width="70%" height="70%">
+</div>
+
+##### speedQuiz
+
+<div style="display: flex;">
+<img src="./assets/미니게임_speed.png" alt="미니게임_speed" width="50%" height="70%" style="margin-right: 0.5rem">
+<img src="./assets/미니게임_speed_Result.png" alt="미니게임_speed_Result" width="50%" height="70%">
+</div>
+
+##### OXQuiz
+
+<div style="display: flex;">
+<img src="./assets/미니게임_ox.png" alt="미니게임_ox" width="50%" height="70%" style="margin-right: 0.5rem">
+<img src="./assets/미니게임_ox_Result.png" alt="미니게임_ox_Result" width="50%" height="70%">
+</div>
+
+#### 면접대비
+
+<div style="display: flex;">
+<img src="./assets/면접대비_intro.png" alt="면접대비_intro" width="50%" height="70%" style="margin-right: 0.5rem">
+<img src="./assets/면접대비.png" alt="면접대비" width="50%" height="70%">
+</div>
+
+#### 마이페이지
+
+##### 내가 찜한 채용 공고
+
+<div align="start">
+<img src="./assets/마이페이지_myFavoriteRecruit.png" alt="마이페이지_myFavoriteRecruit" width="70%" height="70%">
+</div>
+
+##### 나의 뱃지
+
+<div align="start">
+<img src="./assets/마이페이지_myBadge.png" alt="마이페이지_myBadge" width="70%" height="70%">
+</div>
+
+##### 과거 답변 내역
+
+<div align="start">
+<img src="./assets/마이페이지_myPastAns.png" alt="마이페이지_myPastAns" width="70%" height="70%">
+</div>
+
+##### 자소서 관리
+
+<div align="start">
+<img src="./assets/마이페이지_myAssay.png" alt="마이페이지_myAssay" width="70%" height="70%">
+</div>
+
+##### 개인 정보 수정
+
+<div align="start">
+<img src="./assets/마이페이지_updateInfo.png" alt="마이페이지_updateInfo" width="70%" height="70%">
+</div>
+
+## 시연 영상 🎬
 
 # Ⅴ. 개발 환경 🖥
 
@@ -195,7 +281,7 @@
 
 # Ⅵ. 활용 기술 🧰
 
-프론트앤드
+## 🖱 Frontend
 
 - NextJS 활용 SEO를 고려한 SSR방식 웹사이트 제작
 - NextJS 활용 데이터 캐싱으로 UX 향상
@@ -203,15 +289,33 @@
 - React-query를 활용해 검색 기능 Infinite Scroll 구현
 - refreshToken과 accessToken으로 로그인 로직 구현
 
+## 🖱 Backend
+
+## 1.MySQL Master-Slave
+
+MySQL을 Master DB와 Slave DB로 나누어서 분산 환경을 구축했습니다.
+
+DB 분산 환경을 통해 Master DB에 장애가 발생하더라도 Slave DB를 활용해서 복구할 수 있도록 했습니다.
+
+또한, 읽기 작업을 Slave DB로 분산시켜서 서비스의 응답을 향상시키고 대규모 트래픽에 대응할 수 있도록 했습니다. 사용자 상호작용 데이터가 쌓이는 쓰기 작업이 DB에 부하를 줄 수 있기 때문에, 읽기 작업을 Slave DB에서 전담하도록 했습니다.
+
+그리고 읽기와 쓰기 작업을 분리하였기 때문에 스프링 프로젝트에서도 CQRS 패턴을 통해 Command 작업과 Query 작업을 구분해서 작업하였습니다.
+
+시스템의 가용성과 성능을 향상 시킬 수 있으며 CQRS 패턴과 결합을 통해 시스템의 확장성을 높일 수 있어서 개발 및 운영 측면에서 많은 이점을 누릴 수 있는 기술이라고 생각합니다.
+
 # Ⅶ. 프로젝트 산출물 📁
 
 ### 🏛 서비스 아키택처
 
+<div align="start">
+<img src="./assets/architecture.png" alt="architecture" width="70%" height="70%">
+</div>
+
 ### 🛢︎ ERD
 
-![erd](assets/erd.png)
-
-### 📄 요구사항 정의서
+<div align="start">
+<img src="./assets/erd.png" alt="erd" width="70%" height="70%">
+</div>
 
 ![요구사항정의서](assets/요구사항정의서.png)
 
@@ -221,7 +325,9 @@
 
 ### 🎨 화면 설계서
 
-![화면_설계서](assets/화면_설계서.png)
+<div align="start">
+<img src="./assets/화면설계서.png" alt="화면설계서" width="70%" height="70%">
+</div>
 
 # Ⅷ. 개발 회고 🔎
 
@@ -231,13 +337,9 @@
 
 https://www.notion.so/Front-End-59a0c5e4788245a985c65521dc8dff8a
 
-feat. Google Javascript convention
-
 ### Back-end
 
 https://www.notion.so/Back_End-2e25f8e764d84d929aaf5dfc0a23ba27
-
-feat. Google Java convention
 
 ## 📌커밋 RULE
 

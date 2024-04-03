@@ -61,7 +61,7 @@ function Login() {
           if (res.success === true) {
             sessionStorage.setItem("accessToken", res.response.accessToken);
             sessionStorage.setItem("refreshToken", res.response.refreshToken);
-            const expiresAt = Date.now() + 3000000;
+            const expiresAt = Date.now() + 1800000;
             sessionStorage.setItem("expiresAt",expiresAt.toString());
             const token=res.response.accessToken;
             fetch("https://spring.pickitup.online/users/me", {
