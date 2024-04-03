@@ -22,15 +22,13 @@ public class SubQuestionCommandServiceImpl implements SubQuestionCommandService 
 
     @Override
     @Transactional
-    public SubQuestionCommandResponseDto registerSubQuestion(Integer mainId,
-        SubQuestionCommandRequestDto dto) {
+    public SubQuestionCommandResponseDto registerSubQuestion(
+        Integer mainId, SubQuestionCommandRequestDto dto) {
         MainQuestion mainQuestion = mainQueryService.searchById(mainId);
         SubQuestion subQuestion = dto.toEntity(mainQuestion);
-        SubQuestionCommandResponseDto responseDto = subCommandRepository.save(subQuestion)
-            .toCommandResponse();
         mainQuestion.getSubQuestions().add(subQuestion);
         mainCommandRepository.save(mainQuestion);
-        return responseDto;
+        return subQuestion.toCommandResponse();
     }
 
     @Override
@@ -39,7 +37,7 @@ public class SubQuestionCommandServiceImpl implements SubQuestionCommandService 
         try {
             SubQuestion subQuestion = subQueryRepository.findById(subId)
                 .orElseThrow(SubQuestionNotFoundException::new);
-
+            subQuestion.getMainQuestion().getSubQuestions().remove(subQuestion);
             subCommandRepository.delete(subQuestion);
             return true;
         } catch (Exception e) {
@@ -49,8 +47,8 @@ public class SubQuestionCommandServiceImpl implements SubQuestionCommandService 
 
     @Override
     @Transactional
-    public SubQuestionCommandResponseDto modifySubQuestion(Integer subId,
-        SubQuestionCommandRequestDto dto) {
+    public SubQuestionCommandResponseDto modifySubQuestion(
+        Integer subId, SubQuestionCommandRequestDto dto) {
         SubQuestion subQuestion = subQueryRepository.findById(subId)
             .orElseThrow(SubQuestionNotFoundException::new);
         if (dto.getTitle() != null) {

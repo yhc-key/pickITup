@@ -1,11 +1,8 @@
 logging:
   level:
     org:
-      springframework:
-        data:
-          elasticsearch:
-            client:
-              WIRE: TRACE
+      elasticsearch:
+        client: ERROR
 spring:
   config:
     import:
@@ -61,3 +58,5 @@ springdoc:
   api-docs:
     path: /api-docs
 
+kakao:
+  api: ${kakao.api-key}

@@ -4,7 +4,7 @@ import com.ssafy.pickitup.domain.auth.command.AuthCommandJpaRepository;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.entity.Role;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
-import com.ssafy.pickitup.domain.user.command.UserCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import com.ssafy.pickitup.security.CustomUserDetails;
 import com.ssafy.pickitup.security.oauth2.GoogleOAuth2UserInfo;
 import com.ssafy.pickitup.security.oauth2.KakaoOAuth2UserInfo;
@@ -37,7 +37,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("userRequest = {}", userRequest.toString());
         OAuth2User oAuth2User = super.loadUser(userRequest);
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         Oauth2UserInfo oauth2UserInfo = ofOAuth2UserInfo(registrationId, oAuth2User);
@@ -58,7 +57,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .build();
         }
 
-        authCommandJpaRepository.save(auth);
+//        authCommandJpaRepository.save(auth);
         if (optionalUser.isEmpty()) {
             userCommandService.create(auth);
         }

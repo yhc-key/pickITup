@@ -1,5 +1,6 @@
 package com.ssafy.pickitup.domain.company.entity;
 
+import com.ssafy.pickitup.global.entity.GeoLocation;
 import java.util.HashSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,32 +17,27 @@ public class CompanyElasticsearch {
 
     @Id
     private Integer id;
-
     private String name;
     private String address;
     private String salary;
 
-    private static int convertAddressToLatitude(String address) {
-        // 위도 변환
-        return 0;
+    /*
+        월급 int로 변환
+     */
+    private int convertSalaryIntoInt(String salary) {
+        if (salary.isEmpty()) {
+            return -1; // 연봉 정보가 없는 경우 -1 리턴
+        } else {
+            return Integer.parseInt(salary) * 10_000;
+        }
     }
 
-    private static int convertAddressToLongitude(String address) {
-        // 경도 변환
-        return 0;
-    }
-
-    private static int convertSalaryIntoInt(String salary) {
-        // 월급 int로 변환
-        return 0;
-    }
-
-    public CompanyMongo toMongo() {
+    public CompanyMongo toMongo(GeoLocation geoLocation) {
         return CompanyMongo.builder()
             .id(this.id)
             .name(this.name)
-            .latitude(convertAddressToLatitude(this.address))
-            .longitude(convertAddressToLongitude(this.address))
+            .latitude(geoLocation != null ? geoLocation.getLatitude() : null)
+            .longitude(geoLocation != null ? geoLocation.getLongitude() : null)
             .salary(convertSalaryIntoInt(this.salary))
             .recruits(new HashSet<>())
             .build();

@@ -13,7 +13,7 @@ public interface AuthCommandJpaRepository extends JpaRepository<Auth, Integer> {
     @Query(value = "SELECT au FROM Auth au WHERE au.username = :username")
     Auth findAuthByUsername(@Param("username") String username);
 
-    Auth findAuthById(int id);
+    Auth findAuthById(Integer id);
 
     @Query(value = "SELECT * FROM auth au WHERE au.id = :authId AND au.is_deleted=true", nativeQuery = true)
     Optional<Auth> findDeletedAuthById(@Param("authId") Integer authId);

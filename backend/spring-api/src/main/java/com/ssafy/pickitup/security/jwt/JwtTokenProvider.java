@@ -44,7 +44,6 @@ public class JwtTokenProvider {
             .collect(Collectors.joining(","));
         long now = (new Date()).getTime();
         Date accessTokenExpirationTime = new Date(now + JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME);
-        System.out.println("authentication = " + authentication.toString());
         String accessToken = Jwts.builder()
             .setSubject(String.valueOf(auth.getId())) // authId 담기
             .claim(AUTHORITIES_KEY, authorities)
@@ -78,9 +77,6 @@ public class JwtTokenProvider {
             .setExpiration(new Date(now + JwtProperties.REFRESH_TOKEN_EXPIRATION_TIME))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
-
-        log.debug("Access Token = {}", accessToken);
-        log.debug("Refresh Token = {}", refreshToken);
 
         return JwtTokenDto.builder()
             .accessToken(accessToken)
@@ -118,27 +114,27 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
+            log.debug("Invalid JWT Token", e);
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
+            log.debug("Expired JWT Token", e);
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
+            log.debug("Unsupported JWT Token", e);
         } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
+            log.debug("JWT claims string is empty.", e);
         }
         return false;
     }
 
     public String resolveToken(String accessToken) {
-        System.out.println("accessToken = " + accessToken);
+        log.debug("accessToken = {}", accessToken);
         if (accessToken != null && accessToken.startsWith(JwtProperties.TOKEN_PREFIX)) {
             return accessToken.substring(7);
         }
         throw new UnsupportedJwtException("지원하지 않는 토큰 형식입니다.");
     }
 
-    public String extractAuthId(String accessToken) {
-        return parseClaims(resolveToken(accessToken)).getSubject();
+    public Integer extractAuthId(String accessToken) {
+        return Integer.valueOf(parseClaims(resolveToken(accessToken)).getSubject());
     }
 
     public long getTokenExpiration(String accessToken) {

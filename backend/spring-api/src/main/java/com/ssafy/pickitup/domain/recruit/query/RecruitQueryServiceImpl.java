@@ -13,7 +13,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,11 +47,12 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
     public Page<RecruitQueryResponseDto> searchAll(Pageable pageable) {
 
         Pageable new_pageable = PageRequest.of(
-            pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dueDate").ascending()
+            pageable.getPageNumber(), pageable.getPageSize(),
+            Sort.by("dueDate").ascending().and(Sort.by("_id").ascending())
         );
 
         Page<RecruitDocumentMongo> recruitDocumentMongoPages =
-            recruitQueryMongoRepository.findAll(new_pageable);
+            recruitQueryMongoRepository.findByDueDateGreaterThanEqual(LocalDate.now(), new_pageable);
         return recruitDocumentMongoPages.map(RecruitDocumentMongo::toQueryResponse);
     }
 
@@ -58,20 +61,72 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
      */
     @Override
     public Page<RecruitQueryResponseDto> search(RecruitQueryRequestDto dto, Pageable pageable) {
-        Pageable new_pageable = PageRequest.of(
-            pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dueDate").ascending()
-        );
-        StringBuilder sb = new StringBuilder();
-        for (String str : dto.getKeywords()) {
-            sb.append(str).append(" ");
+
+        if (dto.getKeywords().isEmpty() && dto.getQuery().isEmpty()) {
+            return searchAll(pageable);
         }
-        return recruitQueryElasticsearchRepository.searchWithFilter(
-                dto.getQuery(), sb.toString(), new_pageable)
-            .map(es -> {
-                Integer companyId = companyQueryService.searchByName(es.getCompany()).getId();
-                return es.toMongo(companyId);
-            })
+
+        Pageable es_pageable = PageRequest.of(
+            pageable.getPageNumber(), pageable.getPageSize(),
+            Sort.by("due_date").ascending().and(Sort.by("_id").ascending())
+        );
+
+        Page<RecruitDocumentElasticsearch> searchResult;
+
+        if (dto.getKeywords().isEmpty()) {
+            searchResult = recruitQueryElasticsearchRepository
+                .searchWithQueryOnly(dto.getQuery(), es_pageable);
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (String str : dto.getKeywords()) {
+                sb.append(str).append(" ");
+            }
+            if (dto.getQuery().isEmpty()) {
+                searchResult = recruitQueryElasticsearchRepository
+                    .searchWithKeywordsOnly(sb.toString(), es_pageable);
+            } else {
+                searchResult =
+                    recruitQueryElasticsearchRepository
+                        .searchWithFilter(dto.getQuery(), sb.toString(), es_pageable);
+            }
+        }
+
+        // 엘라스틱서치에서 가져온 아이디 목록
+        List<Integer> elasticSearchIds =
+            searchResult.getContent().stream()
+                .map(RecruitDocumentElasticsearch::getId)
+                .toList();
+
+        // MongoDB에서 여러 아이디에 해당하는 공고를 한 번에 가져오기
+        List<RecruitDocumentMongo> mongoSearchResults =
+            recruitQueryMongoRepository.findByIdIn(elasticSearchIds);
+
+        mongoSearchResults.sort(Comparator.comparing(RecruitDocumentMongo::getDueDate));
+
+        return new PageImpl<>(mongoSearchResults, pageable, elasticSearchIds.size())
             .map(RecruitDocumentMongo::toQueryResponse);
+    }
+
+    @Override
+    public List<RecruitQueryResponseDto> searchByIdList(List<Integer> idList) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").in(idList));
+
+        return mongoTemplate.find(query, RecruitDocumentMongo.class)
+            .stream().map(RecruitDocumentMongo::toQueryResponse)
+            .toList();
+    }
+
+    @Override
+    public int countClosingRecruitByIdList(List<Integer> idList) {
+        // 3일 후의 날짜 계산
+        LocalDate threeDaysLater = LocalDate.now().plusDays(3);
+
+        // MongoDB 쿼리 생성 - recruitIdList에 포함된 아이디들 중 마감일이 3일 이내인 문서 조회
+        Query query = new Query(Criteria.where("id").in(idList).and("dueDate").lte(threeDaysLater));
+
+        // MongoDB 쿼리 실행하여 해당하는 문서 개수 반환
+        return (int) mongoTemplate.count(query, RecruitDocumentMongo.class);
     }
 
     @Override
@@ -80,21 +135,6 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         for (String keyword : keywords) {
             searchByKeyword(keyword);
         }
-    }
-
-
-    @Override
-    public Page<RecruitQueryResponseDto> searchByIdList(List<Integer> idList, Pageable pageable) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("id").in(idList));
-
-        long totalCount = mongoTemplate.count(query, RecruitDocumentMongo.class);
-        query.with(pageable);
-
-        List<RecruitDocumentMongo> entities = mongoTemplate.find(query, RecruitDocumentMongo.class);
-        Page<RecruitDocumentMongo> recruitDocumentMongoPages =
-            new PageImpl<>(entities, pageable, totalCount);
-        return recruitDocumentMongoPages.map(RecruitDocumentMongo::toQueryResponse);
     }
 
     /*
@@ -132,16 +172,13 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         Elasticsearch에서 키워드 검색
      */
     private void searchAndAddKeyword(String keyword, String field) {
-//        Pageable pageable = PageRequest.of(0, 2000);
         Page<RecruitDocumentElasticsearch> result = null;
 
         switch (field) {
             case "qualificationRequirements" -> result = recruitQueryElasticsearchRepository
                 .findByQualificationRequirementsContaining(keyword, Pageable.unpaged());
-//                .findByQualificationRequirementsContaining(keyword, pageable);
             case "preferredRequirements" -> result = recruitQueryElasticsearchRepository
                 .findByPreferredRequirementsContaining(keyword, Pageable.unpaged());
-//                .findByPreferredRequirementsContaining(keyword, pageable);
             default -> throw new InvalidFieldTypeException();
         }
 

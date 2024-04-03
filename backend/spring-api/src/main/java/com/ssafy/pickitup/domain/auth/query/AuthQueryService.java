@@ -25,11 +25,8 @@ public class AuthQueryService {
 
     private final AuthQueryJpaRepository authQueryJpaRepository;
 
-    public AuthDto getUserById(int id) {
-        Auth auth = authQueryJpaRepository.findAuthById(id);
-        if (auth == null) {
-            throw new UserNotFoundException("해당 유저를 찾을 수 없습니다");
-        }
+    public AuthDto getUserById(Integer authId) {
+        Auth auth = authQueryJpaRepository.findById(authId).orElseThrow(UserNotFoundException::new);
         return AuthDto.getAuth(auth);
     }
 
@@ -46,16 +43,13 @@ public class AuthQueryService {
             log.error("access token is invalidate");
             throw new JwtException("자격 증명이 필요한 토큰입니다.");
         }
-        log.debug("case1 : access token is validate");
 
         if (redisService.hasJwtBlackList(accessToken)) {
             log.error("access token is in black list");
             throw new JwtBlackListException("블랙 리스트 토큰입니다.");
         }
-        log.debug("case2 : access token in not in blacklist");
 
-        Integer authId = Integer.valueOf(jwtTokenProvider.extractAuthId(requestAccessToken));
-        log.debug("user id = {}", authId);
+        Integer authId = jwtTokenProvider.extractAuthId(requestAccessToken);
 
         if (redisService.hasRefreshToken(authId)) {
             if (!requestRefreshToken.equals(redisService.getRefreshToken(authId))) {
@@ -64,27 +58,21 @@ public class AuthQueryService {
                 throw new RefreshTokenException("Refresh Token 값이 일치하지 않습니다.");
             }
         } else {
-            Auth auth = authQueryJpaRepository.findAuthById(authId);
-            if (auth == null) {
-                throw new UserNotFoundException("해당 유저를 찾을 수 없습니다.");
-            }
+            Auth auth = authQueryJpaRepository.findById(authId)
+                .orElseThrow(UserNotFoundException::new);
             String refreshToken = auth.getRefreshToken();
-            log.debug("detectConcurrentUser.requestRefreshToken = {}", requestRefreshToken);
-            log.debug("detectConcurrentUser.refreshToken = {}", refreshToken);
             if (!refreshToken.equals(requestRefreshToken)) {
                 log.error("refresh token does not match in Database.");
                 redisService.saveJwtBlackList(requestAccessToken);
                 throw new RefreshTokenException("Refresh Token 값이 일치하지 않습니다.");
             }
         }
-        log.debug("2. refresh token is identical.");
-
     }
 
     public void idDuplicated(String username) {
         Optional<Auth> authByUsername = authQueryJpaRepository.findAuthByUsername(username);
         if (authByUsername.isPresent()) {
-            throw new DuplicateUsernameException("이미 존재하는 아이디입니다.");
+            throw new DuplicateUsernameException();
         }
     }
 }

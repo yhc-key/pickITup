@@ -25,7 +25,7 @@ public class UserRecruit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private Integer recruitId;
 
@@ -33,5 +33,10 @@ public class UserRecruit {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+
+    public UserRecruit(User user, Integer recruitId) {
+        this.user = user;
+        this.recruitId = recruitId;
+    }
 
 }

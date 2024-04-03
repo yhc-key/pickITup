@@ -18,6 +18,7 @@ public class RecruitQueryResponseDto {
     private Integer id;
     private String source;
     private String title;
+    private String company;
     private Integer companyId;
     private String url;
     private String thumbnailUrl;

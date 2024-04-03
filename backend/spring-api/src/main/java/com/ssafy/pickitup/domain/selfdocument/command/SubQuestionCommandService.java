@@ -6,11 +6,11 @@ import com.ssafy.pickitup.domain.selfdocument.command.dto.SubQuestionCommandResp
 
 public interface SubQuestionCommandService {
 
-    SubQuestionCommandResponseDto registerSubQuestion(Integer mainId,
-        SubQuestionCommandRequestDto dto);
+    SubQuestionCommandResponseDto registerSubQuestion(
+        Integer mainId, SubQuestionCommandRequestDto dto);
 
     boolean deleteSubQuestion(Integer subId);
 
-    SubQuestionCommandResponseDto modifySubQuestion(Integer subId,
-        SubQuestionCommandRequestDto dto);
+    SubQuestionCommandResponseDto modifySubQuestion(
+        Integer subId, SubQuestionCommandRequestDto dto);
 }

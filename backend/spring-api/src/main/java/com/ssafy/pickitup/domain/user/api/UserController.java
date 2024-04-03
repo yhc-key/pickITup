@@ -1,72 +1,95 @@
 package com.ssafy.pickitup.domain.user.api;
 
-import static com.ssafy.pickitup.domain.auth.api.ApiUtils.success;
+import static com.ssafy.pickitup.global.api.ApiUtils.success;
 
-import com.ssafy.pickitup.domain.auth.api.ApiUtils.ApiResult;
-import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
-import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
-import com.ssafy.pickitup.domain.user.command.UserCommandService;
-import com.ssafy.pickitup.domain.user.query.UserQueryService;
-import com.ssafy.pickitup.domain.user.query.dto.NicknameDto;
+import com.ssafy.pickitup.domain.badge.command.BadgeCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserMongoCommandService;
+import com.ssafy.pickitup.domain.user.command.service.UserRecommendFacade;
+import com.ssafy.pickitup.domain.user.dto.UserRecommendDto;
+import com.ssafy.pickitup.domain.user.dto.UserUpdateRequestDto;
 import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
-import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
+import com.ssafy.pickitup.global.annotation.AuthID;
+import com.ssafy.pickitup.global.api.ApiUtils.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000", "http://localhost:8080",
-    "https://spring.pickitup.online"}, exposedHeaders = "*")
+@CrossOrigin(origins = {"https://pickitup.online", "http://localhost:3000",
+    "http://localhost:8080", "https://spring.pickitup.online"}, exposedHeaders = "*")
 @RequestMapping("/users")
 public class UserController {
 
     private final UserCommandService userCommandService;
-    private final UserQueryService userQueryService;
-    private final RecruitQueryService recruitQueryService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final UserMongoCommandService userMongoCommandService;
+    private final UserRecommendFacade userRecommendFacade;
+    private final BadgeCommandService badgeCommandService;
 
     @Operation(summary = "회원 정보 조회 API")
     @GetMapping("/me")
-    public ApiResult<UserResponseDto> getUser(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
-        log.info("authId = {}", authId);
-        return success(userQueryService.getUserById(authId));
+    public ApiResult<UserResponseDto> getUser(@AuthID Integer userId) {
+        return success(userCommandService.getUserById(userId));
     }
 
     @Operation(summary = "닉네임 변경 API")
     @PatchMapping("/nickname")
-    public ApiResult<?> changeNickname(HttpServletRequest request,
-        @RequestBody NicknameDto nickname) {
-        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        int authId = Integer.valueOf(jwtTokenProvider.extractAuthId(accessToken));
-        userCommandService.changeNickname(authId, nickname.getNickname());
+    public ApiResult<?> changeNickname(@AuthID Integer userId, @RequestBody String nickname) {
+        userCommandService.changeNickname(userId, nickname);
         return success("닉네임 변경 성공");
     }
 
-    @Operation(summary = "회원 스크랩 채용 공고 조회 API")
-    @GetMapping("/{authId}/scraps/recruit")
-    public ApiResult<Page<RecruitQueryResponseDto>> getUserScrapList(
-        @PathVariable("authId") int authId, Pageable pageable) {
-        Page<RecruitQueryResponseDto> myRecruitByIdList = userQueryService.findMyRecruitById(authId,
-            pageable);
-        return success(myRecruitByIdList);
-//        return succss(ReposnseList);
+    @Operation(summary = "프로필 사진 변경 PI")
+    @PatchMapping("/profile/image")
+    public ApiResult<?> changeProfileImage(@AuthID Integer userId, @RequestBody String profileNum) {
+        Integer profile = Integer.valueOf(profileNum);
+        userCommandService.changeProfile(userId, profile);
+        return success("프로필 사진 변경 성공");
     }
 
 
+    @Operation(summary = "회원 주소 변경 API")
+    @PatchMapping("/address")
+    public ApiResult<?> changeAddress(@AuthID Integer userId, @RequestBody String address) {
+        userCommandService.changeAddress(userId, address);
+        return success("주소 변경 성공");
+    }
+
+    @Operation(summary = "회원 정보 변경 API")
+    @PatchMapping("/me")
+    public ApiResult<?> updateUser(@AuthID Integer userId,
+        @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+        userCommandService.changeUserInfo(userId, userUpdateRequestDto);
+        return success("회원 정보 변경 성공");
+    }
+
+    @Operation(summary = "회원 추천 채용 공고 조회")
+    @GetMapping("/recommend/recruit")
+    public ApiResult<?> getUserRecommendRecruits(
+        @AuthID Integer authId) {
+        List<UserRecommendDto> userRecommendRecruitList = userRecommendFacade.getUserRecommendList(
+            authId);
+        return success(userRecommendRecruitList);
+    }
+
+    @Operation(summary = "회원 뱃지 조회")
+    @GetMapping("/badges")
+    public ApiResult<?> getBadge(@AuthID Integer userId) {
+        return success(badgeCommandService.findMyBadges(userId));
+    }
+
+    @Operation(summary = "User 정보 MongoDB로 마이그레이션")
+    @GetMapping("/mongo")
+    public void toMongo() {
+        userMongoCommandService.migration();
+    }
 }

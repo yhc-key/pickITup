@@ -13,7 +13,7 @@ Argo CD
 Armeria
 Asana
 ASP
-ASP.NET
+ASPNET
 AWS Athena
 AWS AuroraDB
 AWS CodeBuild
@@ -51,7 +51,7 @@ Confluence
 CORS
 Couchbase
 C++
-C#
+C Sharp
 Cubrid
 Cucumber
 Cypress
@@ -101,7 +101,6 @@ Gitlab
 Glide
 Go
 Go CD
-고가용성
 Google BigQuery
 Google Cloud Build
 Google Data Studio
@@ -119,7 +118,7 @@ Harbor
 Hazelcast
 HBase
 Helm
-Hibernate
+HiberNate
 Hive
 Hugo
 Immer
@@ -131,7 +130,7 @@ Jaeger
 Jandi
 Jasmine
 Java
-JavaScript
+Javascript
 JDBC
 Jenkins
 Jest
@@ -143,8 +142,6 @@ jQuery
 JSP
 JUnit
 Kafka
-Kakaotalk
-KakaoWork
 Karma
 Karpenter
 Keras
@@ -182,10 +179,8 @@ MongoDB
 Moya
 MSA
 MS-SQL
-무중단배포
 MyBatis
 MySQL
-Naver Works
 Neo4j
 NestJS
 Netty
@@ -222,7 +217,7 @@ Ranger
 Ray
 React Context
 ReactiveX
-React
+ReactJS
 React Native
 ReactorKit
 React Query
@@ -259,14 +254,13 @@ Spinnaker
 Spring
 SpringBoot
 Storybook
-Styled-Components
+StyledComponents
 Superset
 Svelte
 Swagger
 Swift
 Tableau
 Tailwind
-Telegram
 Tensorflow
 Terraform
 Testing Library

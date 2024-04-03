@@ -3,37 +3,53 @@ package com.ssafy.pickitup.domain.user.query;
 import com.ssafy.pickitup.domain.recruit.query.RecruitQueryService;
 import com.ssafy.pickitup.domain.recruit.query.dto.RecruitQueryResponseDto;
 import com.ssafy.pickitup.domain.user.entity.User;
+import com.ssafy.pickitup.domain.user.entity.UserKeyword;
+import com.ssafy.pickitup.domain.user.entity.UserRecruit;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
-import com.ssafy.pickitup.domain.user.query.dto.UserResponseDto;
+import com.ssafy.pickitup.domain.user.query.dto.KeywordResponseDto;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserQueryService {
 
     private final UserQueryJpaRepository userQueryJpaRepository;
-    private final UserRecruitJpaRepository userRecruitJpaRepository;
+    private final UserRecruitQueryJpaRepository userRecruitJpaRepository;
     private final RecruitQueryService recruitQueryService;
+    private final UserKeywordQueryJpaRepository userKeywordQueryJpaRepository;
 
-    public UserResponseDto getUserById(int id) {
-        User user = userQueryJpaRepository.findById(id);
-        if (user == null) {
-            throw new UserNotFoundException("해당 유저를 찾을 수 없습니다");
-        }
+    @Transactional(readOnly = true)
+    public List<RecruitQueryResponseDto> findMyRecruitById(Integer authId) {
 
-        return UserResponseDto.toDto(user);
+        return recruitQueryService.searchByIdList(findRecruitIdByUserId(authId));
     }
 
     @Transactional(readOnly = true)
-    public Page<RecruitQueryResponseDto> findMyRecruitById(int authId, Pageable pageable) {
-        List<Integer> myRecruitIdList = userRecruitJpaRepository.findAllByUserId(authId);
+    public List<Integer> findRecruitIdByUserId(Integer userId) {
+        List<UserRecruit> userRecruitList = userRecruitJpaRepository.findAllByUserId(userId);
+        List<Integer> recruitIdList = new ArrayList<>();
+        for (UserRecruit userRecruit : userRecruitList) {
+            recruitIdList.add(userRecruit.getRecruitId());
+        }
+        return recruitIdList;
+    }
 
-        return recruitQueryService.searchByIdList(
-            myRecruitIdList, pageable);
+    @Transactional(readOnly = true)
+    public KeywordResponseDto findUserKeywords(int authId) {
+        User user = userQueryJpaRepository.findById(authId)
+            .orElseThrow(UserNotFoundException::new);
+
+        List<UserKeyword> userKeywords = userKeywordQueryJpaRepository.findAllByUserId(authId);
+        List<String> keywordsName = userKeywords.stream()
+            .map(userKeyword -> userKeyword.getKeyword().getName())
+            .toList();
+
+        return new KeywordResponseDto(keywordsName);
     }
 }

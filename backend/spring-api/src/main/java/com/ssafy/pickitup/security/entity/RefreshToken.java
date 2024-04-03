@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.RedisHash;
 public class RefreshToken {
 
     @Id
-    private String authId; // key
+    private Integer authId; // key
     private String refreshToken; // value
 
 }
