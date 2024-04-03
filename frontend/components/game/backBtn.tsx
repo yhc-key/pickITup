@@ -24,17 +24,17 @@ export default function BackBtn() {
         <IoChevronBackSharp size={26} />
       </button>
       <Modal open={isModalOpen}>
-        <div className="flex flex-col flex-wrap">
-          <div className="mb-5 text-xl font-semibold text-center">
+        <div className="flex flex-col flex-wrap mb:min-w-[90%]">
+          <div className="mb-5 text-xl font-semibold text-center mb:text-base">
             게임을 종료하시겠습니까 ?
           </div>
-          <div className="mb-5 font-medium text-center text-ml">
+          <div className="mb-5 font-medium text-center text-sm mb:text-xs">
             지금 종료하면 결과가 기록되지 않습니다 💦
           </div>
           <div className="flex flex-wrap justify-center gap-2 mt-3"></div>
           <div className="flex flex-col items-center justify-center mt-5">
             <div>
-              <Link href={`/game`}>
+              <Link href={`/main/game`}>
                 <button className="px-20 py-3 mb-5 text-sm font-semibold rounded-md text-neutral-100 bg-f5red-350 hover:bg-f5red-300 ring-1 ring-inset ring-f5red-700/10">
                   종료하기
                 </button>

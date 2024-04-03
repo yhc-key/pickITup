@@ -2,12 +2,6 @@ export const badgeDataMap: Map<string, string> = new Map([
   ['attend1','출석 1일'],
   ['attend50','출석 50일'],
   ['attend100','출석 100일'],
-  ['blogRead1','Blog 열람 1회'],
-  ['blogRead50','Blog 열람 50회'],
-  ['blogRead100','Blog 열람 100회'],
-  ['blogScrap1','Blog 스크랩 1회'],
-  ['blogScrap50','Blog 스크랩 50회'],
-  ['blogScrap100','Blog 스크랩 100회'],
   ['selfDocWrite1','자소서 작성 1회'],
   ['selfDocWrite50','자소서 작성 50회'],
   ['selfDocWrite100','자소서 작성 100회'],
@@ -24,3 +18,22 @@ export const badgeDataMap: Map<string, string> = new Map([
   ['game300',' 게임 승리 300회'],
 ]
 );
+export const badgeImageMap: Map<string, string> = new Map([
+  ['출석 1일', 'attend1'],
+  ['출석 50일', 'attend50'],
+  ['출석 100일', 'attend100'],
+  ['자기소개서 1회', 'selfDocWrite1'],
+  ['자기소개서 50회', 'selfDocWrite50'],
+  ['자기소개서 100회', 'selfDocWrite100'],
+  ['채용공고 열람 1회', 'jobRead1'],
+  ['채용공고 열람 50회', 'jobRead50'],
+  ['채용공고 열람 100회', 'jobRead100'],
+  ['채용공고 스크랩 1회', 'jobScrap1'],
+  ['채용공고 스크랩 50회', 'jobScrap50'],
+  ['채용공고 스크랩 100회', 'jobScrap100'],
+  ['미니 게임 승리 10회', 'game10'],
+  ['미니 게임 승리 30회', 'game30'],
+  ['미니 게임 승리 50회', 'game50'],
+  ['미니 게임 승리 150회', 'game150'],
+  ['미니 게임 승리 300회', 'game300']
+]);

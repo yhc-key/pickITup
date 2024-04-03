@@ -1,5 +1,5 @@
 // ReactCanvasConfetti.tsx
-"use-client";
+"use client";
 import canvasConfetti, {
   CreateTypes,
   GlobalOptions,
