@@ -208,7 +208,7 @@ export default function RecruitPage() {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-wrap justify-start">
         <TechSelectAfterLogin />
         {data?.pages.map((page, i: number) =>
           page.response?.content.map((recruit: Recruit, recruitI: number) => {
