@@ -396,7 +396,7 @@ export default function MyEssay(): JSX.Element {
       >
         <div className="flex flex-col flex-wrap h-min-[400px]">
           <div className="text-xl font-medium text-center mb-3">
-            ⭐ 추가할 자소서 항목을 작성해주세요  ⭐
+            ⭐ 추가할 자소서 항목을 작성해주세요 ⭐
           </div>
 
           <div>
@@ -426,7 +426,7 @@ export default function MyEssay(): JSX.Element {
       >
         <div className="flex flex-col h-min-[400px] text-f5black-400">
           <div className="text-xl font-medium text-center ">
-          ⭐ 변경할 자소서 항목을 작성해주세요 ⭐
+            ⭐ 변경할 자소서 항목을 작성해주세요 ⭐
           </div>
 
           <div>
@@ -434,7 +434,7 @@ export default function MyEssay(): JSX.Element {
             <div className="w-[700px] max-w-[100%] p-1 h-auto mt-3 ml-2">
               {beforeChangeTitle?.title}
             </div>
-            <hr className="my-2"/>
+            <hr className="my-2" />
             <label htmlFor="afterChangeTitle">🔜변경 후 : </label>
             <input
               type="text"

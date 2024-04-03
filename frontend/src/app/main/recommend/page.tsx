@@ -172,7 +172,7 @@ export default function MyFavoriteRecruit() {
                         </td>
                         <td>{recruit.title}</td>
                         <td>
-                          <div className="flex flex-wrap gap-1">
+                          <div className="flex flex-wrap gap-2">
                             {recruit.qualificationRequirements.map(
                               (tech, i) => {
                                 let techTmp = tech.replace(/\s/g, "");
@@ -190,7 +190,7 @@ export default function MyFavoriteRecruit() {
                                           height={22}
                                           priority={true}
                                           key={i}
-                                          className={`border-f5gray-300 border rounded-full ${haveTech ? "border-f5green-300 border-1 scale-105" : ""}`}
+                                          className={`border-f5gray-300 border rounded-full ${haveTech ? "border-f5green-300 border-1" : ""}`}
                                         />
                                       ) : (
                                         <Image
@@ -200,7 +200,7 @@ export default function MyFavoriteRecruit() {
                                           height={22}
                                           priority={true}
                                           key={i}
-                                          className={`border-f5gray-300 border rounded-full ${haveTech ? "border-f5green-300 border-1 scale-105" : ""}`}
+                                          className={`border-f5gray-300 border rounded-full ${haveTech ? "border-f5green-300 border-1" : ""}`}
                                         />
                                       )}
                                     </>
@@ -275,7 +275,9 @@ export default function MyFavoriteRecruit() {
                 </tbody>
               </table>
             </div>
-          ) : !myRecommendList ? <ChooseFirst /> : (
+          ) : !myRecommendList ? (
+            <ChooseFirst />
+          ) : (
             <div
               className={`flex flex-col justify-center h-[60vh] items-center ${isLoggedIn && !recommendLoading ? "hidden" : ""}`}
             >

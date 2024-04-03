@@ -141,7 +141,7 @@ export default function AddEssay() {
               className="ml-4 focus:bg-white focus:outline-f5green-300 justify-center"
             />
             <div className={`text-f5red-300 ${companyIsEmpty ? "" : "hidden"}`}>
-              지원환 회사이름을 적어주세요
+              지원한 회사이름을 적어주세요
             </div>
           </div>
           {essayTitles.map((title: Title, index: number) => (
