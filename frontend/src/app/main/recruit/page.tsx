@@ -207,8 +207,8 @@ export default function RecruitPage() {
   }, [bottom, fetchNextPage, fetchRecruits]);
 
   return (
-    <>
-      <div className="flex flex-wrap justify-start">
+    <Fragment>
+      <div className="flex flex-wrap justify-start ">
         <TechSelectAfterLogin />
         {data?.pages.map((page, i: number) =>
           page.response?.content.map((recruit: Recruit, recruitI: number) => {
@@ -299,6 +299,6 @@ export default function RecruitPage() {
         ) : null}
       </div>
       <div ref={bottom} />
-    </>
+    </Fragment>
   );
 }

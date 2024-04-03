@@ -75,7 +75,10 @@ export default function RecruitLayout({
 
   return (
     <div className={`flex ${isMobile ? "flex-col" : ""}  mx-10 my-5`}>
-      <div className="min-w-[330px] max-w-[330px] my-5 min-h-96">
+      <div className="min-w-[330px] max-w-[330px] "></div>
+      <div
+        className={`min-w-[330px] max-w-[330px] my-5 min-h-80 ${isMobile ? "" : "fixed"}`}
+      >
         <div className="flex w-full justify-center my-3 items-center gap-2 bg-f5gray-300 h-10 rounded-md text-f5gray-500 text-sm p-2">
           <input
             type="text"
