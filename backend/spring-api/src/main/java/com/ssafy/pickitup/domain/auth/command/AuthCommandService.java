@@ -5,7 +5,6 @@ import com.ssafy.pickitup.domain.auth.command.dto.LogoutDto;
 import com.ssafy.pickitup.domain.auth.command.dto.UserSignupDto;
 import com.ssafy.pickitup.domain.auth.entity.Auth;
 import com.ssafy.pickitup.domain.auth.entity.Role;
-import com.ssafy.pickitup.domain.auth.query.AuthQueryJpaRepository;
 import com.ssafy.pickitup.domain.auth.query.dto.AuthDto;
 import com.ssafy.pickitup.domain.user.command.service.UserCommandService;
 import com.ssafy.pickitup.domain.user.exception.UserNotFoundException;
@@ -18,7 +17,6 @@ import com.ssafy.pickitup.security.jwt.JwtTokenDto;
 import com.ssafy.pickitup.security.jwt.JwtTokenProvider;
 import com.ssafy.pickitup.security.service.RedisService;
 import io.jsonwebtoken.MalformedJwtException;
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,13 +27,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthCommandService {
 
     private final AuthCommandJpaRepository authCommandJpaRepository;
-    private final AuthQueryJpaRepository authQueryJpaRepository;
     private final UserCommandService userCommandService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RedisService redisService;
@@ -100,7 +99,6 @@ public class AuthCommandService {
     }
 
     public LogoutDto logout(String accessToken) {
-        String token = jwtTokenProvider.resolveToken(accessToken);
         Integer authId = jwtTokenProvider.extractAuthId(accessToken);
         redisService.saveJwtBlackList(accessToken);
         redisService.deleteRefreshToken(authId);

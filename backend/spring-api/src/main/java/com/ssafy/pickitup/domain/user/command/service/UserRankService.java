@@ -1,6 +1,5 @@
 package com.ssafy.pickitup.domain.user.command.service;
 
-import com.ssafy.pickitup.domain.user.command.repository.UserCommandJpaRepository;
 import com.ssafy.pickitup.domain.user.command.repository.UserLevelJpaRepository;
 import com.ssafy.pickitup.domain.user.entity.User;
 import com.ssafy.pickitup.domain.user.entity.UserLevel;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserRankService {
 
     private final UserLevelJpaRepository userLevelJpaRepository;
-    private final UserCommandJpaRepository userCommandJpaRepository;
 
     @Transactional
     public User updateLevel(User user) {
