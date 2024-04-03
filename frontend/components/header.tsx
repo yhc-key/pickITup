@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { IoChevronDownSharp } from "react-icons/io5";
 import { IoChevronUpSharp } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
@@ -44,8 +44,6 @@ export default function Header() {
           },
         });
         const data = await res.json();
-        // console.log("북마크fetch해옴");
-        console.log(data);
         setBookmarks(data?.response);
       } catch (error) {
         console.error(error);
@@ -87,16 +85,16 @@ export default function Header() {
             sessionStorage.removeItem("authid");
             sessionStorage.removeItem("nickname");
             sessionStorage.removeItem("keywords");
+            logout();
+            router.push("/main/recruit");
           }
         })
         .catch((e) => {
           alert(e);
         });
-      logout();
-
-      router.push("/main/recruit");
     }
   };
+
   return (
     <header>
       <div>
@@ -183,7 +181,7 @@ export default function Header() {
                   </div>
                 </div>
               ) : (
-                <div></div>
+                <Fragment></Fragment>
               )}
             </div>
           ) : (
