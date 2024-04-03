@@ -185,7 +185,6 @@ public class AuthCommandService {
         log.debug("Auth Id = {}", principal);
         Auth auth = authCommandJpaRepository.findAuthById(principal);
 
-//        UserDto user = userService.findUserById(principal);
         if (refreshTokenInDB == null) { // Redis에 RT 없을 경우
             log.debug("Refresh Token is not in Redis.");
             refreshTokenInDB = auth.getRefreshToken();
@@ -194,7 +193,12 @@ public class AuthCommandService {
                 throw new RefreshTokenException("refresh token 값이 존재하지 않습니다.");
             }
         }
-        log.debug("Refresh Token in DB = {}", refreshTokenInDB);
+        log.info("Refresh Token in DB = {}", refreshTokenInDB);
+
+        //토큰 꺼내기
+        refreshToken = refreshToken.substring(7);
+
+        log.info("resolved refresh Token in= {}", refreshToken);
 
         if (!refreshTokenInDB.equals(refreshToken)) {
             redisService.deleteRefreshToken(principal);
@@ -216,7 +220,8 @@ public class AuthCommandService {
             redisService.deleteRefreshToken(principal);
         }
         // 토큰 재발급
-        JwtTokenDto reissueTokenDto = jwtTokenProvider.generateToken(authentication);
+        AuthDto authDto = AuthDto.getAuth(auth);
+        JwtTokenDto reissueTokenDto = jwtTokenProvider.generateToken(authentication, authDto);
 
         String reissueRefreshToken = reissueTokenDto.getRefreshToken();
         // Redis, DB 에 새로 발급 받은 RT 저장

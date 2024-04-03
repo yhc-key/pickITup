@@ -34,4 +34,5 @@ public class Keyword {
 
     @OneToMany(mappedBy = "keyword")
     private List<UserKeyword> userKeywords = new ArrayList<>();
+
 }

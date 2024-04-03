@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,8 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
     public Page<RecruitQueryResponseDto> searchAll(Pageable pageable) {
 
         Pageable new_pageable = PageRequest.of(
-            pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dueDate").ascending()
+            pageable.getPageNumber(), pageable.getPageSize(),
+            Sort.by("dueDate").ascending().and(Sort.by("_id").ascending())
         );
 
         Page<RecruitDocumentMongo> recruitDocumentMongoPages =
@@ -64,15 +66,16 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
             return searchAll(pageable);
         }
 
-        Pageable new_pageable = PageRequest.of(
-            pageable.getPageNumber(), pageable.getPageSize(), Sort.by("due_date").ascending()
+        Pageable es_pageable = PageRequest.of(
+            pageable.getPageNumber(), pageable.getPageSize(),
+            Sort.by("due_date").ascending().and(Sort.by("_id").ascending())
         );
 
         Page<RecruitDocumentElasticsearch> searchResult;
 
         if (dto.getKeywords().isEmpty()) {
             searchResult = recruitQueryElasticsearchRepository
-                .searchWithQueryOnly(dto.getQuery(), new_pageable);
+                .searchWithQueryOnly(dto.getQuery(), es_pageable);
         } else {
             StringBuilder sb = new StringBuilder();
             for (String str : dto.getKeywords()) {
@@ -80,11 +83,11 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
             }
             if (dto.getQuery().isEmpty()) {
                 searchResult = recruitQueryElasticsearchRepository
-                    .searchWithKeywordsOnly(sb.toString(), new_pageable);
+                    .searchWithKeywordsOnly(sb.toString(), es_pageable);
             } else {
                 searchResult =
                     recruitQueryElasticsearchRepository
-                        .searchWithFilter(dto.getQuery(), sb.toString(), new_pageable);
+                        .searchWithFilter(dto.getQuery(), sb.toString(), es_pageable);
             }
         }
 
@@ -98,7 +101,9 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         List<RecruitDocumentMongo> mongoSearchResults =
             recruitQueryMongoRepository.findByIdIn(elasticSearchIds);
 
-        return new PageImpl<>(mongoSearchResults, new_pageable, elasticSearchIds.size())
+        mongoSearchResults.sort(Comparator.comparing(RecruitDocumentMongo::getDueDate));
+
+        return new PageImpl<>(mongoSearchResults, pageable, elasticSearchIds.size())
             .map(RecruitDocumentMongo::toQueryResponse);
     }
 
