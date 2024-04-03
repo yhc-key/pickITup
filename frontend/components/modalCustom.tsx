@@ -94,9 +94,10 @@ export default function ModalCustom({
           </button>
           <button
             id={`${name}AddButton`}
-            onClick={() => {
-              onClickEvent();
-              onClose();
+            onClick={async () => {
+              if (await onClickEvent()) {
+                onClose();
+              }
             }}
             type="button"
             className={`px-12 py-2 text-sm font-semibold rounded-md text-neutral-100  ring-1 ring-inset ring-f5green-700/10 ${changeButton ? "bg-f5red-350 hover:bg-f5red-300" : "bg-f5green-350 hover:bg-f5green-300"}`}
