@@ -93,6 +93,7 @@ object ContentBasedFilteringService {
       .option("database", MONGO_DATABASE)
       .option("collection", "recruit")
       .load()
+      .filter(s"to_date(dueDate) >= current_date()")
       .select("_id", "qualificationRequirements", "preferredRequirements", "companyId", "title", "dueDate", "url")
       .withColumnRenamed("_id", "recruitId")
       .persist()
