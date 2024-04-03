@@ -52,7 +52,7 @@ public class RecruitQueryServiceImpl implements RecruitQueryService {
         );
 
         Page<RecruitDocumentMongo> recruitDocumentMongoPages =
-            recruitQueryMongoRepository.findByDueDateAfter(LocalDate.now(), new_pageable);
+            recruitQueryMongoRepository.findByDueDateGreaterThanEqual(LocalDate.now(), new_pageable);
         return recruitDocumentMongoPages.map(RecruitDocumentMongo::toQueryResponse);
     }
 

@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface RecruitQueryMongoRepository extends
     MongoRepository<RecruitDocumentMongo, Integer> {
 
-    Page<RecruitDocumentMongo> findByDueDateAfter(LocalDate today, Pageable pageable);
+    Page<RecruitDocumentMongo> findByDueDateGreaterThanEqual(LocalDate today, Pageable pageable);
 
     List<RecruitDocumentMongo> findByIdIn(List<Integer> ids);
 }
