@@ -338,7 +338,7 @@ Jenkins의 `Generic Webhook Trigger 플러그인 을 활용하여     백엔드 
 
 <div style="display: flex;">
 <img src="./assets/미니게임_ox.png" alt="미니게임_ox" width="50%" height="70%" style="margin-right: 0.5rem">
-<img src="./assets/미니게임_ox_Result.png" alt="미니게임_ox_Result" width="50%" height="70%">
+<img src="./assets/미니게임_ox_result.png" alt="미니게임_ox_Result" width="50%" height="70%">
 </div>
 
 #### 면접대비
