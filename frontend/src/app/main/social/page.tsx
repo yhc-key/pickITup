@@ -38,7 +38,7 @@ function Social() {
         <div className="mt-16 flex flex-col items-center">
           <button
             onClick={requsetKakaoLogin}
-            className="w-96 h-12 py-5 my-4 flex items-center justify-center rounded-xl bg-[#FEE500] whitespace-pre font-bold mb:w-80"
+            className="w-96 h-12 py-5 my-4 flex items-center justify-center rounded-xl bg-[#feeb00] whitespace-pre font-bold mb:w-80"
           >
             <Image
               src="/images/kakaoLogo.png"
