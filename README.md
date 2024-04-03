@@ -297,7 +297,7 @@ Jenkins의 `Generic Webhook Trigger 플러그인 을 활용하여     백엔드 
 ### [🎨 화면 설계서](https://www.figma.com/file/AlcgDU0rh95PABatRzry87/%F0%9F%93%B0?type=design&node-id=0%3A1&mode=design&t=TrHIwL1fd7BjdxJT-1)
 
 <div align="start">
-<img src="./assets/화면설계서.png" alt="화면설계서" width="70%" height="70%">
+<img src="./assets/화면설계서.PNG" alt="화면설계서" width="70%" height="70%">
 </div>
 
 ### 🎥 시연 시나리오
