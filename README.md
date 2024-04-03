@@ -1,27 +1,36 @@
 # pick IT up (사용자 맞춤형 채용 공고 추천 서비스✨)
 
-### 💙 SSAFY 10기 특화 프로젝트 서울 4반 🐥F5 세희고침🐥 (2024..08 ~ 2024.02.16)
+### 💙 SSAFY 10기 특화 프로젝트 서울 4반 🐥F5 세희고침🐥 (2024.2.17 ~ 2024.04.04)
 
 # 📚 목차
 
 ##### 1️⃣ [서비스 소개](#Ⅰ-서비스-소개-)
+
 ##### 2️⃣ [기획 배경](#Ⅱ-기획-배경-)
+
 ##### 3️⃣ [팀원 소개 및 역할](#Ⅲ-팀원-소개-및-역할)
+
 ##### 4️⃣ [서비스 화면](#Ⅳ-서비스-화면)
+
 ##### 5️⃣ [개발 환경](#Ⅴ-개발-환경-)
+
 ##### 6️⃣ [활용 기술](#Ⅵ-활용-기술-)
+
 ##### 7️⃣ [프로젝트 산출물](#Ⅶ-프로젝트-산출물-)
+
 ##### 8️⃣ [개발 회고](#Ⅷ-개발-회고-)
 
 <br/>
 
 # Ⅰ. 서비스 소개 🎈
-- 사용자 데이터 기반 IT 채용 공고를 추천해주고, 더 나아가서 해당 직군에 필요한 기술 블로그 추천
 
+- 사용자 데이터 기반 IT 채용 공고를 추천해주고, 더 나아가서 해당 직군에 필요한 기술 블로그 추천
 
 ### 📌 Overview
 
 ### 🎯 타겟
+
+- IT 취준생, 이직생 대상 서비스
 
 ### 📌 프로젝트 기능
 
@@ -36,11 +45,12 @@
 </br>
 
 # Ⅱ. 기획 배경 ☁️
+
 - IT 직군 취업 준비생들의 관심 분야에 따른 다양한 취업 공고를 확인하기 쉽지 않음.
 
 - IT 산업은 **빠르게 변화**하며 **새로운 기술과 트렌드**가 지속적으로 등장
-취업을 준비하는 사람들은 **관련 뉴스, 기술 개발 업데이트, 업계 동향 등을 지속적으로 추적**해야 하는 필요성 존재
-유용한 정보를 찾아내고 이를 자신의 취업 준비 과정에 효과적으로 활용하는 것은 쉽지 않음
+  취업을 준비하는 사람들은 **관련 뉴스, 기술 개발 업데이트, 업계 동향 등을 지속적으로 추적**해야 하는 필요성 존재
+  유용한 정보를 찾아내고 이를 자신의 취업 준비 과정에 효과적으로 활용하는 것은 쉽지 않음
 
 # Ⅲ. 서비스 화면🎬
 
@@ -55,7 +65,6 @@
 <div align="center">
 <img src="README_IMG/회원가입.gif" alt="회원가입" width="70%" height="70%">
 </div>
-
 
 # Ⅳ. 팀원 및 일정 소개 🐥
 
@@ -104,24 +113,17 @@
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS](https://img.shields.io/badge/CSS-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ![tailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
 <br>
 
 #### 상세 스택
 
-    IntelliJ 2023.3.4
-    SpringBoot 3.2.3
-    Gradle 8.5
-    Lombok 1.18.16
-    Hibernate 3.2.1
-    Swagger 4.18.2
-    Spring Security 6.2.2
-    Python 3.12.2
-    Jupyter notebook 버전작성
-    Scala 2.12.16 ( + openJDK-8u342 )
-    sbt 1.7.2
-    Play Framework 2.8.21
-    Spark 3.0.2
-    mongo-spark-connector 3.0.2
+    VScode 2023.3.4
+    Version: 1.86.2 (user setup)
+    Node.js: 18.17.1
+    V8: 11.8.172.18-electron.0
+    Nextjs : 14.1.1
+    react: ^18
 
 ## 🖱 Backend
 
@@ -188,6 +190,14 @@
 
 # Ⅵ. 활용 기술 🧰
 
+프론트앤드
+
+- NextJS 활용 SEO를 고려한 SSR방식 웹사이트 제작
+- NextJS 활용 데이터 캐싱으로 UX 향상
+- Zustand를 활용해 전역 상태 관리
+- React-query를 활용해 검색 기능 Infinite Scroll 구현
+- refreshToken과 accessToken으로 로그인 로직 구현
+
 # Ⅶ. 프로젝트 산출물 📁
 
 ### 🏛 서비스 아키택처
@@ -201,6 +211,7 @@
 ### 🎨 화면 설계서
 
 # Ⅷ. 개발 회고 🔎
+
 ## 📌코드 컨벤션
 
 ### Front-end
@@ -210,11 +221,13 @@ https://www.notion.so/Front-End-59a0c5e4788245a985c65521dc8dff8a
 feat. Google Javascript convention
 
 ### Back-end
+
 https://www.notion.so/Back_End-2e25f8e764d84d929aaf5dfc0a23ba27
 
 feat. Google Java convention
 
 ## 📌커밋 RULE
+
 ```
 ✨Feat : 새로운 기능 추가
 🐛Fix : 버그 수정
@@ -229,8 +242,13 @@ feat. Google Java convention
 ```
 
 ### **👻 조현수**<br>
+
 ### **👻 송윤재**<br>
+
 ### **👻 오형택**<br>
+
 ### **👻 조용환**<br>
+
 ### **👻 전형욱**<br>
+
 ### **👻 노세희**<br>
