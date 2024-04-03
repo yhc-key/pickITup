@@ -76,7 +76,7 @@ export default function MyFavoriteRecruit() {
             >
               <div className="w-2/12 px-2">{recruit.company}</div>
               <div className="w-4/12 font-semibold">{recruit.title}</div>
-              <div className="w-4/12">
+              <div className="w-4/12 pr-1">
                 <div className="flex flex-wrap ">
                   {[
                     ...new Set([
@@ -113,7 +113,7 @@ export default function MyFavoriteRecruit() {
                   })}
                 </div>
               </div>
-              <div className="w-1/12">
+              <div className="w-1/12 text-xs">
                 {recruit.dueDate[0] == 2100
                   ? "상시 채용"
                   : isMobile
