@@ -13,7 +13,7 @@ object CollaborativeFilteringService {
 
   def recommend(userId: Int): List[Recommendation] = {
 
-    val spark = SparkUtil.getOrCreateSparkSession()
+    val spark = SparkUtil.createSparkSession()
 
     import spark.implicits._
 

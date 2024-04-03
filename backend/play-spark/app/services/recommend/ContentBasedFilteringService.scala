@@ -15,7 +15,7 @@ object ContentBasedFilteringService {
 
     //    Logger.getLogger("org").setLevel(Level.ERROR)
     // Spark 세션 초기화
-    val spark = SparkUtil.getOrCreateSparkSession()
+    val spark = SparkUtil.createSparkSession()
 
     import spark.implicits._
 
