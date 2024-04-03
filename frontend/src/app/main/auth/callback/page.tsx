@@ -16,7 +16,7 @@ function Search() {
   if (accessToken !== "") {
     sessionStorage.setItem("accessToken", accessToken);
     sessionStorage.setItem("refreshToken", refreshToken);
-    const expiresAt = Date.now() + 3000000;
+    const expiresAt = Date.now() + 1800000;
     sessionStorage.setItem("expiresAt",expiresAt.toString());
     fetch("https://spring.pickitup.online/users/me", {
       method: "GET",

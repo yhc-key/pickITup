@@ -20,7 +20,7 @@ export default function CheckExpire(): void{
           sessionStorage.removeItem("expiresAt");
           sessionStorage.setItem("accessToken", res.response['access-token']);
           sessionStorage.setItem("refreshToken", res.response['refresh-token']);
-          const expiresAt = Date.now() + 3000000;
+          const expiresAt = Date.now() + 1800000;
           sessionStorage.setItem("expiresAt",expiresAt.toString());
         }
       })
