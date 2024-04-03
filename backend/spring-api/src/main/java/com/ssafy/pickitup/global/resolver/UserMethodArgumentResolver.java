@@ -2,7 +2,6 @@ package com.ssafy.pickitup.global.resolver;
 
 import com.ssafy.pickitup.global.annotation.AuthID;
 import org.springframework.core.MethodParameter;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.support.WebDataBinderFactory;

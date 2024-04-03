@@ -24,9 +24,3 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-mllib" % "3.0.2",
   "org.mongodb.spark" %% "mongo-spark-connector" % "3.0.2",
 )
-
-// Adds additional packages into Twirl
-//TwirlKeys.templateImports += "com.ssafy.controllers._"
-
-// Adds additional packages into conf/routes
-// play.sbt.routes.RoutesKeys.routesImport += "com.ssafy.binders._"

@@ -9,15 +9,8 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        boolean isReadOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
-
-        if (isReadOnly) {
-            log.info("Slave DataSource 호출");
-        } else {
-            log.info("Master DataSource 호출");
-        }
-
         // 현재 트랜잭션이 읽기 전용인 경우는 slave, 아닐 경우 master를 반환한다 -> 트랜잭션의 속성에 따라 데이터베이스 연결을 결정
+        boolean isReadOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
         return isReadOnly ? "slave" : "master";
     }
 }

@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserRecruitQueryJpaRepository extends JpaRepository<UserRecruit, Integer> {
 
-//    List<UserRecruit> findAllByUserId(Integer userId);
-
     @Query("SELECT ur FROM UserRecruit ur WHERE ur.user.id = :userId")
     List<UserRecruit> findAllByUserId(Integer userId);
 

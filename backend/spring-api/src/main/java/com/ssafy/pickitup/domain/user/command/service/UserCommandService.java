@@ -82,19 +82,11 @@ public class UserCommandService {
         int solvedInterviewAnswerCount = userInterviewQueryService.countSolvedInterviewsByUserId(
             userId);
 
-        log.debug("scrapCount : {}", scrapCount);
-        log.debug("badgeCount : {}", badgeCount);
-        log.debug("closingCount : {}", closingCount);
-
-        log.debug("user = {}", user.toString());
-        log.debug("user level before = {}", user.getLevel());
         // 유저 레벨 업데이트
         User updatedUser = userRankService.updateLevel(user);
-        log.debug("user level after = {}", updatedUser.getLevel());
 
         //유저 경험치 정보
         UserLevel expInfo = userRankService.getExpInfo(updatedUser.getLevel());
-        log.debug("expInfo = {}", expInfo);
 
         //유저 랭크 업데이트
         if (user.getUserRank() == Rank.NORMAL) {
@@ -112,7 +104,6 @@ public class UserCommandService {
 
     @Transactional
     public UserResponseDto create(Auth auth, UserSignupDto userSignupDto) {
-        String nickname = userSignupDto != null ? userSignupDto.getNickname() : auth.getName();
         return createUser(userSignupDto, auth);
     }
 
@@ -172,8 +163,6 @@ public class UserCommandService {
             .orElseThrow(UserNotFoundException::new);
         user.changeAddress(address);
         updateUserMongo(user);
-        //스칼라 서버
-        callScalaByAddressChange();
     }
 
     @Transactional
@@ -218,7 +207,6 @@ public class UserCommandService {
         List<String> keywordsNameList = userKeywords.stream()
             .map(userKeyword -> userKeyword.getKeyword().getName())
             .toList();
-        log.debug("keywordsNameList = {}", keywordsNameList);
 
         GeoLocation geoLocation = geoLocationService.getGeoLocation(user.getAddress());
 
@@ -233,6 +221,8 @@ public class UserCommandService {
         userMongo.setLongitude(geoLocation.getLongitude());
 
         userCommandMongoRepository.save(userMongo);
+        //스칼라 서버에 사용자 주소 변경 사실 알리기
+        callScalaByAddressChange();
     }
 
     @CacheEvict(cacheNames = "recommend", key = "#authId")
