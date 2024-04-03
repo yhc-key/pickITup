@@ -6,6 +6,17 @@ import org.apache.spark.sql.SparkSession
 
 object SparkUtil {
 
+  // 새로운 Spark 세션을 생성
+  def createSparkSession(): SparkSession = {
+    val spark = SparkSession.builder
+      .appName("PlaySpark")
+      .master("local[*]")
+      .config("spark.mongodb.input.uri", MONGO_URI)
+      .config("spark.mongodb.output.uri", MONGO_URI)
+      .getOrCreate()
+    spark.newSession()
+  }
+
   // 이미 생성된 Spark 세션을 반환하거나 새로운 세션을 생성
   def getOrCreateSparkSession(): SparkSession = {
     SparkSession.builder
