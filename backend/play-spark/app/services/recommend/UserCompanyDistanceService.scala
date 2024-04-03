@@ -22,7 +22,7 @@ object UserCompanyDistanceService {
       .select("_id", "latitude", "longitude")
       .toDF("userId", "userLat", "userLon")
 
-    userPositions.show()
+    userPositions.sort($"userId".desc).show()
 
     val companyPositions = spark.read
       .format("mongo")
