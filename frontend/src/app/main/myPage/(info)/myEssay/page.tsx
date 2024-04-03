@@ -119,10 +119,10 @@ export default function MyEssay(): JSX.Element {
   }; // 메인 자소서 항목 추가 로직
 
   const changeTitleHandler = async (id: number) => {
-    if (!essayTitleAddRef.current) return;
+    if (!essayTitleAddRef.current) return false;
     if (essayTitleAddRef.current.value.trim() == "") {
       setTitleValidate(false);
-      return;
+      return false;
     }
     setTitleValidate(true);
     try {
@@ -134,11 +134,11 @@ export default function MyEssay(): JSX.Element {
         },
         body: JSON.stringify({ title: essayTitleAddRef.current.value.trim() }),
       });
-
       window.location.reload();
     } catch (error) {
       console.error(error);
     }
+    return true;
   }; // 메인 타이틀 바꾸기 로직
 
   const changeEssaySubmitHandler = (titleId: number, essayId: number) => {
@@ -178,8 +178,9 @@ export default function MyEssay(): JSX.Element {
       );
       window.location.reload();
     } catch (error) {
-      console.error(error);
+      console.error(error);      
     }
+    return true;
   }; // essay 바꾸기 로직
 
   const deleteMainTitleHandler = (mainId: number) => {
@@ -203,6 +204,7 @@ export default function MyEssay(): JSX.Element {
     } catch (error) {
       console.log(error);
     }
+    return true;
   };
 
   useEffect(() => {
