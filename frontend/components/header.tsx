@@ -45,7 +45,7 @@ export default function Header() {
         });
         const data = await res.json();
         // console.log("북마크fetch해옴");
-        // console.log(data);
+        console.log(data);
         setBookmarks(data?.response);
       } catch (error) {
         console.error(error);
@@ -55,8 +55,10 @@ export default function Header() {
     if (accessToken !== null && nickname !== null) {
       setLogged(nickname);
       fetchBookmarks();
+    } else {
+      setBookmarks([]);
     }
-  }, [setBookmarks, setLogged]);
+  }, [setBookmarks, setLogged, isLoggedIn]);
 
   const router = useRouter();
   const pathname = usePathname();
