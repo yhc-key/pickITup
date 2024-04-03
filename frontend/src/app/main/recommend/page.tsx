@@ -238,8 +238,8 @@ export default function MyFavoriteRecruit() {
                           </div>
                         </td>
                         <td className="text-center">
-                          {isMobile
-                            ? Math.ceil(recruit.distance) + "km"
+                          {Math.ceil(recruit.distance) > 10000
+                            ? "측정불가"
                             : "약 " + Math.ceil(recruit.distance) + "km"}
                         </td>
                         <td
