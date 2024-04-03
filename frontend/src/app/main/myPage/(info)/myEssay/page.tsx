@@ -395,15 +395,15 @@ export default function MyEssay(): JSX.Element {
         buttonString={{ cancel: "취소하기", add: "추가하기" }}
       >
         <div className="flex flex-col flex-wrap h-min-[400px]">
-          <div className="text-xl font-medium text-center ">
-            🖋 추가할 자소서 항목을 작성해주세요 🖋
+          <div className="text-xl font-medium text-center mb-3">
+            ⭐ 추가할 자소서 항목을 작성해주세요  ⭐
           </div>
 
           <div>
             <input
               type="text"
               placeholder="추가할 자소서 항목을 작성해주세요"
-              className="w-[700px] max-w-[100%] p-1 h-auto mt-3"
+              className="w-[600px] max-w-[100%] p-2 h-10 mt-3 border rounded-sm placeholder:text-f5gray-400 text-f5black-400 focus:outline-none focus:bg-white focus:border-f5gray-600"
               ref={essayTitleAddRef}
               onKeyDown={(e) => handleKeyDown(e)}
             />
@@ -424,22 +424,22 @@ export default function MyEssay(): JSX.Element {
         onClickEvent={() => changeTitleHandler(beforeChangeTitle.id)}
         buttonString={{ cancel: "취소하기", add: "변경하기" }}
       >
-        <div className="flex flex-col h-min-[400px]">
+        <div className="flex flex-col h-min-[400px] text-f5black-400">
           <div className="text-xl font-medium text-center ">
-            🖋 변경할 자소서 항목을 작성해주세요 🖋
+          ⭐ 변경할 자소서 항목을 작성해주세요 ⭐
           </div>
 
           <div>
-            <span>변경 전 : </span>
-            <span className="w-[700px] max-w-[100%] p-1 h-auto mt-3">
+            <span>🔙변경 전 : </span>
+            <div className="w-[700px] max-w-[100%] p-1 h-auto mt-3 ml-2">
               {beforeChangeTitle?.title}
-            </span>
-            <hr />
-            <label htmlFor="afterChangeTitle">변경 후 : </label>
+            </div>
+            <hr className="my-2"/>
+            <label htmlFor="afterChangeTitle">🔜변경 후 : </label>
             <input
               type="text"
-              placeholder="변경후 자소서 항목"
-              className="w-[700px] max-w-[100%] p-1 h-auto mt-3"
+              placeholder="변경하실 내용을 작성해주세요."
+              className="w-[700px] max-w-[100%] p-2 h-10 mt-3 border rounded-sm ml-2 placeholder:text-f5gray-400 text-f5black-400 focus:outline-none focus:bg-white focus:border-f5gray-600"
               ref={essayTitleAddRef}
               id="afterChangeTitle"
               onKeyDown={(e) => handleKeyDown(e)}
