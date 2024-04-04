@@ -26,6 +26,7 @@ public class UserInterviewCommandServiceImpl implements UserInterviewCommandServ
 
         User user = userQueryJpaRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
+        user.increaseSelfAnswerCount();
 
         userInterviewRepository.findByUserIdAndInterviewId(userId, interviewId)
             .ifPresentOrElse(userInterview -> userInterview.updateAnswer(answer), () -> {
