@@ -64,14 +64,6 @@ export default function SpeedQuiz(props: any) {
     fetchSpeedQuizData();
   }, [apiUrl, pickTech, setQuestionList]);
 
-  // useEffect(() => {
-  //   // 선택한 주제에 대한 질문 받아오기
-  //   const questions: Quiz[] | undefined = speedQuizDataMap.get(pickTech);
-  //   if (questions) {
-  //     setQuestionList(questions);
-  //   }
-  // }, [pickTech]);
-
   // 정답 정보 저장
   const addValueToAnswer: () => void = useCallback(() => {
     if (index >= 0) {
