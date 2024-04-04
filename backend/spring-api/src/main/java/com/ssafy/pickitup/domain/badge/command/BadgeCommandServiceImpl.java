@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class BadgeCommandServiceImpl implements BadgeCommandService {
 
     private final UserBadgeQueryJpaRepository userBadgeQueryJpaRepository;
-    private final UserBadgeCommandJpaRepository userBadgeCommandJpaRepository;
     private final UserCommandJpaRepository userCommandJpaRepository;
     private final BadgeQueryJpaRepository badgeQueryJpaRepository;
     private final BadgeQueryService badgeQueryService;
@@ -31,7 +30,6 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
     @Transactional
     @Override
     public BadgeCommandResponseDto renewBadge(Integer userId) {
-        log.debug("뱃지 갱신하려는 userId : {}", userId);
         User user = userCommandJpaRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
         List<String> result = new ArrayList<>();
@@ -39,11 +37,9 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
         List<UserBadge> notAchievedBadges = badgeQueryService.findNotAchievedBadges(userBadges);
 
         for (UserBadge userBadge : notAchievedBadges) {
-            log.debug("갱신 안된 뱃지 개수 : {}", notAchievedBadges.size());
             if (badgeQueryService.isBadgeAchieved(user, userBadge)) {
                 userBadge.setAchieved(true);
                 result.add(userBadge.getBadge().getName());
-                log.debug("{} 갱신 성공 ! ", userBadge.getBadge().getName());
             }
         }
         return new BadgeCommandResponseDto(result);
@@ -51,14 +47,11 @@ public class BadgeCommandServiceImpl implements BadgeCommandService {
 
     @Transactional
     public void initBadge(User user) {
-        log.debug("init 시작");
         List<Badge> badges = badgeQueryJpaRepository.findAll();
         List<UserBadge> userBadgeList = badges.stream()
             .map(badge -> UserBadge.builder().user(user).badge(badge).isAchieved(false).build())
             .toList();
         user.setUserBadges(userBadgeList);
-        log.debug("user badges = {}", user.getUserBadges());
-        log.debug("init 끝");
     }
 
 

@@ -40,8 +40,4 @@ public class UserKeyword {
         this.user = user;
         this.keyword = keyword;
     }
-
-    public static UserKeyword makeUserKeyword(User user, Keyword keyword) {
-        return new UserKeyword(user, keyword);
-    }
 }
