@@ -55,26 +55,6 @@ export default function TimeBar({ onNextClick, index }: TimeBarProps) {
     }
   }, 1000);
 
-  // useEffect(() => {
-  //   // 이전에 설정된 타이머가 있다면 제거
-  //   if (timer) clearTimeout(timer);
-
-  //   // index값이 10 이상인 경우에는 타이머 설정 끝
-  //   if (index >= 10) return;
-
-  //   setTimer(
-  //     // 10초 후에 onNextClick 함수를 호출
-  //     setTimeout(() => {
-  //       if (index >= 10) return;
-  //       onNextClick();
-  //     }, 10000)
-  //   );
-
-  //   return () => {
-  //     if (timer) clearTimeout(timer);
-  //   };
-  // }, [index, remainingTime, onNextClick, timer]);
-
   return (
     <div className="flex items-center justify-center">
       <div className="w-[65%] bg-f5gray-300 rounded-lg h-4">

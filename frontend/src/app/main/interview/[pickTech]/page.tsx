@@ -76,14 +76,6 @@ export default function InterView(props: any) {
     fetchInterviewData();
   }, [apiUrlGet, pickTech, setQuestionList]);
 
-  // useEffect(() => {
-  //   // 선택한 주제에 대한 질문 받아오기
-  //   const questions: Quiz[] | undefined = interviewDataMap.get(pickTech);
-  //   if (questions) {
-  //     setQuestionList(questions);
-  //   }
-  // }, [pickTech]);
-
   // 정답 정보 저장
   const addValueToAnswer = useCallback(
     async (questionId: number) => {
@@ -109,18 +101,6 @@ export default function InterView(props: any) {
         } catch (error) {
           console.log(error);
         }
-
-        // // answer 배열에 추가
-        // setAnswer([
-        //   ...answer,
-        //   // 질문, 사용자 입력값, 정답유무, 문제번호
-        //   {
-        //     question: questionList[index].question,
-        //     user: curAnswer.trim(), // 앞뒤 공백을 제거
-        //     index: index + 1,
-        //   },
-        // ]);
-        // console.log(answer);
       }
     },
     [index, questionLength]

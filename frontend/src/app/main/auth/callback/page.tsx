@@ -52,6 +52,3 @@ export default function Callback() {
     </Suspense>
   );
 }
-
-// export default function Callback() {
-// }

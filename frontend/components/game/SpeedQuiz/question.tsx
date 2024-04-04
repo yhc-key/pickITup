@@ -38,7 +38,7 @@ export default function Question({
   const inputHTML = useRef<HTMLInputElement[]>([]);
 
   const onInputChange = useCallback((e: any, idx: number) => {
-    // console.log(inputHTML.current.length);
+  
     const inputValue = e.target.value;
     if (isHangulCompleted(inputValue)) {
       // 입력값이 한글 완성형이면 엔터눌렀을 때 다음 input으로 포커스를 이동
@@ -51,13 +51,6 @@ export default function Question({
           inputHTML.current[idx + 1].focus();
         }
       }
-
-      // // 두 글자 이상 입력되면
-      // if (inputValue.length > 1) {
-      //   // 두 번째 칸에 입력된 글자를 자동으로 입력
-      //   inputHTML.current[idx + 1]?.focus();
-      //   inputHTML.current[idx + 1]?.setAttribute('value', inputValue[1]);
-      // }
     } else if (isEnglish(inputValue) || isSpecialCharacters(inputValue)) {
       // 영어나 특수 문자는 다음 칸으로 이동
       inputHTML.current[idx + 1]?.focus();
