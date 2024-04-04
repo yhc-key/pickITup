@@ -65,6 +65,7 @@
 - 기술 블로그 추천 ❌
 - 캘린더 일정 관리 기능 ❌
 
+<br >
 
 # 서비스 화면🎬
 ### ✨ 모든 페이지 `모바일(아이폰 12 Pro 기준 max-width:480px)` 지원
@@ -123,6 +124,7 @@
 - `뱃지 조회`
 
 ![web_마이페이지](./assets/web_마이페이지.gif)
+
 <br />
 
 # 개발 환경 🖥
@@ -173,7 +175,6 @@
     Swagger 4.18.2
     Spring Security 6.2.2
     Python 3.12.2
-    Jupyter notebook 버전작성
     Scala 2.12.16 ( + openJDK-8u342 )
     sbt 1.7.2
     Play Framework 2.8.21
@@ -215,7 +216,6 @@
   <br>
 
 <br />
-
 
 # 기술 특이점 🧰
 
@@ -271,6 +271,18 @@ Jenkins의 `Generic Webhook Trigger 플러그인 을 활용하여     백엔드 
  `Generic Webhook Trigger`는 `webhook 요청 내 세부 데이터(이벤트 유형, 소스 브랜치, 타겟 브랜치 등)을 직접 활용`할 수 있기 때문에 `각 webhook 이벤트에 대해 파이프라인을 더욱 세밀한 제어권을 행사`할 수 있었고, `특정 소스/타겟 브랜치에 대한 Merge Request 이벤트(그중에서도 merged 이벤트)에 대해서만 파이프라인이 트리거되도록 설정`하여 두 서버의 빌드/배포 과정을 분리할 수 있었습니다.
 
 또한 두 서버를 동시에 빌드할 경우 `parallel directive를 사용`하여 두 빌드 프로세스를 병렬적으로 처리하였고, 이전과 비교했을 때 `빌드 시간을 30% 정도 단축`시킬 수 있었습니다.
+
+### ✨ 4. Elasticsearch
+
+<div align="start">
+<img src="./assets/elasticsearch.png" alt="elasticsearch" width="50%" height="70%">
+</div>
+
+`데이터의 양이 많아질수록` 기존에 사용하던 데이터베이스에서 `키워드 기반 검색 성능이 떨어지는 문제`가 있었습니다. 저희 프로젝트 서비스에서는 크롤링 한 비정형 데이터를 처리해야 했기 때문에 이 과정에서 성능 개선이 필요했고 이에 `역색인(inverted index) 방식을 사용하는 Elasticsearch를 선택`하게 되었습니다.
+
+Elasticsearch는 기본적으로 검색 엔진이기 때문에 프로젝트에서 사용할 키워드(기술 스택) 기반 검색에 적절했습니다. 또한 크롤링 한 데이터는 “스프링 부트와 …”, “SpringBoot”, “Spring boot를…” 등 `동의어와 조사 처리가 추가적으로 필요`했기 때문에 index 생성 전 filter와 analyzer 설정을 해주었습니다.
+
+해당 설정을 바탕으로 정형 데이터를 만든 후 MongoDB에 저장하여 `키워드 기반 검색`을 제외한 `채용공고`, `회사` 관련 모든 데이터 처리를 하도록 했습니다.
 
 <br />
 
@@ -435,7 +447,7 @@ Jenkins의 `Generic Webhook Trigger 플러그인 을 활용하여     백엔드 
             <img src="https://avatars.githubusercontent.com/yhc-key" width="140px" />
             <br><br> 👶🏻 조용환 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/hyeounguk2">
-            <img src="https://avatars.githubusercontent.com/hyeounguk2" width="140px" /> <br><br> 👶🏻전형택 <br>(Front-End) </a> <br></td>
+            <img src="https://avatars.githubusercontent.com/hyeounguk2" width="140px" /> <br><br> 👶🏻 전형욱 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/se2develop">
             <img src="https://avatars.githubusercontent.com/se2develop" width="140px" /> <br><br> 👶🏻 노세희 <br>(Front-End) </a> <br></td>
     </tr>
@@ -457,14 +469,20 @@ Jenkins의 `Generic Webhook Trigger 플러그인 을 활용하여     백엔드 
 </div>
 
 ##### **조현수**<br>
-- 
+- MySQL을 Master와 Slave로 나누어서 분산 처리를 해보니 항상 익숙하게 사용했던 MySQL이 새롭게 느껴진 경험이었습니다. 하지만 로컬 서버에서 replication이 끊기는 문제에 대한 대처가 미흡해서 다음번에 더 고민해야 할 부분이라고 생각합니다. 어려운 프로젝트였지만 실력 있는 팀원들과 함께여서 수월하게 완성할 수 있었다고 생각합니다.
+
 ##### **송윤재**<br>
-- 
+- Selenium, Beautiful Soup 등 파이썬 라이브러리를 사용해 크롤링을 해보고 여러 종류의 데이터베이스를 사용하며 어떤 기능엔 어떤 데이터베이스가 적절할지 고민해보았던 좋은 경험이었습니다.
+
 ##### **오형택**<br>
-- 
+- 처음 쓰는 언어, 처음 쓰는 기술, 처음 맡는 도메인에 참고할 소스도 많지 않아서 쉽지 않았지만 새롭게 도전하는 건 늘 즐거운 것 같습니다. 새로운 지식을 학습하고 크고작은 문제들을 해결하며 개발자로서 성장할 수 있는 시간이었습니다.
+
 ##### **조용환**<br>
-- 
+- Next.js, TypeScript, Zustand에 React-query 까지 다양한 기술을 활용해 프로젝트를 완성해 만족스럽습니다.
+
 ##### **전형욱**<br>
-- 
+- 이번에 Front-End 역할을 맡게되어 처음 쓰는 기술(Next.js, TypeScript, Zustand)로 개발을 진행하게 되었습니다.
+생각보다 어렵기도 했지만 팀원들과 협업하여 배우는 과정이 즐거웠습니다. 정말 좋은 팀원들과 함께해서 6주 내내 가장 많이 웃었고 행복했습니다.
+
 ##### **노세희**<br>
--
+- Next.js와 Typescript를 처음 사용하였는데 컴파일 과정에서 타입을 지정하기 대문에 디버깅이 쉽다는 것을 느낄 수 있었고, 코드를 컴포넌트화하여 재사용성을 높이기 위해 고민했던 의미있는 시간이었습니다.
