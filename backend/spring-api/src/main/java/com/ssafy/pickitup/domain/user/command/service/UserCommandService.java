@@ -240,6 +240,7 @@ public class UserCommandService {
         if (scrapCommandMongoRepository.existsByUserIdAndRecruitId(userId, recruitId)) {
             throw new DuplicateScrapException();
         }
+        user.increaseRecruitScrapCount();
         scrapCommandMongoRepository.save(ScrapMongo.createScrap(userId, recruitId));
         userRecruitCommandJpaRepository.save(userRecruit);
     }
@@ -252,6 +253,7 @@ public class UserCommandService {
             .findByUserIdAndRecruitId(userId, recruitId)
             .orElse(new UserClick(user, recruitId));
         userClick.increaseClickCount();
+        user.increaseRecruitViewCount();
         userClickCommandJpaRepository.save(userClick);
 
         Query query = new Query(Criteria.where("userId").is(userId).and("recruitId").is(recruitId));
