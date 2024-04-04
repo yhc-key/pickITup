@@ -31,7 +31,6 @@ export default function ModalCustom({
     if (!open) {
       return;
     }
-    event.preventDefault();
     if (event.key === "Enter") {
       document.getElementById(`${name}AddButton`)?.click();
     } else if (event.key === "Escape") {

@@ -72,14 +72,6 @@ export default function MyEssay(): JSX.Element {
     setMyEssayActive(tmpEssays);
   }; // 클릭기록용 로직
 
-  const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    if (e.key !== "Enter" && e.key !== "Escape") {
-      e.stopPropagation();
-    }
-  }; // input 바깥에서 keyDown 이벤트가 있어서 input 이벤트를 낚아채가기 때문에 stopPropagation으로 막음 esc, escape는 부모 이벤트 사용하기 위해 냅둠
-
   const deleteEssayHandler = async (titleId: number, essayId: number) => {
     try {
       await fetch(`${apiAddress}/${titleId}/sub/${essayId}`, {
@@ -103,7 +95,7 @@ export default function MyEssay(): JSX.Element {
     }
     setTitleValidate(true);
     try {
-    await fetch(apiAddress, {
+      await fetch(apiAddress, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -178,7 +170,7 @@ export default function MyEssay(): JSX.Element {
       );
       window.location.reload();
     } catch (error) {
-      console.error(error);      
+      console.error(error);
     }
     return true;
   }; // essay 바꾸기 로직
@@ -407,7 +399,6 @@ export default function MyEssay(): JSX.Element {
               placeholder="추가할 자소서 항목을 작성해주세요"
               className="w-[600px] max-w-[100%] p-2 h-10 mt-3 border rounded-sm placeholder:text-f5gray-400 text-f5black-400 focus:outline-none focus:bg-white focus:border-f5gray-600"
               ref={essayTitleAddRef}
-              onKeyDown={(e) => handleKeyDown(e)}
             />
             <div className="min-h-10">
               <span
@@ -444,7 +435,6 @@ export default function MyEssay(): JSX.Element {
               className="w-[700px] max-w-[100%] p-2 h-10 mt-3 border rounded-sm ml-2 placeholder:text-f5gray-400 text-f5black-400 focus:outline-none focus:bg-white focus:border-f5gray-600"
               ref={essayTitleAddRef}
               id="afterChangeTitle"
-              onKeyDown={(e) => handleKeyDown(e)}
             />
             <div className="min-h-10">
               <span
@@ -474,7 +464,6 @@ export default function MyEssay(): JSX.Element {
             className="w-[700px] min-h-16 p-1 h-auto text-sm focus:outline-f5green-300 my-3 "
             ref={essayTitleChangeRef}
             id="inputTitle"
-            onKeyDown={(e) => handleKeyDown(e)}
           />
           <label htmlFor="inputEssay" className="font-bold ">
             자기소개서 내용
@@ -484,7 +473,6 @@ export default function MyEssay(): JSX.Element {
             className="w-[700px] max-w-[100%] p-1 h-auto mt-3 min-h-40 text-sm my-3 focus:outline-f5green-300 text-start"
             ref={essayChangeRef}
             id="inputEssay"
-            onKeyDown={(e) => handleKeyDown(e)}
           />
         </div>
       </ModalCustom>
