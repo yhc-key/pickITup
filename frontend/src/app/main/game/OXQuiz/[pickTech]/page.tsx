@@ -4,7 +4,6 @@ import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { OXQuizDataMap } from "@/data/OXQuizData";
 import BackBtn from "@/components/game/backBtn";
 import Question from "@/components/game/OXQuiz/question";
 import TrueBtn from "@/components/game/OXQuiz/trueBtn";
@@ -61,14 +60,6 @@ export default function OXQuiz(props: any) {
     };
     fetchOXQuizData();
   }, [apiUrl, pickTech, setQuestionList]);
-
-  // useEffect(() => {
-  //   // 선택한 주제에 대한 질문 받아오기
-  //   const questions: Quiz[] | undefined = OXQuizDataMap.get(pickTech);
-  //   if (questions) {
-  //     setQuestionList(questions);
-  //   }
-  // }, [pickTech]);
 
   // trueBtn 클릭 시 실행되는 함수
   const TrueClickHandler = (): void => {

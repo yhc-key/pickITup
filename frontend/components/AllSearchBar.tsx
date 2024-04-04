@@ -117,7 +117,6 @@ function AllSearchBar(props:AllSearchBarProps) {
     setSuggestions([]);
   };
 
-  //////
   const searchBarRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
