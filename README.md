@@ -445,7 +445,7 @@ Elasticsearch는 기본적으로 검색 엔진이기 때문에 프로젝트에�
             <img src="https://avatars.githubusercontent.com/HyeongtaekOh" width="140px" /> <br><br> 👶🏻 오형택 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/yhc-key">
             <img src="https://avatars.githubusercontent.com/yhc-key" width="140px" />
-            <br><br> 👶🏻 조용환 <br>(Front-End) </a> <br></td>
+            <br><br> * </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/hyeounguk2">
             <img src="https://avatars.githubusercontent.com/hyeounguk2" width="140px" /> <br><br> 👶🏻 전형욱 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/se2develop">
